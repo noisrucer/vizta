@@ -9,7 +9,7 @@ from ..database import get_db
 from .. import models, schemas
 from ..utils import hash_password
 from ..email import Email
-from ..settings import EmailEnvs
+from ..envs import EmailEnvs
 
 router = APIRouter(
     prefix="/auth",
