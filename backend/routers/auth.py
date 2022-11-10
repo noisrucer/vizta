@@ -9,7 +9,7 @@ from ..database import get_db
 from .. import models, schemas
 from ..utils import hash_password
 from ..email import Email
-from ..envs import EmailEnvs
+from ..config import EmailEnvs
 
 router = APIRouter(
     prefix="/auth",
@@ -74,11 +74,30 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     fm = FastMail(conf)
     await fm.send_message(message)
     
-    
     # Save to DB
     new_user = models.User(**user_dict)
     db.add(new_user) 
     db.commit()
     db.refresh(new_user)
     return new_user
+    
+@router.post('/register/verification', status_code=status.HTTP_200_OK)
+async def verify_email(verificationInfo: schemas.VerifyEmail, db: Session = Depends(get_db)):
+    verificationInfo = verificationInfo.dict()
+    email, verification_code = verificationInfo['email'], verificationInfo['verification_code']
+    matched_user_query = db.query(models.User).filter(models.User.email == email)
+    matched_user = matched_user_query.first()
+    if not matched_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Email not found")
+    
+    if matched_user.verification_code != verification_code:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Verification code not matched")
+    
+    matched_user_query.update({
+        'verified': True
+        })
+    
+    db.commit()
+    
+    return {"message": "hello"}
     

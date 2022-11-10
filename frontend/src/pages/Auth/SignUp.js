@@ -97,6 +97,17 @@ const SignUp = () => {
                   autoComplete="new-password"
                 />
               </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password-confirm"
+                  label="Confirm Password"
+                  type="password"
+                  id="password-confirm"
+                  autoComplete="new-password"
+                />
+              </Grid>
             </Grid>
             <Button
               type="submit"

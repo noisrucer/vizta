@@ -18,6 +18,10 @@ class UserCreateOut(UserBase):
 class User(UserBase):
     class Config:
         orm_mode = True
+        
+class VerifyEmail(BaseModel):
+    email: EmailStr
+    verification_code: str
 
 # Email
 class EmailSchema(BaseModel):
