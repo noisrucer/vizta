@@ -17,3 +17,9 @@ class DBEnvs:
     DB_NAME = os.getenv('MYSQL_DB_NAME')
     USERNAME = os.getenv('MYSQL_USERNAME')
     PASSWORD = os.getenv('MYSQL_PASSWORD')
+    
+    
+class JWTEnvs:
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    ALGORITHM = os.getenv('ALGORITHM')
+    ACCESS_TOKEN_EXPIRE_MINUTES=30

@@ -1,15 +1,22 @@
 from random import randbytes
+from datetime import datetime, timedelta
 import hashlib
 
 from fastapi import APIRouter, status, HTTPException, Depends
 from sqlalchemy.orm import Session 
 from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import jwt, JWTError
 
 from ..database import get_db
 from .. import models, schemas
-from ..utils import hash_password
+from ..utils import hash_password, verify_password
 from ..email import Email
-from ..config import EmailEnvs
+from ..config import EmailEnvs, JWTEnvs
+from ..oauth2 import create_access_token, decode_jwt
+
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 router = APIRouter(
     prefix="/auth",
@@ -42,7 +49,7 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     )
     
     # Send verification code
-    verification_token = randbytes(15)
+    verification_token = randbytes(6)
     hashedCode = hashlib.sha256()
     hashedCode.update(verification_token)
     verification_code = hashedCode.hexdigest()
@@ -71,8 +78,8 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
             body=html,
             subtype=MessageType.html
         )
-    fm = FastMail(conf)
-    await fm.send_message(message)
+    # fm = FastMail(conf)
+    # await fm.send_message(message)
     
     # Save to DB
     new_user = models.User(**user_dict)
@@ -99,5 +106,66 @@ async def verify_email(verificationInfo: schemas.VerifyEmail, db: Session = Depe
     
     db.commit()
     
-    return {"message": "hello"}
+    return {"status": "successful", "message": "Email verified"}
     
+    
+def authenticate_user(email: str, password: str, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == email).first()
+    if not user:
+        return False
+    if not verify_password(password, user.password):
+        return False
+    return user
+
+
+def get_user_by_email(email: str, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == email).first()
+    if not user:
+        return False
+    return user
+
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"}
+    )
+    try:
+        user_email = decode_jwt(token)
+        if user_email is None:
+            raise credentials_exception
+        token_data = schemas.TokenData(username=user_email)
+    except JWTError:
+        raise credentials_exception
+    user = get_user_by_email(email=token_data.username, db=db)
+    if user is None:
+        raise credentials_exception
+    return user
+    
+# Testing
+@router.get("/me", response_model=schemas.User)
+async def get_me(current_user: schemas.User = Depends(get_current_user)):
+    return current_user
+    
+@router.post('/login', response_model=schemas.Token)
+async def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+    ):
+    user = authenticate_user(form_data.username, form_data.password, db)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+        
+    access_token_expires = timedelta(minutes=JWTEnvs.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.email},
+        expires_delta=access_token_expires
+    )   
+    
+    return {"access_token": access_token, "token_type": "bearer"}

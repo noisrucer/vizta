@@ -26,3 +26,12 @@ class VerifyEmail(BaseModel):
 # Email
 class EmailSchema(BaseModel):
     email: list[EmailStr]
+    
+    
+# JWT
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: Union[str, None] = None
