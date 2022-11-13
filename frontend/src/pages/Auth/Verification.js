@@ -3,10 +3,10 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import Checkbox from "@mui/material/Checkbox";
+// import Link from "@mui/material/Link";
+// import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
@@ -17,13 +17,12 @@ import Copyright from "./Copyright";
 
 const theme = createTheme();
 
-const SignIn = () => {
+const Verification = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+      authentication: data.get("authentication")
     });
   };
 
@@ -43,37 +42,22 @@ const SignIn = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Log in
+            Verify
           </Typography>
           <Box
             component="form"
             onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
+            sx={{ mt: 2 }}
           >
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="HKU Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              name="verification"
+              label="Input Verification Code Here.."
+              type="Verification"
+              id="Verification"
             />
             <Button
               type="submit"
@@ -81,20 +65,8 @@ const SignIn = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Log In
+              Verify
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="/verification/#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/auth/sign-up" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
@@ -103,4 +75,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Verification;
