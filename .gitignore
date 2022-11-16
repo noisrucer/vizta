@@ -8,6 +8,9 @@
 /.pnp
 .pnp.js
 
+**/__pycache__
+.env
+
 # testing
 /coverage
 
