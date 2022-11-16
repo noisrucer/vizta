@@ -2,7 +2,7 @@
 // 2. Upon successful verification, user is able to click on "signup" button
 // 3. Upon successful signup, user is redirected to the main page
 
-import * as React from "react";
+import {useRef, useState, useEffect} from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,11 +16,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import Copyright from "./Copyright";
 
 const theme = createTheme(); // customize theme here
 const SignUp = () => {
+  const userRef = useRef();
+  const errRef = useRef();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -106,7 +108,7 @@ const SignUp = () => {
                   fullWidth
                   name="confirmPassword"
                   label="Confirm Password"
-                  type="confirmPassword"
+                  type="password"
                   id="confirmPassword"
                   autoComplete="new-password"
                 />
@@ -116,7 +118,7 @@ const SignUp = () => {
               type="submit"
               fullWidth
               variant="contained"
-              href="/auth/verification"
+              // href="/auth/verification"
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
