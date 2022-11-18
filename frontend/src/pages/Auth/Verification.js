@@ -1,4 +1,6 @@
 import * as React from "react";
+import axios from 'axios'
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,15 +17,29 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Copyright from "./Copyright";
 
+
+const baseURL = "https://7ed3-175-159-176-107.ap.ngrok.io";
 const theme = createTheme();
 
 const Verification = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      authentication: data.get("authentication")
-    });
+    console.log(data.get("verification"))
+    axios.post(`${baseURL}/auth/register/verification`, {
+      email: 'u3572962@connect.hku.hk',
+      verification_code: data.get("verification")
+    })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    
+    // console.log({
+    //   authentication: data.get("authentication")
+    // });
   };
 
   return (
@@ -56,8 +72,8 @@ const Verification = () => {
               fullWidth
               name="verification"
               label="Input Verification Code Here.."
-              type="Verification"
-              id="Verification"
+              type="verification"
+              id="verification"
             />
             <Button
               type="submit"

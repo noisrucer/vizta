@@ -2,7 +2,9 @@
 // 2. Upon successful verification, user is able to click on "signup" button
 // 3. Upon successful signup, user is redirected to the main page
 
-import * as React from "react";
+import { useState } from "react";
+import axios from 'axios'
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,18 +21,60 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Copyright from "./Copyright";
 
+const baseURL = "https://2dce-116-48-242-213.ap.ngrok.io";
+
 const theme = createTheme(); // customize theme here
+
 const SignUp = () => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
+
+  const [firstNameError, setFirstNameError] = useState(false)
+  const [lastNameError, setLastNameError] = useState(false)
+  const [emailError, setEmailError] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
+
+  // const handleChange = (e) => {
+  //   console.log(e.target.name);
+  //   console.log(e.target.value);
+  // }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    console.log(data.get("firstName"));
+
+    setFirstNameError(false)
+    setLastNameError(false)
+    setEmailError(false)
+    setPasswordError(false)
+
+    if (data.get("firstName") == ''){
+      setFirstNameError(true)
+    }
+    if (data.get("lastName") == ''){
+      setLastNameError(true)
+    }
+    if (data.get("email") == ''){
+      setEmailError(true)
+    }
+    if (data.get("password") == ''){
+      setPasswordError(true)
+    }
+
+    console.log("FLAG")
+    axios.post(`${baseURL}/auth/register`, {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       email: data.get("email"),
-      password: data.get("password"),
-      confirmPassword: data.get("confirmPassword"),
-    });
+      password: data.get("password")
+    })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+      console.log(error.code)
+      console.log(error.response.status)
+    })
   };
 
   return (
@@ -64,29 +108,32 @@ const SignUp = () => {
                   name="firstName"
                   required
                   fullWidth
-                  id="firstName"
                   label="First Name"
                   autoFocus
+                  // onChange = {handleChange}
+                  error = {firstNameError}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  // onChange = {handleChange}
+                  error = {lastNameError}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="email"
                   label="HKU Email Address"
                   name="email"
                   autoComplete="email"
+                  // onChange = {handleChange}
+                  error = {emailError}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -96,8 +143,9 @@ const SignUp = () => {
                   name="password"
                   label="Password"
                   type="password"
-                  id="password"
                   autoComplete="new-password"
+                  // onChange = {handleChange}
+                  error = {passwordError}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -106,9 +154,9 @@ const SignUp = () => {
                   fullWidth
                   name="confirmPassword"
                   label="Confirm Password"
-                  type="confirmPassword"
-                  id="confirmPassword"
+                  type="password"
                   autoComplete="new-password"
+                  // onChange = {handleChange}
                 />
               </Grid>
             </Grid>
@@ -116,7 +164,7 @@ const SignUp = () => {
               type="submit"
               fullWidth
               variant="contained"
-              href="/auth/verification"
+              // href="/auth/verification"
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up

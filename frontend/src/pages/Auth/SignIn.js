@@ -1,4 +1,6 @@
 import * as React from "react";
+import axios from 'axios'
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,17 +16,27 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Copyright from "./Copyright";
-
+const baseURL = "https://2dce-116-48-242-213.ap.ngrok.io";
 const theme = createTheme();
 
 const SignIn = () => {
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const formData = new FormData(event.currentTarget);
+    // formData.append("username", formData.get("username"))
+    // formData.append("password", formData.get("password"))
+    console.log(formData.get("username"))
+
+    axios.post(`${baseURL}/auth/login`, formData).then(response => {
+      console.log(response)
+    }).catch(err => {
+      console.log(err)
+    })
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
   };
 
   return (
@@ -55,9 +67,9 @@ const SignIn = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="username"
               label="HKU Email Address"
-              name="email"
+              name="username"
               autoComplete="email"
               autoFocus
             />
