@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import axios from 'axios'
 
 import Avatar from "@mui/material/Avatar";
@@ -21,14 +21,28 @@ const theme = createTheme();
 
 const SignIn = () => {
 
+  const [usernameError, setUsernameError] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    const data = new FormData(event.currentTarget);
     // formData.append("username", formData.get("username"))
     // formData.append("password", formData.get("password"))
-    console.log(formData.get("username"))
+    console.log(data.get("username"))
 
-    axios.post(`${baseURL}/auth/login`, formData).then(response => {
+    setUsernameError(false)
+    setPasswordError(false)
+
+    if(data.get("username") == ''){
+      setUsernameError(true)
+    }
+
+    if (data.get("password") == ''){
+      setPasswordError(true)
+    }
+
+    axios.post(`${baseURL}/auth/login`, data).then(response => {
       console.log(response)
     }).catch(err => {
       console.log(err)
@@ -72,6 +86,7 @@ const SignIn = () => {
               name="username"
               autoComplete="email"
               autoFocus
+              error = {usernameError}
             />
             <TextField
               margin="normal"
@@ -82,6 +97,7 @@ const SignIn = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              error = {passwordError}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

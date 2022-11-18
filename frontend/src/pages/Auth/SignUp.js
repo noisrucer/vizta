@@ -71,9 +71,10 @@ const SignUp = () => {
       console.log(response)
     })
     .catch(error => {
-      console.log(error)
-      console.log(error.code)
-      console.log(error.response.status)
+      // console.log(error)
+      // console.log(error.code)
+      // console.log(error.response.status)
+      console.log(error.response.data.detail)
     })
   };
 
