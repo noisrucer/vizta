@@ -1,6 +1,5 @@
 import { useState } from "react";
-import axios from 'axios'
-
+import axios from 'axios';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -21,18 +20,15 @@ const theme = createTheme();
 
 const SignIn = () => {
 
-  const [usernameError, setUsernameError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // formData.append("username", formData.get("username"))
-    // formData.append("password", formData.get("password"))
-    console.log(data.get("username"))
 
-    setUsernameError(false)
-    setPasswordError(false)
+    setUsernameError(false);
+    setPasswordError(false);
 
     if(data.get("username") == ''){
       setUsernameError(true)

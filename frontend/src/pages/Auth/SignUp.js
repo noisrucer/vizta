@@ -3,8 +3,7 @@
 // 3. Upon successful signup, user is redirected to the main page
 
 import { useState } from "react";
-import axios from 'axios'
-
+import axios from 'axios';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,6 +17,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useFormControl } from "@mui/material/FormControl";
 
 import Copyright from "./Copyright";
 
@@ -27,37 +27,36 @@ const theme = createTheme(); // customize theme here
 
 const SignUp = () => {
 
-  const [firstNameError, setFirstNameError] = useState(false)
-  const [lastNameError, setLastNameError] = useState(false)
-  const [emailError, setEmailError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
-
-  // const handleChange = (e) => {
-  //   console.log(e.target.name);
-  //   console.log(e.target.value);
-  // }
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    console.log(data.get("firstName"));
 
     setFirstNameError(false)
     setLastNameError(false)
     setEmailError(false)
     setPasswordError(false)
+    setConfirmPasswordError(false)
 
-    if (data.get("firstName") == ''){
+    if (data.get("firstName") === ''){
       setFirstNameError(true)
     }
-    if (data.get("lastName") == ''){
+    if (data.get("lastName") === ''){
       setLastNameError(true)
     }
-    if (data.get("email") == ''){
+    if (data.get("email") === ''){
       setEmailError(true)
     }
-    if (data.get("password") == ''){
+    if (data.get("password") === ''){
       setPasswordError(true)
+    }
+    if (data.get("password") !== data.get("confirmPassword") || data.get("confirmPassword") === ''){
+      setConfirmPasswordError(true)
     }
 
     console.log("FLAG")
@@ -111,7 +110,6 @@ const SignUp = () => {
                   fullWidth
                   label="First Name"
                   autoFocus
-                  // onChange = {handleChange}
                   error = {firstNameError}
                 />
               </Grid>
@@ -122,7 +120,6 @@ const SignUp = () => {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  // onChange = {handleChange}
                   error = {lastNameError}
                 />
               </Grid>
@@ -133,7 +130,6 @@ const SignUp = () => {
                   label="HKU Email Address"
                   name="email"
                   autoComplete="email"
-                  // onChange = {handleChange}
                   error = {emailError}
                 />
               </Grid>
@@ -145,7 +141,6 @@ const SignUp = () => {
                   label="Password"
                   type="password"
                   autoComplete="new-password"
-                  // onChange = {handleChange}
                   error = {passwordError}
                 />
               </Grid>
@@ -157,7 +152,7 @@ const SignUp = () => {
                   label="Confirm Password"
                   type="password"
                   autoComplete="new-password"
-                  // onChange = {handleChange}
+                  error = {confirmPasswordError}
                 />
               </Grid>
             </Grid>
