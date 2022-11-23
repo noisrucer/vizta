@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-load_dotenv('.env')
+load_dotenv('backend/.env')
 
 class EmailEnvs:
     SENDER = os.getenv('GMAIL_SENDER')
