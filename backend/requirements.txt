@@ -17,3 +17,4 @@ python-slugify==5.0.2
 requests==2.26.0
 SQLAlchemy-ImageAttach==1.1.0
 SQLAlchemy==1.4.43
+passlib==1.7.4
