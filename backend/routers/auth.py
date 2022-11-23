@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import hashlib
 
 from fastapi import APIRouter, status, HTTPException, Depends
+from email_validator import validate_email, EmailNotValidError
 from sqlalchemy.orm import Session 
 from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -11,22 +12,33 @@ from jose import jwt, JWTError
 from ..database import get_db
 from .. import models, schemas
 from ..utils import hash_password, verify_password
-from ..email import Email
 from ..config import EmailEnvs, JWTEnvs
 from ..oauth2 import create_access_token, decode_jwt
+from backend.email.email import email_sender
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/auth/login",
+    scheme_name="JWT",
+    )
 
 router = APIRouter(
     prefix="/auth",
     tags=["auth"]
 )
 
+    
 @router.post("/register", status_code=status.HTTP_201_CREATED, response_model=schemas.UserCreateOut)
 async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     user_dict = user.dict()
     
+    # Check if email is HKU email (xxx@connect.hku.hk)
+    if user_dict['email'].split('@')[-1] != 'connect.hku.hk':
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="You must provide a valid HKU email (@connect.hku.hk)"
+        )
+        
     # Check if there's a duplicated email in the DB
     dup_email_entry = db.query(models.User).filter(models.User.email == user_dict['email']).first()
     if dup_email_entry:
@@ -35,51 +47,11 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
             detail="Email already existed"
         )
     
-    # Check if email is HKU email (xxx@connect.hku.hk)
-    if user_dict['email'].split('@')[-1] != 'connect.hku.hk':
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="You must provide a valid HKU email (@connect.hku.hk)"
-        )
-    
     # Hash password
     hashed_password = hash_password(user_dict['password'])
     user_dict.update(
         password=hashed_password
     )
-    
-    # Send verification code
-    verification_token = randbytes(6)
-    hashedCode = hashlib.sha256()
-    hashedCode.update(verification_token)
-    verification_code = hashedCode.hexdigest()
-    user_dict.update(
-        verification_code=verification_code
-    )
-    
-    recipient = user_dict['email']
-    subject="Hello from HKUviz"
-    html= f"""<p>Verification Code: {verification_code}</p> """
-    
-    conf = ConnectionConfig(
-            MAIL_USERNAME = EmailEnvs.MAIL_USERNAME,
-            MAIL_PASSWORD = EmailEnvs.MAIL_PASSWORD,
-            MAIL_FROM = EmailEnvs.MAIL_FROM,
-            MAIL_PORT = EmailEnvs.MAIL_PORT,
-            MAIL_SERVER = EmailEnvs.MAIL_HOST,
-            MAIL_STARTTLS = True,
-            MAIL_SSL_TLS = False,
-            USE_CREDENTIALS = True,
-            VALIDATE_CERTS = True
-        )
-    message = MessageSchema(
-            subject=subject,
-            recipients=[recipient],
-            body=html,
-            subtype=MessageType.html
-        )
-    # fm = FastMail(conf)
-    # await fm.send_message(message)
     
     # Save to DB
     new_user = models.User(**user_dict)
@@ -87,29 +59,52 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
-    
+
 @router.post('/register/verification', status_code=status.HTTP_200_OK)
 async def verify_email(verificationInfo: schemas.VerifyEmail, db: Session = Depends(get_db)):
     verificationInfo = verificationInfo.dict()
-    email, verification_code = verificationInfo['email'], verificationInfo['verification_code']
+    email = verificationInfo['email']
+
+    # Check if email is HKU email (xxx@connect.hku.hk)
+    if email.split('@')[-1] != 'connect.hku.hk':
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="You must provide a valid HKU email (@connect.hku.hk)"
+        )
+        
+    # Check if the email has been already registered
     matched_user_query = db.query(models.User).filter(models.User.email == email)
     matched_user = matched_user_query.first()
-    if not matched_user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Email not found")
+    if matched_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="This email has been already registered.")
     
-    if matched_user.verification_code != verification_code:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Verification code not matched")
+    # Send verification code
+    verification_token = randbytes(6)
+    hashedCode = hashlib.sha256()
+    hashedCode.update(verification_token)
+    verification_code = hashedCode.hexdigest()
+
+    recipient = email
+    subject="[Vizta] Please verify your email address"
+    f = open("backend/email/verification.html")
+    content = f.read()
+    content = content.replace("__VERIFICATION_CODE__", verification_code)
     
-    matched_user_query.update({
-        'verified': True
-        })
+    email_sender.send_email(recipient, content, subject)
     
-    db.commit()
-    
-    return {"status": "successful", "message": "Email verified"}
+    return {"status": "successful", "verification_token": verification_code}
     
     
 def authenticate_user(email: str, password: str, db: Session = Depends(get_db)):
+    try:
+        validation = validate_email(email)
+        email = validation.email
+    except EmailNotValidError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="You must provide a valid email address type (ex. xxx@gmail.com)"
+        )
+
     user = db.query(models.User).filter(models.User.email == email).first()
     if not user:
         return False
@@ -123,6 +118,7 @@ def get_user_by_email(email: str, db: Session = Depends(get_db)):
     if not user:
         return False
     return user
+
 
 async def get_current_user(
     token: str = Depends(oauth2_scheme),
@@ -144,10 +140,12 @@ async def get_current_user(
         raise credentials_exception
     return user
     
+    
 # Testing
-@router.get("/me", response_model=schemas.User)
+@router.post("/me", response_model=schemas.User)
 async def get_me(current_user: schemas.User = Depends(get_current_user)):
     return current_user
+    
     
 @router.post('/login', response_model=schemas.Token)
 async def login(
