@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Landing from "./pages/Landing/Landing";
 import SignIn from "./pages/Auth/SignIn";
@@ -19,6 +19,7 @@ const App = () => {
         <Route path="/auth/sign-in" element={<SignIn />}></Route>
         <Route path="/auth/sign-up" element={<SignUp />}></Route> 
         <Route path="/auth/verification" element={<Verification />}></Route> 
+        <Route path="/auth/me"></Route>
         <Route path="/main" element={<Main />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
       </Routes>

@@ -1,15 +1,28 @@
 import React from "react";
 // import { Button } from "@mui/material"
 // import { Link } from "react-router-dom";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
+import ProductHero from "../../components/views/ProductHero";
+import ProductValues from "../../components/views/ProductValues";
+import ProductCategories from "../../components/views/ProductCategories";
+import ProductHowItWorks from "../../components/views/ProductHowItWorks";
+import ProductCTA from "../../components/views/ProductCTA";
+import ProductSmokingHero from "../../components/views/ProductSmokingHero";
+import AppFooter from "../../components/views/AppFooter";
 
 const Landing = (props) => {
 
     return (
         <>
-            <Typography sx={{display: 'flex', justifyContent: 'center', fontSize: "36px", marginTop: "60px"}}>
-                <h1>This is Landing</h1>
-            </Typography>
+            <React.Fragment>
+                <ProductHero />
+                <ProductValues />
+                <ProductCategories />
+                <ProductHowItWorks />
+                <ProductCTA />
+                <ProductSmokingHero />
+                <AppFooter />
+            </React.Fragment>
         </>
         )
     };

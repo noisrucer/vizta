@@ -124,7 +124,7 @@ export default function Sidebar() {
   };
 
   return (
-    <Box sx={{ display: 'flex', background: "#000000"}}>
+    <Box sx={{ display: 'flex'}}>
       <CssBaseline />
       <AppBar position="fixed" open={open} sx={{background: "#000000", opacity: 0.8}}>
         <Toolbar>

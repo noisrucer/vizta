@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useNavigate} from 'react-router';
 import axios from 'axios';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -13,15 +14,25 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Main from "../Main/Main";
+import Snackbar from "../../components/Snackbar";
 
 import Copyright from "./Copyright";
-const baseURL = "https://2dce-116-48-242-213.ap.ngrok.io";
+const baseURL = "https://3631-116-48-242-213.ap.ngrok.io";
 const theme = createTheme();
 
 const SignIn = () => {
+  const navigate = useNavigate();
 
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("")
+  const [openErrorMessage, setOpenErrorMessage] = useState(false);
+
+  const closeErrorMessage = () => {
+    setOpenErrorMessage(false)
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -30,23 +41,33 @@ const SignIn = () => {
     setUsernameError(false);
     setPasswordError(false);
 
-    if(data.get("username") == ''){
+    if(data.get("username") === ''){
       setUsernameError(true)
     }
 
-    if (data.get("password") == ''){
+    if (data.get("password") === ''){
       setPasswordError(true)
     }
 
-    axios.post(`${baseURL}/auth/login`, data).then(response => {
-      console.log(response)
-    }).catch(err => {
-      console.log(err)
-    })
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
+    if (!(passwordError && usernameError)){
+      axios.post(`${baseURL}/auth/login`, data).then(response => {
+        const jwtToken = response.data.access_token
+        if (response.status === 200)
+        {
+          // axios.post(`${baseURL}/auth/me`, data).then(response => {
+          //   console.log(response)
+          // })
+          navigate('/main')
+        }
+      }).catch(err => {
+        console.log(err)
+        setErrorMessage(err.response.data.detail)
+        setOpenErrorMessage(true)
+      })
+    } else {
+      setErrorMessage("Please fill in all the required Input")
+      setOpenErrorMessage(true)
+    }
   };
 
   return (
@@ -122,6 +143,11 @@ const SignIn = () => {
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Snackbar
+          open={openErrorMessage}
+          closeFunc={closeErrorMessage}
+          message={errorMessage}
+        />
       </Container>
     </ThemeProvider>
   );
