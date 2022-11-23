@@ -1,3 +1,4 @@
+fastapi==0.86.0
 bcrypt==4.0.1
 cryptography==38.0.3
 decorator==5.1.1
