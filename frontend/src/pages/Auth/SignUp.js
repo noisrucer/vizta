@@ -2,7 +2,7 @@
 // 2. Upon successful verification, user is able to click on "signup" button
 // 3. Upon successful signup, user is redirected to the main page
 
-import { useState, useRef, Fragment, forwardRef } from "react";
+import { useState, Fragment, forwardRef } from "react";
 import {useNavigate} from 'react-router';
 
 import axios from 'axios';
@@ -10,8 +10,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -19,20 +17,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useFormControl } from "@mui/material/FormControl";
 import MuiAlert from '@mui/material/Alert';
-
-import dayjs from 'dayjs';
-import Stack from '@mui/material/Stack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
 import Snackbar from "../../components/Snackbar";
-
 import Copyright from "./Copyright";
+import MenuItem from "@mui/material/MenuItem";
 
-const baseURL = "https://3631-116-48-242-213.ap.ngrok.io";
+const baseURL = "http://127.0.0.1:8000";
 
 const theme = createTheme(); // customize theme here
 
@@ -40,40 +33,88 @@ const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const majors = [
+  {
+    value: "CS",
+    label: "Computer Science",
+  },
+  {
+    value: "CE",
+    label: "Computer Engineering",
+  },
+  {
+    value: "IS",
+    label: "Information System",
+  },
+];
+
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const [enteredYearError, setEnteredYearError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [verificationError, setVerificationError] = useState(false);
-
-  const [errorMessage, setErrorMessage] = useState("");
-  const [email, setEmail] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [verificationToken, setVerificationToken] = useState(""); 
   const [verificationRequested, setVerificationRequested] = useState(false);
   const [verificationConfirmStatus, setVerificationConfirmStatus] = useState(false);
+  const [openErrorMessage, setOpenErrorMessage] = useState(false);
+  const [checkOnSubmit, setCheckOnSubmit] = useState(false);
+  const [clickedSignUpButton , setClickedSignUpButton] = useState(false);
 
+  const [email, setEmail] = useState("");
   const [enteredYear, setEnteredYear] = useState('2022-01-01');
+  const [major, setMajor] = useState("CS");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [verificationToken, setVerificationToken] = useState(""); 
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleMajorChange = (e) => {
+    setMajor(e.target.value);
+  };
 
   const emailOnChangeHandler = (evt) => {
     setEmail(evt.target.value);
   }
+
+  const closeErrorMessage = () => {
+    setOpenErrorMessage(false)
+  }
+
   function onChangeVerificationCode (evt) {
     evt.preventDefault();
     setVerificationCode(evt.target.value)
-    console.log(evt.target.value);
+  }
+
+  const handleVerification = (event) => {
+
+    event.preventDefault();
+    axios.post(`${baseURL}/auth/register/verification`, {
+      email: email
+    })
+    .then(response => {
+      console.log(response.data.verification_token)
+      setVerificationToken(response.data.verification_token)
+      setVerificationRequested(true)
+      setEmailError(false)
+    })
+    .catch(err => {
+      console.log(err.response.data.detail)
+      setErrorMessage(err.response.data.detail)
+      setOpenErrorMessage(true)
+    })
   }
 
   function handleConfirmVerification (e) {
+
+    setCheckOnSubmit(false)
+
     if (verificationCode === verificationToken) {
       setVerificationError(false)
-      setErrorMessage("Verify Success!")
-      setOpenErrorMessage(true)
       setVerificationConfirmStatus(true)
       console.log("verify success")
+      console.log("check on submit",checkOnSubmit)
+      console.log("verification confirm status",verificationConfirmStatus)
+      setOpenErrorMessage(true)
     } else {
       setVerificationError(true)
       setErrorMessage("Incorrect Authentication Token!")
@@ -82,63 +123,35 @@ const SignUp = () => {
       console.log("verify fail")
     }
   }
-  
-  const [openErrorMessage, setOpenErrorMessage] = useState(false);
-
-  const closeErrorMessage = () => {
-    setOpenErrorMessage(false)
-  }
-
-  const handleVerification = (event) => {
-    event.preventDefault();
-    console.log(event)
-    // const data = new FormData(event.currentTarget);
-    // console.log(data.get("verification"))
-    axios.post(`${baseURL}/auth/register/verification`, {
-      email: email
-      // verification_code: data.get("verification")
-    })
-    .then(response => {
-      console.log(response.data.verification_token)
-      setVerificationToken(response.data.verification_token)
-      setVerificationRequested(true)
-      // setErrorMessage("Verification Confirmed!")
-      // setOpenErrorMessage(true)
-    })
-    .catch(err => {
-      console.log(err)
-      console.log(err.response.data.detail)
-      setErrorMessage(err.response.data.detail)
-      setOpenErrorMessage(true)
-    })
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     console.log(...data)
 
-    setEnteredYearError(false)
-    setEmailError(false)
-    setPasswordError(false)
-    setConfirmPasswordError(false)
+    setCheckOnSubmit(true);
+    setClickedSignUpButton(true);
 
-    if (data.get("enteredYear") === ''){
-      setEnteredYearError(true)
-    }
     if (data.get("email") === ''){
       setEmailError(true)
     }
     if (data.get("password") === ''){
       setPasswordError(true)
+    } else {
+      setPasswordError(false)
     }
     if (data.get("password") !== data.get("confirmPassword") || data.get("confirmPassword") === ''){
       setConfirmPasswordError(true)
+    } else {
+      setConfirmPasswordError(false)
     }
 
-    console.log("FLAG")
-    console.log(data.get('enteredYear'))
-    if (!(passwordError && confirmPasswordError) && verificationConfirmStatus)
+    // console.log("emailError: ",emailError)
+    console.log("passwordError: ",passwordError)
+    console.log("confirm password error: ", confirmPasswordError)
+    // console.log("verification confirm status: ",verificationConfirmStatus)
+
+    if (!(emailError) && !(passwordError) && !(confirmPasswordError) && verificationConfirmStatus)
     {
       axios.post(`${baseURL}/auth/register`, {
         enteredYear: data.get("enteredYear"),
@@ -150,17 +163,34 @@ const SignUp = () => {
         navigate('/auth/sign-in');
       })
       .catch(error => {
-        console.log(error)
-        // console.log(error.code)
-        // console.log(error.response.status)
         console.log(error.response.data.detail)
         setErrorMessage(error.response.data.detail)
         console.log({errorMessage})
         setOpenErrorMessage(true)
       })
     } else {
-      setErrorMessage("Please fill in all the required fields and confirm verification!")
-      setOpenErrorMessage(true)
+      if (passwordError && !(emailError)) {
+        if (!(/[A-Z]/.test(data.get("password")))){
+          setErrorMessage("Password should contain at least 1 Upper and Lower case")
+          setPasswordError(true)
+          setOpenErrorMessage(true)
+        } else if (!(/[0-9]/.test(data.get("password")))){
+          setErrorMessage("Password should contain at leat one number")
+          setPasswordError(true)
+          setOpenErrorMessage(true)
+        } else if (!(data.get("password").length >= 8)){
+          setErrorMessage("Password shoule be at least 8 characters long")
+          setPasswordError(true)
+          setOpenErrorMessage(true)
+        } else if (confirmPasswordError) {
+          setErrorMessage("Confirm password not same as password!")
+          setConfirmPasswordError(true)
+          setOpenErrorMessage(true)
+        }
+      } else {
+        setErrorMessage("Please fill in all the required fields and confirm verification!")
+        setOpenErrorMessage(true)
+      }
     }
   };
 
@@ -198,9 +228,9 @@ const SignUp = () => {
                     onChange={emailOnChangeHandler}
                     name="email"
                     autoComplete = "true"
-                    error = {emailError}
+                    error = {emailError && clickedSignUpButton}
                   />
-                </Grid>
+              </Grid>
                 <Grid item xs={1}>
                   <Button
                     variant = "contained"
@@ -219,15 +249,14 @@ const SignUp = () => {
                     name="verification_code"
                     value={verificationCode}
                     onChange={onChangeVerificationCode}
-                    // autoComplete
-                    error = {verificationError}
+                    error = {verificationError && clickedSignUpButton}
                   />
                 </Grid>
                 
                 <Grid item xs={1}>
                   <Button
                     variant = "contained"
-                    size = "large"
+                    size = "medium"
                     onClick = {handleConfirmVerification}
                   >
                     Confirm
@@ -235,16 +264,7 @@ const SignUp = () => {
                 </Grid>
                 </Fragment>
                 }
-              <Grid item xs={12}>
-                {/* <TextField
-                  autoComplete="given-name"
-                  name="enteredYear"
-                  required
-                  fullWidth
-                  label="Year of admission"
-                  autoFocus
-                  error = {enteredYearError}
-                /> */}
+              <Grid item xs={13} sm={6}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     views={["year"]}
@@ -271,6 +291,21 @@ const SignUp = () => {
                   />
                 </LocalizationProvider>
               </Grid>
+              <Grid item xs={13} sm={6}>
+                <TextField
+                  select
+                  label="Select Major"
+                  name="Major"
+                  value={major}
+                  onChange={handleMajorChange}
+                >
+                  {majors.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -278,7 +313,7 @@ const SignUp = () => {
                   name="password"
                   label="Password"
                   type="password"
-                  error = {passwordError}
+                  error = {passwordError && clickedSignUpButton}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -288,7 +323,7 @@ const SignUp = () => {
                   name="confirmPassword"
                   label="Confirm Password"
                   type="password"
-                  error = {confirmPasswordError}
+                  error = {confirmPasswordError && clickedSignUpButton}
                 />
               </Grid>
             </Grid>
@@ -317,7 +352,7 @@ const SignUp = () => {
           message={errorMessage}
         >
           {
-            verificationConfirmStatus && 
+            verificationConfirmStatus && !(checkOnSubmit) &&
             <Alert onClose={closeErrorMessage} severity="success" sx={{ width: '100%' }}>
               Verify Success!
             </Alert>
