@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {useNavigate} from 'react-router';
 import axios from 'axios';
 import Avatar from "@mui/material/Avatar";
@@ -24,6 +24,19 @@ const theme = createTheme();
 const SignIn = () => {
   const navigate = useNavigate();
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const validate = () => {
+    if (username.length > 0 && password.length > 7)
+    {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
@@ -34,41 +47,37 @@ const SignIn = () => {
     setOpenErrorMessage(false)
   }
 
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    setUsernameError(false);
-    setPasswordError(false);
-
-    if(data.get("username") === ''){
-      setUsernameError(true)
-    }
-
-    if (data.get("password") === ''){
-      setPasswordError(true)
-    }
-
-    if (!(passwordError && usernameError)){
-      axios.post(`${baseURL}/auth/login`, data).then(response => {
+    axios.post(`${baseURL}/auth/login`, 
+      data
+    )
+    .then(response => {
         const jwtToken = response.data.access_token
-        if (response.status === 200)
-        {
-          // axios.post(`${baseURL}/auth/me`, data).then(response => {
-          //   console.log(response)
-          // })
+        console.log("response status: ", response.status)
+        if (response.status === 200){
+          axios.post(`${baseURL}/auth/me`, 
+          data
+          )
+          .then(response => {
+            console.log("response: ",response)
+          })
           navigate('/main')
         }
-      }).catch(err => {
+    })
+    .catch(err => {
         console.log(err)
         setErrorMessage(err.response.data.detail)
         setOpenErrorMessage(true)
+
+        setUsernameError(true)
+        setPasswordError(true)
       })
-    } else {
-      setErrorMessage("Please fill in all the required Input")
-      setOpenErrorMessage(true)
-    }
-  };
+    };
 
   return (
     <ThemeProvider theme={theme}>
@@ -98,11 +107,9 @@ const SignIn = () => {
               margin="normal"
               required
               fullWidth
-              id="username"
               label="HKU Email Address"
               name="username"
-              autoComplete="email"
-              autoFocus
+              onChange ={(e)=>setUsername(e.target.value)}
               error = {usernameError}
             />
             <TextField
@@ -112,8 +119,7 @@ const SignIn = () => {
               name="password"
               label="Password"
               type="password"
-              id="password"
-              autoComplete="current-password"
+              onChange ={(e)=>setPassword(e.target.value)}
               error = {passwordError}
             />
             <FormControlLabel
@@ -125,6 +131,7 @@ const SignIn = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled = {!validate()}
             >
               Log In
             </Button>

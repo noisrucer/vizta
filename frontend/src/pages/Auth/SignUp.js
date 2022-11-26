@@ -331,7 +331,6 @@ const SignUp = () => {
               type="submit"
               fullWidth
               variant="contained"
-              // href="/auth/verification"
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
