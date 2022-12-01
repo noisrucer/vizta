@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState, useContext } from "react";
+import {UserContext} from "../../UserContext"
 import {useNavigate} from 'react-router';
 import axios from 'axios';
 import Avatar from "@mui/material/Avatar";
@@ -14,18 +15,20 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Main from "../Main/Main";
 import Snackbar from "../../components/Snackbar";
 
 import Copyright from "./Copyright";
 const baseURL = "http://127.0.0.1:8000";
 const theme = createTheme();
 
+
 const SignIn = () => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  console.log("UserContent in Sign In: ",UserContext);
 
   const validate = () => {
     if (username.length > 0 && password.length > 7)
@@ -36,41 +39,66 @@ const SignIn = () => {
     }
   };
 
-
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("")
   const [openErrorMessage, setOpenErrorMessage] = useState(false);
 
+  // const {setUserToken} = useContext(UserContext);
+
+  const {UserData, UserToken} = useContext(UserContext);
+  const [userToken, setUserToken] = UserToken;
+  const [userData, setUserData] = UserData;
+
+
+  const handleSetUserData = (e) => {
+    setUserData(e);
+  }
+
+  const handleSetUserToken = (e) => {
+    setUserToken(e);
+  }
+
   const closeErrorMessage = () => {
     setOpenErrorMessage(false)
   }
 
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
+    console.log("data: ",data)
+    
     axios.post(`${baseURL}/auth/login`, 
       data
     )
     .then(response => {
-        const jwtToken = response.data.access_token
+        const jwtToken = response.data.access_token;
+        console.log("Token received in signin: ", jwtToken);
         console.log("response status: ", response.status)
+        const options = {
+          "headers": {
+            "Authorization": "Bearer " + jwtToken
+          }
+        }
+
+        handleSetUserData(data);
+        handleSetUserToken(options);
+
         if (response.status === 200){
+          console.log("data sent to auth/me in SignIn: ",data, options);
           axios.post(`${baseURL}/auth/me`, 
-          data
+          data,
+          options
           )
           .then(response => {
-            console.log("response: ",response)
+            console.log("response in Sign In: ",response)
           })
           navigate('/main')
         }
     })
     .catch(err => {
-        console.log(err)
+        console.log("error in Sign In: ",err)
         setErrorMessage(err.response.data.detail)
         setOpenErrorMessage(true)
 

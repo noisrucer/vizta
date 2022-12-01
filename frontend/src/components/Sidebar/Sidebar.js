@@ -21,6 +21,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -114,6 +115,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function Sidebar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -137,9 +139,14 @@ export default function Sidebar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{marginRight: "20px"}}>
+          {/* <Typography 
+          variant="h6" 
+          noWrap 
+          component="div" 
+          sx={{marginRight: "20px"}}>
             Vizta
-          </Typography>
+          </Typography> */}
+          <Button variant="primary" href="/" sx={{ marginRight: "20px"}}>Vizta</Button>
           <Search>
              <SearchIconWrapper>
                <SearchIcon />
@@ -174,9 +181,9 @@ export default function Sidebar() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Main'].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton>
+              <ListItemButton href="/main">
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>

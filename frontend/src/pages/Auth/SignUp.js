@@ -2,7 +2,7 @@
 // 2. Upon successful verification, user is able to click on "signup" button
 // 3. Upon successful signup, user is redirected to the main page
 
-import { useState, Fragment, forwardRef } from "react";
+import { useState, Fragment, forwardRef, useEffect } from "react";
 import {useNavigate} from 'react-router';
 
 import axios from 'axios';
@@ -35,16 +35,20 @@ const Alert = forwardRef(function Alert(props, ref) {
 
 const majors = [
   {
-    value: "CS",
+    value: "Computer Science",
     label: "Computer Science",
   },
   {
-    value: "CE",
+    value: "Computer Engineering",
     label: "Computer Engineering",
   },
   {
-    value: "IS",
+    value: "Infromation System",
     label: "Information System",
+  },
+  {
+    value: "Other",
+    label: "Others..",
   },
 ];
 
@@ -62,19 +66,66 @@ const SignUp = () => {
   const [clickedSignUpButton , setClickedSignUpButton] = useState(false);
 
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [enteredYear, setEnteredYear] = useState('2022-01-01');
-  const [major, setMajor] = useState("CS");
+  const [major, setMajor] = useState("Computer Science");
   const [verificationCode, setVerificationCode] = useState("");
   const [verificationToken, setVerificationToken] = useState(""); 
   const [errorMessage, setErrorMessage] = useState("");
+
+  const validate = () => {
+    if (email.length > 0 && password.length > 0 && confirmPassword.length > 0)
+    {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   const handleMajorChange = (e) => {
     setMajor(e.target.value);
   };
 
-  const emailOnChangeHandler = (evt) => {
+  const handleEmailChange = (evt) => {
     setEmail(evt.target.value);
   }
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    // console.log("password", password);
+  }
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+  }
+
+  useEffect(() => {
+
+    if (!(/[A-Z]/.test(password))){
+      setPasswordError(true)
+    } else {
+      setPasswordError(false)
+    }
+
+    if (!(/[0-9]/.test(password))){
+      setPasswordError(true)
+    } else {
+      setPasswordError(false)
+    }
+
+    if (!(password.length >= 8)){
+      setPasswordError(true)
+    } else {
+      setPasswordError(false)
+    }
+    
+    if (password !== confirmPassword){
+      setConfirmPasswordError(true);
+    } else {
+      setConfirmPasswordError(false);
+    }
+  }, [password, confirmPassword]);
 
   const closeErrorMessage = () => {
     setOpenErrorMessage(false)
@@ -125,6 +176,7 @@ const SignUp = () => {
   }
 
   const handleSubmit = (e) => {
+
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     console.log(...data)
@@ -132,26 +184,12 @@ const SignUp = () => {
     setCheckOnSubmit(true);
     setClickedSignUpButton(true);
 
-    if (data.get("email") === ''){
-      setEmailError(true)
-    }
-    if (data.get("password") === ''){
-      setPasswordError(true)
-    } else {
-      setPasswordError(false)
-    }
-    if (data.get("password") !== data.get("confirmPassword") || data.get("confirmPassword") === ''){
-      setConfirmPasswordError(true)
-    } else {
-      setConfirmPasswordError(false)
-    }
-
-    // console.log("emailError: ",emailError)
+    console.log("emailError: ",emailError)
     console.log("passwordError: ",passwordError)
     console.log("confirm password error: ", confirmPasswordError)
-    // console.log("verification confirm status: ",verificationConfirmStatus)
+    console.log("verification confirm status: ",verificationConfirmStatus)
 
-    if (!(emailError) && !(passwordError) && !(confirmPasswordError) && verificationConfirmStatus)
+    if (!(passwordError) && !(confirmPasswordError) && verificationConfirmStatus)
     {
       axios.post(`${baseURL}/auth/register`, {
         enteredYear: data.get("enteredYear"),
@@ -169,7 +207,7 @@ const SignUp = () => {
         setOpenErrorMessage(true)
       })
     } else {
-      if (passwordError && !(emailError)) {
+      if (passwordError) {
         if (!(/[A-Z]/.test(data.get("password")))){
           setErrorMessage("Password should contain at least 1 Upper and Lower case")
           setPasswordError(true)
@@ -187,8 +225,13 @@ const SignUp = () => {
           setConfirmPasswordError(true)
           setOpenErrorMessage(true)
         }
-      } else {
-        setErrorMessage("Please fill in all the required fields and confirm verification!")
+      } 
+      else if(confirmPasswordError) {
+        setErrorMessage("Confirm password not same as password!");
+        setOpenErrorMessage(true);
+      }
+      else {
+        setErrorMessage("Please confirm verification!")
         setOpenErrorMessage(true)
       }
     }
@@ -225,7 +268,7 @@ const SignUp = () => {
                     fullWidth
                     label="HKU Email Address"
                     value={email}
-                    onChange={emailOnChangeHandler}
+                    onChange={handleEmailChange}
                     name="email"
                     autoComplete = "true"
                     error = {emailError && clickedSignUpButton}
@@ -295,7 +338,7 @@ const SignUp = () => {
                 <TextField
                   select
                   label="Select Major"
-                  name="Major"
+                  name="major"
                   value={major}
                   onChange={handleMajorChange}
                 >
@@ -314,6 +357,7 @@ const SignUp = () => {
                   label="Password"
                   type="password"
                   error = {passwordError && clickedSignUpButton}
+                  onChange = {handlePasswordChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -324,6 +368,7 @@ const SignUp = () => {
                   label="Confirm Password"
                   type="password"
                   error = {confirmPasswordError && clickedSignUpButton}
+                  onChange = {handleConfirmPasswordChange}
                 />
               </Grid>
             </Grid>
@@ -332,6 +377,7 @@ const SignUp = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled = {!validate()}
             >
               Sign Up
             </Button>
