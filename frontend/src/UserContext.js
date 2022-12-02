@@ -4,18 +4,24 @@ const UserContext = createContext();
 
 const UserProvider = (props) => {
     const [userData, setUserData] = useState(() => {
-        return null
+        const loadUserData = JSON.parse(localStorage.getItem("userData"));
+        console.log("Initial useContext after refresh (userData): ", loadUserData)
+        return loadUserData
     });
     const [userToken, setUserToken] = useState(() => {
-        return null
+        const loadUserToken = JSON.parse(localStorage.getItem("userToken"));
+        console.log("Initial useContext after refresh (userToken): ", loadUserToken)
+        return loadUserToken
     });
 
-// const dataValue = useMemo(
-//     () => ({userData, setUserData}),[userData])
+    const UserData = useMemo(
+        () => ({userData, setUserData}),[userData])
 
-// const tokenValue = useMemo(
-//     () => ({userToken, setUserToken}),[userToken])
+    const UserToken = useMemo(
+        () => ({userToken, setUserToken}),[userToken])
 
+    // console.log("UserData in UserContext: ", UserData)
+    // console.log("UserToken in UserContext: ", UserToken)
 
     return (
         <UserContext.Provider

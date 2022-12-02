@@ -28,7 +28,7 @@ const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  console.log("UserContent in Sign In: ",UserContext);
+  // console.log("UserContent in Sign In: ",UserContext);
 
   const validate = () => {
     if (username.length > 0 && password.length > 7)
@@ -68,14 +68,17 @@ const SignIn = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log("data: ",data)
+    console.log(data.get("username"))
+    console.log(data.get("password"))
+    
     
     axios.post(`${baseURL}/auth/login`, 
       data
     )
     .then(response => {
         const jwtToken = response.data.access_token;
-        console.log("Token received in signin: ", jwtToken);
-        console.log("response status: ", response.status)
+        // console.log("Token received in signin: ", jwtToken);
+        // console.log("response status: ", response.status)
         const options = {
           "headers": {
             "Authorization": "Bearer " + jwtToken
@@ -86,11 +89,15 @@ const SignIn = () => {
         handleSetUserToken(options);
 
         if (response.status === 200){
-          console.log("data sent to auth/me in SignIn: ",data, options);
-          axios.post(`${baseURL}/auth/me`, 
-          data,
-          options
-          )
+          // console.log("data sent to auth/me in SignIn: ",data, options);
+          axios.request({
+            method: 'get',
+            url: `${baseURL}/auth/me`,
+            headers: options['headers']
+          })
+          // axios.get(`${baseURL}/auth/me`, 
+          // options
+          // )
           .then(response => {
             console.log("response in Sign In: ",response)
           })
@@ -98,7 +105,7 @@ const SignIn = () => {
         }
     })
     .catch(err => {
-        console.log("error in Sign In: ",err)
+        // console.log("error in Sign In: ",err)
         setErrorMessage(err.response.data.detail)
         setOpenErrorMessage(true)
 

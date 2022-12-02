@@ -12,20 +12,28 @@ const ProtectedRoutes = () => {
     const [userData, setUserData] = UserData;
     const [userToken, setUserToken] = UserToken;
 
-    // localStorage.setItem("userData", userData);
-    // localStorage.setItem("userToken", userToken);
+    localStorage.setItem("userData", JSON.stringify(userData));
+    localStorage.setItem("userToken", JSON.stringify(userToken));
 
     useEffect(() => {
-        setUserData(UserData);
-        setUserToken(UserToken);
+        console.log("USE EFFECT!")
+        setUserData(userData);
+        setUserToken(userToken);
     },[])
 
-    console.log("data sent to auth/me in protectedRoutes: ", userData, userToken);
-
-    axios.post(`${baseURL}/auth/me`,
-        userData,
-        userToken
-    )
+    // console.log("data sent to auth/me in protectedRoutes: ", userData, userToken);
+    console.log("AAAA userToken: ", userToken['headers'])
+    axios.request({
+        method: 'get',
+        url: `${baseURL}/auth/me`,
+        headers: userToken['headers']
+      })
+    // axios.get(`${baseURL}/auth/me`,
+    //     userData,
+    //     userToken
+    //     // localStorage.getItem(JSON.parse(localStorage.getItem("userData"))),
+    //     // localStorage.getItem(JSON.parse(localStorage.getItem("userToken")))
+    // )
     .then(response => {
         console.log("response in Protected Routes: ", response);
         setIsAuth(true);
@@ -35,7 +43,7 @@ const ProtectedRoutes = () => {
         setIsAuth(false);
     })
 
-    console.log("isAuth: ", isAuth)
+    // console.log("isAuth: ", isAuth)
     return isAuth ? <Outlet /> : <SignIn />;
 }
 
