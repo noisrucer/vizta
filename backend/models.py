@@ -10,5 +10,6 @@ class User(Base):
     user_id = Column(Integer, primary_key=True)
     email = Column(String(100), unique=True, nullable=False)
     enteredYear = Column(String(4), unique=False, nullable=False)
+    major = Column(String(50), nullable=False)
     password = Column(String(100), nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))

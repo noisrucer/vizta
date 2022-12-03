@@ -1,12 +1,21 @@
 from typing import Union
+from enum import Enum
+
 from email_validator import validate_email, EmailNotValidError
 from fastapi import HTTPException, status
 from pydantic import BaseModel, EmailStr, validator
 
+class Major(str, Enum):
+    comp_sci = "Computer Science"
+    comp_eng = "Computer Engineering"
+    info_sys = "Information System"
+    other = "Other"
+    
 # Users
 class UserBase(BaseModel):
     email: str
     enteredYear: str
+    major: Major
     
     @validator('email')
     def email_must_be_valid(cls, v):

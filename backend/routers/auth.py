@@ -1,4 +1,7 @@
+import random
 from random import randbytes
+import string
+import secrets
 from datetime import datetime, timedelta
 import hashlib
 
@@ -15,7 +18,7 @@ from ..utils import hash_password, verify_password
 from ..config import EmailEnvs, JWTEnvs
 from ..oauth2 import create_access_token, decode_jwt
 from backend.email.email import email_sender
-
+from ..config import JWTEnvs
 
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/auth/login",
@@ -79,10 +82,14 @@ async def verify_email(verificationInfo: schemas.VerifyEmail, db: Session = Depe
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="This email has been already registered.")
     
     # Send verification code
-    verification_token = randbytes(6)
-    hashedCode = hashlib.sha256()
-    hashedCode.update(verification_token)
-    verification_code = hashedCode.hexdigest()
+    # verification_token = randbytes(1)
+    # print(verification_token)
+    # hashedCode = hashlib.sha256()
+    # print(hashedCode)
+    # hashedCode.update(verification_token)
+    # verification_code = hashedCode.hexdigest()
+    verification_code_len = 6
+    verification_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(verification_code_len))
 
     recipient = email
     subject="[Vizta] Please verify your email address"
@@ -128,6 +135,7 @@ async def get_current_user(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"}
     )
+    print("token: {}".format(token))
     try:
         user_email = decode_jwt(token)
         if user_email is None:
@@ -164,6 +172,6 @@ async def login(
     access_token = create_access_token(
         data={"sub": user.email},
         expires_delta=access_token_expires
-    )   
+    )
     
     return {"access_token": access_token, "token_type": "bearer"}
