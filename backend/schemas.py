@@ -15,7 +15,7 @@ class Major(str, Enum):
 class UserBase(BaseModel):
     email: str
     enteredYear: str
-    major: str
+    major: Major
     
     @validator('email')
     def email_must_be_valid(cls, v):
