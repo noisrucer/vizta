@@ -10,6 +10,8 @@
 
 **/__pycache__
 .env
+/venv/
+**/venv/
 
 # testing
 /coverage
