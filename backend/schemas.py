@@ -90,3 +90,4 @@ class Faculty(str, Enum):
     beng = "BEng"
     bba = "BBA"
     bsc = "BSC"
+    cc = "CC"
