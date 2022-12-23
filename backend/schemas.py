@@ -71,3 +71,22 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Union[str, None] = None
+    
+    
+# Course
+class CourseBase(BaseModel):
+    course_id: str
+    name: str
+    
+    
+class MainPageCourseOut(CourseBase):
+    num_reviews: int
+    
+    class Config:
+        orm_mode = True
+        
+class Faculty(str, Enum):
+    all = "All"
+    beng = "BEng"
+    bba = "BBA"
+    bsc = "BSC"

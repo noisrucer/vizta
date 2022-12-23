@@ -82,12 +82,6 @@ async def verify_email(verificationInfo: schemas.VerifyEmail, db: Session = Depe
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="This email has been already registered.")
     
     # Send verification code
-    # verification_token = randbytes(1)
-    # print(verification_token)
-    # hashedCode = hashlib.sha256()
-    # print(hashedCode)
-    # hashedCode.update(verification_token)
-    # verification_code = hashedCode.hexdigest()
     verification_code_len = 6
     verification_code = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(verification_code_len))
 

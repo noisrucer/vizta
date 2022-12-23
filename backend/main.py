@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .database import SessionLocal, engine
 from . import models, schemas
-from .routers import users, auth
+from .routers import users, auth, courses
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -27,6 +27,7 @@ async def email_validation_handler(request, exc):
 
 app.include_router(users.router)
 app.include_router(auth.router)
+app.include_router(courses.router)
 
 @app.get("/")
 async def root():
