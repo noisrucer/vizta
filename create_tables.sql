@@ -21,7 +21,7 @@ CREATE TABLE CoursePrerequisites
 (
     course_id        VARCHAR(100) NOT NULL,
     prereq_course_id VARCHAR(100) NOT NULL,
-    PRIMARY KEY (course_id),
+    PRIMARY KEY (course_id, prereq_course_id),
     FOREIGN KEY (course_id) REFERENCES Course (course_id),
     FOREIGN KEY (prereq_course_id) REFERENCES Course (course_id)
 );
