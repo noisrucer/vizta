@@ -85,23 +85,25 @@ class GPA(str, Enum):
     dplus = "D+"
     d = "D"
     fail = "F"
-    
+
+
 class NumericEval(int, Enum):
-    one: 1
-    two: 2
-    three: 3
-    four: 4
-    five: 5
-    six: 6
-    seven: 7
-    eight: 8
-    nine: 9
-    ten: 10
+    one = 1
+    two = 2
+    three = 3
+    four = 4
+    five = 5
+    six = 6
+    seven = 7
+    eight = 8
+    nine = 9
+    ten = 10
 
 
 class CourseReview(Base):
     __tablename__ = "course_review"
-    review_id = Column(Integer, primary_key=True)
+
+    review_id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, primary_key=True)
     subclass_id = Column(String(1), ForeignKey('subclass.subclass_id'), nullable=False, primary_key=True)
     course_id = Column(String(100), ForeignKey('subclass.course_id'), nullable=False, primary_key=True)
@@ -118,5 +120,3 @@ class CourseReview(Base):
     midterm_ratio = Column(Integer, nullable=False)
     assignments_ratio = Column(Integer, nullable=False)
     project_ratio = Column(Integer, nullable=False)
-    
-    
