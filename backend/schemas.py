@@ -1,4 +1,4 @@
-from typing import Union, List, Mapping
+from typing import Union, List, Mapping, Any
 from enum import Enum
 
 from email_validator import validate_email, EmailNotValidError
@@ -100,6 +100,7 @@ class ReviewOut(BaseModel):
     FinalDifficulty: Mapping[NumericEval, int]
     Workload: Mapping[NumericEval, int]
     TeachingQuality: Mapping[str, Mapping[NumericEval, int]]
+    BySemester: Mapping[str, Any]
 
 
 class Faculty(str, Enum):
