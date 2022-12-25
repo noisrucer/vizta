@@ -1,6 +1,9 @@
 from collections import Counter
+from decimal import Decimal
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from ..database import get_db
 from .. import models, schemas
@@ -37,8 +40,24 @@ async def get_courses(faculty: schemas.Faculty, db: Session = Depends(get_db)):
 
 @router.get('/review/{course_id}', response_model=schemas.ReviewOut)
 async def get_review(course_id: str, db: Session = Depends(get_db)):
-    # If faculty is all
-    reviews = db.query(models.CourseReview).filter(models.CourseReview.course_id == course_id).all()
+
+    # First query
+    reviews = db.query(models.CourseReview).filter(models.CourseReview.course_id == course_id).order_by(
+        models.CourseReview.academic_year, models.CourseReview.semester).all()
+
+    # Second query
+    mcr = models.CourseReview
+    avg_column = [mcr.workload, mcr.lecture_difficulty, mcr.final_exam_difficulty, mcr.course_entertaining,
+                  mcr.course_delivery, mcr.course_interactivity]
+
+    reviews_by_semester = db. \
+        query(models.CourseReview.academic_year, models.CourseReview.semester, *[func.avg(_) for _ in avg_column]). \
+        filter(models.CourseReview.course_id == course_id). \
+        group_by(models.CourseReview.academic_year, models.CourseReview.semester). \
+        order_by(models.CourseReview.academic_year, models.CourseReview.semester).all()
+
+    # convert any Decimal object to float
+    reviews_by_semester = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in reviews_by_semester]
 
     # TODO: 6. Overall - pentagon with each edge representing the average of each criteria. Missing?
     # TODO: 7. (top of page) other info (final exam, midterm, assignments, project, ). Since it may vary by year or semester, show only the newest course(subclass) info?
@@ -65,4 +84,8 @@ async def get_review(course_id: str, db: Session = Depends(get_db)):
         #     "Assignments": 1,
         #     "Project": 1,
         # },
+        "BySemester": {
+            "ColumnName": ['academic_year', 'semester', *[c.key for c in avg_column]],
+            "Values": reviews_by_semester
+        }
     }
