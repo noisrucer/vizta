@@ -100,7 +100,8 @@ class ReviewOut(BaseModel):
     FinalDifficulty: Mapping[NumericEval, int]
     Workload: Mapping[NumericEval, int]
     TeachingQuality: Mapping[str, Mapping[NumericEval, int]]
-    BySemester: Mapping[str, Any]
+    Pentagon: Mapping[str, float]
+    ByYear: Mapping[str, Any]
 
 
 class Faculty(str, Enum):

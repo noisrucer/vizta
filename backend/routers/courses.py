@@ -40,27 +40,34 @@ async def get_courses(faculty: schemas.Faculty, db: Session = Depends(get_db)):
 
 @router.get('/review/{course_id}', response_model=schemas.ReviewOut)
 async def get_review(course_id: str, db: Session = Depends(get_db)):
-
-    # First query
+    # First query, list of all review on the course
     reviews = db.query(models.CourseReview).filter(models.CourseReview.course_id == course_id).order_by(
         models.CourseReview.academic_year, models.CourseReview.semester).all()
 
-    # Second query
+    # Second query, average value on reviews by year
     mcr = models.CourseReview
     avg_column = [mcr.workload, mcr.lecture_difficulty, mcr.final_exam_difficulty, mcr.course_entertaining,
                   mcr.course_delivery, mcr.course_interactivity]
 
-    reviews_by_semester = db. \
-        query(models.CourseReview.academic_year, models.CourseReview.semester, *[func.avg(_) for _ in avg_column]). \
+    avg_reviews_by_year = db. \
+        query(models.CourseReview.academic_year, *[func.avg(_) for _ in avg_column]). \
         filter(models.CourseReview.course_id == course_id). \
-        group_by(models.CourseReview.academic_year, models.CourseReview.semester). \
-        order_by(models.CourseReview.academic_year, models.CourseReview.semester).all()
+        group_by(models.CourseReview.academic_year). \
+        order_by(models.CourseReview.academic_year).all()
+
+    # Third query, average value on every reviews
+    avg_reviews = db. \
+        query(*[func.avg(_) for _ in avg_column]). \
+        filter(models.CourseReview.course_id == course_id).first()
 
     # convert any Decimal object to float
-    reviews_by_semester = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in reviews_by_semester]
+    avg_reviews = [float(c) if isinstance(c, Decimal) else c for c in avg_reviews]
+    avg_reviews_by_year = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in avg_reviews_by_year]
 
     # TODO: 6. Overall - pentagon with each edge representing the average of each criteria. Missing?
-    # TODO: 7. (top of page) other info (final exam, midterm, assignments, project, ). Since it may vary by year or semester, show only the newest course(subclass) info?
+    # TODO: 7. (top of page) other info (final exam, midterm, assignments, project, ).
+    #  Since it may vary by year or semester, show only the newest course(subclass) info?
+    # FIXME: How to get average gpa on string gpa
 
     def CountEnum(values, enumTy):
         # uncomment this instead if zero values not needed
@@ -78,14 +85,26 @@ async def get_review(course_id: str, db: Session = Depends(get_db)):
             "Delivery": CountEnum([_.course_delivery for _ in reviews], NumericEval),
             "Interactivity": CountEnum([_.course_interactivity for _ in reviews], NumericEval)
         },
+        "Pentagon": {
+            # "GPA": CountEnum([_.gpa for _ in reviews], GPA),
+            "LectureDifficulty": avg_reviews[avg_column.index(models.CourseReview.lecture_difficulty)],
+            "FinalDifficulty": avg_reviews[avg_column.index(models.CourseReview.final_exam_difficulty)],
+            "Workload": avg_reviews[avg_column.index(models.CourseReview.workload)],
+            "TeachingQuality":
+                (
+                        avg_reviews[avg_column.index(models.CourseReview.course_entertaining)] +
+                        avg_reviews[avg_column.index(models.CourseReview.course_delivery)] +
+                        avg_reviews[avg_column.index(models.CourseReview.course_interactivity)]
+                ) / 3
+        },
         # "CourseInfo": {
         #     "ExamRatio": 1,
         #     "Midterm": 1,
         #     "Assignments": 1,
         #     "Project": 1,
         # },
-        "BySemester": {
-            "ColumnName": ['academic_year', 'semester', *[c.key for c in avg_column]],
-            "Values": reviews_by_semester
+        "ByYear": {
+            "ColumnName": ['academic_year', *[c.key for c in avg_column]],
+            "Values": avg_reviews_by_year
         }
     }
