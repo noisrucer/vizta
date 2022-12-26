@@ -1,8 +1,9 @@
+from sqlalchemy.orm import relationship
 from typing import Union
 from enum import Enum
 
 from sqlalchemy import Column, String, Integer, ForeignKey
-from sqlalchemy.sql.expression import text
+from sqlalchemy.sql.expression import text, and_
 from sqlalchemy.sql.sqltypes import TIMESTAMP, Boolean
 
 from .database import Base
@@ -120,3 +121,10 @@ class CourseReview(Base):
     midterm_ratio = Column(Integer, nullable=False)
     assignments_ratio = Column(Integer, nullable=False)
     project_ratio = Column(Integer, nullable=False)
+    rsub_class = relationship(
+        "Subclass",
+        primaryjoin="and_(CourseReview.subclass_id == Subclass.subclass_id,"
+                    "CourseReview.course_id == Subclass.course_id,"
+                    "CourseReview.academic_year == Subclass.academic_year,"
+                    "CourseReview.semester == Subclass.semester)"
+    )
