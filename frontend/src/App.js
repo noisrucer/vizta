@@ -12,8 +12,8 @@ import ProtectedRoutes from "./ProtectedRoutes";
 const App = () => {
   return (
     <div>
-      <Sidebar />
       <UserProvider>
+        <Sidebar />
         <Routes>
           <Route path="/" element={<Landing />}></Route>
           <Route path="/auth/sign-in" element={<SignIn />}></Route>

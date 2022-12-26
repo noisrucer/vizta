@@ -43,7 +43,7 @@ const majors = [
     label: "Computer Engineering",
   },
   {
-    value: "Infromation System",
+    value: "Information System",
     label: "Information System",
   },
   {
@@ -179,6 +179,7 @@ const SignUp = () => {
 
     e.preventDefault();
     const data = new FormData(e.currentTarget);
+    console.log("data in sign up")
     console.log(...data)
 
     setCheckOnSubmit(true);
@@ -194,6 +195,7 @@ const SignUp = () => {
       axios.post(`${baseURL}/auth/register`, {
         enteredYear: data.get("enteredYear"),
         email: data.get("email"),
+        major: data.get("major"),
         password: data.get("password")
       })
       .then(response => {
@@ -201,9 +203,9 @@ const SignUp = () => {
         navigate('/auth/sign-in');
       })
       .catch(error => {
-        console.log(error.response.data.detail)
+        console.log("error in signup: ",error.response.data.detail)
         setErrorMessage(error.response.data.detail)
-        console.log({errorMessage})
+        // console.log({errorMessage})
         setOpenErrorMessage(true)
       })
     } else {
@@ -337,8 +339,10 @@ const SignUp = () => {
               <Grid item xs={13} sm={6}>
                 <TextField
                   select
+                  required
                   label="Select Major"
                   name="major"
+                  type="major"
                   value={major}
                   onChange={handleMajorChange}
                 >

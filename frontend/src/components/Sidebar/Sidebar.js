@@ -7,7 +7,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -17,11 +16,19 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import CreateIcon from '@mui/icons-material/Create';
+import StarIcon from '@mui/icons-material/Star';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import ScienceIcon from '@mui/icons-material/Science';
+
+// import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -95,9 +102,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      width: "17ch",
+      width: "15ch",
       "&:focus": {
-        width: "20ch",
+        width: "17ch",
       },
     },
   },
@@ -115,7 +122,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function Sidebar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
+  const [facultyOpen, setFacultyOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -124,6 +131,10 @@ export default function Sidebar() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleFacultyClick = () => {
+    setFacultyOpen(!facultyOpen);
+  }
 
   return (
     <Box sx={{ display: 'flex'}}>
@@ -139,24 +150,7 @@ export default function Sidebar() {
           >
             <MenuIcon />
           </IconButton>
-          {/* <Typography 
-          variant="h6" 
-          noWrap 
-          component="div" 
-          sx={{marginRight: "20px"}}>
-            Vizta
-          </Typography> */}
           <Button variant="primary" href="/" sx={{ marginRight: "20px"}}>Vizta</Button>
-          <Search>
-             <SearchIconWrapper>
-               <SearchIcon />
-             </SearchIconWrapper>
-            <StyledInputBase
-              sx={{marginRight: 'auto'}}
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
           <Button variant="primary" href="/auth/sign-in" sx={{marginLeft: 'auto'}}>Log In</Button>
           <Button variant="primary" href="/auth/sign-up" sx={{marginLeft: "10px"}}>Sign Up</Button>
         </Toolbar>
@@ -181,29 +175,50 @@ export default function Sidebar() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Main'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton href="/main">
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          <ListItem key={"main"} disablePadding>
+            <ListItemButton href="/main">
+              <ListItemIcon>
+                <PersonSearchIcon />
+              </ListItemIcon>
+              <ListItemText primary= "Main"/>
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          <ListItemButton onClick={handleFacultyClick}>
+            <ListItemIcon>
+              <ApartmentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Faculty" />
+            {facultyOpen ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={facultyOpen} timeout="auto" unmountOnExit>
+            <List>
+              {['BEng', 'BBA', 'BSC', 'Common Core'].map((text, index) => (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton sx={{ pl : 4 }}>
+                    <ListItemIcon>
+                      {index === 0 ?  <EngineeringIcon /> : <></>}
+                      {index === 1 ? <AccountBalanceIcon /> : <></>}
+                      {index === 2 ? <ScienceIcon /> : <></>}
+                      {index === 3 ? <CreateIcon /> : <></>}
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </Collapse>
+        </List>
+        <Divider />
+        <List component="div" disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <StarIcon />
+            </ListItemIcon>
+            <ListItemText primary="Favorites" />
+          </ListItemButton>
         </List>
       </Drawer>
     </Box>
