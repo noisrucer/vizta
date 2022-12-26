@@ -21,7 +21,7 @@ CREATE TABLE CoursePrerequisites
 (
     course_id        VARCHAR(100) NOT NULL,
     prereq_course_id VARCHAR(100) NOT NULL,
-    PRIMARY KEY (course_id),
+    PRIMARY KEY (course_id, prereq_course_id),
     FOREIGN KEY (course_id) REFERENCES Course (course_id),
     FOREIGN KEY (prereq_course_id) REFERENCES Course (course_id)
 );
@@ -38,7 +38,7 @@ CREATE TABLE CourseExclusivity
 CREATE TABLE Subclass
 (
     subclass_id       VARCHAR(100) NOT NULL,
-    course_id         VARCHAR(100) NOT NUL,
+    course_id         VARCHAR(100) NOT NULL,
     academic_year     INT          NOT NULL,
     semester          INT ENUM(1, 2) NOT NULL,
     professor_name    VARCHAR(30)  NOT NULL,
@@ -56,8 +56,8 @@ CREATE TABLE SubclassInfo
     subclass_id VARCHAR(100) NOT NULL,
     course_id   VARCHAR(100) NOT NULL,
     week_day    VARCHAR(100) NOT NULL,
-    stime       VARCHAR(100) NOT NULL,
-    etime       VARCHAR(100) NOT NULL,
+    stime       VARCHAR(5) NOT NULL,
+    etime       VARCHAR(5) NOT NULL,
     class_loca  VARCHAR(100) NOT NULL,
     PRIMARY KEY (subclass_id, course_id, week_day),
     FOREIGN KEY (subclass_id) REFERENCES Subclass (subclass_id),
@@ -66,7 +66,7 @@ CREATE TABLE SubclassInfo
 
 CREATE TABLE CourseReview
 (
-    user_id               VARCHAR(50)  NOT NULL,
+    user_id               INT  NOT NULL,
     subclass_id           VARCHAR(100) NOT NULL,
     course_id             VARCHAR(100) NOT NULL,
     academic_year         INT          NOT NULL,
