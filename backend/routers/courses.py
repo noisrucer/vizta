@@ -58,11 +58,11 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
 
         return seccion
 
-    # First query
+    # First query, all review
     reviews = qu_filter(db.query(models.CourseReview)).order_by(models.CourseReview.academic_year,
                                                                 models.CourseReview.semester).all()
 
-    # Second query
+    # Second query, average review
     mcr = models.CourseReview
     avg_column = [mcr.workload, mcr.lecture_difficulty, mcr.final_exam_difficulty, mcr.course_entertaining,
                   mcr.course_delivery, mcr.course_interactivity]
@@ -103,14 +103,49 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
                         avg_reviews[avg_column.index(models.CourseReview.course_delivery)] +
                         avg_reviews[avg_column.index(models.CourseReview.course_interactivity)]
                 ) / 3
+                if all(avg_reviews)
+                else None
         }
     }
 
     if is_timetable:
-        result = result | {
-            # TODO: return time table
-            "Timetable": {}
-        }
+        # Third query, get the newest semester of available subclass
+        newest_semester = db.query(models.SubclassInfo.academic_year, models.SubclassInfo.semester). \
+            filter(models.SubclassInfo.course_id == course_id). \
+            order_by(models.SubclassInfo.academic_year.desc(), models.SubclassInfo.semester.desc()). \
+            first()
+
+        if newest_semester:
+            query_list = [models.SubclassInfo.subclass_id,
+                          models.SubclassInfo.week_day, models.SubclassInfo.stime, models.SubclassInfo.etime,
+                          models.SubclassInfo.class_loca, models.Subclass.professor_name]
+
+            # Fourth query, get timetable
+            timetables = db.query(*query_list). \
+                join(models.SubclassInfo.rsub_class). \
+                filter(models.SubclassInfo.course_id == course_id,
+                       models.SubclassInfo.academic_year == newest_semester[0],
+                       models.SubclassInfo.semester == newest_semester[1]). \
+                all()
+
+            def get(ttb, col):
+                return ttb[query_list.index(col)]
+
+            tb_result = {}
+            for tb in timetables:
+                subclass_id = get(tb, models.SubclassInfo.subclass_id)
+                if subclass_id not in tb_result:
+                    tb_result[subclass_id] = {"Timeslots": [], "Instructor": get(tb, models.Subclass.professor_name)}
+                tb_result[subclass_id]["Timeslots"].append({
+                    "Weekday": get(tb, models.SubclassInfo.week_day),
+                    "StartTime": get(tb, models.SubclassInfo.stime),
+                    "EndTime": get(tb, models.SubclassInfo.etime),
+                    "Location": get(tb, models.SubclassInfo.class_loca)
+                })
+
+            result |= {
+                "Timetable": tb_result
+            }
 
     return result
 

@@ -67,10 +67,19 @@ class SubclassInfo(Base):
 
     subclass_id = Column(String(1), ForeignKey('subclass.subclass_id'), nullable=False, primary_key=True)
     course_id = Column(String(100), ForeignKey('subclass.course_id'), nullable=False, primary_key=True)
+    academic_year = Column(Integer, ForeignKey('subclass.academic_year'), nullable=False, primary_key=True, index=True)
+    semester = Column(Integer, ForeignKey('subclass.semester'), nullable=False, primary_key=True, index=True)
     week_day = Column(String(100), nullable=False, primary_key=True)
     stime = Column(String(5), nullable=False)
     etime = Column(String(5), nullable=False)
     class_loca = Column(String(100), nullable=False)
+    rsub_class = relationship(
+        "Subclass",
+        primaryjoin="and_(SubclassInfo.subclass_id == Subclass.subclass_id,"
+                    "SubclassInfo.course_id == Subclass.course_id,"
+                    "SubclassInfo.academic_year == Subclass.academic_year,"
+                    "SubclassInfo.semester == Subclass.semester)"
+    )
 
 
 class GPA(str, Enum):
