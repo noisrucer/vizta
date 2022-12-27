@@ -46,7 +46,9 @@ const SignIn = () => {
   const {UserData, UserToken, IsLoggedIn} = useContext(UserContext);
   const [userToken, setUserToken] = UserToken;
   const [userData, setUserData] = UserData;
-  const [isLoggedIn, setIsLoggedIn] = IsLoggedIn
+  const [isLoggedIn, setIsLoggedIn] = IsLoggedIn;
+
+  setIsLoggedIn(false)
 
 
   const handleSetUserData = (e) => {

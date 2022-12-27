@@ -14,11 +14,12 @@ const UserProvider = (props) => {
         return loadUserToken
     });
 
-    const [isLoggedIn, setIsLoggedIn] = useState(() => {
-        const loadIsLoggedIn = localStorage.getItem("isLoggedIn");
-        // console.log("Initial useContext after refresh (isLoggedIn): ", loadIsLoggedIn)
-        return loadIsLoggedIn
-    })
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    //     () => {
+    //     const loadIsLoggedIn = localStorage.getItem("isLoggedIn");
+    //     console.log("Initial useContext after refresh (isLoggedIn): ", loadIsLoggedIn)
+    //     return loadIsLoggedIn
+    // })
 
     const UserData = useMemo(
         () => ({userData, setUserData}),[userData])

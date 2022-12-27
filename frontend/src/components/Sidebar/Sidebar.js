@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled, alpha, useTheme } from '@mui/material/styles';
 import { Button } from "@mui/material";
+import {UserContext} from "../../UserContext"
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -27,6 +28,7 @@ import StarIcon from '@mui/icons-material/Star';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ScienceIcon from '@mui/icons-material/Science';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // import { useNavigate } from "react-router-dom";
 
@@ -124,6 +126,17 @@ export default function Sidebar() {
   const [open, setOpen] = React.useState(false);
   const [facultyOpen, setFacultyOpen] = React.useState(false);
 
+  const {IsLoggedIn, UserToken} = React.useContext(UserContext)
+  const [userToken, setUserToken] = UserToken
+  const [isLoggedIn, setIsLoggedIn] = IsLoggedIn
+
+  console.log("isLoggedIn in sidebar (outside useEffect): ", isLoggedIn)
+  console.log("userToken in sidebar: ", userToken)
+
+  React.useEffect(() => {
+    console.log("isLoggedIn in sidebar (inside useEffect): ",isLoggedIn)
+  }, [IsLoggedIn])
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -151,8 +164,16 @@ export default function Sidebar() {
             <MenuIcon />
           </IconButton>
           <Button variant="primary" href="/" sx={{ marginRight: "20px"}}>Vizta</Button>
-          <Button variant="primary" href="/auth/sign-in" sx={{marginLeft: 'auto'}}>Log In</Button>
-          <Button variant="primary" href="/auth/sign-up" sx={{marginLeft: "10px"}}>Sign Up</Button>
+          {
+            isLoggedIn ? 
+            <Button variant="primary" href="/" sx={{ position: "absolute", right: 20 }}>
+              <AccountCircleIcon />
+            </Button> : 
+            <>
+              <Button variant="primary" href="/auth/sign-in" sx={{marginLeft: 'auto'}}>Log In</Button>
+              <Button variant="primary" href="/auth/sign-up" sx={{marginLeft: "10px"}}>Sign Up</Button>
+            </>
+          }
         </Toolbar>
       </AppBar>
       <Drawer
