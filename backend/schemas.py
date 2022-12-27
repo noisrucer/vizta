@@ -91,3 +91,21 @@ class Faculty(str, Enum):
     bba = "BBA"
     bsc = "BSC"
     cc = "CC"
+    
+    
+class UserFavoriteBase(BaseModel):
+    user_id: int
+    course_id: str
+        
+
+class UserFavorite(UserFavoriteBase):
+    class Config:
+        orm_mode = True
+        
+class UserFavoriteCreate(UserFavoriteBase):
+    class Config:
+        orm_mode = True
+
+class UserFavoriteCreateOut(UserFavoriteBase):
+    class Config:
+        orm_mode = True

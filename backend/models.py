@@ -120,3 +120,10 @@ class CourseReview(Base):
     midterm_ratio = Column(Integer, nullable=False)
     assignments_ratio = Column(Integer, nullable=False)
     project_ratio = Column(Integer, nullable=False)
+
+
+class UserFavorite(Base):
+    __tablename__ = "user_favorite"
+    
+    user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, primary_key=True)
+    course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True)
