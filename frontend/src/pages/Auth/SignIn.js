@@ -48,8 +48,6 @@ const SignIn = () => {
   const [userData, setUserData] = UserData;
   const [isLoggedIn, setIsLoggedIn] = IsLoggedIn;
 
-  setIsLoggedIn(false)
-
 
   const handleSetUserData = (e) => {
     setUserData(e);
