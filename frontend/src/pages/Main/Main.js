@@ -87,6 +87,7 @@ function Main(){
           })
           .then(response => {
             const data = response.data
+            console.log("response from /courses/All: ", data)
             setCourses(data)
           })
       };

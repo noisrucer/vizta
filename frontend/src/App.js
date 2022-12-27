@@ -15,10 +15,10 @@ const App = () => {
       <UserProvider>
         <Sidebar />
         <Routes>
+          <Route path="/" element={<Landing />}></Route>
+          <Route path="/auth/sign-in" element={<SignIn />}></Route>
+          <Route path="/auth/sign-up" element={<SignUp />}></Route> 
           <Route element={<ProtectedRoutes />}>
-            <Route path="/" element={<Landing />}></Route>
-            <Route path="/auth/sign-in" element={<SignIn />}></Route>
-            <Route path="/auth/sign-up" element={<SignUp />}></Route> 
             <Route path="/auth/me"></Route>
             <Route path="/main" element={<Main />}></Route>
           </Route>
