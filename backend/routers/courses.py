@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import and_, or_, not_
 
 from ..database import get_db
 from .. import models, schemas
@@ -74,3 +75,63 @@ async def create_user_favorite(user_favorite: schemas.UserFavoriteCreate, db: Se
 async def get_user_favorites(user_id: int, db: Session=Depends(get_db)):
     favorites = db.query(models.UserFavorite).filter(models.UserFavorite.user_id == user_id).all()
     return favorites
+
+
+@router.post('/review', response_model = schemas.UserReviewCreateOut)
+async def create_review(review: schemas.UserReviewBase, db: Session=Depends(get_db)):
+    review = review.dict()
+    print("*"*100)
+    for key, val in review.items():
+        if isinstance(val, schemas.NumericEval):
+            review[key] = val.value
+            
+    
+    # check if user_id exists in DB
+    user = db.query(models.User).filter(models.User.user_id == review['user_id']).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"User {review['user_id']} doesn't exist in database."
+        )
+        
+    # check if subclass exists in DB
+    subclass = db.query(models.Subclass).filter(
+        and_(
+            models.Subclass.course_id == review['course_id'],
+            models.Subclass.subclass_id == review['subclass_id'],
+            models.Subclass.academic_year == review['academic_year'],
+            models.Subclass.semester == review['semester']
+        )
+    ).first()
+    
+    if not subclass:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Course {review['course_id']}{review['subclass_id']} / Year {review['academic_year']} / Semester {review['semester']} doesn't exist in database."
+        )
+    
+    # check if user_id already left a review for subclass
+    user_review = db.query(models.CourseReview).filter(
+        and_(
+            models.CourseReview.user_id == review['user_id'],
+            models.CourseReview.subclass_id == review['subclass_id'],
+            models.CourseReview.course_id == review['course_id'],
+            models.CourseReview.academic_year == review['academic_year'],
+            models.CourseReview.semester == review['semester']
+        )
+    ).first()
+    
+    if user_review:
+         raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"User {review['user_id']} has already reviewed Course {review['course_id']}{review['subclass_id']} / Year {review['academic_year']} / Semester {review['semester']}."
+        )
+         
+    new_review = models.CourseReview(**review)
+    db.add(new_review)
+    db.commit()
+    db.refresh(new_review)
+    return new_review
+
+         
+    

@@ -3,7 +3,7 @@ from enum import Enum
 
 from email_validator import validate_email, EmailNotValidError
 from fastapi import HTTPException, status
-from pydantic import BaseModel, EmailStr, validator
+from pydantic import BaseModel, EmailStr, validator, root_validator
 
 class Major(str, Enum):
     comp_sci = "Computer Science"
@@ -14,7 +14,7 @@ class Major(str, Enum):
 # Users
 class UserBase(BaseModel):
     email: str
-    enteredYear: str
+    enteredYear: int
     major: Major
     
     @validator('email')
@@ -107,5 +107,56 @@ class UserFavoriteCreate(UserFavoriteBase):
         orm_mode = True
 
 class UserFavoriteCreateOut(UserFavoriteBase):
+    class Config:
+        orm_mode = True
+        
+class NumericEval(int, Enum):
+    one = 1
+    two = 2
+    three = 3
+    four = 4
+    five = 5
+    six = 6
+    seven = 7
+    eight = 8
+    nine = 9
+    ten = 10
+    
+class GPA(str, Enum):
+    aplus = "A+"
+    a = "A"
+    aminus = "A-"
+    bplus = "B+"
+    b = "B"
+    bminus = "B-"
+    cplus = "C+"
+    c = "C"
+    cminus = "C-"
+    dplus = "D+"
+    d = "D"
+    fail = "F"
+
+class UserReviewBase(BaseModel):
+    user_id: int
+    course_id: str
+    subclass_id: str
+    academic_year: int
+    semester: int
+    gpa: GPA
+    workload: NumericEval
+    lecture_difficulty: NumericEval
+    final_exam_difficulty: NumericEval
+    course_entertaining: NumericEval
+    course_delivery: NumericEval
+    course_interactivity: NumericEval
+    final_exam_ratio: int
+    midterm_ratio: int
+    assignments_ratio: int
+    project_ratio: int
+
+class UserReviewCreateIn(UserReviewBase):
+    pass
+class UserReviewCreateOut(UserReviewBase):
+    review_id: int
     class Config:
         orm_mode = True
