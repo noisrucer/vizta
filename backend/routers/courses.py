@@ -31,7 +31,7 @@ async def get_users(faculty: schemas.Faculty, db: Session=Depends(get_db)):
         
     return response
 
-@router.post('/favorites/{user_id}', status_code=status.HTTP_201_CREATED, response_model=schemas.UserFavoriteCreateOut)
+@router.post('/favorites', status_code=status.HTTP_201_CREATED, response_model=schemas.UserFavoriteCreateOut)
 async def create_user_favorite(user_favorite: schemas.UserFavoriteCreate, db: Session = Depends(get_db)):
     user_fav_dict = user_favorite.dict()
     # check if user_id exists in DB
