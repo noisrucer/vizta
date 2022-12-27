@@ -15,8 +15,8 @@ INSERT INTO subclass
 VALUES ('A', 'COMP2396', 2022, 1, 'Kwan Yee Wong', 50, 0, 50, 0);
 
 INSERT INTO subclass_info
-VALUES ('A', 'COMP2396', 'Tuesday', '10:30', '12:20', 'CPD-LG.18'),
-        ('A', 'COMP2396', 'Thursday', '10:30', '12:20', 'CPD-LG.18');
+VALUES ('A', 'COMP2396', 2022, 1, 'Tuesday', '10:30', '12:20', 'CPD-LG.18'),
+        ('A', 'COMP2396', 2022, 1, 'Thursday', '10:30', '12:20', 'CPD-LG.18');
 
 --
 -- COMP2501
@@ -33,8 +33,8 @@ INSERT INTO Subclass
 VALUES ('A', 'COMP2501', 2022, 1, 'Hing Fung Ting', 50, 0, 50, 0);
 
 INSERT INTO subclass_info
-VALUES ('A', 'COMP2501', 'Monday', '14:30', '15:20', 'LE4'),
-        ('A', 'COMP2501', 'Thursday', '13:30', '15:20', 'LE4');
+VALUES ('A', 'COMP2501', 2022, 1, 'Monday', '14:30', '15:20', 'LE4'),
+        ('A', 'COMP2501', 2022, 1, 'Thursday', '13:30', '15:20', 'LE4');
 
 --
 -- COMP3231
@@ -49,8 +49,8 @@ INSERT INTO Subclass
 VALUES ('A', 'COMP3231', 2022, 1, 'Heming Cui', 60, 0, 40, 0);
 
 INSERT INTO subclass_info
-VALUES ('A', 'COMP3231', 'Monday', '17:30', '18:20', '--'),
-        ('A', 'COMP3231', 'Thursday', '16:30', '18:20', '--');
+VALUES ('A', 'COMP3231', 2022, 1, 'Monday', '17:30', '18:20', '--'),
+        ('A', 'COMP3231', 2022, 1, 'Thursday', '16:30', '18:20', '--');
 
 --
 -- COMP3258
@@ -65,8 +65,8 @@ INSERT INTO Subclass
 VALUES ('A', 'COMP3258', 2022, 1, 'Bruno Cesar Dos Santos Oliveira', 50, 0, 50, 0);
 
 INSERT INTO subclass_info
-VALUES ('A', 'COMP3258', 'Friday', '14:30', '15:20', 'MB167'),
-        ('A', 'COMP3258', 'Tuesday', '13:30', '15:20', 'MB167');
+VALUES ('A', 'COMP3258', 2022, 1, 'Friday', '14:30', '15:20', 'MB167'),
+        ('A', 'COMP3258', 2022, 1, 'Tuesday', '13:30', '15:20', 'MB167');
 
 --
 -- COMP3270
@@ -83,8 +83,8 @@ INSERT INTO Subclass
 VALUES ('A', 'COMP3270', 2022, 1, 'Dirk Schnieders', 50, 0, 50, 0);
 
 INSERT INTO subclass_info
-VALUES ('A', 'COMP3270', 'Friday', '12:30', '14:20', 'CYCP1'),
-        ('A', 'COMP3270', 'Tuesday', '12:30', '13:20', 'CYCP1');
+VALUES ('A', 'COMP3270', 2022, 1, 'Friday', '12:30', '14:20', 'CYCP1'),
+        ('A', 'COMP3270', 2022, 1, 'Tuesday', '12:30', '13:20', 'CYCP1');
 
 --
 -- COMP3271
@@ -99,8 +99,8 @@ INSERT INTO Subclass
 VALUES ('A', 'COMP3271', 2022, 1, 'Komura Taku', 50, 0, 50, 0);
 
 INSERT INTO subclass_info
-VALUES ('A', 'COMP3271', 'Monday', '12:30', '14:20', 'CBC'),
-        ('A', 'COMP3271', 'Thursday', '12:30', '14:20', 'CBC');
+VALUES ('A', 'COMP3271', 2022, 1, 'Monday', '12:30', '14:20', 'CBC'),
+        ('A', 'COMP3271', 2022, 1, 'Thursday', '12:30', '14:20', 'CBC');
 
 --
 -- COMP3314
@@ -117,11 +117,11 @@ VALUES ('A', 'COMP3314', 2022, 1, 'Zhao Hengshuang', 50, 0, 50, 0),
         ('C', 'COMP3314', 2022, 2, 'Yu Y Z', 50, 0, 50, 0);
 
 INSERT INTO subclass_info
-VALUES ('A', 'COMP3314', 'Tuesday', '12:30', '13:20', 'MWT7'),
-        ('A', 'COMP3314', 'Friday', '12:30', '14:20', 'MWT7'),
-        ('B', 'COMP3314', 'Monday', '12:30', '14:20', 'LE4'),
-        ('B', 'COMP3314', 'Thursday', '12:30', '13:20', 'LE4'),
-        ('C', 'COMP3314', 'Monday', '14:30', '17:20', 'CYPP3');
+VALUES ('A', 'COMP3314', 2022, 1, 'Tuesday', '12:30', '13:20', 'MWT7'),
+        ('A', 'COMP3314', 2022, 1, 'Friday', '12:30', '14:20', 'MWT7'),
+        ('B', 'COMP3314', 2022, 2, 'Monday', '12:30', '14:20', 'LE4'),
+        ('B', 'COMP3314', 2022, 2, 'Thursday', '12:30', '13:20', 'LE4'),
+        ('C', 'COMP3314', 2022, 2, 'Monday', '14:30', '17:20', 'CYPP3');
 
 --
 -- COMP3322
@@ -139,10 +139,10 @@ VALUES ('A', 'COMP3322', 2022, 1, 'Chuan Wu', 40, 0, 60, 0),
         ('B', 'COMP3322', 2022, 2, 'Tat Chun Tam', 40, 0, 60, 0);
 
 INSERT INTO subclass_info
-VALUES ('A', 'COMP3322', 'Friday', '15:30', '17:20', 'CPD-LG.18'),
-        ('A', 'COMP3322', 'Monday', '15:30', '17:20', 'CPD-LG.18'),
-        ('B', 'COMP3322', 'Tuesday', '16:30', '18:20', 'MWT7'),
-        ('B', 'COMP3322', 'Thursday', '16:30', '18:20', 'MWT7');
+VALUES ('A', 'COMP3322', 2022, 1, 'Friday', '15:30', '17:20', 'CPD-LG.18'),
+        ('A', 'COMP3322', 2022, 1, 'Monday', '15:30', '17:20', 'CPD-LG.18'),
+        ('B', 'COMP3322', 2022, 2, 'Tuesday', '16:30', '18:20', 'MWT7'),
+        ('B', 'COMP3322', 2022, 2, 'Thursday', '16:30', '18:20', 'MWT7');
 
 --
 -- COMP3330
@@ -160,8 +160,8 @@ INSERT INTO Subclass
 VALUES ('A', 'COMP3330', 2022, 1, 'Tat Wing Chim', 30, 0, 70, 0);
 
 INSERT INTO subclass_info
-VALUES ('A', 'COMP3330', 'Thursday', '12:30', '13:20', 'LE4'),
-        ('A', 'COMP3330', 'Monday', '12:30', '14:20', 'LE4');
+VALUES ('A', 'COMP3330', 2022, 1, 'Thursday', '12:30', '13:20', 'LE4'),
+        ('A', 'COMP3330', 2022, 1, 'Monday', '12:30', '14:20', 'LE4');
 
 --
 -- COMP3340
@@ -179,8 +179,8 @@ INSERT INTO Subclass
 VALUES ('A', 'COMP3340', 2022, 1, 'Chuan Wu', 50, 0, 50, 0);
 
 INSERT INTO subclass_info
-VALUES ('A', 'COMP3340', 'Friday', '17:30', '18:20', 'KKLG109'),
-        ('A', 'COMP3340', 'Monday', '16:30', '18:20', 'KKLG109');
+VALUES ('A', 'COMP3340', 2022, 1, 'Friday', '17:30', '18:20', 'KKLG109'),
+        ('A', 'COMP3340', 2022, 1, 'Monday', '16:30', '18:20', 'KKLG109');
 
 INSERT INTO course_prerequisite
 VALUES ('COMP2396', 'COMP2113');

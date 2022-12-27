@@ -89,3 +89,12 @@ CREATE TABLE CourseReview
     assignments_ratio     INT          NOT NULL,
     project_ratio         INT          NOT NULL
 );
+
+CREATE TABLE UserFavorite
+(
+    user_id INT NOT NULL,
+    course_id VARCHAR(100) NOT NULL,
+    PRIMARY KEY (user_id, course_id),
+    FOREIGN KEY (user_id) REFERENCES User (user_id),
+    FOREIGN KEY (course_id) REFERENCES Course (course_id)
+);

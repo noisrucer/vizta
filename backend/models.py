@@ -1,7 +1,7 @@
 from typing import Union
 from enum import Enum
 
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, Integer, SmallInteger, ForeignKey
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP, Boolean
 
@@ -12,7 +12,7 @@ class User(Base):
     
     user_id = Column(Integer, primary_key=True)
     email = Column(String(100), unique=True, nullable=False)
-    enteredYear = Column(String(4), unique=False, nullable=False)
+    enteredYear = Column(SmallInteger, unique=False, nullable=False)
     major = Column(String(50), nullable=False)
     password = Column(String(100), nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
@@ -41,19 +41,14 @@ class CourseExclusivity(Base):
     
     course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True)
     exclu_course_id = Column(String(100), nullable=False, primary_key=True)
-    
-    
-# class Semester(int, Enum):
-#     one = 1
-#     two = 2
 
 class Subclass(Base):
     __tablename__ = "subclass"
     
     subclass_id = Column(String(1), nullable=False, primary_key=True, index=True)
     course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True, index=True)
-    academic_year = Column(Integer, nullable=False, primary_key=True, index=True)
-    semester = Column(Integer, nullable=False, primary_key=True, index=True)
+    academic_year = Column(SmallInteger, nullable=False, primary_key=True, index=True)
+    semester = Column(SmallInteger, nullable=False, primary_key=True, index=True)
     professor_name = Column(String(100), nullable=False)
     final_exam_ratio = Column(Integer, nullable=True)
     midterm_ratio = Column(Integer, nullable=True)
@@ -66,6 +61,8 @@ class SubclassInfo(Base):
     
     subclass_id = Column(String(1), ForeignKey('subclass.subclass_id'), nullable=False, primary_key=True)
     course_id = Column(String(100), ForeignKey('subclass.course_id'), nullable=False, primary_key=True)
+    academic_year = Column(SmallInteger, ForeignKey('subclass.academic_year'), nullable=False, primary_key=True, index=True)
+    semester = Column(SmallInteger, ForeignKey('subclass.semester'), nullable=False, primary_key=True, index=True)
     week_day = Column(String(100), nullable=False, primary_key=True)
     stime = Column(String(5), nullable=False)
     etime = Column(String(5), nullable=False)
@@ -107,8 +104,8 @@ class CourseReview(Base):
     user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, primary_key=True)
     subclass_id = Column(String(1), ForeignKey('subclass.subclass_id'), nullable=False, primary_key=True)
     course_id = Column(String(100), ForeignKey('subclass.course_id'), nullable=False, primary_key=True)
-    academic_year = Column(Integer, ForeignKey('subclass.academic_year'), nullable=False, primary_key=True)
-    semester = Column(Integer, ForeignKey('subclass.semester'), nullable=False, primary_key=True)
+    academic_year = Column(SmallInteger, ForeignKey('subclass.academic_year'), nullable=False, primary_key=True)
+    semester = Column(SmallInteger, ForeignKey('subclass.semester'), nullable=False, primary_key=True)
     gpa = Column(String(2), nullable=False)
     workload = Column(Integer, nullable=False)
     lecture_difficulty = Column(Integer, nullable=False)
@@ -120,3 +117,10 @@ class CourseReview(Base):
     midterm_ratio = Column(Integer, nullable=False)
     assignments_ratio = Column(Integer, nullable=False)
     project_ratio = Column(Integer, nullable=False)
+
+
+class UserFavorite(Base):
+    __tablename__ = "user_favorite"
+    
+    user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, primary_key=True)
+    course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True)

@@ -55,7 +55,7 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     user_dict.update(
         password=hashed_password
     )
-    
+    user_dict['enteredYear'] = int(user_dict['enteredYear'])
     # Save to DB
     new_user = models.User(**user_dict)
     db.add(new_user) 
