@@ -94,7 +94,7 @@ class Faculty(str, Enum):
     
     
 class UserFavoriteBase(BaseModel):
-    user_id: int
+    email: EmailStr
     course_id: str
         
 
@@ -137,7 +137,7 @@ class GPA(str, Enum):
     fail = "F"
 
 class UserReviewBase(BaseModel):
-    user_id: int
+    email: EmailStr
     course_id: str
     subclass_id: str
     academic_year: int
@@ -156,6 +156,7 @@ class UserReviewBase(BaseModel):
 
 class UserReviewCreateIn(UserReviewBase):
     pass
+
 class UserReviewCreateOut(UserReviewBase):
     review_id: int
     class Config:
