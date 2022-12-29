@@ -1,10 +1,11 @@
+from ..src import models
 from fastapi import APIRouter, Depends, status, HTTPException
 from pydantic import EmailStr
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_, not_
 
-from ..database import get_db
-from .. import models, schemas
+from ..src.database import get_db
+from .. import schemas
 
 router = APIRouter(
     prefix="/courses",

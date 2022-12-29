@@ -4,6 +4,7 @@ import string
 import secrets
 from datetime import datetime, timedelta
 import hashlib
+from ..src import models
 
 from fastapi import APIRouter, status, HTTPException, Depends
 from email_validator import validate_email, EmailNotValidError
@@ -12,13 +13,13 @@ from fastapi_mail import ConnectionConfig, FastMail, MessageSchema, MessageType
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 
-from ..database import get_db
-from .. import models, schemas
+from ..src.database import get_db
+from .. import schemas
 from ..utils import hash_password, verify_password
-from ..config import EmailEnvs, JWTEnvs
+from ..src.config import EmailEnvs, JWTEnvs
 from ..oauth2 import create_access_token, decode_jwt
 from backend.email.email import email_sender
-from ..config import JWTEnvs
+from ..src.config import JWTEnvs
 
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/auth/login",

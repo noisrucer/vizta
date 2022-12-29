@@ -1,14 +1,15 @@
 from fastapi import FastAPI
-from fastapi import APIRouter, status, HTTPException, Depends
-from email_validator import validate_email, EmailNotValidError
+from email_validator import  EmailNotValidError
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from .database import SessionLocal, engine
-from . import models, schemas
-from .routers import users, auth, courses
+from backend.src.database import engine
+from backend.src.auth.router import router as auth_router
+import backend.src.models as glob_models
+import backend.src.auth.models as auth_models
 
-models.Base.metadata.create_all(bind=engine)
+glob_models.Base.metadata.create_all(bind=engine)
+auth_models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
@@ -25,9 +26,7 @@ app.add_middleware(
 async def email_validation_handler(request, exc):
     return JSONResponse(detail="You must provide a valid email address type.")
 
-app.include_router(users.router)
-app.include_router(auth.router)
-app.include_router(courses.router)
+app.include_router(auth_router)
 
 @app.get("/")
 async def root():

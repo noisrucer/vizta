@@ -2,7 +2,9 @@ import smtplib
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from backend.config import EmailEnvs
+from backend.src.email.config import get_email_settings
+
+settings = get_email_settings()
 
 class EmailSender:
     def __init__(self, email, app_password):
@@ -35,5 +37,6 @@ class EmailSender:
         self.smtp.quit()
         pass
 
+
 email_sender = EmailSender(
-    EmailEnvs.SENDER, EmailEnvs.APP_PASSWORD)
+    settings.gmail_sender, settings.gmail_app_password)
