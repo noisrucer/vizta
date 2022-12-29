@@ -107,6 +107,35 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
     }
 
 
+@router.get('/visualization/{course_id}/professors')
+async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
+    # First query, average value on reviews by prof
+    mcr = models.CourseReview
+    avg_column = [mcr.workload, mcr.lecture_difficulty, mcr.final_exam_difficulty, mcr.course_entertaining,
+                  mcr.course_delivery, mcr.course_interactivity]
+
+    avg_reviews_by_prof = db. \
+        query(models.Subclass.professor_name.label("prof"),
+              *[func.avg(_).label(_.key) for _ in avg_column]). \
+        join(models.CourseReview.rsub_class). \
+        filter(models.CourseReview.course_id == course_id). \
+        group_by(models.Subclass.professor_name).all()
+
+    # convert any Decimal object to float
+    avg_reviews_by_prof = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in avg_reviews_by_prof]
+
+    def VarCapitalize(var_name):
+        return ''.join([str(_).capitalize() for _ in var_name.split('_')])
+
+    return {
+        prof_review[0]: {
+            VarCapitalize(ac.key): prof_review[i + 1]
+            for i, ac in enumerate(avg_column)
+        }
+        for prof_review in avg_reviews_by_prof
+    }
+
+
 @router.get('/visualization/{course_id}')
 async def get_general_visualization(course_id: str, year: Union[int, None] = None, professor: Union[str, None] = None,
                                     db: Session = Depends(get_db)):
