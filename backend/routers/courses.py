@@ -5,7 +5,7 @@ from typing import Union
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, select, outerjoin, column
 
 from ..database import get_db
 from .. import models, schemas
@@ -38,6 +38,73 @@ async def get_courses(faculty: schemas.Faculty, db: Session = Depends(get_db)):
         })
 
     return response
+
+
+# TODO: API for grading ratio (final exam, midterm, assignments, project, ). Only newest
+
+@router.get('/visualization/{course_id}/years')
+async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
+    # First query, average value on reviews by year
+    mcr = models.CourseReview
+    avg_column = [mcr.workload, mcr.lecture_difficulty, mcr.final_exam_difficulty, mcr.course_entertaining,
+                  mcr.course_delivery, mcr.course_interactivity]
+
+    avg_reviews_by_year_prof_incomplete = db. \
+        query(models.CourseReview.academic_year.label("year"), models.Subclass.professor_name.label("prof"),
+              *[func.avg(_).label(_.key) for _ in avg_column]). \
+        join(models.CourseReview.rsub_class). \
+        filter(models.CourseReview.course_id == course_id). \
+        group_by(models.CourseReview.academic_year, models.Subclass.professor_name).subquery()
+
+    # Second query, get all combination
+    allyear_name = 'ayear'
+    allprof_name = 'aprof'
+    years_sq = db.query(models.CourseReview.academic_year).order_by(
+        models.CourseReview.academic_year).distinct().subquery()
+    prof_sq = db.query(models.Subclass.professor_name).filter(
+        models.Subclass.course_id == course_id).order_by(
+        models.Subclass.professor_name).distinct().subquery()
+    all_combination = db.query(years_sq.c.academic_year.label(allyear_name),
+                               prof_sq.c.professor_name.label(allprof_name)).select_from(years_sq, prof_sq).subquery()
+
+    # Third query, get all years
+    allyear = [_.academic_year for _ in db.query(years_sq).all()]
+
+    # Third query, get all profs
+    allprof = [_.professor_name for _ in db.query(prof_sq).all()]
+
+    # Fourth query, left join, fill missing value
+    arbypi = avg_reviews_by_year_prof_incomplete
+    avg_reviews_by_year_prof_complete = \
+        outerjoin(all_combination, arbypi,
+                  (arbypi.c.year == getattr(all_combination.c, allyear_name)) &
+                  (arbypi.c.prof == getattr(all_combination.c, allprof_name)))
+
+    avg_reviews_by_year_prof_complete = db.execute(
+        select(column(allprof_name), *[getattr(arbypi.c, ac.key) for ac in avg_column])
+        .select_from(avg_reviews_by_year_prof_complete).order_by(allprof_name, allyear_name)).all()
+
+    # convert any Decimal object to float
+    avg_reviews_by_year_prof_complete = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in
+                                         avg_reviews_by_year_prof_complete]
+
+    def VarCapitalize(var_name):
+        return ''.join([str(_).capitalize() for _ in var_name.split('_')])
+
+    arbypc = avg_reviews_by_year_prof_complete
+
+    return {
+        "years": allyear,
+        "professors": allprof,
+        **{
+            VarCapitalize(ac.key): [
+                # i + 1 as first column is year in arbypc
+                [average_review[i + 1] for average_review in arbypc[ii * len(allyear):(ii + 1) * len(allyear)]]
+                for ii in range(len(allprof))
+            ]
+            for i, ac in enumerate(avg_column)
+        }
+    }
 
 
 @router.get('/visualization/{course_id}')
@@ -79,9 +146,6 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
 
         return {k.value: 0 for k in enumTy} | Counter(values)
 
-    def VarCapitalize(var_name):
-        return ''.join([str(_).capitalize() for _ in var_name.split('_')])
-
     result = {
         "GPA": CountEnum([_.gpa for _ in reviews], GPA),
         "LectureDifficulty": CountEnum([_.lecture_difficulty for _ in reviews], NumericEval),
@@ -93,6 +157,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
             "Interactivity": CountEnum([_.course_interactivity for _ in reviews], NumericEval)
         },
         "Pentagon": {
+            # FIXME: How to get average gpa on string gpa
             # "GPA": CountEnum([_.gpa for _ in reviews], GPA),
             "LectureDifficulty": avg_reviews[avg_column.index(models.CourseReview.lecture_difficulty)],
             "FinalDifficulty": avg_reviews[avg_column.index(models.CourseReview.final_exam_difficulty)],
@@ -135,7 +200,8 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
             for tb in timetables:
                 subclass_id = get(tb, models.SubclassInfo.subclass_id)
                 if subclass_id not in tb_result:
-                    tb_result[subclass_id] = {"Timeslots": [], "Instructor": get(tb, models.Subclass.professor_name)}
+                    tb_result[subclass_id] = {"Timeslots": [],
+                                              "Instructor": get(tb, models.Subclass.professor_name)}
                 tb_result[subclass_id]["Timeslots"].append({
                     "Weekday": get(tb, models.SubclassInfo.week_day),
                     "StartTime": get(tb, models.SubclassInfo.stime),
