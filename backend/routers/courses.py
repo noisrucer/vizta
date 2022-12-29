@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException
+from pydantic import EmailStr
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_, not_
 
@@ -35,12 +36,13 @@ async def get_users(faculty: schemas.Faculty, db: Session=Depends(get_db)):
 @router.post('/favorites', status_code=status.HTTP_201_CREATED, response_model=schemas.UserFavoriteCreateOut)
 async def create_user_favorite(user_favorite: schemas.UserFavoriteCreate, db: Session = Depends(get_db)):
     user_fav_dict = user_favorite.dict()
+    
     # check if user_id exists in DB
-    user = db.query(models.User).filter(models.User.user_id == user_fav_dict['user_id']).first()
+    user = db.query(models.User).filter(models.User.email == user_fav_dict['email']).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"User {user_fav_dict['user_id']} does not exist in database."
+            detail=f"User {user_fav_dict['email']} does not exist in database."
         )
     
     # check if course_id exists in DB
@@ -53,7 +55,7 @@ async def create_user_favorite(user_favorite: schemas.UserFavoriteCreate, db: Se
     
     # check if user_id has already added course_id
     dup_user_favorite = db.query(models.UserFavorite).filter(
-        models.UserFavorite.user_id == user_fav_dict['user_id']
+        models.UserFavorite.email == user_fav_dict['email']
         ).filter(
             models.UserFavorite.course_id == user_fav_dict['course_id']
         ).first()
@@ -71,27 +73,25 @@ async def create_user_favorite(user_favorite: schemas.UserFavoriteCreate, db: Se
     return new_user_fav
 
 
-@router.get('/favorites/{user_id}', response_model = list[schemas.UserFavorite])
-async def get_user_favorites(user_id: int, db: Session=Depends(get_db)):
-    favorites = db.query(models.UserFavorite).filter(models.UserFavorite.user_id == user_id).all()
+@router.get('/favorites/{email}', response_model = list[schemas.UserFavorite])
+async def get_user_favorites(email: EmailStr, db: Session=Depends(get_db)):
+    favorites = db.query(models.UserFavorite).filter(models.UserFavorite.email == email).all()
     return favorites
 
 
 @router.post('/review', response_model = schemas.UserReviewCreateOut)
 async def create_review(review: schemas.UserReviewBase, db: Session=Depends(get_db)):
     review = review.dict()
-    print("*"*100)
     for key, val in review.items():
         if isinstance(val, schemas.NumericEval):
             review[key] = val.value
             
-    
     # check if user_id exists in DB
-    user = db.query(models.User).filter(models.User.user_id == review['user_id']).first()
+    user = db.query(models.User).filter(models.User.email == review['email']).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"User {review['user_id']} doesn't exist in database."
+            detail=f"User {review['email']} doesn't exist in database."
         )
         
     # check if subclass exists in DB
@@ -113,7 +113,7 @@ async def create_review(review: schemas.UserReviewBase, db: Session=Depends(get_
     # check if user_id already left a review for subclass
     user_review = db.query(models.CourseReview).filter(
         and_(
-            models.CourseReview.user_id == review['user_id'],
+            models.CourseReview.email == review['email'],
             models.CourseReview.subclass_id == review['subclass_id'],
             models.CourseReview.course_id == review['course_id'],
             models.CourseReview.academic_year == review['academic_year'],
@@ -124,7 +124,7 @@ async def create_review(review: schemas.UserReviewBase, db: Session=Depends(get_
     if user_review:
          raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"User {review['user_id']} has already reviewed Course {review['course_id']}{review['subclass_id']} / Year {review['academic_year']} / Semester {review['semester']}."
+            detail=f"User {review['email']} has already reviewed Course {review['course_id']}{review['subclass_id']} / Year {review['academic_year']} / Semester {review['semester']}."
         )
          
     new_review = models.CourseReview(**review)
@@ -132,6 +132,3 @@ async def create_review(review: schemas.UserReviewBase, db: Session=Depends(get_
     db.commit()
     db.refresh(new_review)
     return new_review
-
-         
-    
