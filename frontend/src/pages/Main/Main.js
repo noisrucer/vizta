@@ -102,11 +102,24 @@ function Main(){
       console.log("key: ", e)
     }
 
+    const handleListItemFavoritesClick = (e) => {
+      console.log("key: ", e)
+    }
+
     const [favorite, setFavorite] = useState(false)
 
     const setFavorites = (e) => {
+      console.log("star clicked!")
+      console.log("key: ", e)
       setFavorite(!favorite)
     }
+
+    // const getFavorites = {
+    //   axios.request({
+    //     method: 'get',
+    //     url: `${baseURL}/courses/favorites`,
+    //   })
+    // }
 
     return (
       <Box display="flex" justifyContent="space-around" alignItems="center">
@@ -143,9 +156,12 @@ function Main(){
               <List>
                   {filteredCourses.map((value) => (
                     <>
-                      <ListItem alignItems="stretch" key={value.course_id}>
-                        <IconButton onClick={() => setFavorites()}>
-                            { favorite[value.course_id] ? 
+                      <ListItem 
+                        alignItems="stretch" 
+                        key={value.course_id}
+                        >
+                        <IconButton key={value.course_id} onClick={() => setFavorites(value.course_id)}>
+                            { favorite ? 
                             <StarIcon/> : <StarBorderRoundedIcon/>
                             }
                         </IconButton>
