@@ -1,25 +1,8 @@
-from typing import Union
-from enum import Enum
-
 from sqlalchemy import Column, String, Integer, SmallInteger, ForeignKey
-from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP, Boolean
 
-from .database import Base
+from backend.src.database import Base
 
-class User(Base):
-    __tablename__ = "user"
-    
-    user_id = Column(Integer, primary_key=True)
-    email = Column(String(100), unique=True, nullable=False)
-    enteredYear = Column(SmallInteger, unique=False, nullable=False)
-    major = Column(String(50), nullable=False)
-    password = Column(String(100), nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
-    
-
-    
-# Course
 class Course(Base):
     __tablename__ = "course"
     
@@ -67,41 +50,13 @@ class SubclassInfo(Base):
     stime = Column(String(5), nullable=False)
     etime = Column(String(5), nullable=False)
     class_loca = Column(String(100), nullable=False)
-    
-
-class GPA(str, Enum):
-    aplus = "A+"
-    a = "A"
-    aminus = "A-"
-    bplus = "B+"
-    b = "B"
-    bminus = "B-"
-    cplus = "C+"
-    c = "C"
-    cminus = "C-"
-    dplus = "D+"
-    d = "D"
-    fail = "F"
-
-
-class NumericEval(int, Enum):
-    one = 1
-    two = 2
-    three = 3
-    four = 4
-    five = 5
-    six = 6
-    seven = 7
-    eight = 8
-    nine = 9
-    ten = 10
 
 
 class CourseReview(Base):
     __tablename__ = "course_review"
 
     review_id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, primary_key=True)
+    email = Column(String(100), ForeignKey('user.email'), nullable=False, primary_key=True)
     subclass_id = Column(String(1), ForeignKey('subclass.subclass_id'), nullable=False, primary_key=True)
     course_id = Column(String(100), ForeignKey('subclass.course_id'), nullable=False, primary_key=True)
     academic_year = Column(SmallInteger, ForeignKey('subclass.academic_year'), nullable=False, primary_key=True)
@@ -121,6 +76,5 @@ class CourseReview(Base):
 
 class UserFavorite(Base):
     __tablename__ = "user_favorite"
-    
-    user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, primary_key=True)
+    email = Column(String(100), ForeignKey('user.email'), nullable=False, primary_key=True)
     course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True)
