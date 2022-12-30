@@ -26,7 +26,7 @@ router = APIRouter(
     response_model=list[schemas.MainPageCourseOut],
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
-async def get_users(faculty: enums.Faculty, db: Session=Depends(get_db)):
+async def get_courses(faculty: enums.Faculty, db: Session=Depends(get_db)):
     courses = service.get_courses_by_faculty(faculty, db)
     response = []
     for c in courses:
@@ -44,7 +44,7 @@ async def get_users(faculty: enums.Faculty, db: Session=Depends(get_db)):
 
 
 @router.post(
-    '/favorites',
+    '/favorite',
     status_code=status.HTTP_201_CREATED,
     response_model=schemas.UserFavoriteCreateOut,
     dependencies=[Depends(glob_dependencies.get_current_user)]
@@ -78,11 +78,22 @@ async def create_user_favorite(user_favorite: schemas.UserFavoriteCreate, db: Se
 
 @router.get(
     '/favorites/{email}',
-    response_model = list[schemas.UserFavorite],
+    response_model=list[schemas.UserFavorite],
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
 async def get_user_favorites(email: EmailStr, db: Session=Depends(get_db)):
     return service.get_user_favorite_courses_by_email(email, db)
+
+
+@router.get(
+    '/reviews/{email}',
+    response_model=list[schemas.UserReviewBase],
+    dependencies=[Depends(glob_dependencies.get_current_user)]
+)
+async def get_reviews_by_user_email(email: EmailStr, db: Session=Depends(get_db)):
+    reviews = service.get_reviews_by_user_email(email, db)
+    reviews_dict_list = glob_utils.sql_obj_list_to_dict_list(reviews)
+    return reviews_dict_list
 
 
 @router.post(
