@@ -3,11 +3,11 @@ from sqlalchemy.orm import Session
 from pydantic import EmailStr
 
 from backend.src.database import get_db
-import backend.src.courses.service as service
-import backend.src.courses.schemas as schemas
-import backend.src.courses.models as models
-import backend.src.courses.enums as enums
-import backend.src.courses.exceptions as exceptions
+import backend.src.course.service as service
+import backend.src.course.schemas as schemas
+import backend.src.course.models as models
+import backend.src.course.enums as enums
+import backend.src.course.exceptions as exceptions
 import backend.src.auth.service as auth_service
 
 import backend.src.dependencies as glob_dependencies
@@ -87,7 +87,7 @@ async def get_user_favorites(email: EmailStr, db: Session=Depends(get_db)):
 
 @router.get(
     '/reviews/{email}',
-    response_model=list[schemas.UserReviewBase],
+    response_model=list[schemas.CourseReviewBase],
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
 async def get_reviews_by_user_email(email: EmailStr, db: Session=Depends(get_db)):
@@ -98,10 +98,10 @@ async def get_reviews_by_user_email(email: EmailStr, db: Session=Depends(get_db)
 
 @router.post(
     '/review',
-    response_model = schemas.UserReviewCreateOut,
+    response_model = schemas.CourseReviewCreateOut,
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
-async def create_review(review: schemas.UserReviewBase, db: Session=Depends(get_db)):
+async def create_review(review: schemas.CourseReviewBase, db: Session=Depends(get_db)):
     review = review.dict()
     review_subclass_items = glob_utils.extract_sub_dict(
         review, ['course_id', 'subclass_id', 'academic_year', 'semester']

@@ -12,7 +12,7 @@ import backend.src.utils as utils
     
 class UserBase(BaseModel):
     email: str
-    enteredYear: int = Field(default=..., ge=2000, le=utils.get_current_year())
+    entered_year: int = Field(default=..., ge=2000, le=utils.get_current_year())
     major: enums.Major
     
     @validator('email')

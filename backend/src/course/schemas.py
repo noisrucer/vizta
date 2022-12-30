@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, EmailStr
 
-import backend.src.courses.enums as enums
+import backend.src.course.enums as enums
 import backend.src.utils as glob_utils 
 
 
@@ -35,7 +35,7 @@ class UserFavoriteCreateOut(UserFavoriteBase):
         orm_mode = True
     
 
-class UserReviewBase(BaseModel):
+class CourseReviewBase(BaseModel):
     email: EmailStr
     course_id: str = Field(..., regex="^[A-Z]{4}[0-9]{4}$")
     subclass_id: str = Field(..., regex="^[A-Z]{1}$")
@@ -54,11 +54,11 @@ class UserReviewBase(BaseModel):
     project_ratio: int = Field(..., ge=0, le=100)
 
 
-class UserReviewCreateIn(UserReviewBase):
+class CourseReviewCreateIn(CourseReviewBase):
     pass
 
 
-class UserReviewCreateOut(UserReviewBase):
+class CourseReviewCreateOut(CourseReviewBase):
     review_id: int
     class Config:
         orm_mode = True

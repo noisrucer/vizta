@@ -4,8 +4,8 @@ from sqlalchemy import and_, or_, not_
 from pydantic import EmailStr
 
 from backend.src.database import get_db
-import backend.src.courses.enums as enums
-import backend.src.courses.models as models
+import backend.src.course.enums as enums
+import backend.src.course.models as models
 
 
 def get_course_by_course_id(course_id: str, db: Session=Depends(get_db)):
@@ -46,6 +46,7 @@ def check_exist_user_favorite_course(email: EmailStr, course_id: str, db: Sessio
 
 
 def get_user_favorite_courses_by_email(email: EmailStr, db: Session=Depends(get_db)):
+    
     favorites = db.query(models.UserFavorite).filter(models.UserFavorite.email == email).all()
     return favorites
 

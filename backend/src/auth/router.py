@@ -91,6 +91,6 @@ async def login(
     
     
 # Testing
-@router.get("/me", response_model=schemas.User, dependencies=[Depends(glob_dependencies.get_current_user)])
+@router.get("/me", dependencies=[Depends(glob_dependencies.get_current_user)])
 async def get_me():
-    print("authenticated")
+    return {"message": "authenticated"}

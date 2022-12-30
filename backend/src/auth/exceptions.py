@@ -27,7 +27,8 @@ class CredentialsException(HTTPException):
         
         
 class InvalidEmailOrPasswordException(HTTPException):
-    status_code = status.HTTP_401_UNAUTHORIZED
-    detail = "Incorrect username or password"
-    headers = {"WWW-Authenticate": "Bearer"}
+    def __init__(self):
+        self.status_code = status.HTTP_401_UNAUTHORIZED
+        self.detail = "Incorrect username or password"
+        self.headers = {"WWW-Authenticate": "Bearer"}
         
