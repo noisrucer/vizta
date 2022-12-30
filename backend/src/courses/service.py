@@ -27,6 +27,11 @@ def get_reviews_by_course_id(course_id: str, db: Session=Depends(get_db)):
     return reviews
 
 
+def get_reviews_by_user_email(email: EmailStr, db: Session=Depends(get_db)):
+    reviews = db.query(models.CourseReview).filter(models.CourseReview.email == email).all()
+    return reviews
+
+
 def check_exist_user_favorite_course(email: EmailStr, course_id: str, db: Session=Depends(get_db)):
     user_favorite_course = db.query(models.UserFavorite).filter(
         models.UserFavorite.email == email
