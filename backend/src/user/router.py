@@ -26,12 +26,8 @@ async def get_user_profile(email: EmailStr, db: Session=Depends(get_db)):
     user = auth_service.get_user_by_email(email, db)
     if not user:
         raise exceptions.UserNotFoundException(email)
-    
     reviews = service.get_reviews_by_user_email(email, db)
     reviews_dict_list = glob_utils.sql_obj_list_to_dict_list(reviews)
-    
-    favorites = course_service.get_user_favorite_courses_by_email(email, db)
-
     response = {
         "email": user.email,
         "entered_year": user.entered_year,
