@@ -27,8 +27,6 @@ import MenuItem from "@mui/material/MenuItem";
 
 const baseURL = "http://127.0.0.1:8000";
 
-const theme = createTheme(); // customize theme here
-
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -240,175 +238,173 @@ const SignUp = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 20,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
         <Box
-          sx={{
-            marginTop: 20,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          sx={{ mt: 3 }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={8.5}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="HKU Email Address"
-                    value={email}
-                    onChange={handleEmailChange}
-                    name="email"
-                    autoComplete = "true"
-                    error = {emailError && clickedSignUpButton}
-                  />
-              </Grid>
-                <Grid item xs={1}>
-                  <Button
-                    variant = "contained"
-                    size = "large"
-                    onClick = {handleVerification}
-                  >
-                    Verify
-                  </Button>
-                </Grid>
-                { verificationRequested && <Fragment>
-                <Grid item xs={12} sm={8.5}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="enter verification code here..."
-                    name="verification_code"
-                    value={verificationCode}
-                    onChange={onChangeVerificationCode}
-                    error = {verificationError && clickedSignUpButton}
-                  />
-                </Grid>
-                
-                <Grid item xs={1}>
-                  <Button
-                    variant = "contained"
-                    size = "medium"
-                    onClick = {handleConfirmVerification}
-                  >
-                    Confirm
-                  </Button>
-                </Grid>
-                </Fragment>
-                }
-              <Grid item xs={13} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    views={["year"]}
-                    label="Year of Admission"
-                    value = {enteredYear}
-                    minDate={new Date('2012-03-01')}
-                    maxDate={new Date().toISOString().slice(0,10)}
-                    onChange={(evt) => {
-                      console.log("evt[$y]: ", evt['$y'])
-                      const reformatted_year = `${evt['$y']}-01-01`
-                      setEnteredYear(reformatted_year);
-                    }}
-                    renderInput={(params) => 
-                    <TextField 
-                      {...params} 
-                      fullWidth 
-                      helperText={null} 
-                      value = {enteredYear}
-                      name = "enteredYear"
-                      type = "enteredYear"
-                      required
-                      
-                    />}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={13} sm={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={8.5}>
                 <TextField
-                  select
                   required
-                  label="Select Major"
-                  name="major"
-                  type="major"
-                  value={major}
-                  onChange={handleMajorChange}
+                  fullWidth
+                  label="HKU Email Address"
+                  value={email}
+                  onChange={handleEmailChange}
+                  name="email"
+                  autoComplete = "true"
+                  error = {emailError && clickedSignUpButton}
+                />
+            </Grid>
+              <Grid item xs={1}>
+                <Button
+                  variant = "contained"
+                  size = "large"
+                  onClick = {handleVerification}
                 >
-                  {majors.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  Verify
+                </Button>
               </Grid>
-              <Grid item xs={12}>
+              { verificationRequested && <Fragment>
+              <Grid item xs={12} sm={8.5}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  error = {passwordError && clickedSignUpButton}
-                  onChange = {handlePasswordChange}
+                  label="enter verification code here..."
+                  name="verification_code"
+                  value={verificationCode}
+                  onChange={onChangeVerificationCode}
+                  error = {verificationError && clickedSignUpButton}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  error = {confirmPasswordError && clickedSignUpButton}
-                  onChange = {handleConfirmPasswordChange}
+              
+              <Grid item xs={1}>
+                <Button
+                  variant = "contained"
+                  size = "medium"
+                  onClick = {handleConfirmVerification}
+                >
+                  Confirm
+                </Button>
+              </Grid>
+              </Fragment>
+              }
+            <Grid item xs={13} sm={6}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  views={["year"]}
+                  label="Year of Admission"
+                  value = {enteredYear}
+                  minDate={new Date('2012-03-01')}
+                  maxDate={new Date().toISOString().slice(0,10)}
+                  onChange={(evt) => {
+                    console.log("evt[$y]: ", evt['$y'])
+                    const reformatted_year = `${evt['$y']}-01-01`
+                    setEnteredYear(reformatted_year);
+                  }}
+                  renderInput={(params) => 
+                  <TextField 
+                    {...params} 
+                    fullWidth 
+                    helperText={null} 
+                    value = {enteredYear}
+                    name = "enteredYear"
+                    type = "enteredYear"
+                    required
+                    
+                  />}
                 />
-              </Grid>
+              </LocalizationProvider>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              disabled = {!validate()}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/auth/sign-in" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
+            <Grid item xs={13} sm={6}>
+              <TextField
+                select
+                required
+                label="Select Major"
+                name="major"
+                type="major"
+                value={major}
+                onChange={handleMajorChange}
+              >
+                {majors.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
-          </Box>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                error = {passwordError && clickedSignUpButton}
+                onChange = {handlePasswordChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                error = {confirmPasswordError && clickedSignUpButton}
+                onChange = {handleConfirmPasswordChange}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled = {!validate()}
+          >
+            Sign Up
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/auth/sign-in" variant="body2">
+                Already have an account? Sign in
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
-        <Snackbar
-          open={openErrorMessage}
-          closeFunc={closeErrorMessage}
-          message={errorMessage}
-        >
-          {
-            verificationConfirmStatus && !(checkOnSubmit) &&
-            <Alert onClose={closeErrorMessage} severity="success" sx={{ width: '100%' }}>
-              Verify Success!
-            </Alert>
-          }
-        </Snackbar>
-      </Container>
-    </ThemeProvider>
+      </Box>
+      <Copyright sx={{ mt: 5 }} />
+      <Snackbar
+        open={openErrorMessage}
+        closeFunc={closeErrorMessage}
+        message={errorMessage}
+      >
+        {
+          verificationConfirmStatus && !(checkOnSubmit) &&
+          <Alert onClose={closeErrorMessage} severity="success" sx={{ width: '100%' }}>
+            Verify Success!
+          </Alert>
+        }
+      </Snackbar>
+    </Container>
   );
 };
 
