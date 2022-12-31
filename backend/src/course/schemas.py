@@ -11,6 +11,7 @@ class CourseBase(BaseModel):
     
 class MainPageCourseOut(CourseBase):
     num_reviews: int = Field(..., ge=0)
+    is_favorite: bool
     class Config:
         orm_mode = True
 

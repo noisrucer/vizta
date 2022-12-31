@@ -22,13 +22,13 @@ router = APIRouter(
     tags=["courses"]
 )
 
-
+# GET /courses/{faculty}/{user_email}
 @router.get(
-    '/{faculty}',
+    '/{faculty}/{email}',
     response_model=list[schemas.MainPageCourseOut],
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
-async def get_courses(faculty: enums.Faculty, db: Session=Depends(get_db)):
+async def get_courses(faculty: enums.Faculty, email: EmailStr, db: Session=Depends(get_db)):
     courses = service.get_courses_by_faculty(faculty, db)
     response = []
     for c in courses:
@@ -36,10 +36,12 @@ async def get_courses(faculty: enums.Faculty, db: Session=Depends(get_db)):
         cname = c.name
         reviews = service.get_reviews_by_course_id(cid, db)
         num_reviews = len(reviews)
+        is_favorite =  True if service.check_exist_user_favorite_course(email, cid, db) else False
         response.append({
             "course_id": cid,
             "name": cname,
-            "num_reviews": num_reviews
+            "num_reviews": num_reviews,
+            "is_favorite": is_favorite
         })
         
     return response
