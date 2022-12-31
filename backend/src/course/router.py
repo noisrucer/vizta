@@ -90,15 +90,15 @@ async def get_user_favorites(email: EmailStr, db: Session=Depends(get_db)):
     return favorites
 
 
-@router.get(
-    '/reviews/{email}',
-    response_model=list[schemas.CourseReviewBase],
-    dependencies=[Depends(glob_dependencies.get_current_user)]
-)
-async def get_reviews_by_user_email(email: EmailStr, db: Session=Depends(get_db)):
-    reviews = service.get_reviews_by_user_email(email, db)
-    reviews_dict_list = glob_utils.sql_obj_list_to_dict_list(reviews)
-    return reviews_dict_list
+# @router.get(
+#     '/reviews/{email}',
+#     response_model=list[schemas.CourseReviewBase],
+#     dependencies=[Depends(glob_dependencies.get_current_user)]
+# )
+# async def get_reviews_by_user_email(email: EmailStr, db: Session=Depends(get_db)):
+#     reviews = service.get_reviews_by_user_email(email, db)
+#     reviews_dict_list = glob_utils.sql_obj_list_to_dict_list(reviews)
+#     return reviews_dict_list
 
 
 @router.post(
