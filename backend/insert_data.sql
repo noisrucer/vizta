@@ -239,19 +239,19 @@ INSERT INTO user
 VALUES (DEFAULT, 'loyusum@gmail.com', 2021, 'BEng', 1234567, DEFAULT);
 
 INSERT INTO course_review
-VALUES (DEFAULT, 1, 'A', 'COMP2396', 2022, 1, 'A+', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0),
-       (DEFAULT, 2, 'A', 'COMP2396', 2022, 1, 'F', 1, 1, 1, 1, 1, 1, 60, 20, 20, 0),
-       (DEFAULT, 2, 'B', 'COMP2396', 2022, 2, 'A+', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0),
-       (DEFAULT, 1, 'B', 'COMP2396', 2022, 2, 'A+', 2, 2, 1, 1, 1, 1, 50, 20, 30, 0),
-       (DEFAULT, 1, 'B', 'COMP2396', 2022, 1, 'D', 10, 10, 10, 2, 3, 2, 60, 10, 30, 0),
-       (DEFAULT, 1, 'A', 'COMP2396', 2022, 2, 'F', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0);
+VALUES (DEFAULT, 'loyusum246807952@gmail.com', 'A', 'COMP2396', 2022, 1, 'A+', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0),
+       (DEFAULT, 'loyusum@gmail.com', 'A', 'COMP2396', 2022, 1, 'F', 1, 1, 1, 1, 1, 1, 60, 20, 20, 0),
+       (DEFAULT, 'loyusum@gmail.com', 'B', 'COMP2396', 2022, 2, 'A+', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0),
+       (DEFAULT, 'loyusum246807952@gmail.com', 'B', 'COMP2396', 2022, 2, 'A+', 2, 2, 1, 1, 1, 1, 50, 20, 30, 0),
+       (DEFAULT, 'loyusum246807952@gmail.com', 'B', 'COMP2396', 2022, 1, 'D', 10, 10, 10, 2, 3, 2, 60, 10, 30, 0),
+       (DEFAULT, 'loyusum246807952@gmail.com', 'A', 'COMP2396', 2022, 2, 'F', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0);
 
 INSERT INTO course_review
-VALUES (DEFAULT, 1, 'A', 'COMP3314', 2022, 1, 'A+', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0),
-       (DEFAULT, 2, 'A', 'COMP3314', 2022, 1, 'F', 1, 1, 1, 1, 1, 1, 60, 20, 20, 0),
-       (DEFAULT, 2, 'A', 'COMP3314', 2023, 1, 'C', 1, 10, 1, 10, 1, 10, 60, 20, 20, 0),
-       (DEFAULT, 2, 'B', 'COMP3314', 2022, 2, 'A+', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0),
-       (DEFAULT, 1, 'C', 'COMP3314', 2022, 2, 'A+', 2, 2, 1, 1, 1, 1, 50, 20, 30, 0),
-       (DEFAULT, 1, 'B', 'COMP3314', 2022, 2, 'D', 10, 10, 10, 2, 3, 2, 60, 10, 30, 0),
-       (DEFAULT, 2, 'C', 'COMP3314', 2022, 2, 'D', 1, 1, 1, 1, 1, 1, 60, 10, 30, 0),
-       (DEFAULT, 1, 'A', 'COMP3314', 2022, 1, 'F', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0);
+VALUES (DEFAULT, 'loyusum246807952@gmail.com', 'A', 'COMP3314', 2022, 1, 'A+', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0),
+       (DEFAULT, 'loyusum@gmail.com', 'A', 'COMP3314', 2022, 1, 'F', 1, 1, 1, 1, 1, 1, 60, 20, 20, 0),
+       (DEFAULT, 'loyusum@gmail.com', 'A', 'COMP3314', 2023, 1, 'C', 1, 10, 1, 10, 1, 10, 60, 20, 20, 0),
+       (DEFAULT, 'loyusum@gmail.com', 'B', 'COMP3314', 2022, 2, 'A+', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0),
+       (DEFAULT, 'loyusum246807952@gmail.com', 'C', 'COMP3314', 2022, 2, 'A+', 2, 2, 1, 1, 1, 1, 50, 20, 30, 0),
+       (DEFAULT, 'loyusum246807952@gmail.com', 'B', 'COMP3314', 2022, 2, 'D', 10, 10, 10, 2, 3, 2, 60, 10, 30, 0),
+       (DEFAULT, 'loyusum@gmail.com', 'C', 'COMP3314', 2022, 2, 'D', 1, 1, 1, 1, 1, 1, 60, 10, 30, 0),
+       (DEFAULT, 'loyusum246807952@gmail.com', 'A', 'COMP3314', 2022, 1, 'F', 7, 4, 4, 6, 6, 5, 60, 10, 30, 0);

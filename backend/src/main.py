@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.src.database import engine
 from backend.src.auth.router import router as auth_router
 from backend.src.courses.router import router as courses_router
+from backend.src.visualization.router import router as visualization_router
 import backend.src.models as glob_models
 import backend.src.auth.models as auth_models
 import backend.src.courses.models as courses_models
@@ -31,6 +32,7 @@ async def email_validation_handler(request, exc):
 
 app.include_router(auth_router)
 app.include_router(courses_router)
+app.include_router(visualization_router)
 
 @app.get("/")
 async def root():
