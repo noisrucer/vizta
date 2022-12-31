@@ -9,6 +9,8 @@ import backend.src.course.models as models
 import backend.src.course.enums as enums
 import backend.src.course.exceptions as exceptions
 import backend.src.auth.service as auth_service
+import backend.src.user.schemas as user_schemas
+import backend.src.user.models as user_models
 
 import backend.src.dependencies as glob_dependencies
 import backend.src.exceptions as glob_exceptions
@@ -20,13 +22,13 @@ router = APIRouter(
     tags=["courses"]
 )
 
-
+# GET /courses/{faculty}/{user_email}
 @router.get(
-    '/{faculty}',
+    '/{faculty}/{email}',
     response_model=list[schemas.MainPageCourseOut],
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
-async def get_courses(faculty: enums.Faculty, db: Session=Depends(get_db)):
+async def get_courses(faculty: enums.Faculty, email: EmailStr, db: Session=Depends(get_db)):
     courses = service.get_courses_by_faculty(faculty, db)
     response = []
     for c in courses:
@@ -34,10 +36,12 @@ async def get_courses(faculty: enums.Faculty, db: Session=Depends(get_db)):
         cname = c.name
         reviews = service.get_reviews_by_course_id(cid, db)
         num_reviews = len(reviews)
+        is_favorite =  True if service.check_exist_user_favorite_course(email, cid, db) else False
         response.append({
             "course_id": cid,
             "name": cname,
-            "num_reviews": num_reviews
+            "num_reviews": num_reviews,
+            "is_favorite": is_favorite
         })
         
     return response
@@ -46,10 +50,10 @@ async def get_courses(faculty: enums.Faculty, db: Session=Depends(get_db)):
 @router.post(
     '/favorite',
     status_code=status.HTTP_201_CREATED,
-    response_model=schemas.UserFavoriteCreateOut,
+    response_model=user_schemas.UserFavoriteCreateOut,
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
-async def create_user_favorite(user_favorite: schemas.UserFavoriteCreate, db: Session = Depends(get_db)):
+async def create_user_favorite(user_favorite: user_schemas.UserFavoriteCreate, db: Session = Depends(get_db)):
     user_fav_dict = user_favorite.dict()
     email, course_id = user_fav_dict['email'], user_fav_dict['course_id']
     
@@ -69,7 +73,7 @@ async def create_user_favorite(user_favorite: schemas.UserFavoriteCreate, db: Se
     if dup_user_favorite:
         raise exceptions.UserFavoriteCourseAlreadyExistsException(email, course_id)
         
-    new_user_fav = models.UserFavorite(**user_fav_dict)
+    new_user_fav = user_models.UserFavorite(**user_fav_dict)
     db.add(new_user_fav)
     db.commit()
     db.refresh(new_user_fav)
@@ -78,11 +82,12 @@ async def create_user_favorite(user_favorite: schemas.UserFavoriteCreate, db: Se
 
 @router.get(
     '/favorites/{email}',
-    response_model=list[schemas.UserFavorite],
+    response_model=list[schemas.MainPageCourseOut],
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
 async def get_user_favorites(email: EmailStr, db: Session=Depends(get_db)):
-    return service.get_user_favorite_courses_by_email(email, db)
+    favorites = service.get_user_favorite_courses_by_email(email, db)
+    return favorites
 
 
 @router.get(

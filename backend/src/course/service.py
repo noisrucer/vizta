@@ -6,6 +6,8 @@ from pydantic import EmailStr
 from backend.src.database import get_db
 import backend.src.course.enums as enums
 import backend.src.course.models as models
+import backend.src.user.models as user_models
+import backend.src.utils as glob_utils
 
 
 def get_course_by_course_id(course_id: str, db: Session=Depends(get_db)):
@@ -33,12 +35,12 @@ def get_reviews_by_user_email(email: EmailStr, db: Session=Depends(get_db)):
 
 
 def check_exist_user_favorite_course(email: EmailStr, course_id: str, db: Session=Depends(get_db)):
-    user_favorite_course = db.query(models.UserFavorite).filter(
-        models.UserFavorite.email == email
+    user_favorite_course = db.query(user_models.UserFavorite).filter(
+        user_models.UserFavorite.email == email
         ).filter(
             and_(
-                models.UserFavorite.email == email,
-                models.UserFavorite.course_id == course_id
+                user_models.UserFavorite.email == email,
+                user_models.UserFavorite.course_id == course_id
             )
         ).first()
         
@@ -46,9 +48,33 @@ def check_exist_user_favorite_course(email: EmailStr, course_id: str, db: Sessio
 
 
 def get_user_favorite_courses_by_email(email: EmailStr, db: Session=Depends(get_db)):
-    
-    favorites = db.query(models.UserFavorite).filter(models.UserFavorite.email == email).all()
-    return favorites
+    """Return user favorite courses by user email
+
+    Args:
+        email (EmailStr): user email
+        db (Session): Defaults to Depends(get_db).
+
+    Returns:
+        list[dict]: {
+            "course_id": cid,
+            "name": cname,
+            "num_reviews": num_reviews
+        }
+    """
+    favorites = db.query(user_models.UserFavorite, models.Course).\
+        filter(user_models.UserFavorite.course_id == models.Course.course_id).all()
+    response = []
+    for fav in favorites:
+        user_favorite, course = glob_utils.sql_obj_list_to_dict_list(list(fav))
+        cid = user_favorite['course_id']
+        cname = course['name']
+        num_reviews = len(get_reviews_by_course_id(cid, db))
+        response.append({
+            "course_id": cid,
+            "name": cname,
+            "num_reviews": num_reviews
+        })
+    return response
 
 
 def get_subclass(
