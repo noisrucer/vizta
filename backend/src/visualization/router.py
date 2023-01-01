@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends
 
 import backend.src.courses.models as course_models
 import backend.src.courses.enums as course_enums
+import backend.src.courses.exceptions as course_exceptions
 
 import backend.src.visualization.service as visualization_service
 import backend.src.visualization.schemas as schemas
@@ -20,6 +21,21 @@ router = APIRouter(
     prefix="/visualization",
     tags=["visualization"]
 )
+
+
+@router.get('/{course_id}/info',
+            dependencies=[Depends(glob_dependencies.get_current_user)])
+async def get_course_general_information(course_id: str, db: Session = Depends(get_db)):
+    course = visualization_service.get_course_by_course_id(db, course_id)
+    if not course:
+        raise course_exceptions.CourseNotExistException(course_id)
+
+    return {
+        "CourseID": course.course_id,
+        "Name": course.name,
+        "Faculty": course.faculty,
+        "Description": course.description
+    }
 
 
 @router.get('/{course_id}/grading',

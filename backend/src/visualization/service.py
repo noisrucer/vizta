@@ -6,6 +6,10 @@ from sqlalchemy import func, outerjoin, column, select
 import backend.src.courses.models as course_models
 
 
+def get_course_by_course_id(db: Session, course_id: str):
+    return db.query(course_models.Course).filter(course_models.Course.course_id == course_id).first()
+
+
 def get_newest_grading_ratio(db: Session, course_id: str, prof_name: str, grade_constitution: [InstrumentedAttribute]):
     return db.query(*grade_constitution). \
         filter(course_models.Subclass.course_id == course_id,
