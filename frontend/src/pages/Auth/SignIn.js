@@ -19,8 +19,6 @@ import Snackbar from "../../components/Snackbar";
 
 import Copyright from "./Copyright";
 const baseURL = "http://127.0.0.1:8000";
-const theme = createTheme();
-
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -74,7 +72,7 @@ const SignIn = () => {
           }
         }
 
-        handleSetUserData(data);
+        handleSetUserData(data.get("username"));
         handleSetUserToken(options);
 
         if (response.status === 200){
@@ -99,7 +97,6 @@ const SignIn = () => {
     };
 
   return (
-    // <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -175,7 +172,6 @@ const SignIn = () => {
           message={errorMessage}
         />
       </Container>
-    // </ThemeProvider>
   );
 };
 

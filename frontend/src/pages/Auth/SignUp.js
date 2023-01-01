@@ -191,7 +191,7 @@ const SignUp = () => {
     if (!(passwordError) && !(confirmPasswordError) && verificationConfirmStatus)
     {
       axios.post(`${baseURL}/auth/register`, {
-        enteredYear: data.get("enteredYear"),
+        entered_year: data.get("enteredYear"),
         email: data.get("email"),
         major: data.get("major"),
         password: data.get("password")

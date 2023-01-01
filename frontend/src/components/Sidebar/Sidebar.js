@@ -130,12 +130,12 @@ export default function Sidebar() {
   const [userToken, setUserToken] = UserToken
   const [isLoggedIn, setIsLoggedIn] = IsLoggedIn
 
-  console.log("isLoggedIn in sidebar (outside useEffect): ", isLoggedIn)
-  console.log("userToken in sidebar: ", userToken)
+  // console.log("isLoggedIn in sidebar (outside useEffect): ", isLoggedIn)
+  // console.log("userToken in sidebar: ", userToken)
 
-  React.useEffect(() => {
-    console.log("isLoggedIn in sidebar (inside useEffect): ",isLoggedIn)
-  }, [IsLoggedIn])
+  // React.useEffect(() => {
+  //   console.log("isLoggedIn in sidebar (inside useEffect): ",isLoggedIn)
+  // }, [IsLoggedIn])
 
   const handleDrawerOpen = () => {
     setOpen(true);

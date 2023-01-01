@@ -29,7 +29,7 @@ const ProtectedRoutes = () => {
         headers: userToken['headers']
       })
     .then(response => {
-        console.log("response in Protected Routes: ", response);
+        // console.log("response in Protected Routes: ", response);
         setIsLoggedIn(true);
         setIsAuth(true);
     })

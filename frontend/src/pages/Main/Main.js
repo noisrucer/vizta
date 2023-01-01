@@ -19,6 +19,8 @@ import Typography from '@mui/material/Typography';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import StarIcon from '@mui/icons-material/Star';
 import axios from 'axios';
+import Pagination from "@mui/material/Pagination";
+import Stack from '@mui/material/Stack';
 
 
 const baseURL = 'http://127.0.0.1:8000';
@@ -46,11 +48,9 @@ const Search = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    // color: "white"
   }));
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    // color: "white",
     "& .MuiInputBase-input": {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
@@ -75,15 +75,23 @@ const Search = styled("div")(({ theme }) => ({
 
 function Main(){
     // document.body.style.backgroundColor = "#110F44"
+    const {UserToken, UserData} = useContext(UserContext);
+    const [userToken, setUserToken] = UserToken;
+    const [userData, setUserData] = UserData;
 
-    const [courses, setCourses] = useState([])
+    console.log("userToken in main: ", userToken);
+    console.log("userData in main: ", userData);
+
+    const [courses, setCourses] = useState([]);
+    const [favorites, setFavorites] = useState([]);
     const [query, setQuery] = useState("");
 
     useEffect(() => {
-      const fetchData = async () => {
+      const fetchCourseData = async () => {
         axios.request({
           method: 'get',
           url: `${baseURL}/courses/All`,
+          headers: userToken['headers']
           })
           .then(response => {
             const data = response.data
@@ -91,9 +99,21 @@ function Main(){
             setCourses(data)
           })
       };
-      fetchData();
+      fetchCourseData();
 
-      
+      const fetchFavoritesData = async () => {
+        axios.request({
+          method: 'get',
+          url: `${baseURL}/courses/favorites/${userData}`,
+          headers: userToken['headers']
+        })
+        .then(response => {
+          const favorites = response.data
+          console.log(`response from /courses/favorites/${userData}: `, favorites)
+          setFavorites(favorites)
+        })
+      }
+      fetchFavoritesData();
     },[])
 
     const filteredCourses = getFilteredCourses(query, courses)
@@ -102,37 +122,27 @@ function Main(){
       console.log("key: ", e)
     }
 
-    const handleListItemFavoritesClick = (e) => {
-      console.log("key: ", e)
-    }
 
     const [favorite, setFavorite] = useState(false)
 
-    const setFavorites = (e) => {
+    const handleStarClick = (e) => {
       console.log("star clicked!")
       console.log("key: ", e)
       setFavorite(!favorite)
     }
 
-    // const getFavorites = {
-    //   axios.request({
-    //     method: 'get',
-    //     url: `${baseURL}/courses/favorites`,
-    //   })
-    // }
-
     return (
-      <Box display="flex" justifyContent="space-around" alignItems="center">
+      <Box display="flex" justifyContent="space-around" >
         <Box>
           <Box 
             sx={{
               // backgroundColor: "secondary.main",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center"
+              // display: "flex",
+              // justifyContent: "center",
+              // alignItems: "center"
               }}>
             <Search sx={{marginTop: "100px",
-                        marginRight: "5px"
+                        marginRight: "5px",
                         }}>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -146,10 +156,11 @@ function Main(){
           </Box>
             <Box
               sx={{
-                height: 1000,
+                // height: 1000,
                 // backgroundColor: "primary.light",
-                display: "flex",
-                justifyContent: 'center',
+                // display: "flex",
+                // justifyContent: 'center',
+                // alginItems: "center",
                 marginTop: "10px"
                 }}>
               {filteredCourses.length > 0 ? 
@@ -157,10 +168,10 @@ function Main(){
                   {filteredCourses.map((value) => (
                     <>
                       <ListItem 
-                        alignItems="stretch" 
+                        // alignItems="stretch" 
                         key={value.course_id}
                         >
-                        <IconButton key={value.course_id} onClick={() => setFavorites(value.course_id)}>
+                        <IconButton key={value.course_id} onClick={() => handleStarClick(value.course_id)}>
                             { favorite ? 
                             <StarIcon/> : <StarBorderRoundedIcon/>
                             }
@@ -191,20 +202,65 @@ function Main(){
                       <Divider variant="fullWidth" style={{width: "600px"}}/>
                     </>
                   ))}
-              </List> : <List>No items to display</List>}
+              </List> :
+              <>
+                <List>No Items to display</List>
+                <Divider variant="fullWidth" style={{width: "600px"}}/>
+              </>
+              }
+              <Stack spacing={2} sx={{display: "flex", alignItems: "center"}}>
+                <Pagination count={10} variant="outlined" shape="rounded" size="large" />
+              </Stack>
             </Box>
         </Box>
         <Box>
-          <Typography variant="h5">Favorites</Typography>
+          <Typography variant="h5" sx={{marginTop: "90px"}}>Favorites</Typography>
           <Box sx= {{
-                height: 900,
-                width: 500,
-                backgroundColor: "primary.dark",
-                marginTop: "15px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
+                height: 1000,
+                // backgroundColor: "primary.dark",
+                // display: "flex",
+                // justifyContent: "center",
+
                 }}>
+              <List>
+                  {favorites.map((value) => (
+                    <>
+                      <ListItem 
+                        // alignItems="stretch" 
+                        key={value.course_id}
+                        >
+                        <IconButton key={value.course_id} onClick={() => handleStarClick(value.course_id)}>
+                            { favorite ? 
+                            <StarIcon/> : <StarBorderRoundedIcon/>
+                            }
+                        </IconButton>
+                        <ListItemButton onClick={() => handleListItemClick(value.course_id)}>
+                          <ListItemText sx={{marginLeft: "30px"}}
+                            primary={value.course_id}
+                            secondary={
+                              <React.Fragment>
+                                <Typography
+                                  sx={{ display: 'inline' }}
+                                  component="span"
+                                  variant="body2"
+                                  color="text.primary"
+                                >
+                                  {value.email}
+                                </Typography>
+                                
+                              </React.Fragment>
+                            }
+                          />
+                          <ListItemText 
+                            secondary={`reviews: `} 
+                            style={{position: "absolute", left: "460px"}} 
+                            />
+                        </ListItemButton>
+                      </ListItem>
+                      <Divider variant="fullWidth" style={{width: "600px"}}/>
+                    </>
+                  ))}
+              </List>
           </Box>
         </Box>
       </Box>

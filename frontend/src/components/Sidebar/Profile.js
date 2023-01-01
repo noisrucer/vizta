@@ -21,7 +21,7 @@ import MuiAlert from '@mui/material/Alert';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Snackbar from "../../components/Snackbar";
+import Snackbar from "../Snackbar";
 import MenuItem from "@mui/material/MenuItem";
 
 const baseURL = "http://127.0.0.1:8000";
