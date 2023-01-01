@@ -1,11 +1,19 @@
 from typing import Union
 
-from fastapi import Depends
 from sqlalchemy.orm import Session, InstrumentedAttribute
 from sqlalchemy import func, outerjoin, column, select
 
-from backend.src.database import get_db
 import backend.src.courses.models as course_models
+
+
+def get_newest_grading_ratio(db: Session, course_id: str, prof_name: str, grade_constitution: [InstrumentedAttribute]):
+    return db.query(*grade_constitution). \
+        filter(course_models.Subclass.course_id == course_id,
+               course_models.Subclass.professor_name == prof_name,
+               # Assume all ratio are either null together or not null together
+               course_models.Subclass.final_exam_ratio is not None). \
+        order_by(course_models.Subclass.academic_year.desc(), course_models.Subclass.semester.desc()). \
+        first()
 
 
 def get_newest_semester_of_review(db: Session, course_id: str):

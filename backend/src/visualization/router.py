@@ -22,7 +22,26 @@ router = APIRouter(
 )
 
 
-# TODO: API for grading ratio (final exam, midterm, assignments, project, ). Only newest
+@router.get('/{course_id}/grading',
+            dependencies=[Depends(glob_dependencies.get_current_user)])
+async def get_grading_ratio(course_id: str, db: Session = Depends(get_db)):
+    grade_constitution = [course_models.Subclass.final_exam_ratio,
+                          course_models.Subclass.midterm_ratio,
+                          course_models.Subclass.assignments_ratio,
+                          course_models.Subclass.project_ratio]
+
+    profs = visualization_service.get_all_prof_of_course(db, course_id)
+
+    results = {}
+    for prof in profs:
+        ratio = visualization_service.get_newest_grading_ratio(db, course_id, prof, grade_constitution)
+        results |= {prof: zip(*ratio)[0] if ratio is not None else None}
+
+    return {
+        "Constitution": [glob_utils.capitalize_variable(gc.key[:gc.key.rfind('_')]) for gc in grade_constitution],
+        "Values": results
+    }
+
 
 @router.get('/{course_id}/years',
             dependencies=[Depends(glob_dependencies.get_current_user)])
