@@ -144,12 +144,13 @@ function Main(){
       setPagination({...pagination, from: from, to: to})
     }
 
-    const slicedCourses = courses.slice(pagination.from, pagination.to)
+    const slicedCourses = filteredCourses.slice(pagination.from, pagination.to)
     console.log("courses: ", courses)
     console.log("sliced courses: ", slicedCourses)
 
     useEffect(() => {
       console.log("pagination: ", pagination)
+      
     }, [filteredCourses, slicedCourses])
 
     return (
