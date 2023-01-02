@@ -1,9 +1,10 @@
 from typing import Union
 
 from sqlalchemy.orm import Session, InstrumentedAttribute
-from sqlalchemy import func, outerjoin, column, select
+from sqlalchemy import func, outerjoin, column, select, case
 
 import backend.src.courses.models as course_models
+from backend.src.visualization.constants import gpa_mapping
 
 
 def get_course_by_course_id(db: Session, course_id: str):
@@ -54,6 +55,28 @@ def get_course_average_review(db: Session, course_id: str,
                               avg_column: [InstrumentedAttribute],
                               year: Union[int, None] = None, professor: Union[str, None] = None):
     seccion = db.query(*[func.avg(_) for _ in avg_column]).filter(course_models.CourseReview.course_id == course_id)
+
+    # Optional filter
+    if year is not None:
+        seccion = seccion.filter(course_models.CourseReview.academic_year == year)
+    if professor is not None:
+        seccion = seccion. \
+            join(course_models.CourseReview.rsub_class). \
+            filter(course_models.Subclass.professor_name == professor)
+
+    return seccion.order_by(course_models.CourseReview.academic_year, course_models.CourseReview.semester).first()
+
+
+def get_course_average_gpa(db: Session, course_id: str,
+                           year: Union[int, None] = None, professor: Union[str, None] = None):
+    gpa_convertion = case(
+        [
+            (course_models.CourseReview.gpa == g, p)
+            for g, p in gpa_mapping
+        ]
+    )
+
+    seccion = db.query(func.avg(gpa_convertion)).filter(course_models.CourseReview.course_id == course_id)
 
     # Optional filter
     if year is not None:

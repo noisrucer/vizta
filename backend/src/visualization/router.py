@@ -11,6 +11,7 @@ import backend.src.courses.exceptions as course_exceptions
 
 import backend.src.visualization.service as visualization_service
 import backend.src.visualization.schemas as schemas
+from backend.src.visualization.constants import gpa_mapping
 
 import backend.src.dependencies as glob_dependencies
 import backend.src.utils as glob_utils
@@ -133,6 +134,10 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
                   mcr.course_delivery, mcr.course_interactivity]
     avg_reviews = visualization_service.get_course_average_review(db, course_id, avg_column, year, professor)
 
+    # Third query, avg gpa
+    avg_gpa = visualization_service.get_course_average_gpa(db, course_id)[0]
+    avg_gpa_letter = min(gpa_mapping, key=lambda x: abs(x[1] - avg_gpa))[0]
+
     # convert any Decimal object to float
     avg_reviews = [float(c) if isinstance(c, Decimal) else c for c in avg_reviews]
 
@@ -147,8 +152,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
             "Interactivity": glob_utils.count_enum([_.course_interactivity for _ in reviews], course_enums.NumericEval)
         },
         "Pentagon": {
-            # FIXME: How to get average gpa on string gpa
-            # "GPA": CountEnum([_.gpa for _ in reviews], GPA),
+            "GPA": avg_gpa_letter,
             "LectureDifficulty": avg_reviews[avg_column.index(mcr.lecture_difficulty)],
             "FinalDifficulty": avg_reviews[avg_column.index(mcr.final_exam_difficulty)],
             "Workload": avg_reviews[avg_column.index(mcr.workload)],
