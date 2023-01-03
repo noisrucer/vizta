@@ -9,6 +9,11 @@ class UserFavoriteCourseAlreadyExistsException(HTTPException):
     def __init__(self, email: str, course_id: str):
         self.status_code = status.HTTP_400_BAD_REQUEST
         self.detail = f"User {email} has already added {course_id} as a favorite."
+         
+class UserFavoriteNotExitException(HTTPException):
+    def __init__(self, email: str, course_id: str):
+        self.status_code = status.HTTP_400_BAD_REQUEST
+        self.detail = f"User {email} has not added {course_id} as a favorite."
         
         
 class SubclassNotExistException(HTTPException):

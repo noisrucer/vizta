@@ -7,7 +7,7 @@ from backend.src.database import get_db
 import backend.src.course.models as course_models
 
 
-def get_reviews_by_user_email(email: EmailStr, db: Session=Depends(get_db)):
+def get_reviews_by_user_email(db: Session, email: EmailStr):
     reviews = db.query(course_models.CourseReview).filter(course_models.CourseReview.email == email).all()
     return reviews
 
