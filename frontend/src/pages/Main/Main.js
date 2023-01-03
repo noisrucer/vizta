@@ -278,9 +278,9 @@ function Main(){
             </Box>
         </Box>
         <Box>
-          <Typography variant="h5" sx={{marginTop: "90px"}}>Favorites</Typography>
+          <Typography variant="h5" sx={{marginTop: "105px"}}>Favorites</Typography>
           <Box sx= {{
-                height: 1000,
+                marginTop: "10px"
                 }}>
               {slicedFavorites.length > 0 ?
               <List>
@@ -305,14 +305,14 @@ function Main(){
                                   variant="body2"
                                   color="text.primary"
                                 >
-                                  {value.email}
+                                  {value.name}
                                 </Typography>
                                 
                               </React.Fragment>
                             }
                           />
                           <ListItemText 
-                            secondary={`reviews: `} 
+                            secondary={`reviews: ${value.num_reviews}`} 
                             style={{position: "absolute", left: "460px"}} 
                             />
                         </ListItemButton>
