@@ -14,6 +14,10 @@ class MainPageCourseOut(CourseBase):
     is_favorite: bool
     class Config:
         orm_mode = True
+        
+
+class UserFavoriteOut(CourseBase):
+    num_reviews: int = Field(..., get=0)
 
 class CourseReviewBase(BaseModel):
     email: EmailStr

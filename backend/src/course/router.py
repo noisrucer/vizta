@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, Path
 from sqlalchemy.orm import Session
 from pydantic import EmailStr
 
@@ -22,30 +22,6 @@ router = APIRouter(
     tags=["courses"]
 )
 
-# GET /courses/{faculty}/{user_email}
-@router.get(
-    '/{faculty}/{email}',
-    response_model=list[schemas.MainPageCourseOut],
-    dependencies=[Depends(glob_dependencies.get_current_user)]
-)
-async def get_courses(faculty: enums.Faculty, email: EmailStr, db: Session=Depends(get_db)):
-    courses = service.get_courses_by_faculty(faculty, db)
-    response = []
-    for c in courses:
-        cid = c.course_id
-        cname = c.name
-        reviews = service.get_reviews_by_course_id(cid, db)
-        num_reviews = len(reviews)
-        is_favorite =  True if service.check_exist_user_favorite_course(email, cid, db) else False
-        response.append({
-            "course_id": cid,
-            "name": cname,
-            "num_reviews": num_reviews,
-            "is_favorite": is_favorite
-        })
-        
-    return response
-
 
 @router.post(
     '/favorite',
@@ -58,17 +34,17 @@ async def create_user_favorite(user_favorite: user_schemas.UserFavoriteCreate, d
     email, course_id = user_fav_dict['email'], user_fav_dict['course_id']
     
     # check if email exists in DB
-    user = auth_service.get_user_by_email(email, db)
+    user = auth_service.get_user_by_email(db, email)
     if not user:
         raise glob_exceptions.EmailNotExistException(email)
     
     # check if course_id exists in DB
-    course = service.get_course_by_course_id(course_id, db)
+    course = service.get_course_by_course_id(db, course_id)
     if not course:
         raise exceptions.CourseNotExistException(course_id)
     
     # check if user_id has already added course_id
-    dup_user_favorite = service.check_exist_user_favorite_course(email, course_id, db)
+    dup_user_favorite = service.check_exist_user_favorite_course(db, email, course_id)
     
     if dup_user_favorite:
         raise exceptions.UserFavoriteCourseAlreadyExistsException(email, course_id)
@@ -80,25 +56,30 @@ async def create_user_favorite(user_favorite: user_schemas.UserFavoriteCreate, d
     return new_user_fav
 
 
+@router.delete(
+    '/favorite/{email}/{course_id}',
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(glob_dependencies.get_current_user)]
+)
+async def delete_user_favorite(
+    email: EmailStr,
+    course_id: str,
+    db: Session=Depends(get_db)
+):
+    fav = service.check_exist_user_favorite_course(db, email, course_id)
+    if not fav:
+        raise exceptions.UserFavoriteNotExitException(email, course_id)
+    deleted_favorite = service.delete_user_favorite(db, email, course_id)
+
+
 @router.get(
     '/favorites/{email}',
     response_model=list[schemas.MainPageCourseOut],
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
 async def get_user_favorites(email: EmailStr, db: Session=Depends(get_db)):
-    favorites = service.get_user_favorite_courses_by_email(email, db)
+    favorites = service.get_user_favorite_courses_by_email(db, email)
     return favorites
-
-
-# @router.get(
-#     '/reviews/{email}',
-#     response_model=list[schemas.CourseReviewBase],
-#     dependencies=[Depends(glob_dependencies.get_current_user)]
-# )
-# async def get_reviews_by_user_email(email: EmailStr, db: Session=Depends(get_db)):
-#     reviews = service.get_reviews_by_user_email(email, db)
-#     reviews_dict_list = glob_utils.sql_obj_list_to_dict_list(reviews)
-#     return reviews_dict_list
 
 
 @router.post(
@@ -117,17 +98,17 @@ async def create_review(review: schemas.CourseReviewBase, db: Session=Depends(ge
             review[key] = val.value
             
     # check if email exists in DB
-    user = auth_service.get_user_by_email(review['email'], db=db)
+    user = auth_service.get_user_by_email(db, review['email'])
     if not user:
         raise glob_exceptions.EmailNotExistException(review['email'])
         
     # check if subclass exists in DB
-    subclass = service.get_subclass(**review_subclass_items, db=db)
+    subclass = service.get_subclass(db, **review_subclass_items)
     if not subclass:
         raise exceptions.SubclassNotExistException(**review_subclass_items)
     
     # check if user_id already left a review for subclass
-    user_review = service.get_user_review(review['email'], **review_subclass_items, db=db)
+    user_review = service.get_user_review(db, review['email'], **review_subclass_items)
     if user_review:
          raise exceptions.UserAlreadyReviewedCourseException(review['email'], **review_subclass_items)
          
@@ -136,3 +117,28 @@ async def create_review(review: schemas.CourseReviewBase, db: Session=Depends(ge
     db.commit()
     db.refresh(new_review)
     return new_review
+
+
+# GET /courses/{faculty}/{user_email}
+@router.get(
+    '/{faculty}/{email}',
+    response_model=list[schemas.MainPageCourseOut],
+    dependencies=[Depends(glob_dependencies.get_current_user)]
+)
+async def get_courses(faculty: enums.Faculty, email: EmailStr, db: Session=Depends(get_db)):
+    courses = service.get_courses_by_faculty(db, faculty)
+    response = []
+    for c in courses:
+        cid = c.course_id
+        cname = c.name
+        reviews = service.get_reviews_by_course_id(db, cid)
+        num_reviews = len(reviews)
+        is_favorite =  True if service.check_exist_user_favorite_course(db, email, cid) else False
+        response.append({
+            "course_id": cid,
+            "name": cname,
+            "num_reviews": num_reviews,
+            "is_favorite": is_favorite
+        })
+        
+    return response

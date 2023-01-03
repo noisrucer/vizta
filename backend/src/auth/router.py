@@ -30,7 +30,7 @@ async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise exceptions.EmailNotValidHKUEmailException()
         
     # Check if there's a duplicated email in the DB
-    if service.get_user_by_email(email=user_dict['email'], db=db):
+    if service.get_user_by_email(db, email=user_dict['email']):
         raise exceptions.EmailAlreadyExistsException(email=user_dict['email'])
     
     # Hash password
@@ -56,7 +56,7 @@ async def verify_email(verification_info: schemas.VerifyEmail, background_tasks:
         raise exceptions.EmailNotValidHKUEmailException()
         
     # Check if the email has been already registered
-    if service.get_user_by_email(email=email, db=db):
+    if service.get_user_by_email(db, email=email):
         raise exceptions.EmailAlreadyExistsException(email=verification_info['email'])
     
     # Send verification code
@@ -77,7 +77,7 @@ async def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
     ):
-    user = service.authenticate_user(form_data.username, form_data.password, db)
+    user = service.authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise exceptions.InvalidEmailOrPasswordException()
         

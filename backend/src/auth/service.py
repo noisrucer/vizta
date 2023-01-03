@@ -9,7 +9,7 @@ import backend.src.auth.exceptions as exceptions
 import backend.src.auth.utils as utils
 
 
-def get_user_by_email(email: EmailStr, db: Session = Depends(get_db)):
+def get_user_by_email(db: Session, email: EmailStr):
     user = db.query(glob_models.User).filter(glob_models.User.email == email).first()
     return user
 
@@ -18,7 +18,7 @@ def verify_valid_hku_email(email: EmailStr):
     return email.split('@')[-1] == 'connect.hku.hk'
 
 
-def authenticate_user(email: str, password: str, db: Session = Depends(get_db)):
+def authenticate_user(db: Session, email: str, password: str):
     try:
         validation = validate_email(email)
         email = validation.email
