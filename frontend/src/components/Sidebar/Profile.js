@@ -1,414 +1,236 @@
-// 1. Another verification component with a "textfield" and "verify" button
-// 2. Upon successful verification, user is able to click on "signup" button
-// 3. Upon successful signup, user is redirected to the main page
+import axios from 'axios'
+import {useState, useEffect, useContext} from 'react'
+import { UserContext } from '../../UserContext'
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
-import { useState, Fragment, forwardRef, useEffect } from "react";
-import {useNavigate} from 'react-router';
 
-import axios from 'axios';
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import MuiAlert from '@mui/material/Alert';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Snackbar from "../Snackbar";
-import MenuItem from "@mui/material/MenuItem";
+function stringToColor(string) {
+  let hash = 0;
+  let i;
 
-const baseURL = "http://127.0.0.1:8000";
-
-const theme = createTheme(); // customize theme here
-
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
-const majors = [
-  {
-    value: "Computer Science",
-    label: "Computer Science",
-  },
-  {
-    value: "Computer Engineering",
-    label: "Computer Engineering",
-  },
-  {
-    value: "Information System",
-    label: "Information System",
-  },
-  {
-    value: "Other",
-    label: "Others..",
-  },
-];
-
-const Settings = () => {
-  const navigate = useNavigate();
-
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
-  const [verificationError, setVerificationError] = useState(false);
-  const [verificationRequested, setVerificationRequested] = useState(false);
-  const [verificationConfirmStatus, setVerificationConfirmStatus] = useState(false);
-  const [openErrorMessage, setOpenErrorMessage] = useState(false);
-  const [checkOnSubmit, setCheckOnSubmit] = useState(false);
-  const [clickedSignUpButton , setClickedSignUpButton] = useState(false);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [enteredYear, setEnteredYear] = useState('2022-01-01');
-  const [major, setMajor] = useState("Computer Science");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [verificationToken, setVerificationToken] = useState(""); 
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const validate = () => {
-    if (email.length > 0 && password.length > 0 && confirmPassword.length > 0)
-    {
-      return true;
-    } else {
-      return false;
-    }
+  /* eslint-disable no-bitwise */
+  for (i = 0; i < string.length; i += 1) {
+    hash = string.charCodeAt(i) + ((hash << 5) - hash);
   }
 
-  const handleMajorChange = (e) => {
-    setMajor(e.target.value);
+  let color = '#';
+
+  for (i = 0; i < 3; i += 1) {
+    const value = (hash >> (i * 8)) & 0xff;
+    color += `00${value.toString(16)}`.slice(-2);
+  }
+  /* eslint-enable no-bitwise */
+
+  return color;
+}
+
+function stringAvatar(name) {
+  return {
+    sx: {
+      bgcolor: stringToColor(name),
+    },
+    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
   };
+}
 
-  const handleEmailChange = (evt) => {
-    setEmail(evt.target.value);
-  }
+function Profile(){
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    // console.log("password", password);
-  }
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-  }
+  const baseURL = 'http://127.0.0.1:8000'
+  const {UserToken, UserData} = useContext(UserContext)
+  const [userData, setUserData] = UserData
+  const [userToken, setUserToken] = UserToken
 
   useEffect(() => {
-
-    if (!(/[A-Z]/.test(password))){
-      setPasswordError(true)
-    } else {
-      setPasswordError(false)
-    }
-
-    if (!(/[0-9]/.test(password))){
-      setPasswordError(true)
-    } else {
-      setPasswordError(false)
-    }
-
-    if (!(password.length >= 8)){
-      setPasswordError(true)
-    } else {
-      setPasswordError(false)
-    }
-    
-    if (password !== confirmPassword){
-      setConfirmPasswordError(true);
-    } else {
-      setConfirmPasswordError(false);
-    }
-  }, [password, confirmPassword]);
-
-  const closeErrorMessage = () => {
-    setOpenErrorMessage(false)
-  }
-
-  function onChangeVerificationCode (evt) {
-    evt.preventDefault();
-    setVerificationCode(evt.target.value)
-  }
-
-  const handleVerification = (event) => {
-
-    event.preventDefault();
-    axios.post(`${baseURL}/auth/register/verification`, {
-      email: email
-    })
-    .then(response => {
-      console.log(response.data.verification_token)
-      setVerificationToken(response.data.verification_token)
-      setVerificationRequested(true)
-      setEmailError(false)
-    })
-    .catch(err => {
-      console.log(err.response.data.detail)
-      setErrorMessage(err.response.data.detail)
-      setOpenErrorMessage(true)
-    })
-  }
-
-  function handleConfirmVerification (e) {
-
-    setCheckOnSubmit(false)
-
-    if (verificationCode === verificationToken) {
-      setVerificationError(false)
-      setVerificationConfirmStatus(true)
-      console.log("verify success")
-      console.log("check on submit",checkOnSubmit)
-      console.log("verification confirm status",verificationConfirmStatus)
-      setOpenErrorMessage(true)
-    } else {
-      setVerificationError(true)
-      setErrorMessage("Incorrect Authentication Token!")
-      setOpenErrorMessage(true)
-      setVerificationConfirmStatus(false)
-      console.log("verify fail")
-    }
-  }
-
-  const handleSubmit = (e) => {
-
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    console.log("data in sign up")
-    console.log(...data)
-
-    setCheckOnSubmit(true);
-    setClickedSignUpButton(true);
-
-    console.log("emailError: ",emailError)
-    console.log("passwordError: ",passwordError)
-    console.log("confirm password error: ", confirmPasswordError)
-    console.log("verification confirm status: ",verificationConfirmStatus)
-
-    if (!(passwordError) && !(confirmPasswordError) && verificationConfirmStatus)
-    {
-      axios.post(`${baseURL}/auth/register`, {
-        enteredYear: data.get("enteredYear"),
-        email: data.get("email"),
-        major: data.get("major"),
-        password: data.get("password")
+    const fetchProfileData = async () => {
+      axios.request({
+        method: 'get',
+        url: `${baseURL}/users/profile/${userData}`,
+        headers: userToken['headers']
       })
       .then(response => {
-        console.log(response)
-        navigate('/auth/sign-in');
+        const data = response.data
+        console.log(`response from /users/profile/${userData}: `, data)
       })
       .catch(error => {
-        console.log("error in signup: ",error.response.data.detail)
-        setErrorMessage(error.response.data.detail)
-        // console.log({errorMessage})
-        setOpenErrorMessage(true)
+        console.log("error from /users/profile/email: ", error)
       })
-    } else {
-      if (passwordError) {
-        if (!(/[A-Z]/.test(data.get("password")))){
-          setErrorMessage("Password should contain at least 1 Upper and Lower case")
-          setPasswordError(true)
-          setOpenErrorMessage(true)
-        } else if (!(/[0-9]/.test(data.get("password")))){
-          setErrorMessage("Password should contain at leat one number")
-          setPasswordError(true)
-          setOpenErrorMessage(true)
-        } else if (!(data.get("password").length >= 8)){
-          setErrorMessage("Password shoule be at least 8 characters long")
-          setPasswordError(true)
-          setOpenErrorMessage(true)
-        } else if (confirmPasswordError) {
-          setErrorMessage("Confirm password not same as password!")
-          setConfirmPasswordError(true)
-          setOpenErrorMessage(true)
-        }
-      } 
-      else if(confirmPasswordError) {
-        setErrorMessage("Confirm password not same as password!");
-        setOpenErrorMessage(true);
-      }
-      else {
-        setErrorMessage("Please confirm verification!")
-        setOpenErrorMessage(true)
-      }
-    }
-  };
+    };
+    fetchProfileData();
+  },[])
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 20,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+    <>
+      <Stack direction="row" spacing={2} sx={{display: "flex", justifyContent: "center", marginTop: "100px"}}>
+        <Avatar 
+          {...stringAvatar("Kevin Breinur")} 
+          sx={{width: 200, height: 200}}
+        />
+      </Stack>
+      <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <div>
+        {/* <TextField
+          required
+          id="outlined-required"
+          label="Required"
+          defaultValue="Hello World"
+        />
+        <TextField
+          disabled
+          id="outlined-disabled"
+          label="Disabled"
+          defaultValue="Hello World"
+        />
+        <TextField
+          id="outlined-password-input"
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+        /> */}
+        <TextField
+          id="outlined-read-only-input"
+          label="Read Only"
+          defaultValue="Hello World"
+          InputProps={{
+            readOnly: true,
           }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={8.5}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="HKU Email Address"
-                    value={email}
-                    onChange={handleEmailChange}
-                    name="email"
-                    autoComplete = "true"
-                    error = {emailError && clickedSignUpButton}
-                  />
-              </Grid>
-                <Grid item xs={1}>
-                  <Button
-                    variant = "contained"
-                    size = "large"
-                    onClick = {handleVerification}
-                  >
-                    Verify
-                  </Button>
-                </Grid>
-                { verificationRequested && <Fragment>
-                <Grid item xs={12} sm={8.5}>
-                  <TextField
-                    required
-                    fullWidth
-                    label="enter verification code here..."
-                    name="verification_code"
-                    value={verificationCode}
-                    onChange={onChangeVerificationCode}
-                    error = {verificationError && clickedSignUpButton}
-                  />
-                </Grid>
-                
-                <Grid item xs={1}>
-                  <Button
-                    variant = "contained"
-                    size = "medium"
-                    onClick = {handleConfirmVerification}
-                  >
-                    Confirm
-                  </Button>
-                </Grid>
-                </Fragment>
-                }
-              <Grid item xs={13} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    views={["year"]}
-                    label="Year of Admission"
-                    value = {enteredYear}
-                    minDate={new Date('2012-03-01')}
-                    maxDate={new Date().toISOString().slice(0,10)}
-                    onChange={(evt) => {
-                      console.log("evt[$y]: ", evt['$y'])
-                      const reformatted_year = `${evt['$y']}-01-01`
-                      setEnteredYear(reformatted_year);
-                    }}
-                    renderInput={(params) => 
-                    <TextField 
-                      {...params} 
-                      fullWidth 
-                      helperText={null} 
-                      value = {enteredYear}
-                      name = "enteredYear"
-                      type = "enteredYear"
-                      required
-                      
-                    />}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={13} sm={6}>
-                <TextField
-                  select
-                  required
-                  label="Select Major"
-                  name="major"
-                  type="major"
-                  value={major}
-                  onChange={handleMajorChange}
-                >
-                  {majors.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  error = {passwordError && clickedSignUpButton}
-                  onChange = {handlePasswordChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  error = {confirmPasswordError && clickedSignUpButton}
-                  onChange = {handleConfirmPasswordChange}
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              disabled = {!validate()}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/auth/sign-in" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        {/* <Copyright sx={{ mt: 5 }} /> */}
-        <Snackbar
-          open={openErrorMessage}
-          closeFunc={closeErrorMessage}
-          message={errorMessage}
-        >
-          {
-            verificationConfirmStatus && !(checkOnSubmit) &&
-            <Alert onClose={closeErrorMessage} severity="success" sx={{ width: '100%' }}>
-              Verify Success!
-            </Alert>
-          }
-        </Snackbar>
-      </Container>
-    </ThemeProvider>
-  );
-};
+        />
+        {/* <TextField
+          id="outlined-number"
+          label="Number"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <TextField id="outlined-search" label="Search field" type="search" />
+        <TextField
+          id="outlined-helperText"
+          label="Helper text"
+          defaultValue="Default Value"
+          helperText="Some important text"
+        /> */}
+      </div>
+      <div>
+        <TextField
+          required
+          id="filled-required"
+          label="Required"
+          defaultValue="Hello World"
+          variant="filled"
+        />
+        <TextField
+          disabled
+          id="filled-disabled"
+          label="Disabled"
+          defaultValue="Hello World"
+          variant="filled"
+        />
+        <TextField
+          id="filled-password-input"
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          variant="filled"
+        />
+        <TextField
+          id="filled-read-only-input"
+          label="Read Only"
+          defaultValue="Hello World"
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="filled"
+        />
+        <TextField
+          id="filled-number"
+          label="Number"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="filled"
+        />
+        <TextField
+          id="filled-search"
+          label="Search field"
+          type="search"
+          variant="filled"
+        />
+        <TextField
+          id="filled-helperText"
+          label="Helper text"
+          defaultValue="Default Value"
+          helperText="Some important text"
+          variant="filled"
+        />
+      </div>
+      <div>
+        <TextField
+          required
+          id="standard-required"
+          label="Required"
+          defaultValue="Hello World"
+          variant="standard"
+        />
+        <TextField
+          disabled
+          id="standard-disabled"
+          label="Disabled"
+          defaultValue="Hello World"
+          variant="standard"
+        />
+        <TextField
+          id="standard-password-input"
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          variant="standard"
+        />
+        <TextField
+          id="standard-read-only-input"
+          label="Read Only"
+          defaultValue="Hello World"
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+        <TextField
+          id="standard-number"
+          label="Number"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="standard"
+        />
+        <TextField
+          id="standard-search"
+          label="Search field"
+          type="search"
+          variant="standard"
+        />
+        <TextField
+          id="standard-helperText"
+          label="Helper text"
+          defaultValue="Default Value"
+          helperText="Some important text"
+          variant="standard"
+        />
+      </div>
+    </Box>
+  </>
+  )
+}
 
-export default Settings;
+export default Profile

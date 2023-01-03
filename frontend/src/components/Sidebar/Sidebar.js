@@ -34,25 +34,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const drawerWidth = 240;
 
-// const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-//   ({ theme, open }) => ({
-//     flexGrow: 1,
-//     padding: theme.spacing(3),
-//     transition: theme.transitions.create('margin', {
-//       easing: theme.transitions.easing.sharp,
-//       duration: theme.transitions.duration.leavingScreen,
-//     }),
-//     marginLeft: `-${drawerWidth}px`,
-//     ...(open && {
-//       transition: theme.transitions.create('margin', {
-//         easing: theme.transitions.easing.easeOut,
-//         duration: theme.transitions.duration.enteringScreen,
-//       }),
-//       marginLeft: 0,
-//     }),
-//   }),
-// );
-
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
@@ -166,7 +147,7 @@ export default function Sidebar() {
           <Button variant="primary" href="/" sx={{ marginRight: "20px"}}>Vizta</Button>
           {
             isLoggedIn ? 
-            <Button variant="primary" href="/" sx={{ position: "absolute", right: 20 }}>
+            <Button variant="primary" href="/profile" sx={{ position: "absolute", right: 20 }}>
               <AccountCircleIcon />
             </Button> : 
             <>

@@ -79,11 +79,9 @@ function Main(){
     const [userToken, setUserToken] = UserToken;
     const [userData, setUserData] = UserData;
 
-    console.log("userToken in main: ", userToken);
-    console.log("userData in main: ", userData);
-
     const [courses, setCourses] = useState([]);
     const [favorites, setFavorites] = useState([]);
+    const [favoritesChanged, setFavoritesChanged] = useState(false);
     const [query, setQuery] = useState("");
 
     useEffect(() => {
@@ -112,15 +110,57 @@ function Main(){
           console.log(`response from /courses/favorites/${userData}: `, favorites)
           setFavorites(favorites)
         })
+        .catch(error => {
+          console.log("error in favorites: ", error)
+        })
       }
       fetchFavoritesData();
-    },[])
+    },[favoritesChanged])
 
     const filteredCourses = getFilteredCourses(query, courses)
 
     const handleFavoritesButtonClick = (id, isFavorites) => {
       console.log("course id: ", id)
       console.log("is favorites: ", isFavorites)
+      const data = {
+        "email": userData,
+        "course_id": id
+      }
+      if (isFavorites === false){
+        const addFavorite = async () => {
+          axios.request({
+            method: 'post',
+            url: `${baseURL}/courses/favorite`, 
+            data,
+            headers: userToken['headers']
+          })
+          .then(response => {
+            console.log("response from /courses/favorite: ", response)
+          })
+          .catch(error => {
+            console.log("error in addFavorite: ", error)
+          })
+        };
+        addFavorite();
+      } 
+      else {
+        const deleteFavorite = async () => {
+          axios.request({
+            method: 'delete',
+            url: `${baseURL}/courses/favorite/${userData}/${id}`,
+            headers: userToken['headers']
+          })
+          .then(response => {
+            console.log("response from /courses/favorite/email/courses delete: ",response)
+          })
+          .catch(error => {
+            console.log("error in delete favorite: ", error)
+          })
+        };
+        deleteFavorite();
+      }
+
+      setFavoritesChanged(!favoritesChanged);
 
     }
 
@@ -136,22 +176,28 @@ function Main(){
       to: pageSize
     })
 
+    const [favoritesPagination, setFavoritesPagination] = useState({
+      count: 0,
+      from: 0,
+      to: pageSize
+    })
+
     const handlePageChange = (event, page) => {
       console.log(page)
       const from = (page - 1) * pageSize;
       const to = (page - 1) * pageSize + pageSize;
-
       setPagination({...pagination, from: from, to: to})
     }
 
-    const slicedCourses = filteredCourses.slice(pagination.from, pagination.to)
-    console.log("courses: ", courses)
-    console.log("sliced courses: ", slicedCourses)
+    const handleFavoritesPageChange = (event, page) => {
+      console.log(page)
+      const from = (page - 1) * pageSize;
+      const to = (page - 1) * pageSize + pageSize;
+      setFavoritesPagination({...favoritesPagination, from: from, to: to})
+    }
 
-    useEffect(() => {
-      console.log("pagination: ", pagination)
-      
-    }, [filteredCourses, slicedCourses])
+    const slicedCourses = filteredCourses.slice(pagination.from, pagination.to)
+    const slicedFavorites = favorites.slice(favoritesPagination.from, favoritesPagination.to)
 
     return (
       <Box display="flex" justifyContent="space-around" >
@@ -226,8 +272,8 @@ function Main(){
                   variant="outlined" 
                   shape="rounded" 
                   size="large" 
-                  onChange={handlePageChange
-                }/>
+                  onChange={handlePageChange}
+                />
               </Stack>
             </Box>
         </Box>
@@ -236,13 +282,14 @@ function Main(){
           <Box sx= {{
                 height: 1000,
                 }}>
+              {slicedFavorites.length > 0 ?
               <List>
-                  {favorites.map((value) => (
+                  {slicedFavorites.map((value) => (
                     <>
                       <ListItem 
                         key={value.course_id}
                         >
-                        <IconButton key={value.course_id} >
+                        <IconButton key={value.course_id} onClick={() => handleFavoritesButtonClick(value.course_id, value.is_favorite)}>
                             { value.is_favorite ? 
                             <StarIcon/> : <StarBorderRoundedIcon/>
                             }
@@ -273,7 +320,21 @@ function Main(){
                       <Divider variant="fullWidth" style={{width: "600px"}}/>
                     </>
                   ))}
-              </List>
+              </List> :
+              <>
+                <List>No Items to display</List>
+                <Divider variant="fullWidth" style={{width: "600px"}}/>
+              </>
+              }
+              <Stack spacing={2} sx={{display: "flex", alignItems: "center"}}>
+                <Pagination 
+                  count={Math.ceil(favorites.length / pageSize)}
+                  variant="outlined" 
+                  shape="rounded" 
+                  size="large" 
+                  onChange={handleFavoritesPageChange}
+                />
+              </Stack>
           </Box>
         </Box>
       </Box>
