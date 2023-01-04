@@ -6,6 +6,7 @@ from backend.src.database import get_db
 import backend.src.dependencies as glob_dependencies
 import backend.src.utils as glob_utils
 import backend.src.auth.service as auth_service
+import backend.src.auth.exceptions as auth_exceptions
 import backend.src.course.service as course_service
 import backend.src.user.schemas as schemas
 import backend.src.user.exceptions as exceptions
@@ -16,7 +17,7 @@ router = APIRouter(
     tags=["users"]
 )
 
-
+# Get profile page
 @router.get(
     "/profile/{email}",
     response_model=schemas.UserProfileOut,
@@ -36,4 +37,18 @@ async def get_user_profile(email: EmailStr, db: Session=Depends(get_db)):
     }
     
     return response
+    
+
+# Update profile page (password)
+@router.patch(
+    "/users/{email}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(glob_dependencies.get_current_user)]
+)
+async def update_password(email: EmailStr, update_info: schemas.UpdatePasswordIn, db: Session=Depends(get_db)):
+    update_info = update_info.dict()
+    user = auth_service.authenticate_user(db, email, update_info['old_password'])
+    if not user:
+        raise auth_exceptions.InvalidEmailOrPasswordException()
+    service.update_password(db, user, update_info['new_password'])
     
