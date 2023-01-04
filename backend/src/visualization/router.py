@@ -5,9 +5,9 @@ from typing import Union
 
 from fastapi import APIRouter, Depends
 
-import backend.src.courses.models as course_models
-import backend.src.courses.enums as course_enums
-import backend.src.courses.exceptions as course_exceptions
+import backend.src.course.models as course_models
+import backend.src.course.enums as course_enums
+import backend.src.course.exceptions as course_exceptions
 
 import backend.src.visualization.service as visualization_service
 import backend.src.visualization.schemas as schemas

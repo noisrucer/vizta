@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import Union, Mapping
 
-import backend.src.courses.enums as course_enums
+import backend.src.course.enums as course_enums
 
 
 class TimeslotBase(BaseModel):

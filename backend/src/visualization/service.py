@@ -3,7 +3,7 @@ from typing import Union
 from sqlalchemy.orm import Session, InstrumentedAttribute
 from sqlalchemy import func, outerjoin, column, select, case
 
-import backend.src.courses.models as course_models
+import backend.src.course.models as course_models
 from backend.src.visualization.constants import gpa_mapping
 
 
