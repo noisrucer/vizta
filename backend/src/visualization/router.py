@@ -52,7 +52,7 @@ async def get_grading_ratio(course_id: str, db: Session = Depends(get_db)):
     results = {}
     for prof in profs:
         ratio = visualization_service.get_newest_grading_ratio(db, course_id, prof, grade_constitution)
-        results |= {prof: zip(*ratio)[0] if ratio is not None else None}
+        results |= {prof: [_ for _ in ratio] if ratio is not None else None}
 
     return {
         "Constitution": [glob_utils.capitalize_variable(gc.key[:gc.key.rfind('_')]) for gc in grade_constitution],
