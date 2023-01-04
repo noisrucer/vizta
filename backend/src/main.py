@@ -7,6 +7,7 @@ from backend.src.database import engine
 from backend.src.auth.router import router as auth_router
 from backend.src.course.router import router as course_router
 from backend.src.user.router import router as user_router
+from backend.src.visualization.router import router as visualization_router
 import backend.src.models as glob_models
 import backend.src.auth.models as auth_models
 import backend.src.course.models as course_models
@@ -35,6 +36,7 @@ async def email_validation_handler(request, exc):
 app.include_router(auth_router)
 app.include_router(course_router)
 app.include_router(user_router)
+app.include_router(visualization_router)
 
 @app.get("/")
 async def root():
