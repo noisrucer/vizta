@@ -11,7 +11,6 @@ import backend.src.courses.exceptions as course_exceptions
 
 import backend.src.visualization.service as visualization_service
 import backend.src.visualization.schemas as schemas
-from backend.src.visualization.constants import gpa_mapping
 
 import backend.src.dependencies as glob_dependencies
 import backend.src.utils as glob_utils
@@ -24,39 +23,66 @@ router = APIRouter(
 )
 
 
-@router.get('/{course_id}/info',
+@router.get('/{course_id}/general_info',
             dependencies=[Depends(glob_dependencies.get_current_user)])
 async def get_course_general_information(course_id: str, db: Session = Depends(get_db)):
     course = visualization_service.get_course_by_course_id(db, course_id)
     if not course:
         raise course_exceptions.CourseNotExistException(course_id)
 
-    return {
-        "CourseID": course.course_id,
-        "Name": course.name,
-        "Faculty": course.faculty,
-        "Description": course.description
-    }
+    profs = visualization_service.get_all_prof_of_course(db, course_id)
 
-
-@router.get('/{course_id}/grading',
-            dependencies=[Depends(glob_dependencies.get_current_user)])
-async def get_grading_ratio(course_id: str, db: Session = Depends(get_db)):
     grade_constitution = [course_models.Subclass.final_exam_ratio,
                           course_models.Subclass.midterm_ratio,
                           course_models.Subclass.assignments_ratio,
                           course_models.Subclass.project_ratio]
 
-    profs = visualization_service.get_all_prof_of_course(db, course_id)
-
-    results = {}
+    gradings = {}
     for prof in profs:
         ratio = visualization_service.get_newest_grading_ratio(db, course_id, prof, grade_constitution)
-        results |= {prof: [_ for _ in ratio] if ratio is not None else None}
+        gradings |= {prof: [_ for _ in ratio] if ratio is not None else None}
+
+    newest_semester = visualization_service.get_newest_semester_of_review(db, course_id)
+
+    time_table = {}
+    if newest_semester:
+        query_list = [course_models.SubclassInfo.subclass_id,
+                      course_models.SubclassInfo.week_day, course_models.SubclassInfo.stime,
+                      course_models.SubclassInfo.etime,
+                      course_models.SubclassInfo.class_loca, course_models.Subclass.professor_name]
+
+        # Fourth query, get timetable
+        timetables = \
+            visualization_service.get_timetable(db, course_id, newest_semester[0], newest_semester[1], query_list)
+
+        def get(ttb, col):
+            return ttb[query_list.index(col)]
+
+        for tb in timetables:
+            subclass_id = get(tb, course_models.SubclassInfo.subclass_id)
+            if subclass_id not in time_table:
+                time_table[subclass_id] = {"Timeslots": [],
+                                          "Instructor": get(tb, course_models.Subclass.professor_name)}
+            time_table[subclass_id]["Timeslots"].append({
+                "Weekday": get(tb, course_models.SubclassInfo.week_day),
+                "StartTime": get(tb, course_models.SubclassInfo.stime),
+                "EndTime": get(tb, course_models.SubclassInfo.etime),
+                "Location": get(tb, course_models.SubclassInfo.class_loca)
+            })
 
     return {
-        "Constitution": [glob_utils.capitalize_variable(gc.key[:gc.key.rfind('_')]) for gc in grade_constitution],
-        "Values": results
+        "CourseID": course.course_id,
+        "Name": course.name,
+        "Faculty": course.faculty,
+        "Description": course.description,
+
+        # grading ratio
+        "GradingRatio": {
+            "Constitution": [glob_utils.capitalize_variable(gc.key[:gc.key.rfind('_')]) for gc in grade_constitution],
+            "Values": gradings
+        },
+
+        "Timetable": time_table
     }
 
 
@@ -129,9 +155,6 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
             dependencies=[Depends(glob_dependencies.get_current_user)])
 async def get_general_visualization(course_id: str, year: Union[int, None] = None, professor: Union[str, None] = None,
                                     db: Session = Depends(get_db)):
-    # when year/professor are default, return timetable
-    is_timetable = year is None and professor is None
-
     # First query, all review
     reviews = visualization_service.get_all_review(db, course_id, year, professor)
 
@@ -173,36 +196,4 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
         }
     }
 
-    tb_result = None
-    if is_timetable:
-        # Third query, get the newest semester of available subclass
-        newest_semester = visualization_service.get_newest_semester_of_review(db, course_id)
-
-        if newest_semester:
-            query_list = [course_models.SubclassInfo.subclass_id,
-                          course_models.SubclassInfo.week_day, course_models.SubclassInfo.stime,
-                          course_models.SubclassInfo.etime,
-                          course_models.SubclassInfo.class_loca, course_models.Subclass.professor_name]
-
-            # Fourth query, get timetable
-            timetables = \
-                visualization_service.get_timetable(db, course_id, newest_semester[0], newest_semester[1], query_list)
-
-            def get(ttb, col):
-                return ttb[query_list.index(col)]
-
-            tb_result = {}
-            for tb in timetables:
-                subclass_id = get(tb, course_models.SubclassInfo.subclass_id)
-                if subclass_id not in tb_result:
-                    tb_result[subclass_id] = {"Timeslots": [],
-                                              "Instructor": get(tb, course_models.Subclass.professor_name)}
-                tb_result[subclass_id]["Timeslots"].append({
-                    "Weekday": get(tb, course_models.SubclassInfo.week_day),
-                    "StartTime": get(tb, course_models.SubclassInfo.stime),
-                    "EndTime": get(tb, course_models.SubclassInfo.etime),
-                    "Location": get(tb, course_models.SubclassInfo.class_loca)
-                })
-
-    result |= {"Timetable": tb_result}
     return result
