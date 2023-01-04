@@ -12,7 +12,7 @@ def get_course_by_course_id(db: Session, course_id: str):
 
 
 def get_newest_grading_ratio(db: Session, course_id: str, prof_name: str, grade_constitution: [InstrumentedAttribute]):
-    return db.query(*grade_constitution). \
+    return db.query(*[gc.label(gc.key) for gc in grade_constitution]). \
         filter(course_models.Subclass.course_id == course_id,
                course_models.Subclass.professor_name == prof_name,
                # Assume all ratio are either null together or not null together
