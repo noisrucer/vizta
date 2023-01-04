@@ -99,8 +99,8 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
 async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
     # First query, average value on reviews by prof
     mcr = course_models.CourseReview
-    avg_column = [mcr.workload, mcr.lecture_difficulty, mcr.final_exam_difficulty, mcr.course_entertaining,
-                  mcr.course_delivery, mcr.course_interactivity]
+    avg_column = [mcr.workload, mcr.lecture_difficulty, mcr.final_exam_difficulty,
+                  mcr.course_entertaining, mcr.course_delivery, mcr.course_interactivity]
 
     avg_reviews_by_prof = visualization_service.get_prof_stats(db, course_id, avg_column)
 
@@ -110,8 +110,15 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
     return {
         prof_review[0]: {
             # i + 1 as first column is professor name in prof_review
-            glob_utils.capitalize_variable(ac.key): prof_review[i + 1]
-            for i, ac in enumerate(avg_column)
+            "LectureDifficulty": prof_review[avg_column.index(mcr.lecture_difficulty) + 1],
+            "FinalDifficulty": prof_review[avg_column.index(mcr.final_exam_difficulty) + 1],
+            "Workload": prof_review[avg_column.index(mcr.workload) + 1],
+            "TeachingQuality":
+                (
+                        prof_review[avg_column.index(mcr.course_entertaining) + 1] +
+                        prof_review[avg_column.index(mcr.course_delivery) + 1] +
+                        prof_review[avg_column.index(mcr.course_interactivity) + 1]
+                ) / 3
         }
         for prof_review in avg_reviews_by_prof
     }
