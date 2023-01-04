@@ -135,8 +135,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     avg_reviews = visualization_service.get_course_average_review(db, course_id, avg_column, year, professor)
 
     # Third query, avg gpa
-    avg_gpa = visualization_service.get_course_average_gpa(db, course_id)[0]
-    avg_gpa_letter = min(gpa_mapping, key=lambda x: abs(x[1] - avg_gpa))[0]
+    avg_gpa = visualization_service.get_course_average_gpa(db, course_id, year, professor)[0]
 
     # convert any Decimal object to float
     avg_reviews = [float(c) if isinstance(c, Decimal) else c for c in avg_reviews]
@@ -152,7 +151,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
             "Interactivity": glob_utils.count_enum([_.course_interactivity for _ in reviews], course_enums.NumericEval)
         },
         "Pentagon": {
-            "GPA": avg_gpa_letter,
+            "GPA": avg_gpa,
             "LectureDifficulty": avg_reviews[avg_column.index(mcr.lecture_difficulty)],
             "FinalDifficulty": avg_reviews[avg_column.index(mcr.final_exam_difficulty)],
             "Workload": avg_reviews[avg_column.index(mcr.workload)],
