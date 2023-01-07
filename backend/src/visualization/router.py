@@ -62,7 +62,7 @@ async def get_course_general_information(course_id: str, db: Session = Depends(g
             subclass_id = get(tb, course_models.SubclassInfo.subclass_id)
             if subclass_id not in time_table:
                 time_table[subclass_id] = {"Timeslots": [],
-                                          "Instructor": get(tb, course_models.Subclass.professor_name)}
+                                           "Instructor": get(tb, course_models.Subclass.professor_name)}
             time_table[subclass_id]["Timeslots"].append({
                 "Weekday": get(tb, course_models.SubclassInfo.week_day),
                 "StartTime": get(tb, course_models.SubclassInfo.stime),
@@ -87,6 +87,12 @@ async def get_course_general_information(course_id: str, db: Session = Depends(g
 
 
 @router.get('/{course_id}/years',
+            dependencies=[Depends(glob_dependencies.get_current_user)])
+async def get_available_years(course_id: str, db: Session = Depends(get_db)):
+    return visualization_service.get_all_years_of_course_review(db, course_id)
+
+
+@router.get('/{course_id}/by_years',
             dependencies=[Depends(glob_dependencies.get_current_user)])
 async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
     # First query, average value on reviews by year
@@ -121,6 +127,12 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
 
 
 @router.get('/{course_id}/professors',
+            dependencies=[Depends(glob_dependencies.get_current_user)])
+async def get_available_professors(course_id: str, db: Session = Depends(get_db)):
+    return visualization_service.get_all_prof_of_course(db, course_id)
+
+
+@router.get('/{course_id}/by_professors',
             dependencies=[Depends(glob_dependencies.get_current_user)])
 async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
     # First query, average value on reviews by prof
