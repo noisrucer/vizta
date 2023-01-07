@@ -116,6 +116,17 @@ async def create_review(review: schemas.CourseReviewBase, db: Session=Depends(ge
     db.add(new_review)
     db.commit()
     db.refresh(new_review)
+
+    # update grading ratio
+    new_ratio = service.get_majority_ratio(db, **{**review_subclass_items, 'min_count': 5})
+    if len(new_ratio) != 0:
+        new_ratio = new_ratio[0]
+        service.update_grading_ratio(db, **{**review_subclass_items,
+                                            'final_exam_ratio': new_ratio[0],
+                                            'midterm_ratio': new_ratio[1],
+                                            'assignments_ratio': new_ratio[2],
+                                            'project_ratio': new_ratio[3]})
+
     return new_review
 
 

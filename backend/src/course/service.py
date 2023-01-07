@@ -1,6 +1,6 @@
 from fastapi import Depends, Path
 from sqlalchemy.orm import Session
-from sqlalchemy import and_, or_, not_
+from sqlalchemy import and_, or_, not_, func
 from pydantic import EmailStr
 
 from backend.src.database import get_db
@@ -129,3 +129,44 @@ def get_user_review(
     return user_review
     
 
+def get_majority_ratio(db: Session,
+                       subclass_id: str,
+                       course_id: str,
+                       academic_year: int,
+                       semester: int,
+                       min_count: int):
+    formation = [models.CourseReview.final_exam_ratio,
+                 models.CourseReview.midterm_ratio,
+                 models.CourseReview.assignments_ratio,
+                 models.CourseReview.project_ratio]
+
+    return db.query(*formation, func.count(formation[0])). \
+        filter(models.CourseReview.subclass_id == subclass_id,
+               models.CourseReview.course_id == course_id,
+               models.CourseReview.academic_year == academic_year,
+               models.CourseReview.semester == semester). \
+        group_by(*formation). \
+        having(func.count(formation[0]) >= min_count). \
+        limit(1). \
+        all()
+
+
+def update_grading_ratio(db: Session,
+                         subclass_id: str,
+                         course_id: str,
+                         academic_year: int,
+                         semester: int,
+                         final_exam_ratio: int,
+                         midterm_ratio: int,
+                         assignments_ratio: int,
+                         project_ratio: int):
+    db.query(models.Subclass). \
+        filter(models.Subclass.subclass_id == subclass_id,
+               models.Subclass.course_id == course_id,
+               models.Subclass.academic_year == academic_year,
+               models.Subclass.semester == semester). \
+        update({'final_exam_ratio': final_exam_ratio,
+                'midterm_ratio': midterm_ratio,
+                'assignments_ratio': assignments_ratio,
+                'project_ratio': project_ratio})
+    db.commit()
