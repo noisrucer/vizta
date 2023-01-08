@@ -21,6 +21,7 @@ import StarIcon from '@mui/icons-material/Star';
 import axios from 'axios';
 import Pagination from "@mui/material/Pagination";
 import Stack from '@mui/material/Stack';
+import { useNavigate } from 'react-router-dom';
 
 
 const baseURL = 'http://127.0.0.1:8000';
@@ -74,6 +75,8 @@ const Search = styled("div")(({ theme }) => ({
   };
 
 function Main(){
+    const navigate = useNavigate();
+
     // document.body.style.backgroundColor = "#110F44"
     const {UserToken, UserData} = useContext(UserContext);
     const [userToken, setUserToken] = UserToken;
@@ -166,6 +169,7 @@ function Main(){
 
     const handleListItemClick = (e) => {
       console.log("key: ", e)
+      navigate(`/visualization/${e}`)
     }
 
     const pageSize = 5;

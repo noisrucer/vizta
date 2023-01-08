@@ -9,13 +9,11 @@ import Sidebar from "./components/Sidebar/Sidebar";
 // import RouteError from "./RouteError";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Profile from "./components/Sidebar/Profile";
+import Visualization from "./pages/Visualization/Visualization";
 
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
-    // secondary: {
-    //   // main: "#dd0000",
-    // }
   },
 });
 
@@ -32,6 +30,9 @@ const App = () => {
             <Route path="/auth/me"></Route>
             <Route path="/main" element={<Main />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/visualization" >
+              <Route path=":courseId" element={<Visualization />}></Route>
+            </Route>
           </Route>
         </Routes>
       </UserProvider>
