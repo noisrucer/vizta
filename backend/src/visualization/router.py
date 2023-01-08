@@ -182,15 +182,18 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     # convert any Decimal object to float
     avg_reviews = [float(c) if isinstance(c, Decimal) else c for c in avg_reviews]
 
+    def to_key_value_list(values, enumTy):
+        return glob_utils.dict_as_list(glob_utils.count_enum(values, enumTy))
+
     result = {
-        "GPA": glob_utils.count_enum([_.gpa for _ in reviews], course_enums.GPA),
-        "LectureDifficulty": glob_utils.count_enum([_.lecture_difficulty for _ in reviews], course_enums.NumericEval),
-        "FinalDifficulty": glob_utils.count_enum([_.final_exam_difficulty for _ in reviews], course_enums.NumericEval),
-        "Workload": glob_utils.count_enum([_.workload for _ in reviews], course_enums.NumericEval),
+        "GPA": to_key_value_list([_.gpa for _ in reviews], course_enums.GPA),
+        "LectureDifficulty": to_key_value_list([_.lecture_difficulty for _ in reviews], course_enums.NumericEval),
+        "FinalDifficulty": to_key_value_list([_.final_exam_difficulty for _ in reviews], course_enums.NumericEval),
+        "Workload": to_key_value_list([_.workload for _ in reviews], course_enums.NumericEval),
         "TeachingQuality": {
-            "Entertaining": glob_utils.count_enum([_.course_entertaining for _ in reviews], course_enums.NumericEval),
-            "Delivery": glob_utils.count_enum([_.course_delivery for _ in reviews], course_enums.NumericEval),
-            "Interactivity": glob_utils.count_enum([_.course_interactivity for _ in reviews], course_enums.NumericEval)
+            "Entertaining": to_key_value_list([_.course_entertaining for _ in reviews], course_enums.NumericEval),
+            "Delivery": to_key_value_list([_.course_delivery for _ in reviews], course_enums.NumericEval),
+            "Interactivity": to_key_value_list([_.course_interactivity for _ in reviews], course_enums.NumericEval)
         },
         "Pentagon": {
             "GPA": avg_gpa,

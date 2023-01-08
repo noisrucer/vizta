@@ -40,6 +40,10 @@ def count_enum(values, enumTy):
     return {k.value: 0 for k in enumTy} | Counter(values)
 
 
+def dict_as_list(dct: dict):
+    return {"keys": list(dct.keys()), "values": list(dct.values())}
+
+
 def sql_obj_list_to_dict_list(sql_obj_list):
     return [sql_obj_to_dict(sql_obj) for sql_obj in sql_obj_list]
 
