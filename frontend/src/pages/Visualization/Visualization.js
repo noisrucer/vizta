@@ -19,9 +19,6 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ClassIcon from '@mui/icons-material/Class';
 import BarChart from './BarChart';
 
-const { tableau } = window;
-const tableauURL = ``
-
 const baseURL = 'http://127.0.0.1:8000'
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -49,6 +46,38 @@ const Visualization = () => {
         Workload: {}
     });
 
+    const [GPA, setGPA] = useState({
+        labels: ["A", "A+", "A-", "B", "B+", "B-", "C", "C+", "C-", "D", "D+", "D-", "F"],
+        datasets: [{
+            label: "Students Score",
+            data: []
+        }]
+    })
+
+    const [lectureDifficulty, setLectureDifficulty] = useState({
+        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        datasets: [{
+            label: "Students Score",
+            data: []
+        }]
+    })
+
+    const [finalDifficulty, setFinalDifficulty] = useState({
+        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        datasets: [{
+            label: "Students Score",
+            data: []
+        }]
+    })
+
+    const [workload, setWorkload] = useState({
+        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        datasets: [{
+            label: "Students Score",
+            data: []
+        }]
+    })
+
     const [courseDescription, setCourseDescription] = useState({});
 
     useEffect(() => {
@@ -60,6 +89,22 @@ const Visualization = () => {
             })
             .then(response => {
                 setCourseInfo(response.data)
+                setGPA({...GPA, datasets: [{
+                    label: "Students Score",
+                    data: response.data.GPA.values
+                }]})
+                setLectureDifficulty({...lectureDifficulty, datasets: [{
+                    label: "Students Score",
+                    data: response.data.LectureDifficulty.values
+                }]})
+                setFinalDifficulty({...finalDifficulty, datasets: [{
+                    label: "Students Score",
+                    data: response.data.FinalDifficulty.values
+                }]})
+                setWorkload({...workload, datasets: [{
+                    label: "Students Score",
+                    data: response.data.Workload.values
+                }]})
             })
             .catch(error => {
                 console.log("error from /visualization/course_id: ", error)
@@ -94,38 +139,6 @@ const Visualization = () => {
         'Exam Difficulty',
         'Workload'
         ])
-
-    const [GPA, setGPA] = useState({
-        labels: ["A", "A+", "A-", "B", "B+", "B-", "C", "C+", "C-", "D", "D+", "D-", "F"],
-        datasets: [{
-            label: "Students Score",
-            data: [0, 3, 0, 0, 0, 0, 1 ,0 ,0, 2, 0, 2]
-        }]
-    })
-
-    const [LectureDifficulty, setLectureDifficulty] = useState({
-        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        datasets: [{
-            label: "Students Score",
-            data: [2, 1, 0, 3, 0, 0, 0 ,0, 0, 2]
-        }]
-    })
-
-    const [finalDifficulty, setFinalDifficulty] = useState({
-        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        datasets: [{
-            label: "Students Score",
-            data: [4, 0, 0, 3, 0, 0, 0 ,0 ,0, 1]
-        }]
-    })
-
-    const [workload, setWorkload] = useState({
-        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        datasets: [{
-            label: "Students Score",
-            data: [3, 1, 0, 0, 0, 0, 3, 0, 0, 1]
-        }]
-    })
 
   return (
     <Box sx={{
@@ -178,7 +191,7 @@ const Visualization = () => {
                     </Item>
                     <Item sx={{ width: '45%' }}>
                         Lecture Difficulty
-                        <BarChart chartData={LectureDifficulty}/>
+                        <BarChart chartData={lectureDifficulty}/>
                     </Item>
                 </Stack>
                 <Stack 
