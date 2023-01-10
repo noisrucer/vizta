@@ -7,17 +7,17 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import List from '@mui/material/list';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import SchoolIcon from '@mui/icons-material/School';
 import GradingIcon from '@mui/icons-material/Grading';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ClassIcon from '@mui/icons-material/Class';
+import TimeTable from './TimeTable';
 import BarChart from './BarChart';
+import DoughnutChart from './DoughnutChart';
+import HorizontalBarChart from './HorizontalBarChart';
+import RadarChart from './RadarChart';
+import { height } from '@mui/system';
 
 const baseURL = 'http://127.0.0.1:8000'
 
@@ -28,6 +28,12 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
+
+  function calculateAverage(score, studentEvaluation){
+    score.map((item, index) => {
+        console.log("calculating  average...: ", item * studentEvaluation[index])
+    })
+  }
 
 const Visualization = () => {
     const params = useParams()
@@ -50,7 +56,9 @@ const Visualization = () => {
         labels: ["A", "A+", "A-", "B", "B+", "B-", "C", "C+", "C-", "D", "D+", "D-", "F"],
         datasets: [{
             label: "Students Score",
-            data: []
+            data: [],
+            backgroundColor: "rgba(255,255,255)",
+            borderColor: "rgba(255,255,255)"
         }]
     })
 
@@ -78,7 +86,32 @@ const Visualization = () => {
         }]
     })
 
-    const [courseDescription, setCourseDescription] = useState({});
+    const [pentagon, setPentagon] = useState({
+        labels: ["Final Difficulty", "GPA", "Lecture Difficulty", "Teaching Quality", "Workload"],
+        datasets: [{
+            label: "Overall Score",
+            data: []
+        }]
+    })
+
+    const [courseDescription, setCourseDescription] = useState({
+        CourseID: "",
+        Description: "",
+        Faculty: "",
+        GradingRatio: {},
+        Name: "",
+        Timetable: {}
+    });
+
+    const [gradingRatio, setGradingRatio] = useState({
+        labels: ["Final Exam", "Midterm", "Assignments", "Project"],
+        datasets: [{
+            label: "",
+            data: [50, 0, 50, 0]
+        }]
+    });
+
+    const [timeTable, setTimeTable] = useState({});
 
     useEffect(() => {
         const fetchCourseData = async () => {
@@ -105,6 +138,17 @@ const Visualization = () => {
                     label: "Students Score",
                     data: response.data.Workload.values
                 }]})
+                calculateAverage(response.data.TeachingQuality.Delivery.keys, response.data.TeachingQuality.Delivery.values)
+                setPentagon({...pentagon, datasets: [{
+                    label: "Overall Score",
+                    data: [
+                        response.data.Pentagon.FinalDifficulty,
+                        response.data.Pentagon.GPA,
+                        response.data.Pentagon.LectureDifficulty,
+                        response.data.Pentagon.TeachingQuality,
+                        response.data.Pentagon.Workload
+                    ]
+                }]})
             })
             .catch(error => {
                 console.log("error from /visualization/course_id: ", error)
@@ -120,6 +164,11 @@ const Visualization = () => {
             })
             .then(response => {
                 setCourseDescription(response.data)
+                // setGradingRatio({...gradingRatio, datasets: [{
+                //     label: "",
+                //     data: response.data.GradingRatio.Values
+                // }]})
+                setTimeTable(response.data.Timetable)
             })
             .catch(error => {
                 console.log("error from /visualization/course_id/general_info: ", error)
@@ -131,14 +180,9 @@ const Visualization = () => {
 
     console.log("courseInfo: ", courseInfo)
     console.log("courseDescription: ", courseDescription)
-
-    const [pentagonParams, setPentagonParams] = useState([
-        'GPA', 
-        'Teaching Quality',
-        'Lecture Difficulty',
-        'Exam Difficulty',
-        'Workload'
-        ])
+    console.log("Time Table: ", timeTable)
+    console.log("Grading Ratio: ", gradingRatio)
+    console.log("Pentagon: ", pentagon)
 
   return (
     <Box sx={{
@@ -161,8 +205,13 @@ const Visualization = () => {
                 justifyContent: "center",
                 marginBottom: 5
                 }}>
-            <Item sx={{ width: '20%' }}>Grading Ratio</Item>
-            <Item sx={{ width: '70%' }}>Time Table</Item>
+            <Item sx={{ width: '30%', height: 285}}>
+                Grading Ratio
+                <HorizontalBarChart chartData={gradingRatio}/>
+            </Item>
+            <Item sx={{ width: '60%' }}>
+                <TimeTable chartData={timeTable}/>
+            </Item>
         </Stack>
         <Box sx={{ 
             width: '100%', 
@@ -187,11 +236,11 @@ const Visualization = () => {
                         }}>
                     <Item sx={{ width: '45%' }}>
                         GPA
-                        <BarChart chartData={GPA}/>
+                        <BarChart chartData={GPA} />
                     </Item>
                     <Item sx={{ width: '45%' }}>
                         Lecture Difficulty
-                        <BarChart chartData={lectureDifficulty}/>
+                        <BarChart chartData={lectureDifficulty} />
                     </Item>
                 </Stack>
                 <Stack 
@@ -205,44 +254,72 @@ const Visualization = () => {
                         }}>
                     <Item sx={{ width: '45%' }}>
                         Exam Difficulty
-                        <BarChart chartData={finalDifficulty}/>
+                        <BarChart chartData={finalDifficulty} />
                     </Item>
                     <Item sx={{ width: '45%' }}>
                         Workload
-                        <BarChart chartData={workload}/>
+                        <BarChart chartData={workload} />
                     </Item>
                 </Stack>
             </Stack>
         </Box>
-        <Box sx={{ width: '91.2%', marginTop: 2, marginBottom: 5}}>
+        <Box sx={{ width: '91.2%', marginTop: 2}}>
             <Stack spacing={2}>
                 <Item>Teaching Quality</Item>
             </Stack>
         </Box>
+        <Box sx={{width: '91.2%', marginBottom: 5}}>
+            <Stack direction='row'>
+                <Item sx={{width: "25%"}}>
+                    Delivery
+                    <DoughnutChart chartData={pentagon} />
+                </Item>
+                <Item sx={{width: "25%"}}>
+                    Entertaining
+                    <DoughnutChart chartData={pentagon} />
+                </Item>
+                <Item sx={{width: "25%"}}>
+                    Interactivity
+                    <DoughnutChart chartData={pentagon} />
+                </Item>
+                <Item sx={{width: "25%"}}>
+                    Overall
+                    <DoughnutChart chartData={pentagon} />
+                </Item>
+            </Stack>
+        </Box>
+        <Box sx={{ width: '91.2%', marginBottom: 2}}>
+            <Stack direction='row' spacing={2}>
+                    <Item sx={{width: "20%", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                        <GradingIcon></GradingIcon>
+                        GPA
+                    </Item>
+                    <Item sx={{width: "20%", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                        <SchoolIcon></SchoolIcon>
+                        Teaching Quality
+                    </Item>
+                    <Item sx={{width: "20%", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                        <ClassIcon></ClassIcon>
+                        Lecture Difficulty
+                    </Item>
+                    <Item sx={{width: "20%", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                        <BorderColorIcon></BorderColorIcon>
+                        Final Exan Difficulty
+                    </Item>
+                    <Item sx={{width: "20%", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                        <AccessTimeFilledIcon></AccessTimeFilledIcon>
+                        Workload
+                    </Item>
+            </Stack>
+        </Box>
         <Box sx={{ width: '91.2%'}}>
-            <List sx={{display: "flex", alignItems: 'center'}}>
-                {pentagonParams.map((value, index) => (
-                    <ListItem key={value} >
-                        <ListItemButton 
-                            sx={{
-                                backgroundColor: 'blue'
-                            }}>
-                            <ListItemIcon>
-                                {index === 0 ? <GradingIcon/> : <></>}
-                                {index === 1 ?  <SchoolIcon /> : <></>}
-                                {index === 2 ? <ClassIcon /> : <></>}
-                                {index === 3 ? <BorderColorIcon /> : <></>}
-                                {index === 4 ? <AccessTimeFilledIcon /> : <></>}
-                            </ListItemIcon>
-                            <ListItemText>
-                                {value}
-                            </ListItemText>
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Stack spacing={2}>
-                <Item>Pentagon</Item>
+            <Stack direction='row' spacing={2}>
+                <Item sx={{width: "50%"}}>
+                    <RadarChart chartData={pentagon} />
+                </Item>
+                <Item sx={{width: "50%"}}>
+                    Overall Score: 
+                </Item>
             </Stack>
         </Box>
     </Box>
