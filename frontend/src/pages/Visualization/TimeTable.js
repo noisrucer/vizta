@@ -60,6 +60,15 @@ const rows = [
 export default function TimeTable({chartData}) {
 
   console.log("Time Table chartData: ", chartData);
+
+//   function printElements(data){
+//     data.map((item, index) => {
+//         console.log("time table elements: ", item)
+//     })
+//   }
+
+//   printElements(chartData)
+
   const [page, setPage] = React.useState(0);
   const rowsPerPage = 3;
 

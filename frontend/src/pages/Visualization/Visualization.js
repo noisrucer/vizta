@@ -29,11 +29,22 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-  function calculateAverage(score, studentEvaluation){
+function calculateAverage(score, studentEvaluation){
+    var sum = 0;
+    var numAns = 0;
     score.map((item, index) => {
-        console.log("calculating  average...: ", item * studentEvaluation[index])
+        console.log(`score: ${item} evaluation: ${studentEvaluation[index]} multiple: ${item * studentEvaluation[index]}`)
+        sum += item * studentEvaluation[index]
+        numAns += studentEvaluation[index]
     })
+    console.log(sum/numAns)
+    return [sum/numAns, 10 - sum/numAns]
   }
+
+function calculateOverallAverage(delivery, entertaining, interactivity){
+    const overall = (delivery[0] + entertaining[0] + interactivity[0]) / 3
+    return [overall, 10 - overall]
+}
 
 const Visualization = () => {
     const params = useParams()
@@ -53,11 +64,11 @@ const Visualization = () => {
     });
 
     const [GPA, setGPA] = useState({
-        labels: ["A", "A+", "A-", "B", "B+", "B-", "C", "C+", "C-", "D", "D+", "D-", "F"],
+        labels: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"],
         datasets: [{
             label: "Students Score",
             data: [],
-            backgroundColor: "rgba(255,255,255)",
+            backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
             borderColor: "rgba(255,255,255)"
         }]
     })
@@ -66,7 +77,8 @@ const Visualization = () => {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         datasets: [{
             label: "Students Score",
-            data: []
+            data: [],
+            backgroundColor: ["#FF0000", "#FF3400", "#FF6900", "#FF9E00", "#FFE400", "#E5FF00", "#B0FF00", "#7CFF00", "#35FF00", "#00FF00"]
         }]
     })
 
@@ -74,7 +86,8 @@ const Visualization = () => {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         datasets: [{
             label: "Students Score",
-            data: []
+            data: [],
+            backgroundColor: ["#FF0000", "#FF3400", "#FF6900", "#FF9E00", "#FFE400", "#E5FF00", "#B0FF00", "#7CFF00", "#35FF00", "#00FF00"]
         }]
     })
 
@@ -82,7 +95,44 @@ const Visualization = () => {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         datasets: [{
             label: "Students Score",
-            data: []
+            data: [],
+            backgroundColor: ["#FF0000", "#FF3400", "#FF6900", "#FF9E00", "#FFE400", "#E5FF00", "#B0FF00", "#7CFF00", "#35FF00", "#00FF00"]
+        }]
+    })
+
+    const [delivery, setDelivery] = useState({
+        labels: ["Yes", "No"],
+        datasets: [{
+            label: "Students Score",
+            data: [0, 10],
+            backgroundColor: ["blue" , "#262B31"]
+        }]
+    })
+
+    const [entertaining, setEntertaining] = useState({
+        labels: ["Yes", "No"],
+        datasets: [{
+            label: "Students Score",
+            data: [0, 10],
+            backgroundColor: ["green" , "#262B31"]
+        }]
+    })
+
+    const [interactivity, setInteractivity] = useState({
+        labels: ["Yes", "No"],
+        datasets: [{
+            label: "Students Score",
+            data: [0, 10],
+            backgroundColor: ["red" , "#262B31"]
+        }]
+    })
+
+    const [overallTeachingQuality, setOverallTeachingQuality] = useState({
+        labels: ["Yes", "No"],
+        datasets: [{
+            label: "Students Score",
+            data: [0, 10],
+            backgroundColor: ["purple" , "#262B31"]
         }]
     })
 
@@ -138,7 +188,27 @@ const Visualization = () => {
                     label: "Students Score",
                     data: response.data.Workload.values
                 }]})
-                calculateAverage(response.data.TeachingQuality.Delivery.keys, response.data.TeachingQuality.Delivery.values)
+                const teachingQuality = response.data.TeachingQuality
+                setDelivery({...delivery, datasets: [{
+                    label: "Students Score",
+                    data: calculateAverage(teachingQuality.Delivery.keys, teachingQuality.Delivery.values)
+                }]})
+                setEntertaining({...entertaining, datasets: [{
+                    label: "Students Score",
+                    data: calculateAverage(teachingQuality.Entertaining.keys, teachingQuality.Entertaining.values)
+                }]})
+                setInteractivity({...interactivity, datasets: [{
+                    label: "Students Score",
+                    data: calculateAverage(teachingQuality.Interactivity.keys, teachingQuality.Interactivity.values)
+                }]})
+                setOverallTeachingQuality({... overallTeachingQuality, datasets: [{
+                    label: "Students Score",
+                    data: calculateOverallAverage(
+                        calculateAverage(teachingQuality.Delivery.keys, teachingQuality.Delivery.values),
+                        calculateAverage(teachingQuality.Entertaining.keys, teachingQuality.Entertaining.values),
+                        calculateAverage(teachingQuality.Interactivity.keys, teachingQuality.Interactivity.values)
+                        )
+                }]})
                 setPentagon({...pentagon, datasets: [{
                     label: "Overall Score",
                     data: [
@@ -272,19 +342,19 @@ const Visualization = () => {
             <Stack direction='row'>
                 <Item sx={{width: "25%"}}>
                     Delivery
-                    <DoughnutChart chartData={pentagon} />
+                    <DoughnutChart chartData={delivery} />
                 </Item>
                 <Item sx={{width: "25%"}}>
                     Entertaining
-                    <DoughnutChart chartData={pentagon} />
+                    <DoughnutChart chartData={entertaining} />
                 </Item>
                 <Item sx={{width: "25%"}}>
                     Interactivity
-                    <DoughnutChart chartData={pentagon} />
+                    <DoughnutChart chartData={interactivity} />
                 </Item>
                 <Item sx={{width: "25%"}}>
                     Overall
-                    <DoughnutChart chartData={pentagon} />
+                    <DoughnutChart chartData={overallTeachingQuality} />
                 </Item>
             </Stack>
         </Box>
