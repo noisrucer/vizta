@@ -30,10 +30,12 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'right',
+      display: false
     }
   },
 };
+
+
 
 function HorizontalBarChart({chartData}) {
   return (

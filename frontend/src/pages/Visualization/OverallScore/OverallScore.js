@@ -22,7 +22,7 @@ const OverallScore = (props) => {
         <CircularProgressbar
           value={value}
           text={`${value} %`}
-          circleRatio={0.7} /* Make the circle only 0.7 of the full diameter */
+          circleRatio={1} /* Make the circle only 0.7 of the full diameter */
           styles={{
             trail: {
               strokeLinecap: 'butt',
@@ -39,7 +39,7 @@ const OverallScore = (props) => {
               fill: '#ddd',
             },
           }}
-          strokeWidth={5}
+          strokeWidth={10}
         />
       )}
     </OverallScoreProvider>
