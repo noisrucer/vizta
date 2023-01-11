@@ -14,6 +14,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import GradingIcon from '@mui/icons-material/Grading';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 import ClassIcon from '@mui/icons-material/Class';
 import TimeTable from './TimeTable';
 import BarChart from './BarChart';
@@ -22,8 +23,10 @@ import HorizontalBarChart from './HorizontalBarChart';
 import RadarChart from './RadarChart';
 import OverallScore from './OverallScore/OverallScore';
 import { height } from '@mui/system';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar'
 
-const baseURL = 'http://127.0.0.1:8000'
+const baseURL = 'http://127.0.0.1:8000';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -32,6 +35,13 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
+
+const StickyBox = styled(Box)({
+    position: 'sticky',
+    zIndex: 100,
+    top: 10,
+    left: "76%"
+});
 
 function calculateAverage(score, studentEvaluation){
     var sum = 0;
@@ -49,6 +59,18 @@ function calculateOverallAverage(delivery, entertaining, interactivity){
 }
 
 const Visualization = () => {
+    // const [top, setTop] = useState(0);
+
+    // useEffect(() => {
+    //     function handleScroll() {
+    //       setTop(window.scrollY);
+    //     }
+    //     window.addEventListener("scroll", handleScroll);
+    //     return () => {
+    //       window.removeEventListener("scroll", handleScroll);
+    //     };
+    //   }, []);
+
     const params = useParams()
     const courseId = params.courseId
 
@@ -519,30 +541,56 @@ const Visualization = () => {
                 </Stack>
             </Box>
         </Box>
-        <Box sx={{
+        <AppBar 
+            component="nav" 
+            sx={{
+                backgroundColor: 'black',
+                width: "20%",
+                marginTop: 11,
+                marginRight: 7
+                }}>
+        <StickyBox sx={{
             display: "flex",
             flexDirection: "column",
-            width: "20%"
+            width: "100%",
+            // top: {top}
             }}>
             <Stack 
                 spacing={2} 
                 sx={{
-                    width: '100%',
                     display: "flex", 
                     alignItems: "center", 
                     justifyContent: "center",
                     marginBottom: 5,
-                    marginTop: 20
+                    // marginTop: 11
                     }}>
-                <Item >
+                <Button variant="contained" startIcon={<ReviewsIcon />} sx={{width: "100%"}}>
+                    Add Review
+                </Button>
+                <Item sx={{ width: "100%" }}>
                     Grading Ratio
                     <HorizontalBarChart chartData={gradingRatio}/>
                 </Item>
                 <Item sx={{ width: '100%' }}>
                     <TimeTable chartData={timeTable}/>
                 </Item>
+                <Stack
+                    sx={{
+                        display: "flex", 
+                        flexDirection: "row",
+                        alignItems: "center", 
+                        justifyContent: "center",
+                    }}>
+                    <Button variant="contained" >
+                        Year
+                    </Button>
+                    <Button variant="contained" >
+                        Professor
+                    </Button>
+                </Stack>
             </Stack>
-        </Box>
+        </StickyBox>
+        </AppBar>
     </Box>
   )
 }
