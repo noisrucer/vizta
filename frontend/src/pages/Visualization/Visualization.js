@@ -4,6 +4,8 @@ import axios from 'axios';
 import { UserContext } from '../../UserContext';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import TextField from '@mui/material/Textfield';
+import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
@@ -17,6 +19,7 @@ import BarChart from './BarChart';
 import DoughnutChart from './DoughnutChart';
 import HorizontalBarChart from './HorizontalBarChart';
 import RadarChart from './RadarChart';
+import OverallScore from './OverallScore/OverallScore';
 import { height } from '@mui/system';
 
 const baseURL = 'http://127.0.0.1:8000'
@@ -33,11 +36,9 @@ function calculateAverage(score, studentEvaluation){
     var sum = 0;
     var numAns = 0;
     score.map((item, index) => {
-        console.log(`score: ${item} evaluation: ${studentEvaluation[index]} multiple: ${item * studentEvaluation[index]}`)
         sum += item * studentEvaluation[index]
         numAns += studentEvaluation[index]
     })
-    console.log(sum/numAns)
     return [sum/numAns, 10 - sum/numAns]
   }
 
@@ -52,6 +53,9 @@ const Visualization = () => {
 
     const {UserToken} = useContext(UserContext)
     const [userToken, setUserToken] = UserToken
+
+    const [selectYear, setSelectYear] = useState([0])
+    const [selectProfessor, setSelectProfessor] = useState(["string"])
     
     const [courseInfo, setCourseInfo] = useState({
         FinalDifficulty: {},
@@ -140,7 +144,7 @@ const Visualization = () => {
         labels: ["Final Difficulty", "GPA", "Lecture Difficulty", "Teaching Quality", "Workload"],
         datasets: [{
             label: "Overall Score",
-            data: []
+            data: [],
         }]
     })
 
@@ -246,13 +250,69 @@ const Visualization = () => {
         };
         fecthCourseGeneralInfo();
 
-    }, [])
+        const getAvailableYears = async () => {
+            axios.request({
+                method: 'get',
+                url: `${baseURL}/visualization/${courseId}/years`,
+                headers: userToken['headers']
+            })
+            .then(response => {
+                console.log("getAvailableYears: ", response.data)
+                setSelectYear(response.data)
+            })
+            .catch(error => {
+                console.log("error from /visualization/course_id/years: ",error)
+            })
+        };
+        getAvailableYears();
 
-    console.log("courseInfo: ", courseInfo)
-    console.log("courseDescription: ", courseDescription)
-    console.log("Time Table: ", timeTable)
-    console.log("Grading Ratio: ", gradingRatio)
-    console.log("Pentagon: ", pentagon)
+        const getAvailableProfessors = async () => {
+            axios.request({
+                method: 'get',
+                url: `${baseURL}/visualization/${courseId}/professors`,
+                headers: userToken['headers']
+            })
+            .then(response => {
+                console.log("getAvailableProfessors: ", response.data)
+                setSelectProfessor(response.data)
+            })
+            .catch(error => {
+                console.log("error from /visualization/course_id/professors: ",error)
+            })
+        };
+        getAvailableProfessors();
+
+        const getYearlyTrend = async () => {
+            axios.request({
+                method: 'get',
+                url: `${baseURL}/visualization/${courseId}/by_years`,
+                headers: userToken['headers']
+            })
+            .then(response => {
+                console.log("getYearlyTrends: ", response.data)
+            })
+            .catch(error => {
+                console.log("error from /visualization/course_id/by_years: ", error)
+            })
+        };
+        getYearlyTrend();
+
+        const getProfStats = async () => {
+            axios.request({
+                method: 'get',
+                url: `${baseURL}/visualization/course_id/by_professors`,
+                headers: userToken['headers']
+            })
+            .then(response => {
+                console.log("getProfStats: ", response.data)
+            })
+            .catch(error => {
+                console.log("error from /visualization/course_id/by_professors: ", error)
+            })
+        };
+        getProfStats();
+
+    }, [])
 
   return (
     <Box sx={{
@@ -282,6 +342,46 @@ const Visualization = () => {
             <Item sx={{ width: '60%' }}>
                 <TimeTable chartData={timeTable}/>
             </Item>
+        </Stack>
+        <Stack 
+            spacing={2} 
+            direction="row"
+            sx={{
+                width: "91.2%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 2
+            }}>
+            <Item sx={{ width: '51.5%'}}>
+                Sem 1 2022
+            </Item>
+            <TextField 
+                id="get-by-year"
+                select
+                label="Select Year"
+                // defaultValue={selectYear[0]}
+                sx={{ width: '25%'}}
+            >
+                {selectYear.map((option) => (
+                    <MenuItem key={option} value={option}>
+                        {option}
+                    </MenuItem>
+                ))}
+            </TextField>
+            <TextField 
+                id="get-by-professor"
+                select
+                label="Select Professor"
+                // defaultValue={selectProfessor[0]}
+                sx={{ width: '25%'}}
+            >
+                {selectProfessor.map((option) => (
+                    <MenuItem key={option} value={option}>
+                        {option}
+                    </MenuItem>
+                ))}
+            </TextField>
         </Stack>
         <Box sx={{ 
             width: '100%', 
@@ -387,8 +487,10 @@ const Visualization = () => {
                 <Item sx={{width: "50%"}}>
                     <RadarChart chartData={pentagon} />
                 </Item>
-                <Item sx={{width: "50%"}}>
-                    Overall Score: 
+                <Item sx={{width: "50%", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    <Item sx={{width: "70%"}}>
+                        <OverallScore score={80.7}/>
+                    </Item>
                 </Item>
             </Stack>
         </Box>
