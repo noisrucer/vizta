@@ -316,31 +316,44 @@ const Visualization = () => {
     }
 
     const [conditionalPentagon, setConditionalPentagon] = useState(pentagon);
-    console.log("intial conditional pentagon datasets: ", conditionalPentagon.datasets[0])
+    const [conditionalOverallScore, setConditionalOverallScore] = useState(0);
 
     useEffect(() => {
-        let dynamicPentagonLabel = conditionalPentagon.labels;
+        // let dynamicPentagonLabel = conditionalPentagon.labels;
+        let count = 0;
         let dynamicPentagonData = conditionalPentagon.datasets[0].data;
-        console.log("sex: ", pentagon.labels[0]);
 
         [FEDVariant, GPAVariant, LDVariant, TQVariant, WVariant].map((item, index) => {
-            console.log("Conditional Pentagon labels: ", conditionalPentagon.labels)
-            console.log("Conditional Pentagon datasets: ", conditionalPentagon.datasets[0])
             if(item === 'outlined'){
                 // dynamicPentagonLabel.splice(index, 1, "");
                 dynamicPentagonData.splice(index, 1, 0);
+                if (count === 0){
+                    count += 1
+                }
             }
             if(item === 'contained'){
                 // dynamicPentagonLabel.splice(index, 1, pentagon.labels[index]);
+                count += 1;
+                console.log("???: ", pentagon.datasets[0].data[index])
                 dynamicPentagonData.splice(index, 1, pentagon.datasets[0].data[index]);
             }
         });
-        console.log("label!!: ", dynamicPentagonLabel);
-        console.log("data!!!: ", dynamicPentagonData);
-        setConditionalPentagon({...conditionalPentagon, datasets: [{
-            labels: "students score",
-            data: dynamicPentagonData
-        }]})
+
+        const sum = dynamicPentagonData.reduce((acc, curr) => (acc + Math.round(curr * 100) / 100), 0);
+
+        setConditionalPentagon({...conditionalPentagon, 
+            datasets: [{
+                labels: "students score",
+                data: dynamicPentagonData
+                }]
+        });
+
+        console.log("sum: ", sum);
+        console.log("count: ", count);
+
+        setConditionalOverallScore(Math.round((sum/count) * 10));
+
+
     }, [FEDVariant, GPAVariant, LDVariant, TQVariant, WVariant])
 
   return (
@@ -500,7 +513,7 @@ const Visualization = () => {
                     </Item>
                     <Item sx={{width: "50%", display: "flex", alignItems: "center", justifyContent: "center"}}>
                         <Item sx={{width: "70%"}}>
-                            <OverallScore score={30}/>
+                            <OverallScore score={buttonClick ? conditionalOverallScore : 30}/>
                         </Item>
                     </Item>
                 </Stack>

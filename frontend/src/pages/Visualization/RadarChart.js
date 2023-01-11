@@ -7,8 +7,11 @@ const options = {
     legend: {
       display: false
     }
+  },
+  scale: {
+    suggestedMax: 10
   }
-}
+};
 
 function RadarChart({chartData}) {
   return (
