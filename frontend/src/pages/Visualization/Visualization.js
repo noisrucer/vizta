@@ -114,7 +114,7 @@ const Visualization = () => {
         labels: ["Final Difficulty", "GPA", "Lecture Difficulty", "Teaching Quality", "Workload"],
         datasets: [{
             label: "Overall Score",
-            data: [],
+            data: [10, 10, 10, 10, 10],
         }]
     })
 
@@ -173,6 +173,16 @@ const Visualization = () => {
                         calculateAverage(teachingQuality.Interactivity.keys, teachingQuality.Interactivity.values)
                         ))
                 setPentagon({...pentagon, datasets: [{
+                    label: "Overall Score",
+                    data: [
+                        response.data.Pentagon.FinalDifficulty,
+                        response.data.Pentagon.GPA,
+                        response.data.Pentagon.LectureDifficulty,
+                        response.data.Pentagon.TeachingQuality,
+                        response.data.Pentagon.Workload
+                    ]
+                }]})
+                setConditionalPentagon({...conditionalPentagon, datasets: [{
                     label: "Overall Score",
                     data: [
                         response.data.Pentagon.FinalDifficulty,
@@ -273,30 +283,65 @@ const Visualization = () => {
 
     }, [])
 
-    const [GPAVariant, setGPAVariant] = useState('contained');
-    const handleGPAButtonClick = () => {
-        setGPAVariant(GPAVariant === 'contained' ? 'outlined' : 'contained')
+    const [buttonClick, setButtonClick] = useState(false);
+
+    const [FEDVariant, setFEDVariant] = useState('contained');
+    const handleFEDButtonClick = () => {
+        setButtonClick(true)
+        setFEDVariant(FEDVariant === 'contained' ? 'outlined' : 'contained')
     }
 
-    const [TQVariant, setTQVariant] = useState('contained');
-    const handleTQButtonClick = () => {
-        setTQVariant(TQVariant === 'contained' ? 'outlined' : 'contained')
+    const [GPAVariant, setGPAVariant] = useState('contained');
+    const handleGPAButtonClick = () => {
+        setButtonClick(true)
+        setGPAVariant(GPAVariant === 'contained' ? 'outlined' : 'contained')
     }
 
     const [LDVariant, setLDVariant] = useState('contained');
     const handleLDButtonClick = () => {
+        setButtonClick(true)
         setLDVariant(LDVariant === 'contained' ? 'outlined' : 'contained')
     }
 
-    const [FEDVariant, setFEDVariant] = useState('contained');
-    const handleFEDButtonClick = () => {
-        setFEDVariant(FEDVariant === 'contained' ? 'outlined' : 'contained')
+    const [TQVariant, setTQVariant] = useState('contained');
+    const handleTQButtonClick = () => {
+        setButtonClick(true)
+        setTQVariant(TQVariant === 'contained' ? 'outlined' : 'contained')
     }
 
     const [WVariant, setWVariant] = useState('contained');
     const handleWButtonClick = () => {
+        setButtonClick(true)
         setWVariant(WVariant === 'contained' ? 'outlined' : 'contained')
     }
+
+    const [conditionalPentagon, setConditionalPentagon] = useState(pentagon);
+    console.log("intial conditional pentagon datasets: ", conditionalPentagon.datasets[0])
+
+    useEffect(() => {
+        let dynamicPentagonLabel = conditionalPentagon.labels;
+        let dynamicPentagonData = conditionalPentagon.datasets[0].data;
+        console.log("sex: ", pentagon.labels[0]);
+
+        [FEDVariant, GPAVariant, LDVariant, TQVariant, WVariant].map((item, index) => {
+            console.log("Conditional Pentagon labels: ", conditionalPentagon.labels)
+            console.log("Conditional Pentagon datasets: ", conditionalPentagon.datasets[0])
+            if(item === 'outlined'){
+                // dynamicPentagonLabel.splice(index, 1, "");
+                dynamicPentagonData.splice(index, 1, 0);
+            }
+            if(item === 'contained'){
+                // dynamicPentagonLabel.splice(index, 1, pentagon.labels[index]);
+                dynamicPentagonData.splice(index, 1, pentagon.datasets[0].data[index]);
+            }
+        });
+        console.log("label!!: ", dynamicPentagonLabel);
+        console.log("data!!!: ", dynamicPentagonData);
+        setConditionalPentagon({...conditionalPentagon, datasets: [{
+            labels: "students score",
+            data: dynamicPentagonData
+        }]})
+    }, [FEDVariant, GPAVariant, LDVariant, TQVariant, WVariant])
 
   return (
     <Box sx={{
@@ -431,17 +476,17 @@ const Visualization = () => {
             </Box>
             <Box sx={{ width: '91.2%', marginBottom: 2}}>
                 <Stack direction='row' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    <Button variant={FEDVariant} startIcon={<BorderColorIcon />} onClick={handleFEDButtonClick}>
+                        Final Exam Difficulty
+                    </Button>
                     <Button variant={GPAVariant} startIcon={<GradingIcon />} onClick={handleGPAButtonClick}>
                         GPA
-                    </Button>
-                    <Button variant={TQVariant} startIcon={<SchoolIcon />} onClick={handleTQButtonClick}>
-                        Teaching Quality
                     </Button>
                     <Button variant={LDVariant} startIcon={<ClassIcon />} onClick={handleLDButtonClick}>
                         Lecture Difficulty
                     </Button>
-                    <Button variant={FEDVariant} startIcon={<BorderColorIcon />} onClick={handleFEDButtonClick}>
-                        Final Exam Difficulty
+                    <Button variant={TQVariant} startIcon={<SchoolIcon />} onClick={handleTQButtonClick}>
+                        Teaching Quality
                     </Button>
                     <Button variant={WVariant} startIcon={<AccessTimeFilledIcon />} onClick={handleWButtonClick}>
                         Workload
@@ -451,7 +496,7 @@ const Visualization = () => {
             <Box sx={{ width: '91.2%'}}>
                 <Stack direction='row' spacing={2}>
                     <Item sx={{width: "50%"}}>
-                        <RadarChart chartData={pentagon} />
+                        <RadarChart chartData={buttonClick ? conditionalPentagon : pentagon} />
                     </Item>
                     <Item sx={{width: "50%", display: "flex", alignItems: "center", justifyContent: "center"}}>
                         <Item sx={{width: "70%"}}>
