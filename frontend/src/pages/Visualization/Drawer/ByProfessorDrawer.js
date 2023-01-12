@@ -1,4 +1,4 @@
-import {useState, useEffect, useContext} from 'react';
+import {useState, useEffect, useContext, useRef} from 'react';
 import { UserContext } from '../../../UserContext';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import axios from 'axios';
+import{ Radar } from 'react-chartjs-2';
 
 const baseURL = 'http://127.0.0.1:8000';
 
@@ -54,6 +55,50 @@ export const ByProfessorDrawer = () => {
         getProfStats();
     }, [])
 
+    const chartRef = useRef(null);
+    const [chartData, setChartData] = useState({
+      labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'],
+      datasets: [
+        {
+          label: 'Dataset 1',
+          data: [1, 2, 3, 4, 5],
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
+        }
+      ]
+    });
+  
+    const addDataset = () => {
+      if(chartRef && chartRef.current && chartRef.current.chartInstance) {
+        const newDataset = {
+          label: 'New dataset',
+          data: [1, 2, 3, 4, 5],
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
+        };
+    
+        chartRef.current.chartInstance.data.datasets.push(newDataset);
+        chartRef.current.chartInstance.update();
+        setChartData({...chartData});
+      }
+    };
+  
+    const removeDataset = () => {
+      if(chartRef && chartRef.current && chartRef.current.chartInstance) {
+        chartRef.current.chartInstance.data.datasets.pop();
+        chartRef.current.chartInstance.update();
+        setChartData({...chartData});
+      }
+    };
+
     return (
         <>
             <Button variant="contained" onClick={() => setIsOpen(true)} sx={{ width: "100%" }}>
@@ -67,7 +112,6 @@ export const ByProfessorDrawer = () => {
                 height: "80%",
                 }}
             >
-
             <Box 
                 textAlign='center' 
                 role='presentation' 
@@ -84,6 +128,12 @@ export const ByProfessorDrawer = () => {
                 By Professor
                 </Typography>
             </Box>
+            <Box sx={{width: "300px", height: "300px"}}>
+                <Radar data={chartData} ref={chartRef} />
+            </Box>
+            <Button onClick={addDataset}>Add dataset</Button>
+            <Button onClick={removeDataset}>Remove dataset</Button>
+
             </Drawer>
         </>
     )}

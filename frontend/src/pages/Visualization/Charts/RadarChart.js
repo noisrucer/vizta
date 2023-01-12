@@ -6,10 +6,23 @@ const options = {
   plugins: {
     legend: {
       display: false
+    },
+    labels: {
+      fontColor: "white"
     }
   },
   scale: {
     suggestedMax: 10
+  },
+  scales: {
+    r: {
+      angleLines: {
+        color: "grey"
+      },
+      grid: {
+        color: "grey"
+      },
+    }
   }
 };
 

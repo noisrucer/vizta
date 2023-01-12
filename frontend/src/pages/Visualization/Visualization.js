@@ -80,7 +80,6 @@ const Visualization = () => {
             label: "Students Score",
             data: [],
             backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
-            borderColor: "rgba(255,255,255)"
         }]
     })
 
@@ -263,9 +262,28 @@ const Visualization = () => {
 
     }, [])
 
-    useEffect(() => { // render component again when select year
+    const [selectedYear, setSelectedYear] = useState("");
+    const [selectedProfessor, setSelectedProfessor] = useState("");
 
-    }, [])
+    useEffect(() => { // render component again when select year
+        const refreshCourseData = async () => {
+            axios.request({
+                method: 'get',
+                url: `${baseURL}/visualization/${courseId}`,
+                year: {selectedYear},
+                professor: {selectedProfessor},
+                headers: userToken['headers']
+            })
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.log("error from courseInfo with select year, prof: ", error)
+            })
+        };
+        refreshCourseData();
+        
+    }, [selectedYear, selectedProfessor])
 
     const [buttonClick, setButtonClick] = useState(false);
 
@@ -367,7 +385,7 @@ const Visualization = () => {
                     marginBottom: 2
                 }}>
                 <Item sx={{ width: '51.5%'}}>
-                    Sem 1 2022
+                    {selectedYear} {selectedProfessor}
                 </Item>
                 <TextField 
                     id="get-by-year"
@@ -377,7 +395,7 @@ const Visualization = () => {
                     defaultValue=""
                 >
                     {selectYear.map((option) => (
-                        <MenuItem key={option} value={option} onClick={ () => console.log(option)}>
+                        <MenuItem key={option} value={option} onClick={() => setSelectedYear(option)}>
                             {option}
                         </MenuItem>
                     ))}
@@ -390,7 +408,7 @@ const Visualization = () => {
                     defaultValue=""
                 >
                     {selectProfessor.map((option) => (
-                        <MenuItem key={option} value={option} onClick={ () => console.log(option) }>
+                        <MenuItem key={option} value={option} onClick={() => setSelectedProfessor(option)}>
                             {option}
                         </MenuItem>
                     ))}
@@ -492,7 +510,7 @@ const Visualization = () => {
             </Box>
             <Box sx={{ width: '91.2%', marginBottom: 5}}>
                 <Stack direction='row' spacing={2}>
-                    <Item sx={{width: "50%"}}>
+                    <Item sx={{width: "50%", backgroundColor: "white"}}>
                         <RadarChart chartData={buttonClick ? conditionalPentagon : pentagon} />
                     </Item>
                     <Item sx={{width: "50%", display: "flex", alignItems: "center", justifyContent: "center"}}>
