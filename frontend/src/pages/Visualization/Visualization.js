@@ -16,14 +16,17 @@ import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import ClassIcon from '@mui/icons-material/Class';
-import TimeTable from './TimeTable';
-import BarChart from './BarChart';
-import DoughnutChart from './DoughnutChart';
-import HorizontalBarChart from './HorizontalBarChart';
-import RadarChart from './RadarChart';
+import TimeTable from './Charts/TimeTable';
+import BarChart from './Charts/BarChart';
+import DoughnutChart from './Charts/DoughnutChart';
+import HorizontalBarChart from './Charts/HorizontalBarChart';
+import RadarChart from './Charts/RadarChart';
 import OverallScore from './OverallScore/OverallScore';
 import { height } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
+import {ByYearDrawer} from "./Drawer/ByYearDrawer";
+import { ByProfessorDrawer } from './Drawer/ByProfessorDrawer';
+import Drawer from "@mui/material/Drawer";
 
 const baseURL = 'http://127.0.0.1:8000';
 
@@ -235,7 +238,6 @@ const Visualization = () => {
                 headers: userToken['headers']
             })
             .then(response => {
-                console.log("getAvailableYears: ", response.data)
                 setSelectYear(response.data)
             })
             .catch(error => {
@@ -251,7 +253,6 @@ const Visualization = () => {
                 headers: userToken['headers']
             })
             .then(response => {
-                console.log("getAvailableProfessors: ", response.data)
                 setSelectProfessor(response.data)
             })
             .catch(error => {
@@ -259,36 +260,6 @@ const Visualization = () => {
             })
         };
         getAvailableProfessors();
-
-        const getYearlyTrend = async () => {
-            axios.request({
-                method: 'get',
-                url: `${baseURL}/visualization/${courseId}/by_years`,
-                headers: userToken['headers']
-            })
-            .then(response => {
-                console.log("getYearlyTrends: ", response.data)
-            })
-            .catch(error => {
-                console.log("error from /visualization/course_id/by_years: ", error)
-            })
-        };
-        getYearlyTrend();
-
-        const getProfStats = async () => {
-            axios.request({
-                method: 'get',
-                url: `${baseURL}/visualization/course_id/by_professors`,
-                headers: userToken['headers']
-            })
-            .then(response => {
-                console.log("getProfStats: ", response.data)
-            })
-            .catch(error => {
-                console.log("error from /visualization/course_id/by_professors: ", error)
-            })
-        };
-        getProfStats();
 
     }, [])
 
@@ -363,6 +334,9 @@ const Visualization = () => {
         setConditionalOverallScore(Math.round((sum/count) * 10));
 
     }, [FEDVariant, GPAVariant, LDVariant, TQVariant, WVariant])
+
+    const [viewByYear, setViewByYear] = useState(false);
+    const [viewByProfessor, setViewByProfessor] = useState(false);
 
   return (
     <Box sx={{
@@ -532,10 +506,11 @@ const Visualization = () => {
         <AppBar 
             component="nav" 
             sx={{
-                backgroundColor: 'black',
+                backgroundColor: '#000000',
                 width: "20%",
+                height: '100%',
                 marginTop: 10,
-                marginRight: 7,
+                marginRight: 6,
                 }}>
             <Box sx={{
                 display: "flex",
@@ -559,15 +534,13 @@ const Visualization = () => {
                         <HorizontalBarChart chartData={gradingRatio}/>
                     </Item>
                     <Item sx={{ width: '100%'}}>
+                        {/* <Box sx={{ width: '1000px', height: '225px'}}>
+                        </Box> */}
                         <TimeTable chartData={timeTable}/>
                     </Item>
 
-                    <Button variant="contained" sx={{ width: "100%" }}>
-                        View By Year
-                    </Button>
-                    <Button variant="contained" sx={{ width: "100%" }}>
-                        View By Professor
-                    </Button>
+                    <ByYearDrawer status={viewByYear}></ByYearDrawer>
+                    <ByProfessorDrawer status={viewByProfessor}></ByProfessorDrawer>
                 </Stack>
             </Box>
         </AppBar>
