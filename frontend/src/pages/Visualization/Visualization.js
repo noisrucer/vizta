@@ -59,17 +59,6 @@ function calculateOverallAverage(delivery, entertaining, interactivity){
 }
 
 const Visualization = () => {
-    // const [top, setTop] = useState(0);
-
-    // useEffect(() => {
-    //     function handleScroll() {
-    //       setTop(window.scrollY);
-    //     }
-    //     window.addEventListener("scroll", handleScroll);
-    //     return () => {
-    //       window.removeEventListener("scroll", handleScroll);
-    //     };
-    //   }, []);
 
     const params = useParams()
     const courseId = params.courseId
@@ -370,11 +359,7 @@ const Visualization = () => {
                 }]
         });
 
-        console.log("sum: ", sum);
-        console.log("count: ", count);
-
         setConditionalOverallScore(Math.round((sum/count) * 10));
-
 
     }, [FEDVariant, GPAVariant, LDVariant, TQVariant, WVariant])
 
@@ -541,56 +526,48 @@ const Visualization = () => {
                 </Stack>
             </Box>
         </Box>
-        <AppBar 
+        {/* <AppBar 
             component="nav" 
             sx={{
                 backgroundColor: 'black',
                 width: "20%",
-                marginTop: 11,
-                marginRight: 7
+                marginTop: 10,
+                marginRight: 7,
+                }}> */}
+            <Box sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "20%",
+                marginTop: 11
                 }}>
-        <StickyBox sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            // top: {top}
-            }}>
-            <Stack 
-                spacing={2} 
-                sx={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center",
-                    marginBottom: 5,
-                    // marginTop: 11
-                    }}>
-                <Button variant="contained" startIcon={<ReviewsIcon />} sx={{width: "100%"}}>
-                    Add Review
-                </Button>
-                <Item sx={{ width: "100%" }}>
-                    Grading Ratio
-                    <HorizontalBarChart chartData={gradingRatio}/>
-                </Item>
-                <Item sx={{ width: '100%' }}>
-                    <TimeTable chartData={timeTable}/>
-                </Item>
-                <Stack
+                <Stack 
+                    spacing={2} 
                     sx={{
                         display: "flex", 
-                        flexDirection: "row",
                         alignItems: "center", 
                         justifyContent: "center",
-                    }}>
-                    <Button variant="contained" >
-                        Year
+                        marginBottom: 5,
+                        }}>
+                    <Button variant="contained" startIcon={<ReviewsIcon />} sx={{width: "100%"}}>
+                        Add Review
                     </Button>
-                    <Button variant="contained" >
-                        Professor
+                    <Item sx={{ width: "100%" }}>
+                        Grading Ratio
+                        <HorizontalBarChart chartData={gradingRatio}/>
+                    </Item>
+                    <Item sx={{ width: '100%'}}>
+                        <TimeTable chartData={timeTable}/>
+                    </Item>
+
+                    <Button variant="contained" sx={{ width: "100%" }}>
+                        View By Year
+                    </Button>
+                    <Button variant="contained" sx={{ width: "100%" }}>
+                        View By Professor
                     </Button>
                 </Stack>
-            </Stack>
-        </StickyBox>
-        </AppBar>
+            </Box>
+        {/* </AppBar> */}
     </Box>
   )
 }
