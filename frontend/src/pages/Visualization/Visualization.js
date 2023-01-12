@@ -24,7 +24,6 @@ import RadarChart from './RadarChart';
 import OverallScore from './OverallScore/OverallScore';
 import { height } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar'
 
 const baseURL = 'http://127.0.0.1:8000';
 
@@ -35,13 +34,6 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
-
-const StickyBox = styled(Box)({
-    position: 'sticky',
-    zIndex: 100,
-    top: 10,
-    left: "76%"
-});
 
 function calculateAverage(score, studentEvaluation){
     var sum = 0;
@@ -129,6 +121,8 @@ const Visualization = () => {
         }]
     })
 
+    const [overallScore, setOverallScore] = useState(0)
+
     const [courseDescription, setCourseDescription] = useState({
         CourseID: "",
         Description: "",
@@ -148,11 +142,13 @@ const Visualization = () => {
 
     const [timeTable, setTimeTable] = useState({});
 
-    useEffect(() => {
+    useEffect(() => { // get request from courseInfo, courseDescription, available year and professor
         const fetchCourseData = async () => {
             axios.request({
                 method: 'get',
                 url: `${baseURL}/visualization/${courseId}`,
+                // year: 2022,
+                // professor: "Lo Yu Sum",
                 headers: userToken['headers']
             })
             .then(response => {
@@ -193,6 +189,8 @@ const Visualization = () => {
                         response.data.Pentagon.Workload
                     ]
                 }]})
+                const sum = [response.data.Pentagon.FinalDifficulty, response.data.Pentagon.GPA, response.data.Pentagon.LectureDifficulty, response.data.Pentagon.TeachingQuality, response.data.Pentagon.Workload].reduce((acc, curr) => (acc + Math.round(curr * 100) / 100), 0);
+                setOverallScore(Math.round((sum/5) * 10));
                 setConditionalPentagon({...conditionalPentagon, datasets: [{
                     label: "Overall Score",
                     data: [
@@ -294,6 +292,10 @@ const Visualization = () => {
 
     }, [])
 
+    useEffect(() => { // render component again when select year
+
+    }, [])
+
     const [buttonClick, setButtonClick] = useState(false);
 
     const [FEDVariant, setFEDVariant] = useState('contained');
@@ -329,7 +331,7 @@ const Visualization = () => {
     const [conditionalPentagon, setConditionalPentagon] = useState(pentagon);
     const [conditionalOverallScore, setConditionalOverallScore] = useState(0);
 
-    useEffect(() => {
+    useEffect(() => { // for dynamic pentagon
         // let dynamicPentagonLabel = conditionalPentagon.labels;
         let count = 0;
         let dynamicPentagonData = conditionalPentagon.datasets[0].data;
@@ -345,7 +347,6 @@ const Visualization = () => {
             if(item === 'contained'){
                 // dynamicPentagonLabel.splice(index, 1, pentagon.labels[index]);
                 count += 1;
-                console.log("???: ", pentagon.datasets[0].data[index])
                 dynamicPentagonData.splice(index, 1, pentagon.datasets[0].data[index]);
             }
         });
@@ -399,9 +400,10 @@ const Visualization = () => {
                     select
                     label="Select Year"
                     sx={{ width: '25%'}}
+                    defaultValue=""
                 >
                     {selectYear.map((option) => (
-                        <MenuItem key={option} value={option}>
+                        <MenuItem key={option} value={option} onClick={ () => console.log(option)}>
                             {option}
                         </MenuItem>
                     ))}
@@ -411,9 +413,10 @@ const Visualization = () => {
                     select
                     label="Select Professor"
                     sx={{ width: '25%'}}
+                    defaultValue=""
                 >
                     {selectProfessor.map((option) => (
-                        <MenuItem key={option} value={option}>
+                        <MenuItem key={option} value={option} onClick={ () => console.log(option) }>
                             {option}
                         </MenuItem>
                     ))}
@@ -474,7 +477,7 @@ const Visualization = () => {
                     <Item>Teaching Quality</Item>
                 </Stack>
             </Box>
-            <Box sx={{width: '91.2%', marginBottom: 5}}>
+            <Box sx={{width: '91.2%', marginBottom: 2}}>
                 <Stack direction='row'>
                     <Item sx={{width: "25%"}}>
                         Delivery
@@ -513,32 +516,32 @@ const Visualization = () => {
                     </Button>
                 </Stack>
             </Box>
-            <Box sx={{ width: '91.2%'}}>
+            <Box sx={{ width: '91.2%', marginBottom: 5}}>
                 <Stack direction='row' spacing={2}>
                     <Item sx={{width: "50%"}}>
                         <RadarChart chartData={buttonClick ? conditionalPentagon : pentagon} />
                     </Item>
                     <Item sx={{width: "50%", display: "flex", alignItems: "center", justifyContent: "center"}}>
                         <Item sx={{width: "70%"}}>
-                            <OverallScore score={buttonClick ? conditionalOverallScore : 30}/>
+                            <OverallScore score={buttonClick ? conditionalOverallScore : overallScore}/>
                         </Item>
                     </Item>
                 </Stack>
             </Box>
         </Box>
-        {/* <AppBar 
+        <AppBar 
             component="nav" 
             sx={{
                 backgroundColor: 'black',
                 width: "20%",
                 marginTop: 10,
                 marginRight: 7,
-                }}> */}
+                }}>
             <Box sx={{
                 display: "flex",
                 flexDirection: "column",
-                width: "20%",
-                marginTop: 11
+                // width: "20%",
+                // marginTop: 11
                 }}>
                 <Stack 
                     spacing={2} 
@@ -567,7 +570,7 @@ const Visualization = () => {
                     </Button>
                 </Stack>
             </Box>
-        {/* </AppBar> */}
+        </AppBar>
     </Box>
   )
 }
