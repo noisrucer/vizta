@@ -26,7 +26,7 @@ import { height } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
 import {ByYearDrawer} from "./Drawer/ByYearDrawer";
 import { ByProfessorDrawer } from './Drawer/ByProfessorDrawer';
-import Drawer from "@mui/material/Drawer";
+import { useSpring, animated } from "react-spring";
 
 const baseURL = 'http://127.0.0.1:8000';
 
@@ -37,6 +37,20 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
+
+function Number({ n }) {
+    const { number } = useSpring({
+        from: { number: 0 },
+        number: n,
+        delay: 200,
+        config: {mass: 1, tension: 20, friction: 10},
+    });
+    return ( 
+        <animated.div style={{ fontSize: '72px'}}>
+                {number.to((n) => n.toFixed(0))}
+        </animated.div>
+    )
+}
 
 function calculateAverage(score, studentEvaluation){
     var sum = 0;
@@ -515,7 +529,12 @@ const Visualization = () => {
                     </Item>
                     <Item sx={{width: "50%", display: "flex", alignItems: "center", justifyContent: "center"}}>
                         <Item sx={{width: "70%"}}>
-                            <OverallScore score={buttonClick ? conditionalOverallScore : overallScore}/>
+                            {/* <OverallScore score={buttonClick ? conditionalOverallScore : overallScore}/> */}
+                            <h3>Overall Score:</h3>
+                            <Stack direction='row' spacing={2} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                <Number n={buttonClick ? conditionalOverallScore : overallScore}/>
+                                <div style={{ fontSize: "24px"}}>/ 100</div>
+                            </Stack>
                         </Item>
                     </Item>
                 </Stack>
