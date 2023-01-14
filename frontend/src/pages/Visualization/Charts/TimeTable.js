@@ -10,16 +10,19 @@ export default function TimeTable(chartData) {
     return (
       <Box sx={{
           height: "95%", 
-          width:"80%", 
+          width:"90%", 
           backgroundColor: "black", 
           border: "2px solid white",
           borderRadius: "10%",
           marginTop: 1,
           marginBottom: 1,
+          display: "flex",
+          flexDirection: "column",
           }}>
-        <h1>Subclass: {subclass}</h1>
-        <h3>Instructor: {instructor}</h3>
-        <h3>TimeSlots: </h3>
+        <h1>{subclass}</h1>
+        <h3>Instructor:</h3>
+        <h4>{instructor}</h4>
+        <h3>TimeSlots:</h3>
         {timeslots.map((item) => (
           <>
             <h4>{item.Weekday}: </h4>
