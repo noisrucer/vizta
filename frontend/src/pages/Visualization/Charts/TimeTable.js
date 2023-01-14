@@ -23,10 +23,10 @@ export default function TimeTable(chartData) {
         <h4>{instructor}</h4>
         <h3>TimeSlots:</h3>
         {timeslots.map((item) => (
-          <>
+          <Box>
             <h4>{item.Weekday}: </h4>
             <h5>{item.StartTime} ~ {item.EndTime} {item.Location}</h5>
-          </>
+          </Box>
         ))}
       </Box>
     )}

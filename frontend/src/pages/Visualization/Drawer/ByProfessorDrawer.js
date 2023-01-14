@@ -68,14 +68,12 @@ export const ByProfessorDrawer = () => {
                   data: [profData[key].LectureDifficulty, profData[key].FinalDifficulty, profData[key].Workload, profData[key].TeachingQuality]
                 };
                 tempData.push(newDataset);
-                console.log("tempData: ", tempData);
               };
               if (tempData.length > 3){
                 setChartData({
                   ...chartData,
                   datasets: tempData
                 });
-                console.log("chartData: ", chartData);
               }
             })
             .catch(error => {

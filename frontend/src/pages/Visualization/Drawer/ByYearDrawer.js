@@ -1,7 +1,8 @@
-import {useState, useEffect, useContext, useRef} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import { UserContext } from '../../../UserContext';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -9,6 +10,13 @@ import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import axios from 'axios';
 import { Line } from "react-chartjs-2";
+import SchoolIcon from '@mui/icons-material/School';
+import GradingIcon from '@mui/icons-material/Grading';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import ClassIcon from '@mui/icons-material/Class';
+import TextField from '@mui/material/Textfield';
+import MenuItem from '@mui/material/MenuItem';
 
 const baseURL = 'http://127.0.0.1:8000';
 
@@ -28,6 +36,17 @@ const StyledBox = styled(Box)(({ theme }) => ({
     left: 'calc(50% - 15px)',
   }));
 
+  const viewOptions = [
+    {
+      value: "byCriteria",
+      label: "By Criteria"
+    },
+    {
+      value: "byProfessor",
+      label: "By Professor"
+    }
+  ];
+
 export const ByYearDrawer = () => {
     
     const params = useParams()
@@ -38,6 +57,11 @@ export const ByYearDrawer = () => {
 
     const [isOpen, setIsOpen] = useState(false);
 
+    const [chartData, setChartData] = useState({
+      labels: [],
+      datasets: []
+    })
+
     useEffect(() => {
       const getYearlyTrend = async () => {
         axios.request({
@@ -46,7 +70,21 @@ export const ByYearDrawer = () => {
             headers: userToken['headers']
         })
         .then(response => {
-            console.log("getYearlyTrends: ", response.data)
+            const yearData = response.data;
+            console.log("yearData: ", yearData);
+            const tempData = []
+
+            yearData.professors.map((item, index) => {
+
+              const newDataSet = {
+                label: item,
+                data: yearData.FinalExamDifficulty[index]
+              };
+              tempData.push(newDataSet);
+            });
+            if (tempData.length > 3){
+              setChartData({...chartData, labels: yearData.years, datasets: tempData});
+            }
         })
         .catch(error => {
             console.log("error from /visualization/course_id/by_years: ", error)
@@ -55,22 +93,36 @@ export const ByYearDrawer = () => {
     getYearlyTrend();
     }, [])
 
-    const chartRef = useRef(null);
-    const [chartData, setChartData] = useState({
-      labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'],
-      datasets: [
-        {
-          label: 'Dataset 1',
-          data: [1, 2, 3, 4, 5],
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
-        }
-      ]
-    });
+    const [title, setTitle] = useState("Final Exam Difficulty")
+
+    function changeCriteria(criteria) {
+      setTitle(criteria)
+      axios.request({
+        method: 'get',
+        url: `${baseURL}/visualization/${courseId}/by_years`,
+        headers: userToken['headers']
+      })
+      .then(response => {
+          const yearData = response.data;
+          console.log("yearData: ", yearData);
+          const tempData = []
+
+          yearData.professors.map((item, index) => {
+
+            const newDataSet = {
+              label: item,
+              data: yearData[criteria][index]
+            };
+            tempData.push(newDataSet);
+          });
+          if (tempData.length > 3){
+            setChartData({...chartData, labels: yearData.years, datasets: tempData});
+          }
+      })
+      .catch(error => {
+          console.log("error from /visualization/course_id/by_years: ", error)
+      })
+    }
 
     return (
         <>
@@ -81,7 +133,11 @@ export const ByYearDrawer = () => {
             PaperProps={{
               sx: { 
                 borderTopRightRadius: 30,
-                borderTopLeftRadius: 30
+                borderTopLeftRadius: 30,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center"
               }
             }}
             anchor="bottom"
@@ -89,6 +145,7 @@ export const ByYearDrawer = () => {
             onClose={() => setIsOpen(false)}
             sx={{
                 height: "80%",
+                display:"flex",
                 }}
             >
               <Box 
@@ -101,13 +158,58 @@ export const ByYearDrawer = () => {
                       }} >
                 <Puller/>
               </Box>
-              <Box p={4} textAlign='center' role='presentation' >
-                  <Typography variant="h5" component='div'>
-                  By Year
+              <Box 
+                p={4} 
+                textAlign='center' 
+                role='presentation' 
+                sx={{
+                  display: "flex", 
+                  flexDirection: "row", 
+                  alignItems: "center",
+                  }}>
+                  <Typography variant="h5" component='div' sx={{marginRight: 50}}>
+                  By Criteria - {title}
                   </Typography>
+                  <TextField 
+                    id="select-view"
+                    select
+                    label="Select View"
+                    defaultValue="byCriteria"
+                    >
+                    {viewOptions.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
               </Box>
-              <Box sx={{width: "300px", height: "300px"}}>
-                  <Line data={chartData} ref={chartRef} />
+              <Box sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifycontent: 'center', 
+                    width: "50%", 
+                    height: "370px",
+                    }}>
+                  <Line data={chartData} />
+              </Box>
+              <Box sx={{ width: '100%', marginTop: 2, marginBottom: 4}}>
+                <Stack direction='row' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    <Button variant="contained" startIcon={<BorderColorIcon />} onClick={() => changeCriteria("FinalExamDifficulty")}>
+                        Final Exam Difficulty
+                    </Button>
+                    <Button variant="contained" startIcon={<GradingIcon />} onClick={() => changeCriteria("GPA")}>
+                        GPA
+                    </Button>
+                    <Button variant="contained" startIcon={<ClassIcon />} onClick={() => changeCriteria("LectureDifficulty")}>
+                        Lecture Difficulty
+                    </Button>
+                    <Button variant="contained" startIcon={<SchoolIcon />} onClick={() => changeCriteria("TeachingQuality")}>
+                        Teaching Quality
+                    </Button>
+                    <Button variant="contained" startIcon={<AccessTimeFilledIcon />} onClick={() => changeCriteria("Workload")}>
+                        Workload
+                    </Button>
+                </Stack>
               </Box>
             </Drawer>
         </>
