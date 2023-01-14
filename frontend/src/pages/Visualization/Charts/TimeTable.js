@@ -6,7 +6,6 @@ export default function TimeTable(chartData) {
   const timeTableInfo = chartData.chartData;
 
   const CreateTimeTableElements = (subclass, timeslots, instructor) => {
-    console.log("timeslots: ", timeslots);
     return (
       <Box sx={{
           height: "95%", 

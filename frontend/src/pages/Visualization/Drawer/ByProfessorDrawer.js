@@ -1,4 +1,4 @@
-import {useState, useEffect, useContext, useRef} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import { UserContext } from '../../../UserContext';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -28,6 +28,15 @@ const StyledBox = styled(Box)(({ theme }) => ({
     left: 'calc(50% - 15px)',
   }));
 
+  const options = {
+    plugins: {
+      legend: {
+        display: true,
+        // position: 'right'
+      }
+    }
+  }
+
 export const ByProfessorDrawer = () => {
     
     const params = useParams()
@@ -38,6 +47,11 @@ export const ByProfessorDrawer = () => {
 
     const [isOpen, setIsOpen] = useState(false);
 
+    const [chartData, setChartData] = useState({
+      labels: ['Lecture Difficulty', 'Final Difficulty', 'Workload', 'Teaching Quality'],
+      datasets: []
+    });
+
     useEffect(() => {
         const getProfStats = async () => {
             axios.request({
@@ -46,65 +60,46 @@ export const ByProfessorDrawer = () => {
                 headers: userToken['headers']
             })
             .then(response => {
-                console.log("getProfStats: ", response.data)
+              const profData = response.data;
+              const tempData = [];
+              for (const key in profData) {
+                const newDataset = { 
+                  label: key, 
+                  data: [profData[key].LectureDifficulty, profData[key].FinalDifficulty, profData[key].Workload, profData[key].TeachingQuality]
+                };
+                tempData.push(newDataset);
+                console.log("tempData: ", tempData);
+              };
+              if (tempData.length > 3){
+                setChartData({
+                  ...chartData,
+                  datasets: tempData
+                });
+                console.log("chartData: ", chartData);
+              }
             })
             .catch(error => {
                 console.log("error from /visualization/course_id/by_professors: ", error)
             })
         };
         getProfStats();
-    }, [])
-
-    const chartRef = useRef(null);
-    const [chartData, setChartData] = useState({
-      labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'],
-      datasets: [
-        {
-          label: 'Dataset 1',
-          data: [1, 2, 3, 4, 5],
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
-        }
-      ]
-    });
+    }, [isOpen]);
   
-    const addDataset = () => {
-      if(chartRef && chartRef.current && chartRef.current.chartInstance) {
-        const newDataset = {
-          label: 'New dataset',
-          data: [1, 2, 3, 4, 5],
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
-        };
-    
-        chartRef.current.chartInstance.data.datasets.push(newDataset);
-        chartRef.current.chartInstance.update();
-        setChartData({...chartData});
-      }
-    };
-  
-    const removeDataset = () => {
-      if(chartRef && chartRef.current && chartRef.current.chartInstance) {
-        chartRef.current.chartInstance.data.datasets.pop();
-        chartRef.current.chartInstance.update();
-        setChartData({...chartData});
-      }
-    };
-
     return (
         <>
             <Button variant="contained" onClick={() => setIsOpen(true)} sx={{ width: "100%" }}>
                 View By Professor
             </Button>
-            <Drawer 
+            <Drawer
+            PaperProps={{
+              sx: { 
+                borderTopRightRadius: 30,
+                borderTopLeftRadius: 30,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
+              }
+            }}
             anchor="bottom"
             open={isOpen}
             onClose={() => setIsOpen(false)}
@@ -116,24 +111,21 @@ export const ByProfessorDrawer = () => {
                 textAlign='center' 
                 role='presentation' 
                 sx={{
-                    backgroundColor: "white",
-                    borderTopRightRadius: 20
+                    backgroundColor: "pink",
+                    borderTopRightRadius: 30,
+                    borderTopLeftRadius: 30
                     }} >
-                <Typography variant="h5" component='div'>
-                By Professor
-                </Typography>
+              <Puller/>
             </Box>
-            <Box p={2} textAlign='center' role='presentation' >
-                <Typography variant="h5" component='div'>
-                By Professor
-                </Typography>
-            </Box>
-            <Box sx={{width: "300px", height: "300px"}}>
-                <Radar data={chartData} ref={chartRef} />
-            </Box>
-            <Button onClick={addDataset}>Add dataset</Button>
-            <Button onClick={removeDataset}>Remove dataset</Button>
 
+            <Box p={4} textAlign='center' role='presentation' >
+                <Typography variant="h5" component='div'>
+                By Professor
+                </Typography>
+            </Box>
+            <Box sx={{width: "400px", height: "400px"}}>
+                <Radar data={chartData} options={options}/>
+            </Box>
             </Drawer>
         </>
     )}

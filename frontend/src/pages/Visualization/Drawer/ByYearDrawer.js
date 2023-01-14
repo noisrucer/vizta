@@ -71,33 +71,6 @@ export const ByYearDrawer = () => {
         }
       ]
     });
-  
-    const addDataset = () => {
-      if(chartRef && chartRef.current && chartRef.current.chartInstance) {
-        const newDataset = {
-          label: 'New dataset',
-          data: [1, 2, 3, 4, 5],
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
-        };
-    
-        chartRef.current.chartInstance.data.datasets.push(newDataset);
-        chartRef.current.chartInstance.update();
-        setChartData({...chartData});
-      }
-    };
-  
-    const removeDataset = () => {
-      if(chartRef && chartRef.current && chartRef.current.chartInstance) {
-        chartRef.current.chartInstance.data.datasets.pop();
-        chartRef.current.chartInstance.update();
-        setChartData({...chartData});
-      }
-    };
 
     return (
         <>
@@ -136,8 +109,6 @@ export const ByYearDrawer = () => {
               <Box sx={{width: "300px", height: "300px"}}>
                   <Line data={chartData} ref={chartRef} />
               </Box>
-              <Button onClick={addDataset}>Add dataset</Button>
-              <Button onClick={removeDataset}>Remove dataset</Button>
             </Drawer>
         </>
     )}
