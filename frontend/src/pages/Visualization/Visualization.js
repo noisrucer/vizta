@@ -283,21 +283,97 @@ const Visualization = () => {
         const refreshCourseData = async () => {
             axios.request({
                 method: 'get',
-                url: `${baseURL}/visualization/${courseId}`,
-                year: {selectedYear},
-                professor: {selectedProfessor},
+                url: `${baseURL}/visualization/${courseId}/?year=${selectedYear}`,
                 headers: userToken['headers']
             })
             .then(response => {
                 console.log(response.data)
+                setGPA({...GPA, datasets: [{
+                    label: "Students Score",
+                    data: response.data.GPA.values
+                }]})
+                setLectureDifficulty({...lectureDifficulty, datasets: [{
+                    label: "Students Score",
+                    data: response.data.LectureDifficulty.values
+                }]})
+                setFinalDifficulty({...finalDifficulty, datasets: [{
+                    label: "Students Score",
+                    data: response.data.FinalDifficulty.values
+                }]})
+                setWorkload({...workload, datasets: [{
+                    label: "Students Score",
+                    data: response.data.Workload.values
+                }]})
+                const teachingQuality = response.data.TeachingQuality
+                setDelivery(calculateAverage(teachingQuality.Delivery.keys, teachingQuality.Delivery.values))
+                setEntertaining(calculateAverage(teachingQuality.Entertaining.keys, teachingQuality.Entertaining.values))
+                setInteractivity(calculateAverage(teachingQuality.Interactivity.keys, teachingQuality.Interactivity.values))
+                setOverallTeachingQuality(
+                    calculateOverallAverage(
+                        calculateAverage(teachingQuality.Delivery.keys, teachingQuality.Delivery.values),
+                        calculateAverage(teachingQuality.Entertaining.keys, teachingQuality.Entertaining.values),
+                        calculateAverage(teachingQuality.Interactivity.keys, teachingQuality.Interactivity.values)
+                        ))
+                setPentagon({...pentagon, datasets: [{
+                    label: "Overall Score",
+                    data: [
+                        response.data.Pentagon.FinalDifficulty,
+                        response.data.Pentagon.GPA,
+                        response.data.Pentagon.LectureDifficulty,
+                        response.data.Pentagon.TeachingQuality,
+                        response.data.Pentagon.Workload
+                    ]
+                }]})
+                const sum = [response.data.Pentagon.FinalDifficulty, response.data.Pentagon.GPA, response.data.Pentagon.LectureDifficulty, response.data.Pentagon.TeachingQuality, response.data.Pentagon.Workload].reduce((acc, curr) => (acc + Math.round(curr * 100) / 100), 0);
+                setOverallScore(Math.round((sum/5) * 10));
+                setConditionalPentagon({...conditionalPentagon, datasets: [{
+                    label: "Overall Score",
+                    data: [
+                        response.data.Pentagon.FinalDifficulty,
+                        response.data.Pentagon.GPA,
+                        response.data.Pentagon.LectureDifficulty,
+                        response.data.Pentagon.TeachingQuality,
+                        response.data.Pentagon.Workload
+                    ]
+                }]})
             })
             .catch(error => {
                 console.log("error from courseInfo with select year, prof: ", error)
             })
         };
         refreshCourseData();
+
+                const getAvailableYears = async () => {
+            axios.request({
+                method: 'get',
+                url: `${baseURL}/visualization/${courseId}/years`,
+                headers: userToken['headers']
+            })
+            .then(response => {
+                setSelectYear(response.data)
+            })
+            .catch(error => {
+                console.log("error from /visualization/course_id/years: ",error)
+            })
+        };
+        getAvailableYears();
+
+        const getAvailableProfessors = async () => {
+            axios.request({
+                method: 'get',
+                url: `${baseURL}/visualization/${courseId}/professors`,
+                headers: userToken['headers']
+            })
+            .then(response => {
+                setSelectProfessor(response.data)
+            })
+            .catch(error => {
+                console.log("error from /visualization/course_id/professors: ",error)
+            })
+        };
+        getAvailableProfessors();
         
-    }, [selectedYear, selectedProfessor])
+    }, [selectedYear])
 
     const [buttonClick, setButtonClick] = useState(false);
 
@@ -571,8 +647,6 @@ const Visualization = () => {
                         <HorizontalBarChart chartData={gradingRatio}/>
                     </Item>
                     <Item sx={{ width: '100%'}}>
-                        {/* <Box sx={{ width: '1000px', height: '225px'}}>
-                        </Box> */}
                         <TimeTable chartData={timeTable}/>
                     </Item>
 
