@@ -122,7 +122,12 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
                 for ii in range(len(all_prof))
             ]
             for i, ac in enumerate(avg_column)
-        }
+        },
+        "GPA": [
+            # i + 1 as first column is year in avg_reviews
+            [average_review[len(avg_column) + 1] for average_review in avg_reviews[ii * len(all_year):(ii + 1) * len(all_year)]]
+            for ii in range(len(all_prof))
+        ]
     }
 
 

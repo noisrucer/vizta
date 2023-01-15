@@ -118,14 +118,22 @@ def get_complete_averagte_review(db: Session, course_id: str,
 
     :param course_id: course id e.g. COMP3322
     :param avg_column: columns in list of models.CourseReview class attr
-    :return: [year, *avg_column final value]
+    :return: [year, *avg_column + gpa final value]
     """
+
+    gpa_convertion = case(
+        [
+            (course_models.CourseReview.gpa == g, p)
+            for g, p in gpa_mapping
+        ]
+    )
 
     # First sub query, average value on reviews by year
     avg_reviews_by_year_prof_incomplete = db. \
         query(course_models.CourseReview.academic_year.label("year"),
               course_models.Subclass.professor_name.label("prof"),
-              *[func.avg(_).label(_.key) for _ in avg_column]). \
+              *[func.avg(_).label(_.key) for _ in avg_column],
+              func.avg(gpa_convertion).label("GPA")). \
         join(course_models.CourseReview.rsub_class). \
         filter(course_models.CourseReview.course_id == course_id). \
         group_by(course_models.CourseReview.academic_year, course_models.Subclass.professor_name).subquery()
@@ -158,7 +166,7 @@ def get_complete_averagte_review(db: Session, course_id: str,
                   (arbypi.c.prof == getattr(all_combination.c, allprof_name)))
 
     return db.execute(
-        select(column(allprof_name), *[getattr(arbypi.c, ac.key) for ac in avg_column])
+        select(column(allprof_name), *[getattr(arbypi.c, ac.key) for ac in avg_column], arbypi.c.GPA)
         .select_from(avg_reviews_by_year_prof_complete).order_by(allprof_name, allyear_name)).all()
 
 
