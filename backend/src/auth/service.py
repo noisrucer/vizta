@@ -14,6 +14,12 @@ def get_user_by_email(db: Session, email: EmailStr):
     return user
 
 
+def get_password_by_email(db: Session, email: EmailStr):
+    user = db.query(glob_models.User).filter(glob_models.User.email == email).first()
+    print(user.password)
+    return user.password
+
+
 def verify_valid_hku_email(email: EmailStr):
     return email.split('@')[-1] == 'connect.hku.hk'
 
