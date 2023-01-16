@@ -91,7 +91,7 @@ export const ByYearDrawer = () => {
               };
               tempData.push(newDataSet);
             });
-            if (tempData.length > Object.keys(yearData).length - 1){
+            if (tempData.length > 3){
               setChartData({...chartData, labels: yearData.years, datasets: tempData});
             }
         })
@@ -124,7 +124,7 @@ export const ByYearDrawer = () => {
             };
             tempData.push(newDataSet);
           });
-          if (tempData.length > Object.keys(yearData).length) {
+          if (tempData.length > 3) {
             setChartData({...chartData, labels: yearData.years, datasets: tempData});
           }
       })
@@ -159,6 +159,8 @@ export const ByYearDrawer = () => {
     //       console.log("error from /visualization/course_id/by_years: ", error)
     //   })
     // }
+
+    console.log("byYear chartData: ", chartData)
 
     return (
         <>

@@ -411,28 +411,38 @@ const Visualization = () => {
     const [conditionalOverallScore, setConditionalOverallScore] = useState(0);
 
     useEffect(() => { // for dynamic pentagon
-        // let dynamicPentagonLabel = conditionalPentagon.labels;
-        let count = 0;
+        const criteria = ["Final", "GPA", "Lecture", "Teaching", "Workload"]
+        let dynamicPentagonLabel = conditionalPentagon.labels;
         let dynamicPentagonData = conditionalPentagon.datasets[0].data;
+        let count = 0;
 
         [FEDVariant, GPAVariant, LDVariant, TQVariant, WVariant].map((item, index) => {
             if(item === 'outlined'){
-                // dynamicPentagonLabel.splice(index, 1, "");
+                dynamicPentagonLabel.splice(index, 1, "");
                 dynamicPentagonData.splice(index, 1, 0);
-                if (count === 0){
-                    count += 1
-                }
             }
-            if(item === 'contained'){
-                // dynamicPentagonLabel.splice(index, 1, pentagon.labels[index]);
-                count += 1;
+            else {
+                dynamicPentagonLabel.splice(index, 1, criteria[index]);
                 dynamicPentagonData.splice(index, 1, pentagon.datasets[0].data[index]);
+                count += 1;
             }
         });
+
+        if(count === 0){
+            count += 1
+        }
+
+        for ( let i = 4; i >= 0; i--){
+            if (dynamicPentagonLabel[i] === "") {
+                dynamicPentagonLabel.splice(i, 1);
+                dynamicPentagonData.splice(i, 1);
+            }
+        }
 
         const sum = dynamicPentagonData.reduce((acc, curr) => (acc + Math.round(curr * 100) / 100), 0);
 
         setConditionalPentagon({...conditionalPentagon, 
+            labels: dynamicPentagonLabel,
             datasets: [{
                 labels: "students score",
                 data: dynamicPentagonData
