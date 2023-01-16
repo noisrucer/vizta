@@ -91,7 +91,7 @@ export const ByYearDrawer = () => {
               };
               tempData.push(newDataSet);
             });
-            if (tempData.length > 3){
+            if (tempData.length > Object.keys(yearData.professors).length - 1){
               setChartData({...chartData, labels: yearData.years, datasets: tempData});
             }
         })
@@ -124,7 +124,7 @@ export const ByYearDrawer = () => {
             };
             tempData.push(newDataSet);
           });
-          if (tempData.length > 3) {
+          if (tempData.length > Object.keys(yearData.professors).length - 1) {
             setChartData({...chartData, labels: yearData.years, datasets: tempData});
           }
       })
