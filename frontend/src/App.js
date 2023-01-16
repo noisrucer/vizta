@@ -10,6 +10,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Profile from "./components/Sidebar/Profile";
 import Visualization from "./pages/Visualization/Visualization";
+import ReviewCreate from "./pages/ReviewCreate/ReviewCreate";
 
 const darkTheme = createTheme({
   palette: {
@@ -32,6 +33,9 @@ const App = () => {
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/visualization" >
               <Route path=":courseId" element={<Visualization />}></Route>
+            </Route>
+            <Route path="/review" >
+              <Route path=":courseId" element={<ReviewCreate />}></Route>
             </Route>
           </Route>
         </Routes>

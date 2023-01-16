@@ -2,7 +2,7 @@ import '@fontsource/public-sans';
 import { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../UserContext';
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/Textfield';
 import MenuItem from '@mui/material/MenuItem';
@@ -68,6 +68,8 @@ function calculateOverallAverage(delivery, entertaining, interactivity){
 }
 
 const Visualization = () => {
+
+    const navigate = useNavigate();
 
     const params = useParams()
     const courseId = params.courseId
@@ -563,7 +565,7 @@ const Visualization = () => {
                         justifyContent: "center",
                         marginBottom: 5,
                         }}>
-                    <Button variant="contained" startIcon={<ReviewsIcon />} sx={{width: "100%"}}>
+                    <Button variant="contained" startIcon={<ReviewsIcon />} sx={{width: "100%"}} onClick={() => navigate(`/review/${params.courseId}`)}>
                         Add Review
                     </Button>
                     <Item sx={{ width: "100%" }}>
