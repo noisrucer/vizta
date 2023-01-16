@@ -56,6 +56,15 @@ export const ByYearDrawer = () => {
     const [userToken, setUserToken] = UserToken
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isCriteria, setIsCriteria] = useState(true);
+
+    function checkIsCriteria(value) {
+      if(value === "byCriteria"){
+        setIsCriteria(true);
+      } else {
+        setIsCriteria(false);
+      }
+    }
 
     const [chartData, setChartData] = useState({
       labels: [],
@@ -82,7 +91,7 @@ export const ByYearDrawer = () => {
               };
               tempData.push(newDataSet);
             });
-            if (tempData.length > 3){
+            if (tempData.length > Object.keys(yearData).length - 1){
               setChartData({...chartData, labels: yearData.years, datasets: tempData});
             }
         })
@@ -115,7 +124,7 @@ export const ByYearDrawer = () => {
             };
             tempData.push(newDataSet);
           });
-          if (tempData.length > 3){
+          if (tempData.length > Object.keys(yearData).length) {
             setChartData({...chartData, labels: yearData.years, datasets: tempData});
           }
       })
@@ -123,6 +132,33 @@ export const ByYearDrawer = () => {
           console.log("error from /visualization/course_id/by_years: ", error)
       })
     }
+
+    const [chartDataProfessor, setChartDataProfessor] = useState({
+      labels: [],
+      datasets: []
+    })
+
+    // if (!isCriteria) {
+    //   axios.request({
+    //     method: 'get',
+    //     url: `${baseURL}/visualization/${courseId}/by_years`,
+    //     headers: userToken['headers']
+    //   })
+    //   .then(response => {
+    //     const yearData = response.data;
+    //     const tempData = [];
+    //     yearData.professors.map((item, index) => {
+    //       const FED = {
+    //         label: "Final Exam Difficulty",
+    //         data: yearData.FinalExamDifficulty[index]
+    //       };
+    //       const 
+    //     })
+    //   })
+    //   .catch(error => {
+    //       console.log("error from /visualization/course_id/by_years: ", error)
+    //   })
+    // }
 
     return (
         <>
@@ -167,9 +203,14 @@ export const ByYearDrawer = () => {
                   flexDirection: "row", 
                   alignItems: "center",
                   }}>
+                  {isCriteria ? 
                   <Typography variant="h5" component='div' sx={{marginRight: 50}}>
-                  By Criteria - {title}
+                    By Criteria - {title}
+                  </Typography> : 
+                  <Typography variant="h5" component='div' sx={{marginRight: 50}}>
+                    By Professor
                   </Typography>
+                  }
                   <TextField 
                     id="select-view"
                     select
@@ -177,40 +218,54 @@ export const ByYearDrawer = () => {
                     defaultValue="byCriteria"
                     >
                     {viewOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
+                      <MenuItem key={option.value} value={option.value} onClick={() => checkIsCriteria(option.value)}>
                         {option.label}
                       </MenuItem>
                     ))}
                   </TextField>
               </Box>
+              {isCriteria ? 
+              <>
+                <Box sx={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifycontent: 'center', 
+                      width: "50%", 
+                      height: "370px",
+                      }}>
+                    <Line data={chartData} />
+                </Box>
+                <Box sx={{ width: '100%', marginTop: 2, marginBottom: 4}}>
+                  <Stack direction='row' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                      <Button variant="contained" startIcon={<BorderColorIcon />} onClick={() => changeCriteria("FinalExamDifficulty")}>
+                          Final Exam Difficulty
+                      </Button>
+                      <Button variant="contained" startIcon={<GradingIcon />} onClick={() => changeCriteria("GPA")}>
+                          GPA
+                      </Button>
+                      <Button variant="contained" startIcon={<ClassIcon />} onClick={() => changeCriteria("LectureDifficulty")}>
+                          Lecture Difficulty
+                      </Button>
+                      <Button variant="contained" startIcon={<SchoolIcon />} onClick={() => changeCriteria("TeachingQuality")}>
+                          Teaching Quality
+                      </Button>
+                      <Button variant="contained" startIcon={<AccessTimeFilledIcon />} onClick={() => changeCriteria("Workload")}>
+                          Workload
+                      </Button>
+                  </Stack>
+                </Box>
+              </>
+              : 
               <Box sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifycontent: 'center', 
-                    width: "50%", 
-                    height: "370px",
-                    }}>
+                display: 'flex', 
+                alignItems: 'center', 
+                justifycontent: 'center', 
+                width: "50%", 
+                height: "370px",
+                }}>
                   <Line data={chartData} />
               </Box>
-              <Box sx={{ width: '100%', marginTop: 2, marginBottom: 4}}>
-                <Stack direction='row' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                    <Button variant="contained" startIcon={<BorderColorIcon />} onClick={() => changeCriteria("FinalExamDifficulty")}>
-                        Final Exam Difficulty
-                    </Button>
-                    <Button variant="contained" startIcon={<GradingIcon />} onClick={() => changeCriteria("GPA")}>
-                        GPA
-                    </Button>
-                    <Button variant="contained" startIcon={<ClassIcon />} onClick={() => changeCriteria("LectureDifficulty")}>
-                        Lecture Difficulty
-                    </Button>
-                    <Button variant="contained" startIcon={<SchoolIcon />} onClick={() => changeCriteria("TeachingQuality")}>
-                        Teaching Quality
-                    </Button>
-                    <Button variant="contained" startIcon={<AccessTimeFilledIcon />} onClick={() => changeCriteria("Workload")}>
-                        Workload
-                    </Button>
-                </Stack>
-              </Box>
+              }
             </Drawer>
         </>
     )}

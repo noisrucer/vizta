@@ -61,6 +61,7 @@ export const ByProfessorDrawer = () => {
             })
             .then(response => {
               const profData = response.data;
+              console.log("by professor: ", response.data)
               const tempData = [];
               for (const key in profData) {
                 const newDataset = { 
@@ -69,7 +70,7 @@ export const ByProfessorDrawer = () => {
                 };
                 tempData.push(newDataset);
               };
-              if (tempData.length > 3){
+              if (tempData.length > Object.keys(profData).length - 1){
                 setChartData({
                   ...chartData,
                   datasets: tempData
@@ -121,7 +122,7 @@ export const ByProfessorDrawer = () => {
                 By Professor
                 </Typography>
             </Box>
-            <Box sx={{width: "400px", height: "400px"}}>
+            <Box sx={{ width: "60%", height: "400px", display:'flex', alignItems: "center", justifyContent: "center"}}>
                 <Radar data={chartData} options={options}/>
             </Box>
             </Drawer>
