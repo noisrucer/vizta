@@ -119,38 +119,39 @@ class ReviewTopBar extends React.Component {
             </h1>
           </Grid>
           <Grid item>
-            <Box sx={{backgroundColor: "green"}}>
-              <Grid container direction="column" justifyContent="space-between">
-                <Grid>
-                  <Fab variant="extended" onClick={this.props.onSubmit}>
-                    <SendIcon sx={{mr: 1}}/>
-                    Submit
-                  </Fab>
-                </Grid>
-                <Grid>
-                  <FormControl required sx={{m: 1, minWidth: 120}}>
-                    <InputLabel>Grade</InputLabel>
-                    <Select
-                      value={this.state.grade}
-                      label="Grade *"
-                      onChange={(e) => {
-                        this.props.onGradeChange(e.target.value.replace(/\s+/g, ''))
-                        this.setState({
-                          "grade": e.target.value
-                        })
-                      }}
-                    >
-                      {
-                        GradeList.map(e =>
-                          (
-                            <MenuItem value={e}>{e}</MenuItem>
-                          ))
-                      }
-                    </Select>
-                    <FormHelperText>idk how to make it stretch vertically, plz help</FormHelperText>
-                  </FormControl>
-                </Grid>
-              </Grid>
+            <Box sx={{
+              height: "100%",
+              flexDirection: "column",
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}>
+              <Fab variant="extended" onClick={this.props.onSubmit}>
+                <SendIcon sx={{mr: 1}}/>
+                Submit
+              </Fab>
+
+              <FormControl required sx={{m: 1, minWidth: 120}}>
+                <InputLabel>Grade</InputLabel>
+                <Select
+                  value={this.state.grade}
+                  label="Grade *"
+                  onChange={(e) => {
+                    this.props.onGradeChange(e.target.value.replace(/\s+/g, ''))
+                    this.setState({
+                      "grade": e.target.value
+                    })
+                  }}
+                >
+                  {
+                    GradeList.map(e =>
+                      (
+                        <MenuItem value={e}>{e}</MenuItem>
+                      ))
+                  }
+                </Select>
+              </FormControl>
             </Box>
           </Grid>
         </Grid>
