@@ -19,12 +19,14 @@ import SendIcon from '@mui/icons-material/Send';
 import useBreakpoints from "./useBreakpoints";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import {Fab} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab} from "@mui/material";
 
 import {SnackbarProvider, useSnackbar} from 'notistack';
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Autocomplete from '@mui/material/Autocomplete';
 
 const baseURL = 'http://127.0.0.1:8000';
 
@@ -84,8 +86,6 @@ class ReviewTopBar extends React.Component {
   }
 
   render() {
-    console.log(GradeList)
-
     return (
       <Box
         sx={{
@@ -173,6 +173,16 @@ function VariableNameCapitalize(name) {
   return String(name).split('_').map(s => s.capitalize()).join(' ')
 }
 
+function MergeDict(d1, d2) {
+  return Object.assign({}, d1, d2)
+}
+
+function isInt(value) {
+  return !isNaN(value) &&
+    parseInt(Number(value)) == value &&
+    !isNaN(parseInt(value, 10));
+}
+
 class ReviewSection extends React.Component {
 
   constructor(props) {
@@ -224,7 +234,7 @@ class ReviewSection extends React.Component {
                         min={0}
                         max={this.state.max}
                         onChange={(e, nv) => {
-                          this.setState(Object.assign({}, this.state, {[v]: this.props.valueCheck(v, nv)}))
+                          this.setState(MergeDict(this.state, {[v]: this.props.valueCheck(v, nv)}))
                         }}
                         onChangeCommitted={(e, nv) => {
                           this.props.handleValueChange(v, nv);
@@ -267,6 +277,123 @@ function SubmitReview(data, userToken, onSuccess) {
     .catch(err => {
       console.log(err)
     })
+}
+
+class SubmitDialog extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      year: new Date().getFullYear(),
+      semester: 1,
+      subclass: null,
+      subclasses: []
+    }
+  }
+
+  updateSubclasses(year, semester) {
+    axios.request({
+      method: 'get',
+      url: `${baseURL}/courses/subclasses/${this.props.course_id}?academic_year=${year}&semester=${semester}`,
+      headers: this.props.userToken['headers']
+    })
+      .then(response => {
+        this.setState({
+          init: false,
+          subclasses: response.data.map((e) => {
+            return {label: e['professor_name'], subclass_id: e['subclass_id']}
+          })
+        })
+      })
+      .catch(error => {
+        console.log("error fromerror from /courses/subclasses: ", error)
+      })
+  }
+
+  render() {
+    return (
+      <Dialog open={this.props.show} onClose={() => {
+      }}>
+        <DialogTitle>Subclass detail</DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{marginBottom: 3}}>
+            We need more information for better analysis
+          </DialogContentText>
+          <Box sx={{
+            my: 2,
+            display: "flex",
+            flexDirection: "row",
+          }}>
+            <TextField
+              sx={{width: 225, marginRight: 3}}
+              id="outlined-helperText"
+              label="Year"
+              type="number"
+              onChange={(e) => {
+                if (e.target.value === "") return
+                let value = e.target.value
+                value = Math.max(0, Math.min(parseInt(value, 10), new Date().getFullYear()));
+                this.setState(MergeDict(this.state, {year: value}))
+                this.updateSubclasses(value, this.state.semester)
+                this.props.handleValueChange('academic_year', value)
+              }}
+              defaultValue={this.state.year}
+            />
+            <Select
+              sx={{width: 175}}
+              value={this.state.semester}
+              label="Semester"
+              onChange={(e) => {
+                this.setState(MergeDict(this.state, {semester: e.target.value}))
+                this.updateSubclasses(this.state.year, e.target.value)
+                this.props.handleValueChange('semester', e.target.value)
+              }}
+            >
+              <MenuItem value={1}>First semester</MenuItem>
+              <MenuItem value={2}>Second semester</MenuItem>
+            </Select>
+          </Box>
+          <Box sx={{
+            my: 2,
+            display: "flex",
+            flexDirection: "row",
+          }}>
+            <Autocomplete
+              onChange={(e, v) => {
+                this.setState(MergeDict(this.state, {subclass: v.subclass_id}))
+                this.props.handleValueChange('subclass_id', v.subclass_id)
+              }}
+              value={this.state.subclasses.find((e) => e.subclass_id === this.state.subclass) ?? null}
+              options={this.state.subclasses}
+              sx={{width: 275, marginRight: 3}}
+              renderInput={(params) => <TextField {...params} label="Professor"/>}
+            />
+            <Select
+              sx={{width: 125, marginRight: 3}}
+              value={this.state.subclass}
+              label="S"
+              onChange={(e) => {
+                this.setState(MergeDict(this.state, {subclass: e.target.value}))
+                this.props.handleValueChange('subclass_id', e.target.value)
+              }}
+            >
+              {
+                this.state.subclasses.map((e) => (
+                  <MenuItem value={e.subclass_id}>{e.subclass_id}</MenuItem>
+                ))
+              }
+            </Select>
+          </Box>
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.props.onClose}>Cancel</Button>
+          <Button onClick={this.props.onSubmit}>Sumbit</Button>
+        </DialogActions>
+      </Dialog>
+    )
+  }
 }
 
 export default function ReviewCreate() {
@@ -337,6 +464,8 @@ export default function ReviewCreate() {
     Timetable: {}
   });
 
+  const [ShowSubmitDialog, setShowSubmitDialog] = useState(false)
+
   useEffect(() => {
     axios.request({
       method: 'get',
@@ -357,14 +486,11 @@ export default function ReviewCreate() {
       const maxValue = 100 - gradeDistrSection.filter(x => x !== key).map(e => ReviewData[e]).reduce((partialSum, a) => partialSum + a, 0);
       value = Math.max(0, Math.min(value, maxValue));
     }
-
-    console.log("returning " + value)
-
     return value;
   }
 
   function AlterReviewData(key, value) {
-    setReviewData(Object.assign({}, ReviewData, {[key]: checkValue(key, value)}));
+    setReviewData(MergeDict(ReviewData, {[key]: checkValue(key, value)}));
   }
 
   return (
@@ -372,10 +498,7 @@ export default function ReviewCreate() {
       <ReviewTopBar course_id={courseDescription.CourseID}
                     course_title={courseDescription.Name}
                     onGradeChange={(g) => AlterReviewData('gpa', g)}
-                    onSubmit={() => SubmitReview(ReviewData, userToken, () => {
-                      enqueueSnackbar('Your review has been submitted!', {autoHideDuration: 5000, variant: 'success'});
-                      navigate(`/visualization/${params.courseId}`)
-                    })}/>
+                    onSubmit={() => setShowSubmitDialog(true)}/>
       <Divider
         sx={{
           background: "#9A9A9A",
@@ -408,6 +531,16 @@ export default function ReviewCreate() {
                      step={5}
                      valueCheck={checkValue}
                      handleValueChange={AlterReviewData}/>
+      <SubmitDialog
+        userToken={userToken}
+        course_id={courseDescription.CourseID}
+        show={ShowSubmitDialog}
+        handleValueChange={AlterReviewData}
+        onClose={() => setShowSubmitDialog(false)}
+        onSubmit={() => SubmitReview(ReviewData, userToken, () => {
+          enqueueSnackbar('Your review has been submitted!', {autoHideDuration: 5000, variant: 'success'});
+          navigate(`/visualization/${params.courseId}`)
+        })}/>
     </React.Fragment>
   )
     ;
