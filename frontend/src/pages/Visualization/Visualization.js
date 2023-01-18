@@ -442,9 +442,10 @@ const Visualization = () => {
 
   return (
     <Box sx={{
-        width: "100%",
+        width: "80%",
         display: "flex",
-        flexDirection: "row"
+        flexDirection: "row",
+        marginLeft: 20
         }}>
         <Box sx={{
             display: "flex", 
@@ -614,10 +615,10 @@ const Visualization = () => {
             component="nav" 
             sx={{
                 backgroundColor: '#000000',
-                width: "20%",
-                height: '100%',
-                marginTop: 10,
-                marginRight: 6,
+                width: "15%",
+                height: '1000%',
+                marginTop: 12,
+                marginRight: 23,
                 }}>
             <Box sx={{
                 display: "flex",
