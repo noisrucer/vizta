@@ -280,10 +280,24 @@ const Visualization = () => {
     const [selectedProfessor, setSelectedProfessor] = useState("");
 
     useEffect(() => { // render component again when select year
+        const formatProfessor = selectedProfessor.replace(/ /g, "%20");
+        let path = ""
+        if (selectedYear !== "" && selectedProfessor !== "") {
+            path = `${baseURL}/visualization/${courseId}/?year=${selectedYear}&professor=${formatProfessor}`
+            console.log("Both satisfied!!!")
+        }
+        else if (selectedYear !== "" && selectedProfessor === "") {
+            path = `${baseURL}/visualization/${courseId}/?year=${selectedYear}`
+            console.log("Only year selected!!!")
+        }
+        else if (selectedYear === "" && selectedProfessor !== "") {
+            path = `${baseURL}/visualization/${courseId}/?professor=${formatProfessor}`
+            console.log("Only professor selected!!!")
+        }
         const refreshCourseData = async () => {
             axios.request({
                 method: 'get',
-                url: `${baseURL}/visualization/${courseId}/?year=${selectedYear}`,
+                url: path,
                 headers: userToken['headers']
             })
             .then(response => {
@@ -342,38 +356,8 @@ const Visualization = () => {
             })
         };
         refreshCourseData();
-
-                const getAvailableYears = async () => {
-            axios.request({
-                method: 'get',
-                url: `${baseURL}/visualization/${courseId}/years`,
-                headers: userToken['headers']
-            })
-            .then(response => {
-                setSelectYear(response.data)
-            })
-            .catch(error => {
-                console.log("error from /visualization/course_id/years: ",error)
-            })
-        };
-        getAvailableYears();
-
-        const getAvailableProfessors = async () => {
-            axios.request({
-                method: 'get',
-                url: `${baseURL}/visualization/${courseId}/professors`,
-                headers: userToken['headers']
-            })
-            .then(response => {
-                setSelectProfessor(response.data)
-            })
-            .catch(error => {
-                console.log("error from /visualization/course_id/professors: ",error)
-            })
-        };
-        getAvailableProfessors();
         
-    }, [selectedYear])
+    }, [selectedYear,selectedProfessor])
 
     const [buttonClick, setButtonClick] = useState(false);
 
