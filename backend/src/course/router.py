@@ -32,23 +32,23 @@ router = APIRouter(
 async def create_user_favorite(user_favorite: user_schemas.UserFavoriteCreate, db: Session = Depends(get_db)):
     user_fav_dict = user_favorite.dict()
     email, course_id = user_fav_dict['email'], user_fav_dict['course_id']
-    
+
     # check if email exists in DB
     user = auth_service.get_user_by_email(db, email)
     if not user:
         raise glob_exceptions.EmailNotExistException(email)
-    
+
     # check if course_id exists in DB
     course = service.get_course_by_course_id(db, course_id)
     if not course:
         raise exceptions.CourseNotExistException(course_id)
-    
+
     # check if user_id has already added course_id
     dup_user_favorite = service.check_exist_user_favorite_course(db, email, course_id)
-    
+
     if dup_user_favorite:
         raise exceptions.UserFavoriteCourseAlreadyExistsException(email, course_id)
-        
+
     new_user_fav = user_models.UserFavorite(**user_fav_dict)
     db.add(new_user_fav)
     db.commit()
@@ -81,6 +81,14 @@ async def get_user_favorites(email: EmailStr, db: Session=Depends(get_db)):
     favorites = service.get_user_favorite_courses_by_email(db, email)
     return favorites
 
+@router.get(
+    '/subclasses/{course_id}',
+    dependencies=[Depends(glob_dependencies.get_current_user)]
+)
+async def get_subclass_list(course_id: str, academic_year: int, semester: int, db: Session=Depends(get_db)):
+    subclasses = service.get_subclass_list(db, course_id, academic_year, semester)
+    return subclasses
+
 
 @router.post(
     '/review',
@@ -92,26 +100,26 @@ async def create_review(review: schemas.CourseReviewBase, db: Session=Depends(ge
     review_subclass_items = glob_utils.extract_sub_dict(
         review, ['course_id', 'subclass_id', 'academic_year', 'semester']
     )
-    
+
     for key, val in review.items():
         if isinstance(val, enums.NumericEval):
             review[key] = val.value
-            
+
     # check if email exists in DB
     user = auth_service.get_user_by_email(db, review['email'])
     if not user:
         raise glob_exceptions.EmailNotExistException(review['email'])
-        
+
     # check if subclass exists in DB
     subclass = service.get_subclass(db, **review_subclass_items)
     if not subclass:
         raise exceptions.SubclassNotExistException(**review_subclass_items)
-    
+
     # check if user_id already left a review for subclass
     user_review = service.get_user_review(db, review['email'], **review_subclass_items)
     if user_review:
          raise exceptions.UserAlreadyReviewedCourseException(review['email'], **review_subclass_items)
-         
+
     new_review = models.CourseReview(**review)
     db.add(new_review)
     db.commit()
@@ -151,5 +159,5 @@ async def get_courses(faculty: enums.Faculty, email: EmailStr, db: Session=Depen
             "num_reviews": num_reviews,
             "is_favorite": is_favorite
         })
-        
+
     return response

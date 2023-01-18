@@ -20,10 +20,10 @@ def get_courses_by_faculty(db: Session, faculty: enums.Faculty):
         courses = db.query(models.Course).all()
     else:
         courses = db.query(models.Course).filter(models.Course.faculty == faculty).all()
-        
+
     return courses
-    
-    
+
+
 def get_reviews_by_course_id(db:Session, course_id: str):
     reviews = db.query(models.CourseReview).filter(models.CourseReview.course_id == course_id).all()
     return reviews
@@ -43,7 +43,7 @@ def check_exist_user_favorite_course(db: Session, email: EmailStr, course_id: st
                 user_models.UserFavorite.course_id == course_id
             )
         ).first()
-        
+
     return user_favorite_course
 
 
@@ -87,7 +87,7 @@ def delete_user_favorite(db: Session, email: EmailStr, course_id: str):
     db.delete(favorite)
     db.commit()
     return favorite
-        
+
 
 def get_subclass(
     db: Session,
@@ -104,9 +104,24 @@ def get_subclass(
             models.Subclass.semester == semester
         )
     ).first()
-    
+
     return subclass
 
+def get_subclass_list(
+        db: Session,
+        course_id: str,
+        academic_year: int,
+        semester: int
+):
+    subclasses = db.query(models.Subclass).filter(
+        and_(
+            models.Subclass.course_id == course_id,
+            models.Subclass.academic_year == academic_year,
+            models.Subclass.semester == semester
+        )
+    ).all()
+
+    return subclasses
 
 def get_user_review(
     db: Session,
@@ -125,9 +140,9 @@ def get_user_review(
             models.CourseReview.semester == semester
         )
     ).first()
-    
+
     return user_review
-    
+
 
 def get_majority_ratio(db: Session,
                        subclass_id: str,
