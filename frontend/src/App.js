@@ -28,7 +28,9 @@ const App = () => {
           <Route path="/auth/sign-up" element={<SignUp />}></Route>
           <Route element={<ProtectedRoutes />}>
             <Route path="/auth/me"></Route>
-            <Route path="/main" element={<Main />}></Route>
+            <Route path="/main">
+              <Route path=":faculty" element={<Main />}></Route>
+            </Route>
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/visualization" >
               <Route path=":courseId" element={<Visualization />}></Route>

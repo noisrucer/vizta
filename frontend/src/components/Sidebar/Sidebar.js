@@ -29,8 +29,7 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ScienceIcon from '@mui/icons-material/Science';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -111,12 +110,11 @@ export default function Sidebar() {
   const [userToken, setUserToken] = UserToken
   const [isLoggedIn, setIsLoggedIn] = IsLoggedIn
 
-  // console.log("isLoggedIn in sidebar (outside useEffect): ", isLoggedIn)
-  // console.log("userToken in sidebar: ", userToken)
+  const navigate = useNavigate();
 
-  // React.useEffect(() => {
-  //   console.log("isLoggedIn in sidebar (inside useEffect): ",isLoggedIn)
-  // }, [IsLoggedIn])
+  const handleNaviagateToMain = (e) => {
+    navigate(`/main/${e}`)
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -178,7 +176,7 @@ export default function Sidebar() {
         <Divider />
         <List>
           <ListItem key={"main"} disablePadding>
-            <ListItemButton href="/main">
+            <ListItemButton href="/main/All">
               <ListItemIcon>
                 <PersonSearchIcon />
               </ListItemIcon>
@@ -199,7 +197,7 @@ export default function Sidebar() {
             <List>
               {['BEng', 'BBA', 'BSC', 'Common Core'].map((text, index) => (
                 <ListItem key={text} disablePadding>
-                  <ListItemButton sx={{ pl : 4 }}>
+                  <ListItemButton sx={{ pl : 4 }} onClick={() => handleNaviagateToMain(text)}>
                     <ListItemIcon>
                       {index === 0 ?  <EngineeringIcon /> : <></>}
                       {index === 1 ? <AccountBalanceIcon /> : <></>}

@@ -43,6 +43,12 @@ function Profile(){
   const [userData, setUserData] = UserData
   const [userToken, setUserToken] = UserToken
 
+  console.log("userData in profile: ", userData);
+
+  const [email, setEmail] = useState(" ");
+  const [enteredYear, setEnteredYear] = useState(" ");
+  const [major, setMajor] = useState(" ");
+
   useEffect(() => {
     const fetchProfileData = async () => {
       axios.request({
@@ -53,6 +59,9 @@ function Profile(){
       .then(response => {
         const data = response.data
         console.log(`response from /users/profile/${userData}: `, data)
+        setEmail(data.email)
+        setEnteredYear(data.entered_year);
+        setMajor(data.major)
       })
       .catch(error => {
         console.log("error from /users/profile/email: ", error)
@@ -60,6 +69,8 @@ function Profile(){
     };
     fetchProfileData();
   },[])
+
+  console.log(major)
 
   return (
     <>
@@ -82,116 +93,31 @@ function Profile(){
       autoComplete="off"
     >
       <TextField
-        id="outlined-read-only-input"
-        label="Read Only"
-        defaultValue="Hello World"
+        id="email"
+        label="email"
+        defaultValue={email}
+        value={email}
         InputProps={{
           readOnly: true,
         }}
       />
       <TextField
-        required
-        id="filled-required"
-        label="Required"
-        defaultValue="Hello World"
-        variant="filled"
-      />
-      <TextField
-        disabled
-        id="filled-disabled"
-        label="Disabled"
-        defaultValue="Hello World"
-        variant="filled"
-      />
-      <TextField
-        id="filled-password-input"
-        label="Password"
-        type="password"
-        autoComplete="current-password"
-        variant="filled"
-      />
-      <TextField
-        id="filled-read-only-input"
-        label="Read Only"
-        defaultValue="Hello World"
+        id="enteredYear"
+        label="Entered Year"
+        defaultValue={enteredYear}
+        value = {enteredYear}
         InputProps={{
           readOnly: true,
         }}
-        variant="filled"
       />
       <TextField
-        id="filled-number"
-        label="Number"
-        type="number"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        variant="filled"
-      />
-      <TextField
-        id="filled-search"
-        label="Search field"
-        type="search"
-        variant="filled"
-      />
-      <TextField
-        id="filled-helperText"
-        label="Helper text"
-        defaultValue="Default Value"
-        helperText="Some important text"
-        variant="filled"
-      />
-      <TextField
-        required
-        id="standard-required"
-        label="Required"
-        defaultValue="Hello World"
-        variant="standard"
-      />
-      <TextField
-        disabled
-        id="standard-disabled"
-        label="Disabled"
-        defaultValue="Hello World"
-        variant="standard"
-      />
-      <TextField
-        id="standard-password-input"
-        label="Password"
-        type="password"
-        autoComplete="current-password"
-        variant="standard"
-      />
-      <TextField
-        id="standard-read-only-input"
-        label="Read Only"
-        defaultValue="Hello World"
+        id="major"
+        label="Major"
+        defaultValue={major}
+        value = {major}
         InputProps={{
           readOnly: true,
         }}
-        variant="standard"
-      />
-      <TextField
-        id="standard-number"
-        label="Number"
-        type="number"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        variant="standard"
-      />
-      <TextField
-        id="standard-search"
-        label="Search field"
-        type="search"
-        variant="standard"
-      />
-      <TextField
-        id="standard-helperText"
-        label="Helper text"
-        defaultValue="Default Value"
-        helperText="Some important text"
-        variant="standard"
       />
     </Box>
   </>
