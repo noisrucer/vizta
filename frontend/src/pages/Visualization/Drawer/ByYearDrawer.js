@@ -117,6 +117,7 @@ export const ByYearDrawer = () => {
       .then(response => {
           const yearData = response.data;
           const tempData = []
+          console.log("hello: ", yearData)
 
           yearData.professors.map((item, index) => {
 
@@ -324,8 +325,14 @@ export const ByYearDrawer = () => {
                       <Button variant="contained" startIcon={<ClassIcon />} onClick={() => changeCriteria("LectureDifficulty")}>
                           Lecture Difficulty
                       </Button>
-                      <Button variant="contained" startIcon={<SchoolIcon />} onClick={() => changeCriteria("TeachingQuality")}>
-                          Teaching Quality
+                      <Button variant="contained" startIcon={<SchoolIcon />} onClick={() => changeCriteria("CourseDelivery")}>
+                          Teaching Quality - Delivery
+                      </Button>
+                      <Button variant="contained" startIcon={<SchoolIcon />} onClick={() => changeCriteria("CourseEntertaining")}>
+                          Teaching Quality - Entertaining
+                      </Button>
+                      <Button variant="contained" startIcon={<SchoolIcon />} onClick={() => changeCriteria("CourseInteractivity")}>
+                          Teaching Quality - Interactivity
                       </Button>
                       <Button variant="contained" startIcon={<AccessTimeFilledIcon />} onClick={() => changeCriteria("Workload")}>
                           Workload
