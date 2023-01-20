@@ -6,14 +6,20 @@ function DoughnutChart({chartData}) {
 
   const options = {
     plugins: {
-      // legend: {
-      //   position: "right"
-      // },
-      datalabels:{
+      legend: {
         labels: {
-          title: {
-            color: 'white'
-          }
+          color: "#fff",
+          usePointStyle: true,
+          pointStyle: 'circle'
+        }
+      },
+      datalabels: {
+        display: true,
+        align: 'bottom',
+        backgroundColor: '#ccc',
+        borderRadius: 3,
+        font: {
+          size: 18,
         }
       }
     }
