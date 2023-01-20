@@ -109,12 +109,9 @@ export default function Sidebar() {
   const {IsLoggedIn, UserToken} = React.useContext(UserContext)
   const [userToken, setUserToken] = UserToken
   const [isLoggedIn, setIsLoggedIn] = IsLoggedIn
+  // const [faculty, setFaculty] = React.useState("All");
 
   const navigate = useNavigate();
-
-  const handleNaviagateToMain = (e) => {
-    navigate(`/main/${e}`)
-  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -127,6 +124,16 @@ export default function Sidebar() {
   const handleFacultyClick = () => {
     setFacultyOpen(!facultyOpen);
   }
+
+  // const handleFacultyRoutes = (e) => {
+  //   console.log("faculty: ", e);
+  //   navigate(`/main/${e}`);
+  // }
+
+  // React.useEffect(() => {
+  //   console.log(faculty)
+  //   navigate('/main/' + faculty)
+  // }, [faculty])
 
   return (
     <Box sx={{ display: 'flex'}}>
@@ -197,7 +204,7 @@ export default function Sidebar() {
             <List>
               {['BEng', 'BBA', 'BSC', 'Common Core'].map((text, index) => (
                 <ListItem key={text} disablePadding>
-                  <ListItemButton sx={{ pl : 4 }} onClick={() => handleNaviagateToMain(text)}>
+                  <ListItemButton sx={{ pl : 4 }}>
                     <ListItemIcon>
                       {index === 0 ?  <EngineeringIcon /> : <></>}
                       {index === 1 ? <AccountBalanceIcon /> : <></>}

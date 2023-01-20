@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useContext , useEffect } from "react";
 import {UserContext} from "../../UserContext";
+import { useParams } from 'react-router-dom';
 import { styled, alpha, useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from "@mui/icons-material/Search";
@@ -74,8 +75,11 @@ const Search = styled("div")(({ theme }) => ({
     return items.filter((courses) => courses.course_id.includes(query));
   };
 
-function Main(){
+const Main = () => {
     const navigate = useNavigate();
+    const params = useParams();
+    const faculty = params.faculty
+    console.log("faculty: ", faculty);
 
     // document.body.style.backgroundColor = "#110F44"
     const {UserToken, UserData} = useContext(UserContext);
@@ -91,12 +95,12 @@ function Main(){
       const fetchCourseData = async () => {
         axios.request({
           method: 'get',
-          url: `${baseURL}/courses/All/${userData}`,
+          url: `${baseURL}/courses/${faculty}/${userData}`,
           headers: userToken['headers']
           })
           .then(response => {
             const data = response.data
-            console.log(`response from /courses/All/${userData}: `, data)
+            console.log(`response from /courses/${faculty}/${userData}: `, data)
             setCourses(data)
           })
       };
@@ -123,8 +127,6 @@ function Main(){
     const filteredCourses = getFilteredCourses(query, courses)
 
     const handleFavoritesButtonClick = (id, isFavorites) => {
-      console.log("course id: ", id)
-      console.log("is favorites: ", isFavorites)
       const data = {
         "email": userData,
         "course_id": id

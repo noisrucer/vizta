@@ -84,7 +84,7 @@ const SignIn = () => {
           .then(response => {
             console.log("response in Sign In: ",response)
           })
-          navigate('/main')
+          navigate('/main/All')
         }
     })
     .catch(err => {

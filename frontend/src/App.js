@@ -31,10 +31,10 @@ const App = () => {
             <Route path="/main">
               <Route path=":faculty" element={<Main />}></Route>
             </Route>
-            <Route path="/profile" element={<Profile />}></Route>
             <Route path="/visualization" >
               <Route path=":courseId" element={<Visualization />}></Route>
             </Route>
+            <Route path="/profile" element={<Profile />}></Route>
           </Route>
         </Routes>
       </UserProvider>
