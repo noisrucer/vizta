@@ -129,3 +129,9 @@ async def reset_password(email: EmailStr, update_info: schemas.ResetPasswordIn, 
     if not user:
         raise user_exceptions.UserNotFoundException(email)
     user_service.update_password(db, user, update_info['new_password'])
+    
+    
+# Testing
+@router.get("/me", dependencies=[Depends(glob_dependencies.get_current_user)])
+async def get_me():
+    return {"message": "authenticated"}
