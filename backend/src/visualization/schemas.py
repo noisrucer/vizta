@@ -22,5 +22,5 @@ class GeneralVisualizationOut(BaseModel):
     FinalDifficulty: Mapping[str,  Union[list[int], list[course_enums.NumericEval]]]
     Workload: Mapping[str, Union[list[int], list[course_enums.NumericEval]]]
     TeachingQuality: Mapping[str, Mapping[str, Union[list[int], list[course_enums.NumericEval]]]]
-    Pentagon: Mapping[str, None | Union[str, float]]
+    Pentagon: Mapping[str, Union[None, Union[str, float]]]
     Timetable: Union[Mapping[str, Timetable], None]
