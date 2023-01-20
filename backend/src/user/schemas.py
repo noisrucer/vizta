@@ -49,3 +49,6 @@ class UserFavoriteCreateOut(UserFavoriteBase):
         orm_mode = True
 
     
+class UpdatePasswordIn(BaseModel):
+    old_password: str
+    new_password: str

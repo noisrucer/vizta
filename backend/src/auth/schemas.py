@@ -40,3 +40,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Union[str, None] = None
+    
+    
+class ResetPasswordIn(BaseModel):
+    new_password: str
