@@ -16,12 +16,23 @@ import Slider from '@mui/material/Slider';
 import Grid from "@mui/material/Grid";
 import SendIcon from '@mui/icons-material/Send';
 
+import FormHelperText from '@mui/material/FormHelperText';
 import useBreakpoints from "./useBreakpoints";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab} from "@mui/material";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Fab,
+  Step,
+  StepLabel,
+  Stepper
+} from "@mui/material";
 
 import {SnackbarProvider, useSnackbar} from 'notistack';
 import Button from "@mui/material/Button";
@@ -72,19 +83,10 @@ const PrettoSlider = styled(Slider)({
 });
 
 const GradeList = [
-  'A +', 'A', 'A -', 'B +', 'B', 'B -', 'C +', 'C', 'C -', 'D +', 'D', 'D -', 'F'
+  'A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'F'
 ]
 
 class ReviewTopBar extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      "grade": GradeList.at(-1)
-    }
-  }
-
   render() {
     return (
       <Box
@@ -117,42 +119,6 @@ class ReviewTopBar extends React.Component {
             }}>
               {this.props.course_title}
             </h1>
-          </Grid>
-          <Grid item>
-            <Box sx={{
-              height: "100%",
-              flexDirection: "column",
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              justifyContent: "space-between"
-            }}>
-              <Fab variant="extended" onClick={this.props.onSubmit}>
-                <SendIcon sx={{mr: 1}}/>
-                Submit
-              </Fab>
-
-              <FormControl required sx={{m: 1, minWidth: 120}}>
-                <InputLabel>Grade</InputLabel>
-                <Select
-                  value={this.state.grade}
-                  label="Grade *"
-                  onChange={(e) => {
-                    this.props.onGradeChange(e.target.value.replace(/\s+/g, ''))
-                    this.setState({
-                      "grade": e.target.value
-                    })
-                  }}
-                >
-                  {
-                    GradeList.map(e =>
-                      (
-                        <MenuItem value={e}>{e}</MenuItem>
-                      ))
-                  }
-                </Select>
-              </FormControl>
-            </Box>
           </Grid>
         </Grid>
       </Box>
@@ -219,12 +185,12 @@ class ReviewSection extends React.Component {
           </Typography>
           <Box sx={{my: 4, mx: 3}}>
             {
-              this.props.reviewItems.map((v) => (
-                  <Grid container spacing={2} alignItems="center">
+              this.props.reviewItems.map((v, i) => (
+                  <Grid container spacing={2} alignItems="center" key={i}>
                     <Grid item xs="3">
                       {VariableNameCapitalize(v)}
                     </Grid>
-                    <Grid item xs>
+                    <Grid item xs="9">
                       <PrettoSlider
                         valueLabelDisplay="auto"
                         aria-label="pretto slider"
@@ -265,6 +231,8 @@ class ReviewSection extends React.Component {
 }
 
 function SubmitReview(data, userToken, onSuccess) {
+  console.log(data)
+
   axios.request({
     method: 'post',
     url: `${baseURL}/courses/review`,
@@ -279,15 +247,15 @@ function SubmitReview(data, userToken, onSuccess) {
     })
 }
 
-class SubmitDialog extends React.Component {
+class SubclassSection extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
       year: new Date().getFullYear(),
-      semester: 1,
-      subclass: null,
+      semester: 0,
+      subclass: "",
       subclasses: []
     }
   }
@@ -313,66 +281,78 @@ class SubmitDialog extends React.Component {
 
   render() {
     return (
-      <Dialog open={this.props.show} onClose={() => {
-      }}>
-        <DialogTitle>Subclass detail</DialogTitle>
-        <DialogContent>
-          <DialogContentText sx={{marginBottom: 3}}>
-            We need more information for better analysis
-          </DialogContentText>
-          <Box sx={{
-            my: 2,
-            display: "flex",
-            flexDirection: "row",
-          }}>
-            <TextField
-              sx={{width: 225, marginRight: 3}}
-              id="outlined-helperText"
-              label="Year"
-              type="number"
-              onChange={(e) => {
-                if (e.target.value === "") return
-                let value = e.target.value
-                value = Math.max(0, Math.min(parseInt(value, 10), new Date().getFullYear()));
-                this.setState(MergeDict(this.state, {year: value}))
-                this.updateSubclasses(value, this.state.semester)
-                this.props.handleValueChange('academic_year', value)
-              }}
-              defaultValue={this.state.year}
-            />
+      <Box
+        key="Subclass Detail"
+        display="flex"
+        flexDirection="column"
+        mx={indents}
+        height={300}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Box sx={{
+          my: 2,
+          display: "flex",
+          flexDirection: "row",
+        }}>
+          <TextField
+            sx={{width: 225, marginRight: 3}}
+            id="outlined-helperText"
+            label="Year"
+            type="number"
+            onChange={(e) => {
+              if (e.target.value === "") return
+              let value = e.target.value
+              value = Math.max(0, Math.min(parseInt(value, 10), new Date().getFullYear()));
+              this.setState(MergeDict(this.state, {year: value}))
+              this.updateSubclasses(value, this.state.semester)
+              this.props.handleValueChange('academic_year', value)
+            }}
+            defaultValue={this.state.year}
+          />
+          <FormControl required>
+            <InputLabel>Semester</InputLabel>
             <Select
               sx={{width: 175}}
               value={this.state.semester}
               label="Semester"
               onChange={(e) => {
+                if (e.target.value === 0) return
                 this.setState(MergeDict(this.state, {semester: e.target.value}))
                 this.updateSubclasses(this.state.year, e.target.value)
                 this.props.handleValueChange('semester', e.target.value)
               }}
             >
+              <MenuItem value={0}>
+                <em>Not Specified</em>
+              </MenuItem>
               <MenuItem value={1}>First semester</MenuItem>
               <MenuItem value={2}>Second semester</MenuItem>
             </Select>
-          </Box>
-          <Box sx={{
-            my: 2,
-            display: "flex",
-            flexDirection: "row",
-          }}>
-            <Autocomplete
-              onChange={(e, v) => {
-                this.setState(MergeDict(this.state, {subclass: v.subclass_id}))
-                this.props.handleValueChange('subclass_id', v.subclass_id)
-              }}
-              value={this.state.subclasses.find((e) => e.subclass_id === this.state.subclass) ?? null}
-              options={this.state.subclasses}
-              sx={{width: 275, marginRight: 3}}
-              renderInput={(params) => <TextField {...params} label="Professor"/>}
-            />
+          </FormControl>
+
+        </Box>
+        <Box sx={{
+          my: 2,
+          display: "flex",
+          flexDirection: "row",
+        }}>
+          <Autocomplete
+            onChange={(e, v) => {
+              this.setState(MergeDict(this.state, {subclass: v.subclass_id}))
+              this.props.handleValueChange('subclass_id', v.subclass_id)
+            }}
+            value={this.state.subclasses.find((e) => e.subclass_id === this.state.subclass) ?? ""}
+            options={this.state.subclasses}
+            sx={{width: 275, marginRight: 3}}
+            renderInput={(params) => <TextField {...params} label="Professor"/>}
+          />
+          <FormControl>
+            <InputLabel>Subclass</InputLabel>
             <Select
               sx={{width: 125, marginRight: 3}}
               value={this.state.subclass}
-              label="S"
+              label="Subclass"
               onChange={(e) => {
                 this.setState(MergeDict(this.state, {subclass: e.target.value}))
                 this.props.handleValueChange('subclass_id', e.target.value)
@@ -380,18 +360,13 @@ class SubmitDialog extends React.Component {
             >
               {
                 this.state.subclasses.map((e) => (
-                  <MenuItem value={e.subclass_id}>{e.subclass_id}</MenuItem>
+                  <MenuItem key={e.subclass_id} value={e.subclass_id}>{e.subclass_id}</MenuItem>
                 ))
               }
             </Select>
-          </Box>
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.props.onClose}>Cancel</Button>
-          <Button onClick={this.props.onSubmit}>Sumbit</Button>
-        </DialogActions>
-      </Dialog>
+          </FormControl>
+        </Box>
+      </Box>
     )
   }
 }
@@ -412,7 +387,6 @@ export default function ReviewCreate() {
   const [userData, setUserData] = UserData;
 
   const reviewList = [
-    "gpa",
     "workload",
     "lecture_difficulty",
     "final_exam_difficulty",
@@ -431,7 +405,7 @@ export default function ReviewCreate() {
     "final_exam_difficulty"
   ]
 
-  const teachingQualitySection = [
+  const lectureQualitySection = [
     "course_entertaining",
     "course_delivery",
     "course_interactivity"
@@ -452,7 +426,8 @@ export default function ReviewCreate() {
       subclass_id: "A",
       academic_year: 2022,
       semester: 1,
-      ...reviewList.reduce((a, b) => (a[b] = 0 , a), {})
+      gpa: "F",
+      ...reviewList.reduce((a, b) => (a[b] = 1 , a), {})
     }
   );
   const [courseDescription, setCourseDescription] = useState({
@@ -493,54 +468,103 @@ export default function ReviewCreate() {
     setReviewData(MergeDict(ReviewData, {[key]: checkValue(key, value)}));
   }
 
+  const StepList = [
+    'Subclass Detail',
+    'Course Rating',
+    'Lecture Quality Rating',
+    'Course Grading Distribution',
+    'Submit'
+  ];
+
+  const [ReviewStep, setReviewStep] = useState(0);
+
   return (
     <React.Fragment>
       <ReviewTopBar course_id={courseDescription.CourseID}
-                    course_title={courseDescription.Name}
-                    onGradeChange={(g) => AlterReviewData('gpa', g)}
-                    onSubmit={() => setShowSubmitDialog(true)}/>
-      <Divider
-        sx={{
-          background: "#9A9A9A",
-          mx: indents - 2,
-          my: 3
-        }}/>
+                    course_title={courseDescription.Name}/>
 
-      <Grid container>
-        <Grid item md={12} lg={6}>
-          <ReviewSection title="Course Rating"
-                         reviewItems={courseRatingSection}
-                         itemValues={ReviewData}
-                         marginRight={point === 'lg' ? indents / 2 : null}
-                         valueCheck={checkValue}
-                         handleValueChange={AlterReviewData}/>
-        </Grid>
-        <Grid item md={12} lg={6}>
-          <ReviewSection title="Teaching Quality Rating"
-                         reviewItems={teachingQualitySection}
-                         itemValues={ReviewData}
-                         marginLeft={point === 'lg' ? indents / 2 : null}
-                         valueCheck={checkValue}
-                         handleValueChange={AlterReviewData}/>
-        </Grid>
-      </Grid>
-      <ReviewSection title="Course Grading Distribution"
-                     reviewItems={gradeDistrSection}
-                     itemValues={ReviewData}
-                     max={100}
-                     step={5}
-                     valueCheck={checkValue}
-                     handleValueChange={AlterReviewData}/>
-      <SubmitDialog
-        userToken={userToken}
-        course_id={courseDescription.CourseID}
-        show={ShowSubmitDialog}
-        handleValueChange={AlterReviewData}
-        onClose={() => setShowSubmitDialog(false)}
-        onSubmit={() => SubmitReview(ReviewData, userToken, () => {
-          enqueueSnackbar('Your review has been submitted!', {autoHideDuration: 5000, variant: 'success'});
-          navigate(`/visualization/${params.courseId}`)
-        })}/>
+      <Stepper sx={{my: 6}} activeStep={ReviewStep} alternativeLabel>
+        {StepList.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+
+      <Box sx={{width: "100%", height: "100%"}}>
+        {
+          [
+            (<SubclassSection
+              userToken={userToken}
+              course_id={courseDescription.CourseID}
+              handleValueChange={AlterReviewData}
+              onClose={() => setShowSubmitDialog(false)}
+            />),
+            (<ReviewSection key="Course Rating"
+                            title="Course Rating"
+                            reviewItems={courseRatingSection}
+                            itemValues={ReviewData}
+                            valueCheck={checkValue}
+                            handleValueChange={AlterReviewData}/>),
+            (<ReviewSection key="Lecture Quality Rating"
+                            title="Lecture Quality Rating"
+                            reviewItems={lectureQualitySection}
+                            itemValues={ReviewData}
+                            valueCheck={checkValue}
+                            handleValueChange={AlterReviewData}/>),
+            (<ReviewSection key="Course Grading Distribution"
+                            title="Course Grading Distribution"
+                            reviewItems={gradeDistrSection}
+                            itemValues={ReviewData}
+                            max={100}
+                            step={5}
+                            valueCheck={checkValue}
+                            handleValueChange={AlterReviewData}/>),
+            (<Box
+              key="Final Grade"
+              display="flex"
+              mx={indents}
+              height={300}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <FormControl required
+                           width={500}
+                           display="flex"
+                           alignItems="center"
+                           justifyContent="center">
+                <InputLabel>Final Grade</InputLabel>
+                <Select
+                  sx={{width: "20vw", fontSize: 40}}
+                  value={ReviewData['gpa']}
+                  label="Final Grade *"
+                  onChange={(e) => {
+                    AlterReviewData("gpa", e.target.value)
+                  }}
+                >
+                  {
+                    GradeList.map((e, i) =>
+                      (
+                        <MenuItem key={i} value={e}>{e.length === 1 ? e : e[0] + ' ' + e[1]}</MenuItem>
+                      ))
+                  }
+                </Select>
+                <FormHelperText>Required</FormHelperText>
+              </FormControl>
+            </Box>)][ReviewStep]
+        }
+      </Box>
+
+      <Fab sx={{mx: indents, float: "right"}} variant="extended"
+           onClick={() => ReviewStep !== StepList.length - 1 ?
+             setReviewStep(ReviewStep + 1) :
+             SubmitReview(ReviewData, userToken, () => {
+               enqueueSnackbar('Your review has been submitted!', {autoHideDuration: 5000, variant: 'success'});
+               navigate(`/visualization/${params.courseId}`)
+             })}>
+        <SendIcon sx={{mr: 1}}/>
+        {ReviewStep !== StepList.length - 1 ? "Next" : "Submit"}
+      </Fab>
     </React.Fragment>
   )
     ;
