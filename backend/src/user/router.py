@@ -49,6 +49,6 @@ async def update_password(email: EmailStr, update_info: schemas.UpdatePasswordIn
     update_info = update_info.dict()
     user = auth_service.authenticate_user(db, email, update_info['old_password'])
     if not user:
-        raise auth_exceptions.InvalidEmailOrPasswordException()
+        raise exceptions.WrongPasswordException()
     service.update_password(db, user, update_info['new_password'])
     
