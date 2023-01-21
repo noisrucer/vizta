@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 from sqlalchemy.orm import Session, InstrumentedAttribute
 from sqlalchemy import func, outerjoin, column, select, case
@@ -11,7 +11,7 @@ def get_course_by_course_id(db: Session, course_id: str):
     return db.query(course_models.Course).filter(course_models.Course.course_id == course_id).first()
 
 
-def get_newest_grading_ratio(db: Session, course_id: str, prof_name: str, grade_constitution: [InstrumentedAttribute]):
+def get_newest_grading_ratio(db: Session, course_id: str, prof_name: str, grade_constitution: List[InstrumentedAttribute]):
     return db.query(*[gc.label(gc.key) for gc in grade_constitution]). \
         filter(course_models.Subclass.course_id == course_id,
                course_models.Subclass.professor_name == prof_name,
@@ -29,7 +29,7 @@ def get_newest_semester_of_review(db: Session, course_id: str):
 
 
 def get_timetable(db: Session, course_id: str, academic_year: int, semester: int,
-                  timetable_column: [InstrumentedAttribute]):
+                  timetable_column: List[InstrumentedAttribute]):
     return db.query(*timetable_column). \
         join(course_models.SubclassInfo.rsub_class). \
         filter(course_models.SubclassInfo.course_id == course_id,
@@ -52,7 +52,7 @@ def get_all_review(db: Session, course_id: str, year: Union[int, None] = None, p
 
 
 def get_course_average_review(db: Session, course_id: str,
-                              avg_column: [InstrumentedAttribute],
+                              avg_column: List[InstrumentedAttribute],
                               year: Union[int, None] = None, professor: Union[str, None] = None):
     seccion = db.query(*[func.avg(_) for _ in avg_column]).filter(course_models.CourseReview.course_id == course_id)
 
@@ -109,8 +109,8 @@ def get_all_prof_of_course(db: Session, course_id: str):
     return [_.professor_name for _ in all_prof]
 
 
-def get_complete_averagte_review(db: Session, course_id: str,
-                                 avg_column: [InstrumentedAttribute]):
+def get_complete_average_review(db: Session, course_id: str,
+                                 avg_column: List[InstrumentedAttribute]):
     """
 
     Get average review by year and professor
@@ -171,7 +171,7 @@ def get_complete_averagte_review(db: Session, course_id: str,
 
 
 def get_prof_stats(db: Session, course_id: str,
-                   avg_column: [InstrumentedAttribute]):
+                   avg_column: List[InstrumentedAttribute]):
     """
 
     Get professor's stats in a course base on review

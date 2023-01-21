@@ -104,7 +104,7 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
                   mcr.course_delivery,
                   mcr.course_interactivity]
 
-    avg_reviews = visualization_service.get_complete_averagte_review(db, course_id, avg_column)
+    avg_reviews = visualization_service.get_complete_average_review(db, course_id, avg_column)
 
     # convert any Decimal object to float
     avg_reviews = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in avg_reviews]
