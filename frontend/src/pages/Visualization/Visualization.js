@@ -224,7 +224,7 @@ const Visualization = () => {
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
                     data: response.data.GPA.values,
-                    backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
+                    backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000", "#FF0000"],
                 }]})
                 setLectureDifficulty({...lectureDifficulty, datasets: [{
                     label: "Students Score",

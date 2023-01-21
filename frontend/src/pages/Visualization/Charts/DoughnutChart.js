@@ -10,7 +10,8 @@ function DoughnutChart({chartData}) {
         labels: {
           color: "#fff",
           usePointStyle: true,
-          pointStyle: 'circle'
+          pointStyle: 'circle',
+          useBorderRadius: "false"
         }
       },
       datalabels: {

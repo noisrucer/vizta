@@ -20,38 +20,15 @@ import Snackbar from "../../components/Snackbar";
 import Copyright from "./Copyright";
 const baseURL = "http://127.0.0.1:8000";
 
-const SignIn = () => {
+const ResetPassword = () => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const validate = () => {
-    if (username.length > 0 && password.length > 7)
-    {
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   const [usernameError, setUsernameError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("")
   const [openErrorMessage, setOpenErrorMessage] = useState(false);
-
-  const {UserData, UserToken} = useContext(UserContext);
-  const [userToken, setUserToken] = UserToken;
-  const [userData, setUserData] = UserData;
-
-  const handleSetUserData = (e) => {
-    setUserData(e);
-  }
-
-  const handleSetUserToken = (e) => {
-    setUserToken(e);
-  }
 
   const closeErrorMessage = () => {
     setOpenErrorMessage(false)
@@ -60,41 +37,7 @@ const SignIn = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    
-    axios.post(`${baseURL}/auth/login`, 
-      data
-    )
-    .then(response => {
-        const jwtToken = response.data.access_token;
-        const options = {
-          "headers": {
-            "Authorization": "Bearer " + jwtToken
-          }
-        }
-
-        handleSetUserData(data.get("username"));
-        handleSetUserToken(options);
-
-        if (response.status === 200){
-          axios.request({
-            method: 'get',
-            url: `${baseURL}/auth/me`,
-            headers: options['headers']
-          })
-          .then(response => {
-            console.log("response in Sign In: ",response)
-          })
-          navigate('/main/All')
-        }
-    })
-    .catch(err => {
-        setErrorMessage(err.response.data.detail)
-        setOpenErrorMessage(true)
-
-        setUsernameError(true)
-        setPasswordError(true)
-      })
-    };
+  };
 
   return (
       <Container component="main" maxWidth="xs">
@@ -111,7 +54,7 @@ const SignIn = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Log in
+            Reset Password
           </Typography>
           <Box
             component="form"
@@ -128,41 +71,15 @@ const SignIn = () => {
               onChange ={(e)=>setUsername(e.target.value)}
               error = {usernameError}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              onChange ={(e)=>setPassword(e.target.value)}
-              error = {passwordError}
-            />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              disabled = {!validate()}
             >
-              Log In
+              Send Code
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="/auth/reset-password" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/auth/sign-up" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
@@ -175,4 +92,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default ResetPassword;

@@ -5,6 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 
 function stringToColor(string) {
@@ -72,6 +73,28 @@ function Profile(){
 
   console.log(major)
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    console.log("password in profile: ", data.get('password'));
+    console.log("reset password in profile: ", data.get('newPassword'));
+
+    axios.request({
+      method: 'patch',
+      url: `${baseURL}/users/users/${userData}`,
+      data: {
+        old_password: data.get('password'),
+        new_password: data.get('newPassword')
+      },
+      headers: userToken['headers']
+    })
+    .then(response => {
+      const data = response.data
+      console.log("response from /users/users/email: ", data)
+    })
+  }
+
   return (
     <>
       <Stack direction="row" spacing={2} sx={{display: "flex", justifyContent: "center", marginTop: "100px"}}>
@@ -82,6 +105,7 @@ function Profile(){
       </Stack>
       <Box
       component="form"
+      onSubmit={handleSubmit}
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
         display: 'flex',
@@ -119,6 +143,22 @@ function Profile(){
           readOnly: true,
         }}
       />
+      <TextField
+        id="password"
+        name="password"
+        label="Password"
+      />
+      <TextField
+        id="newPassword"
+        name="newPassword"
+        label="Reset Password"
+      />
+      <Button
+        type="submit"
+        variant="contained"
+      >
+        Reset Password
+      </Button>
     </Box>
   </>
   )
