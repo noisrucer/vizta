@@ -19,6 +19,7 @@ class MainPageCourseOut(CourseBase):
 
 class UserFavoriteOut(CourseBase):
     num_reviews: int = Field(..., get=0)
+    has_reviewed: bool
 
 class CourseReviewBase(BaseModel):
     email: EmailStr
