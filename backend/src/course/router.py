@@ -153,11 +153,13 @@ async def get_courses(faculty: enums.Faculty, email: EmailStr, db: Session=Depen
         reviews = service.get_reviews_by_course_id(db, cid)
         num_reviews = len(reviews)
         is_favorite =  True if service.check_exist_user_favorite_course(db, email, cid) else False
+        has_reviewed = True if service.check_has_reviewed(db, email, cid) else False
         response.append({
             "course_id": cid,
             "name": cname,
             "num_reviews": num_reviews,
-            "is_favorite": is_favorite
+            "is_favorite": is_favorite,
+            "has_reviewed": has_reviewed
         })
 
     return response

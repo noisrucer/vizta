@@ -89,6 +89,14 @@ def delete_user_favorite(db: Session, email: EmailStr, course_id: str):
     return favorite
 
 
+def check_has_reviewed(db: Session, email: EmailStr, course_id: str):
+    reviews = db.query(models.CourseReview).\
+                filter(models.CourseReview.email == email).\
+                filter(models.CourseReview.course_id == course_id).all()
+    
+    return reviews
+
+
 def get_subclass(
     db: Session,
     course_id: str,
