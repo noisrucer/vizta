@@ -32,10 +32,15 @@ const Square = styled(Item)(({theme}) => ({
   width: "400px"
 }));
 
-const VerticalItem = styled(Item)(({theme}) => ({
+const TeachingQualityGrid = styled(Item)(({theme}) => ({
   height: "200px",
   width: "200px"
-}))
+}));
+
+const TQSubGrid = styled(Item)(({theme}) => ({
+  height: "66.66px",
+  width: "200px"
+}));
 
 const Overivew = (chartData) => {
 
@@ -50,9 +55,22 @@ const Overivew = (chartData) => {
         <Item>
           <h2>Teaching Quality</h2>
         </Item>
-        <VerticalItem>
-          <OverallScore score={70} />
-        </VerticalItem>
+        <Box sx={{display: "flex"}}>
+          <TeachingQualityGrid>
+            <OverallScore score={Math.round(chartData.teachingQuality[0] * 10)} />
+          </TeachingQualityGrid>
+          <Box>
+            <TQSubGrid>
+              <h6>Entertaining</h6>
+            </TQSubGrid>
+            <TQSubGrid>
+              <h6>Interactivity</h6>
+            </TQSubGrid>
+            <TQSubGrid>
+              <h6>Delivery</h6>
+            </TQSubGrid>
+          </Box>
+        </Box>
       </Stack>
       <Stack spacing={2} sx={{margin: 1}}>
         <HorizontalGrid>

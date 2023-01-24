@@ -617,7 +617,11 @@ const Visualization = () => {
                             finalDifficulty={finalDifficulty} 
                             workload={workload} 
                             pentagon={pentagon} 
-                            teachingQuality={overallTeachingQuality}/>
+                            teachingQuality={overallTeachingQuality}
+                            interactivity={interactivity}
+                            entertaining={entertaining}
+                            delivery={delivery}
+                            />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         <CourseInfo />
