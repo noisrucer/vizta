@@ -29,17 +29,24 @@ import { useSpring, animated } from "react-spring";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import Overview from './Tabs/Overview';
+import CourseInfo from './Tabs/CourseInfo';
+import YearlyTrend from './Tabs/YearlyTrend';
+import ProfessorStats from './Tabs/ProfessorStats';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Item from "./Boxes/Item";
+import Popper from "@mui/material/Popper";
+import Popover from '@mui/material/Popover';
+import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+
 
 const baseURL = 'http://127.0.0.1:8000';
-
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#000' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: "white",
-    borderRadius: 20
-  }));
+const dataColor = ["#DF6E53", "#EC8B33", "#F4BA41", "#5772B3", "#50B19E"];
+const workloadLabel = ["Very Heavy", "Heavy", "Medium", "Light", "Very Light"];
+const lectureFinalLabel = ["Very Difficult", "Difficult", "Medium", "Easy", "Very Easy"];
 
 function Number({ n }) {
     const { number } = useSpring({
@@ -117,6 +124,39 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     },
   }));
 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`full-width-tabpanel-${index}`}
+        aria-labelledby={`full-width-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+
+function a11yProps(index) {
+    return {
+        id: `vertical-tab-${index}`,
+        'aria-controls': `vertical-tabpanel-${index}`,
+    };
+}
+
 const Visualization = () => {
 
     const params = useParams()
@@ -143,36 +183,36 @@ const Visualization = () => {
         datasets: [{
             label: "Students Score",
             data: [],
-            backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
+            backgroundColor: dataColor,
         }]
     })
 
     console.log("GPA: ", GPA);
 
     const [lectureDifficulty, setLectureDifficulty] = useState({
-        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        labels: lectureFinalLabel,
         datasets: [{
             label: "Students Score",
             data: [],
-            backgroundColor: ["#FF0000", "#FF3400", "#FF6900", "#FF9E00", "#FFE400", "#E5FF00", "#B0FF00", "#7CFF00", "#35FF00", "#00FF00"]
+            backgroundColor: dataColor
         }]
     })
 
     const [finalDifficulty, setFinalDifficulty] = useState({
-        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        labels: lectureFinalLabel,
         datasets: [{
             label: "Students Score",
             data: [],
-            backgroundColor: ["#FF0000", "#FF3400", "#FF6900", "#FF9E00", "#FFE400", "#E5FF00", "#B0FF00", "#7CFF00", "#35FF00", "#00FF00"]
+            backgroundColor: dataColor
         }]
     })
 
     const [workload, setWorkload] = useState({
-        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        labels: workloadLabel,
         datasets: [{
             label: "Students Score",
             data: [],
-            backgroundColor: ["#FF0000", "#FF3400", "#FF6900", "#FF9E00", "#FFE400", "#E5FF00", "#B0FF00", "#7CFF00", "#35FF00", "#00FF00"]
+            backgroundColor: dataColor
         }]
     })
 
@@ -185,7 +225,7 @@ const Visualization = () => {
         labels: ["Final Difficulty", "GPA", "Lecture Difficulty", "Teaching Quality", "Workload"],
         datasets: [{
             label: "Overall Score",
-            data: [10, 10, 10, 10, 10],
+            data: [5, 5, 5, 5, 5],
         }]
     })
 
@@ -224,22 +264,22 @@ const Visualization = () => {
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
                     data: response.data.GPA.values,
-                    backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000", "#FF0000"],
+                    backgroundColor: dataColor
                 }]})
                 setLectureDifficulty({...lectureDifficulty, datasets: [{
                     label: "Students Score",
                     data: response.data.LectureDifficulty.values,
-                    backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
+                    backgroundColor: dataColor
                 }]})
                 setFinalDifficulty({...finalDifficulty, datasets: [{
                     label: "Students Score",
                     data: response.data.FinalDifficulty.values,
-                    backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
+                    backgroundColor: dataColor
                 }]})
                 setWorkload({...workload, datasets: [{
                     label: "Students Score",
                     data: response.data.Workload.values,
-                    backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
+                    backgroundColor: dataColor
                 }]})
                 const teachingQuality = response.data.TeachingQuality
                 setDelivery(calculateAverage(teachingQuality.Delivery.keys, teachingQuality.Delivery.values))
@@ -361,22 +401,22 @@ const Visualization = () => {
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
                     data: response.data.GPA.values,
-                    backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
+                    backgroundColor: dataColor
                 }]})
                 setLectureDifficulty({...lectureDifficulty, datasets: [{
                     label: "Students Score",
                     data: response.data.LectureDifficulty.values,
-                    backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
+                    backgroundColor: dataColor
                 }]})
                 setFinalDifficulty({...finalDifficulty, datasets: [{
                     label: "Students Score",
                     data: response.data.FinalDifficulty.values,
-                    backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
+                    backgroundColor: dataColor
                 }]})
                 setWorkload({...workload, datasets: [{
                     label: "Students Score",
                     data: response.data.Workload.values,
-                    backgroundColor: ["#00FF00", "#35FF00", "#6AFF00", "#9FFF00", "#D4FF00", "#FFF600", "#FFC100", "#FF8C00", "#FF5700", "#FF2300", "#FF0000", "#FF0000"],
+                    backgroundColor: dataColor
                 }]})
                 const teachingQuality = response.data.TeachingQuality
                 setDelivery(calculateAverage(teachingQuality.Delivery.keys, teachingQuality.Delivery.values))
@@ -502,225 +542,305 @@ const Visualization = () => {
 
     const [viewBar, setViewBar] = useState(true);
 
-    console.log("viewBar: ", viewBar);
+    const theme = useTheme();
+    const [value, setValue] = useState(0);
+  
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };
+  
+    const handleChangeIndex = (index) => {
+      setValue(index);
+    };
 
   return (
     <Box sx={{
         width: "100%",
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
+        justifyContent: "center",
+        // alignItems: "center"
         }}>
         <Box sx={{
             display: "flex", 
             flexDirection: "column", 
             alignItems: "center", 
-            width: "75%",
+            width: "100%",
             justifyContent: "center"
             }}>
 
-            <Box sx={{ width: '91.2%', marginTop: 10, marginBottom: 2}}>
-                <h1>{courseId} - {courseDescription.Name}</h1>
-                <h6>{courseDescription.Description}</h6>
-            </Box>
-            <Stack 
-                spacing={2} 
-                direction="row"
-                sx={{
-                    width: "91.2%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: 2
-                }}>
-                <Item sx={{ width: '35%'}}>
-                    {selectedYear} {selectedProfessor}
-                </Item>
-                <FormGroup>
-                    <FormControlLabel 
-                    control={<MaterialUISwitch defaultChecked />} 
-                    label="Label" 
-                    onClick={() => {setViewBar(!viewBar)}}
-                    />
-                </FormGroup>
-                <TextField 
-                    id="get-by-year"
-                    select
-                    label="Select Year"
-                    sx={{ width: '25%'}}
-                    defaultValue=""
-                >
-                    {selectYear.map((option) => (
-                        <MenuItem key={option} value={option} onClick={() => setSelectedYear(option)}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField 
-                    id="get-by-professor"
-                    select
-                    label="Select Professor"
-                    sx={{ width: '25%'}}
-                    defaultValue=""
-                >
-                    {selectProfessor.map((option) => (
-                        <MenuItem key={option} value={option} onClick={() => setSelectedProfessor(option)}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </TextField>
-            </Stack>
             <Box sx={{ 
                 width: '100%', 
+                marginTop: 10, 
+                marginBottom: 2, 
+                marginLeft: 8,
                 display: "flex", 
-                flexDirection: "column", 
-                alignItems: "center", 
+                flexDirection: "row",
+                alignItems: 'center',
                 }}>
-                <Stack spacing={2} sx={{
-                    width: '100%', 
-                    display: "flex", 
-                    flexDirection: "column", 
-                    alignItems: "center", 
-                    }}>
-                    <Stack 
-                        spacing={2} 
-                        direction="row" 
-                        sx={{
-                            width: '100%',
-                            display: "flex", 
-                            alignItems: "center", 
-                            justifyContent: "center"
-                            }}>
-                        <Item sx={{ width: '45%', boxShadow: 24 }}>
-                            GPA
-                            { viewBar ? <BarChart chartData={GPA} /> : <DoughnutChart chartData={GPA} /> }
-                        </Item>
-                        <Item sx={{ width: '45%', boxShadow: 24 }}>
-                            Lecture Difficulty
-                            {viewBar ? <BarChart chartData={lectureDifficulty} /> : <DoughnutChart chartData={lectureDifficulty} /> }
-                        </Item>
-                    </Stack>
-                    <Stack 
-                        spacing={2} 
-                        direction="row" 
-                        sx={{
-                            width: '100%',
-                            display: "flex", 
-                            alignItems: "center", 
-                            justifyContent: "center"
-                            }}>
-                        <Item sx={{ width: '45%' }}>
-                            Exam Difficulty
-                            { viewBar ? <BarChart chartData={finalDifficulty} /> : <DoughnutChart chartData={finalDifficulty} /> }
-                        </Item>
-                        <Item sx={{ width: '45%' }}>
-                            Workload
-                            {viewBar ? <BarChart chartData={workload} /> : <DoughnutChart chartData={workload} /> }
-                        </Item>
-                    </Stack>
-                </Stack>
-            </Box>
-            <Box sx={{ width: '91.2%', marginTop: 2}}>
-                <Stack spacing={2}>
-                    <Item>Teaching Quality</Item>
-                </Stack>
-            </Box>
-            <Box sx={{width: '91.2%', marginBottom: 2}}>
-                <Stack direction='row'>
-                    <Item sx={{width: "25%"}}>
-                        Delivery
-                        <OverallScore score={Math.round(delivery[0] * 10)}/>
-                    </Item>
-                    <Item sx={{width: "25%"}}>
-                        Entertaining
-                        <OverallScore score={Math.round(entertaining[0] * 10)}/>
-                    </Item>
-                    <Item sx={{width: "25%"}}>
-                        Interactivity
-                        <OverallScore score={Math.round(interactivity[0] * 10)}/>
-                    </Item>
-                    <Item sx={{width: "25%"}}>
-                        Overall
-                        <OverallScore score={Math.round(overallTeachingQuality[0] * 10)}/>
-                    </Item>
-                </Stack>
-            </Box>
-            <Box sx={{ width: '91.2%', marginBottom: 2}}>
-                <Stack direction='row' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                    <Button variant={FEDVariant} startIcon={<BorderColorIcon />} onClick={handleFEDButtonClick}>
-                        Final Exam Difficulty
+                <h1>
+                    <span style={{color: "#4FB19E"}}>
+                        {courseId} {" "}
+                    </span>
+                    <span>
+                        / {courseDescription.Name}
+                    </span>
+                </h1>
+                <Box sx={{marginLeft: 101.5}}>
+                    <Button variant="outlined">
+                        Add review
                     </Button>
-                    <Button variant={GPAVariant} startIcon={<GradingIcon />} onClick={handleGPAButtonClick}>
-                        GPA
-                    </Button>
-                    <Button variant={LDVariant} startIcon={<ClassIcon />} onClick={handleLDButtonClick}>
-                        Lecture Difficulty
-                    </Button>
-                    <Button variant={TQVariant} startIcon={<SchoolIcon />} onClick={handleTQButtonClick}>
-                        Teaching Quality
-                    </Button>
-                    <Button variant={WVariant} startIcon={<AccessTimeFilledIcon />} onClick={handleWButtonClick}>
-                        Workload
-                    </Button>
-                </Stack>
-            </Box>
-            <Box sx={{ width: '91.2%', marginBottom: 5}}>
-                <Stack direction='row' spacing={2}>
-                    <Item sx={{width: "50%", backgroundColor: "white"}}>
-                        <RadarChart chartData={buttonClick ? conditionalPentagon : pentagon} />
-                    </Item>
-                    <Item sx={{width: "50%", display: "flex", alignItems: "center", justifyContent: "center"}}>
-                        <Item sx={{width: "70%"}}>
-                            {/* <OverallScore score={buttonClick ? conditionalOverallScore : overallScore}/> */}
-                            <h3>Overall Score:</h3>
-                            <Stack direction='row' spacing={2} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                                <Number n={buttonClick ? conditionalOverallScore : overallScore}/>
-                                <div style={{ fontSize: "24px"}}>/ 100</div>
-                            </Stack>
-                        </Item>
-                    </Item>
-                </Stack>
+                </Box>
             </Box>
         </Box>
-        <AppBar 
-            component="nav" 
-            sx={{
-                backgroundColor: '#000000',
-                width: "15%",
-                height: '1000%',
-                marginTop: 12,
-                marginRight: 23,
-                }}>
-            <Box sx={{
-                display: "flex",
-                flexDirection: "column",
-                // width: "20%",
-                // marginTop: 11
-                }}>
-                <Stack 
-                    spacing={2} 
-                    sx={{
-                        display: "flex", 
-                        alignItems: "center", 
-                        justifyContent: "center",
-                        marginBottom: 5,
-                        }}>
-                    <Button variant="contained" startIcon={<ReviewsIcon />} sx={{width: "100%"}}>
-                        Add Review
-                    </Button>
-                    <Item sx={{ width: "100%" }}>
-                        Grading Ratio
-                        <HorizontalBarChart chartData={gradingRatio}/>
-                    </Item>
-                    <Item sx={{ width: '100%'}}>
-                        <TimeTable chartData={timeTable}/>
-                    </Item>
-
-                    <ByYearDrawer status={viewByYear}></ByYearDrawer>
-                    <ByProfessorDrawer status={viewByProfessor}></ByProfessorDrawer>
-                </Stack>
-            </Box>
-        </AppBar>
+        <Box sx={{ bgcolor: '#1D2630', width: 800 }}>
+            <AppBar position="static" sx={{marginLeft: 4, bgcolor: '#1D2630'}}>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    indicatorColor="secondary"
+                    textColor="inherit"
+                    variant="fullWidth"
+                    aria-label="full width tabs example"
+                >
+                <Tab label="Overview" {...a11yProps(0)} />
+                <Tab label="Course Information" {...a11yProps(1)} />
+                <Tab label="Yearly Trend" {...a11yProps(2)} />
+                <Tab label="Professor Statistics" {...a11yProps(3)} />
+                </Tabs>
+            </AppBar>
+                <TabPanel value={value} index={0}>
+                    <Overview GPA={GPA} lectureDifficulty={lectureDifficulty} finalDifficulty={finalDifficulty} workload={workload} pentagon={pentagon}/>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <CourseInfo />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    <YearlyTrend />
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                    <ProfessorStats />
+                </TabPanel>
+        </Box>
     </Box>
+    // <Box sx={{
+    //     width: "100%",
+    //     display: "flex",
+    //     flexDirection: "row",
+    //     }}>
+    //     <Box sx={{
+    //         display: "flex", 
+    //         flexDirection: "column", 
+    //         alignItems: "center", 
+    //         width: "75%",
+    //         justifyContent: "center"
+    //         }}>
+
+    //         <Box sx={{ width: '91.2%', marginTop: 10, marginBottom: 2}}>
+    //             <h1>
+    //                 <span style={{color: "#4FB19E"}}>
+    //                     {courseId} {" "}
+    //                 </span>
+    //                 <span>
+    //                     / {courseDescription.Name}
+    //                 </span>
+    //             </h1>
+    //         </Box>
+    //         <Stack 
+    //             spacing={2} 
+    //             direction="row"
+    //             sx={{
+    //                 width: "91.2%",
+    //                 display: "flex",
+    //                 alignItems: "center",
+    //                 justifyContent: "center",
+    //                 marginBottom: 2
+    //             }}>
+    //             <Item sx={{ width: '35%'}}>
+    //                 {selectedYear} {selectedProfessor}
+    //             </Item>
+    //             <FormGroup>
+    //                 <FormControlLabel 
+    //                 control={<MaterialUISwitch defaultChecked />} 
+    //                 label="Label" 
+    //                 onClick={() => {setViewBar(!viewBar)}}
+    //                 />
+    //             </FormGroup>
+    //             <TextField 
+    //                 id="get-by-year"
+    //                 select
+    //                 label="Select Year"
+    //                 sx={{ width: '25%'}}
+    //                 defaultValue=""
+    //             >
+    //                 {selectYear.map((option) => (
+    //                     <MenuItem key={option} value={option} onClick={() => setSelectedYear(option)}>
+    //                         {option}
+    //                     </MenuItem>
+    //                 ))}
+    //             </TextField>
+    //             <TextField 
+    //                 id="get-by-professor"
+    //                 select
+    //                 label="Select Professor"
+    //                 sx={{ width: '25%'}}
+    //                 defaultValue=""
+    //             >
+    //                 {selectProfessor.map((option) => (
+    //                     <MenuItem key={option} value={option} onClick={() => setSelectedProfessor(option)}>
+    //                         {option}
+    //                     </MenuItem>
+    //                 ))}
+    //             </TextField>
+    //         </Stack>
+    //         <Box sx={{ 
+    //             width: '100%', 
+    //             display: "flex", 
+    //             flexDirection: "column", 
+    //             alignItems: "center", 
+    //             }}>
+    //             <Stack spacing={2} sx={{
+    //                 width: '100%', 
+    //                 display: "flex", 
+    //                 flexDirection: "column", 
+    //                 alignItems: "center", 
+    //                 }}>
+    //                 <Stack 
+    //                     spacing={2} 
+    //                     direction="row" 
+    //                     sx={{
+    //                         width: '100%',
+    //                         display: "flex", 
+    //                         alignItems: "center", 
+    //                         justifyContent: "center"
+    //                         }}>
+    //                     <Item sx={{ width: '45%', boxShadow: 24 }}>
+    //                         GPA
+    //                         { viewBar ? <BarChart chartData={GPA} /> : <DoughnutChart chartData={GPA} /> }
+    //                     </Item>
+    //                     <Item sx={{ width: '45%', boxShadow: 24 }}>
+    //                         Lecture Difficulty
+    //                         {viewBar ? <BarChart chartData={lectureDifficulty} /> : <DoughnutChart chartData={lectureDifficulty} /> }
+    //                     </Item>
+    //                 </Stack>
+    //                 <Stack 
+    //                     spacing={2} 
+    //                     direction="row" 
+    //                     sx={{
+    //                         width: '100%',
+    //                         display: "flex", 
+    //                         alignItems: "center", 
+    //                         justifyContent: "center"
+    //                         }}>
+    //                     <Item sx={{ width: '45%' }}>
+    //                         Exam Difficulty
+    //                         { viewBar ? <BarChart chartData={finalDifficulty} /> : <DoughnutChart chartData={finalDifficulty} /> }
+    //                     </Item>
+    //                     <Item sx={{ width: '45%' }}>
+    //                         Workload
+    //                         {viewBar ? <BarChart chartData={workload} /> : <DoughnutChart chartData={workload} /> }
+    //                     </Item>
+    //                 </Stack>
+    //             </Stack>
+    //         </Box>
+    //         <Box sx={{ width: '91.2%', marginTop: 2}}>
+    //             <Stack spacing={2}>
+    //                 <Item>Teaching Quality</Item>
+    //             </Stack>
+    //         </Box>
+    //         <Box sx={{width: '91.2%', marginBottom: 2}}>
+    //             <Stack direction='row'>
+    //                 <Item sx={{width: "25%"}}>
+    //                     Delivery
+    //                     <OverallScore score={Math.round(delivery[0] * 10)}/>
+    //                 </Item>
+    //                 <Item sx={{width: "25%"}}>
+    //                     Entertaining
+    //                     <OverallScore score={Math.round(entertaining[0] * 10)}/>
+    //                 </Item>
+    //                 <Item sx={{width: "25%"}}>
+    //                     Interactivity
+    //                     <OverallScore score={Math.round(interactivity[0] * 10)}/>
+    //                 </Item>
+    //                 <Item sx={{width: "25%"}}>
+    //                     Overall
+    //                     <OverallScore score={Math.round(overallTeachingQuality[0] * 10)}/>
+    //                 </Item>
+    //             </Stack>
+    //         </Box>
+    //         <Box sx={{ width: '91.2%', marginBottom: 2}}>
+    //             <Stack direction='row' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+    //                 <Button variant={FEDVariant} startIcon={<BorderColorIcon />} onClick={handleFEDButtonClick}>
+    //                     Final Exam Difficulty
+    //                 </Button>
+    //                 <Button variant={GPAVariant} startIcon={<GradingIcon />} onClick={handleGPAButtonClick}>
+    //                     GPA
+    //                 </Button>
+    //                 <Button variant={LDVariant} startIcon={<ClassIcon />} onClick={handleLDButtonClick}>
+    //                     Lecture Difficulty
+    //                 </Button>
+    //                 <Button variant={TQVariant} startIcon={<SchoolIcon />} onClick={handleTQButtonClick}>
+    //                     Teaching Quality
+    //                 </Button>
+    //                 <Button variant={WVariant} startIcon={<AccessTimeFilledIcon />} onClick={handleWButtonClick}>
+    //                     Workload
+    //                 </Button>
+    //             </Stack>
+    //         </Box>
+    //         <Box sx={{ width: '91.2%', marginBottom: 5}}>
+    //             <Stack direction='row' spacing={2}>
+    //                 <Item sx={{width: "50%", backgroundColor: "white"}}>
+    //                     <RadarChart chartData={buttonClick ? conditionalPentagon : pentagon} />
+    //                 </Item>
+    //                 <Item sx={{width: "50%", display: "flex", alignItems: "center", justifyContent: "center"}}>
+    //                     <Item sx={{width: "70%"}}>
+    //                         <h3>Overall Score:</h3>
+    //                         <Stack direction='row' spacing={2} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+    //                             <Number n={buttonClick ? conditionalOverallScore : overallScore}/>
+    //                             <div style={{ fontSize: "24px"}}>/ 100</div>
+    //                         </Stack>
+    //                     </Item>
+    //                 </Item>
+    //             </Stack>
+    //         </Box>
+    //     </Box>
+    //     <AppBar 
+    //         component="nav" 
+    //         sx={{
+    //             backgroundColor: '#1D2630',
+    //             width: "15%",
+    //             marginTop: 12,
+    //             marginRight: 10,
+    //             }}>
+    //         <Box sx={{
+    //             display: "flex",
+    //             flexDirection: "column",
+    //             }}>
+    //             <Stack 
+    //                 spacing={2} 
+    //                 sx={{
+    //                     display: "flex", 
+    //                     alignItems: "center", 
+    //                     justifyContent: "center",
+    //                     marginBottom: 5,
+    //                     }}>
+    //                 <Button variant="contained" startIcon={<ReviewsIcon />} sx={{width: "100%"}}>
+    //                     Add Review
+    //                 </Button>
+    //                 <Item sx={{ width: "100%" }}>
+    //                     Grading Ratio
+    //                     <HorizontalBarChart chartData={gradingRatio}/>
+    //                 </Item>
+    //                 <Item sx={{ width: '100%'}}>
+    //                     <TimeTable chartData={timeTable}/>
+    //                 </Item>
+
+    //                 <ByYearDrawer status={viewByYear}></ByYearDrawer>
+    //                 <ByProfessorDrawer status={viewByProfessor}></ByProfessorDrawer>
+    //             </Stack>
+    //         </Box>
+    //     </AppBar>
+    // </Box>
   )
 }
 
