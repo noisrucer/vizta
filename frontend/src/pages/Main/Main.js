@@ -23,13 +23,27 @@ import axios from 'axios';
 import Pagination from "@mui/material/Pagination";
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
-
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const baseURL = 'http://127.0.0.1:8000';
+const temp_color = "#1D2630"
+const favColor = "#25323F"
+// #1D2630
+
+const Item = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#070809' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: "white",
+  borderRadius: 20
+}));
 
 const Search = styled("div")(({ theme }) => ({
+    marginTop: 10,
     position: "relative",
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: 20,
     backgroundColor: alpha(theme.palette.common.black, 0.25),
     "&:hover": {
       backgroundColor: alpha(theme.palette.common.black, 0.25),
@@ -206,141 +220,147 @@ const Main = () => {
     const slicedFavorites = favorites.slice(favoritesPagination.from, favoritesPagination.to)
 
     return (
-      <Box display="flex" justifyContent="space-around" >
-        <Box>
-          <Box 
-            sx={{
-              }}>
-            <Search sx={{marginTop: "100px",
-                        marginRight: "5px",
-                        }}>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search by course code…"
-                inputProps={{ "aria-label": "search" }}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </Search>
+      <Box>
+        <Box display="flex" justifyContent="space-around" sx={{ marginTop: 10}}>
+          <Box sx={{marginTop:"50px"}}>
+            <Item sx={{ backgroundColor: temp_color}}>
+              <Box 
+                sx={{
+                  }}>
+                <Search sx={{
+                            marginRight: "5px",
+                            }}>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Search by course code…"
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                </Search>
+              </Box>
+                <Box
+                  sx={{
+                    marginTop: "10px"
+                    }}>
+                  {slicedCourses.length > 0 ? 
+                  <List>
+                      {slicedCourses.map((value) => (
+                        <>
+                          <ListItem  
+                            key={value.course_id}
+                            >
+                            <IconButton key={value.course_id} onClick={() => handleFavoritesButtonClick(value.course_id, value.is_favorite)}>
+                                { value.is_favorite ? 
+                                <FavoriteIcon sx={{color: "#FF403D"}}/> : <FavoriteBorderIcon sx={{color: "#FF403D"}}/>
+                                }
+                            </IconButton>
+                            <ListItemButton onClick={() => handleListItemClick(value.course_id)}>
+                              <ListItemText sx={{marginLeft: "30px"}}
+                                primary={value.course_id}
+                                secondary={
+                                  <React.Fragment>
+                                    <Typography
+                                      sx={{ display: 'inline' }}
+                                      component="span"
+                                      variant="body2"
+                                      color="text.primary"
+                                    >
+                                      {value.name}
+                                    </Typography>
+                                    
+                                  </React.Fragment>
+                                }
+                              />
+                              <ListItemText 
+                                secondary={`reviews: ${value.num_reviews}`} 
+                                style={{position: "absolute", left: "460px"}} 
+                                />
+                            </ListItemButton>
+                          </ListItem>
+                          <Divider variant="fullWidth" style={{width: "620px", borderColor: temp_color }}/>
+                        </>
+                      ))}
+                  </List> :
+                  <>
+                    <List>No Items to display</List>
+                    <Divider variant="fullWidth" style={{width: "620px"}}/>
+                  </>
+                  }
+                  <Stack spacing={2} sx={{display: "flex", alignItems: "center"}}>
+                    <Pagination 
+                      count={Math.ceil(filteredCourses.length / pageSize)}
+                      variant="outlined" 
+                      shape="rounded" 
+                      size="large" 
+                      onChange={handlePageChange}
+                    />
+                  </Stack>
+                </Box>
+              </Item>
           </Box>
-            <Box
-              sx={{
-                marginTop: "10px"
-                }}>
-              {slicedCourses.length > 0 ? 
-              <List>
-                  {slicedCourses.map((value) => (
-                    <>
-                      <ListItem  
-                        key={value.course_id}
-                        >
-                        <IconButton key={value.course_id} onClick={() => handleFavoritesButtonClick(value.course_id, value.is_favorite)}>
-                            { value.is_favorite ? 
-                            <StarIcon/> : <StarBorderRoundedIcon/>
-                            }
-                        </IconButton>
-                        <ListItemButton onClick={() => handleListItemClick(value.course_id)}>
-                          <ListItemText sx={{marginLeft: "30px"}}
-                            primary={value.course_id}
-                            secondary={
-                              <React.Fragment>
-                                <Typography
-                                  sx={{ display: 'inline' }}
-                                  component="span"
-                                  variant="body2"
-                                  color="text.primary"
-                                >
-                                  {value.name}
-                                </Typography>
-                                
-                              </React.Fragment>
-                            }
-                          />
-                          <ListItemText 
-                            secondary={`reviews: ${value.num_reviews}`} 
-                            style={{position: "absolute", left: "460px"}} 
+          <Box>
+          <Item sx={{boxShadow: 6, backgroundColor: favColor, marginTop: "50px"}}>
+            <Typography variant="h5" sx={{marginTop: "17px"}} >Favorites</Typography>
+            <Box sx= {{
+                  marginTop: "10px"
+                  }}>
+                {slicedFavorites.length > 0 ?
+                <List>
+                    {slicedFavorites.map((value) => (
+                      <>
+                        <ListItem 
+                          key={value.course_id}
+                          >
+                          <IconButton key={value.course_id} onClick={() => handleFavoritesButtonClick(value.course_id, value.is_favorite)}>
+                              { value.is_favorite ? 
+                              <FavoriteIcon sx={{color: "#FF403D"}}/> : <FavoriteBorderIcon sx={{color: "#FF403D"}}/>
+                              }
+                          </IconButton>
+                          <ListItemButton onClick={() => handleListItemClick(value.course_id)}>
+                            <ListItemText sx={{marginLeft: "30px"}}
+                              primary={value.course_id}
+                              secondary={
+                                <React.Fragment>
+                                  <Typography
+                                    sx={{ display: 'inline' }}
+                                    component="span"
+                                    variant="body2"
+                                    color="text.primary"
+                                  >
+                                    {value.name}
+                                  </Typography>
+                                  
+                                </React.Fragment>
+                              }
                             />
-                        </ListItemButton>
-                      </ListItem>
-                      <Divider variant="fullWidth" style={{width: "600px"}}/>
-                    </>
-                  ))}
-              </List> :
-              <>
-                <List>No Items to display</List>
-                <Divider variant="fullWidth" style={{width: "600px"}}/>
-              </>
-              }
-              <Stack spacing={2} sx={{display: "flex", alignItems: "center"}}>
-                <Pagination 
-                  count={Math.ceil(filteredCourses.length / pageSize)}
-                  variant="outlined" 
-                  shape="rounded" 
-                  size="large" 
-                  onChange={handlePageChange}
-                />
-              </Stack>
+                            <ListItemText 
+                              secondary={`reviews: ${value.num_reviews}`} 
+                              style={{position: "absolute", left: "460px"}} 
+                              />
+                          </ListItemButton>
+                        </ListItem>
+                        <Divider variant="fullWidth" style={{width: "620px", borderColor: favColor}}/>
+                      </>
+                    ))}
+                </List> :
+                <>
+                  <List>No Items to display</List>
+                  <Divider variant="fullWidth" style={{width: "620px"}}/>
+                </>
+                }
+                <Stack spacing={2} sx={{display: "flex", alignItems: "center"}}>
+                  <Pagination 
+                    count={Math.ceil(favorites.length / pageSize)}
+                    variant="outlined" 
+                    shape="rounded" 
+                    size="large" 
+                    onChange={handleFavoritesPageChange}
+                  />
+                </Stack>
             </Box>
-        </Box>
-        <Box>
-          <Typography variant="h5" sx={{marginTop: "105px"}}>Favorites</Typography>
-          <Box sx= {{
-                marginTop: "10px"
-                }}>
-              {slicedFavorites.length > 0 ?
-              <List>
-                  {slicedFavorites.map((value) => (
-                    <>
-                      <ListItem 
-                        key={value.course_id}
-                        >
-                        <IconButton key={value.course_id} onClick={() => handleFavoritesButtonClick(value.course_id, value.is_favorite)}>
-                            { value.is_favorite ? 
-                            <StarIcon/> : <StarBorderRoundedIcon/>
-                            }
-                        </IconButton>
-                        <ListItemButton onClick={() => handleListItemClick(value.course_id)}>
-                          <ListItemText sx={{marginLeft: "30px"}}
-                            primary={value.course_id}
-                            secondary={
-                              <React.Fragment>
-                                <Typography
-                                  sx={{ display: 'inline' }}
-                                  component="span"
-                                  variant="body2"
-                                  color="text.primary"
-                                >
-                                  {value.name}
-                                </Typography>
-                                
-                              </React.Fragment>
-                            }
-                          />
-                          <ListItemText 
-                            secondary={`reviews: ${value.num_reviews}`} 
-                            style={{position: "absolute", left: "460px"}} 
-                            />
-                        </ListItemButton>
-                      </ListItem>
-                      <Divider variant="fullWidth" style={{width: "600px"}}/>
-                    </>
-                  ))}
-              </List> :
-              <>
-                <List>No Items to display</List>
-                <Divider variant="fullWidth" style={{width: "600px"}}/>
-              </>
-              }
-              <Stack spacing={2} sx={{display: "flex", alignItems: "center"}}>
-                <Pagination 
-                  count={Math.ceil(favorites.length / pageSize)}
-                  variant="outlined" 
-                  shape="rounded" 
-                  size="large" 
-                  onChange={handleFavoritesPageChange}
-                />
-              </Stack>
+          </Item>
           </Box>
         </Box>
       </Box>

@@ -30,6 +30,7 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ScienceIcon from '@mui/icons-material/Science';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from "react-router-dom";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const drawerWidth = 240;
 
@@ -138,7 +139,7 @@ export default function Sidebar() {
   return (
     <Box sx={{ display: 'flex'}}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{background: "#000000", opacity: 0.8}}>
+      <AppBar position="fixed" open={open} sx={{background: "#1D2630", opacity: 0.8}}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -152,9 +153,14 @@ export default function Sidebar() {
           <Button variant="primary" href="/" sx={{ marginRight: "20px"}}>Vizta</Button>
           {
             isLoggedIn ? 
-            <Button variant="primary" href="/profile" sx={{ position: "absolute", right: 20 }}>
-              <AccountCircleIcon />
-            </Button> : 
+            <>
+              <Button variant="primary" href="/" sx={{position: "absolute", right: 300}}>Home</Button>
+              <Button variant="primary" href="/main/All" sx={{position: "absolute", right: 220}}>Main</Button>
+              <Button variant="primary" href="/favorites" sx={{position: "absolute", right: 100}}>Favorites</Button>
+              <Button variant="primary" href="/profile" sx={{ position: "absolute", right: 20 }}>
+                <SettingsIcon sx={{color: "#FFFFFF"}}/>
+              </Button>
+            </> : 
             <>
               <Button variant="primary" href="/auth/sign-in" sx={{marginLeft: 'auto'}}>Log In</Button>
               <Button variant="primary" href="/auth/sign-up" sx={{marginLeft: "10px"}}>Sign Up</Button>

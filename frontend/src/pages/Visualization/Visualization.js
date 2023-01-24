@@ -22,7 +22,6 @@ import DoughnutChart from './Charts/DoughnutChart';
 import HorizontalBarChart from './Charts/HorizontalBarChart';
 import RadarChart from './Charts/RadarChart';
 import OverallScore from './OverallScore/OverallScore';
-import { height } from '@mui/system';
 import AppBar from '@mui/material/AppBar';
 import {ByYearDrawer} from "./Drawer/ByYearDrawer";
 import { ByProfessorDrawer } from './Drawer/ByProfessorDrawer';
@@ -34,11 +33,12 @@ import Switch from '@mui/material/Switch';
 const baseURL = 'http://127.0.0.1:8000';
 
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    backgroundColor: theme.palette.mode === 'dark' ? '#000' : '#fff',
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: 'center',
-    color: theme.palette.text.secondary,
+    color: "white",
+    borderRadius: 20
   }));
 
 function Number({ n }) {
@@ -506,10 +506,9 @@ const Visualization = () => {
 
   return (
     <Box sx={{
-        width: "80%",
+        width: "100%",
         display: "flex",
         flexDirection: "row",
-        marginLeft: 20
         }}>
         <Box sx={{
             display: "flex", 
@@ -591,11 +590,11 @@ const Visualization = () => {
                             alignItems: "center", 
                             justifyContent: "center"
                             }}>
-                        <Item sx={{ width: '45%' }}>
+                        <Item sx={{ width: '45%', boxShadow: 24 }}>
                             GPA
                             { viewBar ? <BarChart chartData={GPA} /> : <DoughnutChart chartData={GPA} /> }
                         </Item>
-                        <Item sx={{ width: '45%' }}>
+                        <Item sx={{ width: '45%', boxShadow: 24 }}>
                             Lecture Difficulty
                             {viewBar ? <BarChart chartData={lectureDifficulty} /> : <DoughnutChart chartData={lectureDifficulty} /> }
                         </Item>

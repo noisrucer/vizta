@@ -37,6 +37,16 @@ const ResetPassword = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    console.log("email: ", data.get("username"))
+
+    axios.request({
+        method: 'POST',
+        url: `${baseURL}/auth/reset-password/email/${data.get("username")}`,
+        email: data.get("username")
+    })
+    .then(response => {
+        console.log("reset password: ", response);
+    })
   };
 
   return (
