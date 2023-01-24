@@ -43,8 +43,17 @@ const baseURL = 'http://127.0.0.1:8000';
 
 const indents = 12;
 
+const Item = styled(Box)(({ theme }) => ({
+  backgroundColor: '#26323F',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: "white",
+  borderRadius: 20
+}));
+
 const PrettoSlider = styled(Slider)({
-  color: '#52af77',
+  color: 'primary',
   height: 8,
   '& .MuiSlider-track': {
     border: 'none',
@@ -93,32 +102,33 @@ class ReviewTopBar extends React.Component {
         sx={{
           display: "flex",
           minWidth: 275,
-          marginTop: 10,
+          marginTop: 15,
+          marginBottom: 10,
           mx: indents,
           flexDirection: "column",
         }}
       >
         <Grid container justifyContent="space-between" alignItems="stretch">
           <Grid item>
-            <h4 style={{
-              fontFamily: "Roboto",
-              color: "#C8FFF4",
-              marginBottom: 30
-            }}>
-              Create an review
-            </h4>
+            {/*<h4 style={{*/}
+            {/*  fontFamily: "Roboto",*/}
+            {/*  color: "#C8FFF4",*/}
+            {/*  marginBottom: 30*/}
+            {/*}}>*/}
+            {/*  Create an review*/}
+            {/*</h4>*/}
             <h1 style={{
               fontFamily: "Roboto",
               color: "white"
             }}>
-              {this.props.course_id}
+              {this.props.course_id} / {this.props.course_title}
             </h1>
-            <h1 style={{
-              fontFamily: "Roboto",
-              color: "white"
-            }}>
-              {this.props.course_title}
-            </h1>
+            {/*<h1 style={{*/}
+            {/*  fontFamily: "Roboto",*/}
+            {/*  color: "white"*/}
+            {/*}}>*/}
+            {/*  {this.props.course_title}*/}
+            {/*</h1>*/}
           </Grid>
         </Grid>
       </Box>
@@ -153,7 +163,7 @@ class ReviewSection extends React.Component {
 
   constructor(props) {
 
-    let max = 10
+    let max = 5
     if ('max' in props) {
       max = props.max
     }
@@ -176,17 +186,17 @@ class ReviewSection extends React.Component {
 
     const card = (
       <React.Fragment>
-        <CardContent>
-          <Typography sx={{fontSize: 14, color: "red"}} color="text.secondary" gutterBottom>
-            Must complete
-          </Typography>
-          <Typography sx={{color: "#C8FFF4"}} variant="h3" component="div">
+        <CardContent sx={{mx: 3, my: 5}}>
+          {/*<Typography sx={{fontSize: 14, color: "red"}} color="text.secondary" gutterBottom>*/}
+          {/*  Must complete*/}
+          {/*</Typography>*/}
+          <Typography sx={{color: "#fff"}} variant="h3" component="div">
             {this.props.title}
           </Typography>
           <Box sx={{my: 4, mx: 3}}>
             {
               this.props.reviewItems.map((v, i) => (
-                  <Grid container spacing={2} alignItems="center" key={i}>
+                  <Grid sx={{my: 1}} container spacing={4} alignItems="center" key={i}>
                     <Grid item xs="3">
                       {VariableNameCapitalize(v)}
                     </Grid>
@@ -216,16 +226,16 @@ class ReviewSection extends React.Component {
       </React.Fragment>
     )
 
-    const boxStyle = {mx: indents, my: 3, minWidth: 550};
+    const boxStyle = {mx: indents + 50, my: 3, minWidth: 550};
     if ('marginRight' in this.props)
       boxStyle['marginRight'] = this.props['marginRight']
     if ('marginLeft' in this.props)
       boxStyle['marginLeft'] = this.props['marginLeft']
 
     return (
-      <Box sx={boxStyle}>
-        <Card variant="outlined">{card}</Card>
-      </Box>
+      <Item sx={boxStyle}>
+        {card}
+      </Item>
     )
   }
 }
@@ -524,6 +534,7 @@ export default function ReviewCreate() {
               key="Final Grade"
               display="flex"
               mx={indents}
+              sx={{fontSize: 40}}
               height={300}
               alignItems="center"
               justifyContent="center"
@@ -535,7 +546,7 @@ export default function ReviewCreate() {
                            justifyContent="center">
                 <InputLabel>Final Grade</InputLabel>
                 <Select
-                  sx={{width: "20vw", fontSize: 40}}
+                  sx={{width: "20vw"}}
                   value={ReviewData['gpa']}
                   label="Final Grade *"
                   onChange={(e) => {

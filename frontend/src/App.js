@@ -11,10 +11,22 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Profile from "./components/Sidebar/Profile";
 import Visualization from "./pages/Visualization/Visualization";
 import ReviewCreate from "./pages/ReviewCreate/ReviewCreate";
+import {amber, deepOrange} from "@mui/material/colors";
+
+const temp_color = "#1D2630"
 
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
+    primary: {
+      main: amber[500]
+    },
+    secondary: {
+      main: deepOrange[500]
+    },
+    background: {
+      default: temp_color
+    }
   },
 });
 
