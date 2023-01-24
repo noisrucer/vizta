@@ -14,6 +14,7 @@ import BarChart from "../Charts/BarChart"
 import DoughnutChart from '../Charts/DoughnutChart';
 import HorizontalBarChart from '../Charts/HorizontalBarChart';
 import RadarChart from '../Charts/RadarChart';
+import OverallScore from '../OverallScore/OverallScore';
 import AppBar from '@mui/material/AppBar';
 import { useSpring, animated } from "react-spring";
 import FormGroup from '@mui/material/FormGroup';
@@ -23,16 +24,17 @@ import Item from "../Boxes/Item";
 
 const HorizontalGrid = styled(Item)(({theme}) => ({
   height: "300px",
-  width: "500px"
+  width: "480px"
 }));
 
 const Square = styled(Item)(({theme}) => ({
   height: "350px",
-  width: "350px"
+  width: "400px"
 }));
 
 const VerticalItem = styled(Item)(({theme}) => ({
-  height: "250px"
+  height: "200px",
+  width: "200px"
 }))
 
 const Overivew = (chartData) => {
@@ -41,13 +43,15 @@ const Overivew = (chartData) => {
 
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >
-      <Stack spacing={2} sx={{margin: 1}}>
-        <Square>
-          <h2>Pentagon</h2>
-          {/* <RadarChart chartData={chartData.pentagon}/> */}
+      <Stack sx={{margin: 1}}>
+        <Square sx={{marginBottom: 2}}>
+          <RadarChart chartData={chartData.pentagon}/>
         </Square>
-        <VerticalItem>
+        <Item>
           <h2>Teaching Quality</h2>
+        </Item>
+        <VerticalItem>
+          <OverallScore score={70} />
         </VerticalItem>
       </Stack>
       <Stack spacing={2} sx={{margin: 1}}>

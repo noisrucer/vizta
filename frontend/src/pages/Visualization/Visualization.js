@@ -593,34 +593,87 @@ const Visualization = () => {
                 </Box>
             </Box>
         </Box>
-        <Box sx={{ bgcolor: '#1D2630', width: 800 }}>
-            <AppBar position="static" sx={{marginLeft: 4, bgcolor: '#1D2630'}}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="secondary"
-                    textColor="inherit"
-                    variant="fullWidth"
-                    aria-label="full width tabs example"
+        <Box sx={{display: "flex"}}>
+            <Box sx={{ bgcolor: '#1D2630', width: 800 }}>
+                <AppBar position="static" sx={{marginLeft: 4, bgcolor: '#1D2630'}}>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        indicatorColor="secondary"
+                        textColor="inherit"
+                        variant="fullWidth"
+                        aria-label="full width tabs example"
+                    >
+                    <Tab label="Overview" {...a11yProps(0)} />
+                    <Tab label="Course Information" {...a11yProps(1)} />
+                    <Tab label="Yearly Trend" {...a11yProps(2)} />
+                    <Tab label="Professor Statistics" {...a11yProps(3)} />
+                    </Tabs>
+                </AppBar>
+                    <TabPanel value={value} index={0}>
+                        <Overview 
+                            GPA={GPA} 
+                            lectureDifficulty={lectureDifficulty} 
+                            finalDifficulty={finalDifficulty} 
+                            workload={workload} 
+                            pentagon={pentagon} 
+                            teachingQuality={overallTeachingQuality}/>
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        <CourseInfo />
+                    </TabPanel>
+                    <TabPanel value={value} index={2}>
+                        <YearlyTrend />
+                    </TabPanel>
+                    <TabPanel value={value} index={3}>
+                        <ProfessorStats />
+                    </TabPanel>
+            </Box>
+            <Box>
+             <Stack 
+                spacing={2} 
+                direction="row"
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginLeft: 10
+                }}>
+                <FormGroup>
+                    <FormControlLabel 
+                    control={<MaterialUISwitch defaultChecked />} 
+                    label="Label" 
+                    onClick={() => {setViewBar(!viewBar)}}
+                    />
+                </FormGroup>
+                <TextField 
+                    id="get-by-year"
+                    select
+                    label="Select Year"
+                    sx={{ width: '200px'}}
+                    defaultValue=""
                 >
-                <Tab label="Overview" {...a11yProps(0)} />
-                <Tab label="Course Information" {...a11yProps(1)} />
-                <Tab label="Yearly Trend" {...a11yProps(2)} />
-                <Tab label="Professor Statistics" {...a11yProps(3)} />
-                </Tabs>
-            </AppBar>
-                <TabPanel value={value} index={0}>
-                    <Overview GPA={GPA} lectureDifficulty={lectureDifficulty} finalDifficulty={finalDifficulty} workload={workload} pentagon={pentagon}/>
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    <CourseInfo />
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                    <YearlyTrend />
-                </TabPanel>
-                <TabPanel value={value} index={3}>
-                    <ProfessorStats />
-                </TabPanel>
+                    {selectYear.map((option) => (
+                        <MenuItem key={option} value={option} onClick={() => setSelectedYear(option)}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField 
+                    id="get-by-professor"
+                    select
+                    label="Select Professor"
+                    sx={{ width: '200px'}}
+                    defaultValue=""
+                >
+                    {selectProfessor.map((option) => (
+                        <MenuItem key={option} value={option} onClick={() => setSelectedProfessor(option)}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            </Stack>
+            </Box>
         </Box>
     </Box>
     // <Box sx={{
