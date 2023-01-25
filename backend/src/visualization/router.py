@@ -125,7 +125,8 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
         },
         "GPA": [
             # i + 1 as first column is year in avg_reviews
-            [average_review[len(avg_column) + 1] for average_review in avg_reviews[ii * len(all_year):(ii + 1) * len(all_year)]]
+            [average_review[len(avg_column) + 1] for average_review in
+             avg_reviews[ii * len(all_year):(ii + 1) * len(all_year)]]
             for ii in range(len(all_prof))
         ]
     }
@@ -193,6 +194,12 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     gpa_letter = ['A', 'B', 'C', 'D']
     gpa_count = glob_utils.count_enum([_.gpa for _ in reviews], course_enums.GPA)
 
+    badges_text = ['CUTE', 'MEDIUM', 'HELL']
+    badges_break_point = [5 / 3, 10 / 3, 15 / 3]
+
+    def get_badges(val):
+        return badges_text[next(i for i,v in enumerate(badges_break_point) if v > val)]
+
     result = {
         "GPA": [[gpa_count[_ + '+'] for _ in gpa_letter],
                 [gpa_count[_] for _ in gpa_letter] + [gpa_count['F']],
@@ -204,6 +211,11 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
             "Entertaining": to_key_value_list([_.course_entertaining for _ in reviews], course_enums.NumericEval),
             "Delivery": to_key_value_list([_.course_delivery for _ in reviews], course_enums.NumericEval),
             "Interactivity": to_key_value_list([_.course_interactivity for _ in reviews], course_enums.NumericEval)
+        },
+        "Badges": {
+            "LectureDifficulty": get_badges(avg_reviews[avg_column.index(mcr.lecture_difficulty)]),
+            "FinalDifficulty": get_badges(avg_reviews[avg_column.index(mcr.final_exam_difficulty)]),
+            "Workload": get_badges(avg_reviews[avg_column.index(mcr.workload)]),
         },
         "Pentagon": {
             "GPA": avg_gpa,
