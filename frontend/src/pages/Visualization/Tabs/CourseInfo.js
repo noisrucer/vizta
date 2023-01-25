@@ -11,38 +11,42 @@ const CourseDescriptionGrid = styled(Item)(({theme}) => ({
 
 const TimeTableGrid = styled(Item)(({theme}) => ({
   height: "250px",
-  width: "400px"
+  width: "800px"
 }))
 
 const GradingRatioGrid = styled(Item)(({theme}) => ({
   height: "250px",
-  width: "400px"
+  width: "500px"
 }))
 
 const OverallScoreGrid = styled(Item)(({theme}) => ({
   height: "250px",
-  width: "400px"
+  width: "700px"
 }))
 
 const CourseInfo = () => {
   return (
-    <Box sx={{display: "flex", flexDirection: "row"}}>
-      <Stack spacing={2} sx={{margin: 1}}>
-        <CourseDescriptionGrid>
-          Course Description
-        </CourseDescriptionGrid>
-        <TimeTableGrid>
-          Time Table
-        </TimeTableGrid>
-      </Stack>
-      <Stack spacing={2} sx={{margin: 1}}>
-        <GradingRatioGrid>
-          Grading Ratio
-        </GradingRatioGrid>
-        <OverallScoreGrid>
-          OverallScore
-        </OverallScoreGrid>
-      </Stack>
+    <Box sx={{height: "600px", width: "2000px"}}>
+      <Box sx={{margin: 2}}>
+        <Stack sx={{display: "flex", flexDirection: "row"}}>
+          <CourseDescriptionGrid sx={{marginRight: 2}}>
+            Course Description
+          </CourseDescriptionGrid>
+          <TimeTableGrid>
+            Time Table
+          </TimeTableGrid>
+        </Stack>
+      </Box>
+      <Box sx={{margin: 2}}>
+        <Stack sx={{ display: "flex", flexDirection: "row"}}>
+          <GradingRatioGrid sx={{marginRight: 2}}>
+            Grading Ratio
+          </GradingRatioGrid>
+          <OverallScoreGrid>
+            OverallScore
+          </OverallScoreGrid>
+        </Stack>
+      </Box>
     </Box>
   )
 }
