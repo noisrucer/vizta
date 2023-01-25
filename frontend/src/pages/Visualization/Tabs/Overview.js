@@ -49,7 +49,7 @@ const Overivew = (chartData) => {
 
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >
-      <Stack sx={{margin: 1}}>
+      <Stack sx={{marginLeft: 1, marginRight: 1}}>
         <Square sx={{marginBottom: 2}}>
           <RadarChart chartData={chartData.pentagon}/>
         </Square>
@@ -76,7 +76,7 @@ const Overivew = (chartData) => {
           </Box>
         </Box>
       </Stack>
-      <Stack spacing={2} sx={{margin: 1}}>
+      <Stack spacing={2} sx={{marginLeft: 1, merginRight: 1}}>
         <HorizontalGrid>
           <h2>GPA</h2>
           {/* <HorizontalBarChart chartData={chartData.GPA} /> */}
@@ -86,7 +86,7 @@ const Overivew = (chartData) => {
           <HorizontalBarChart chartData={chartData.lectureDifficulty} />
         </HorizontalGrid>
       </Stack>
-      <Stack spacing={2} sx={{margin: 1}}>
+      <Stack spacing={2} sx={{marginLeft: 2}}>
         <HorizontalGrid>
           <h2>Workload</h2>
           <HorizontalBarChart chartData={chartData.workload} />
