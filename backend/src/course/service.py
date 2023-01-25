@@ -71,11 +71,13 @@ def get_user_favorite_courses_by_email(db: Session, email: EmailStr):
         cid = user_favorite['course_id']
         cname = course['name']
         num_reviews = len(get_reviews_by_course_id(db, cid))
+        has_reviewed = True if check_has_reviewed(db, email, cid) else False
         response.append({
             "course_id": cid,
             "name": cname,
             "num_reviews": num_reviews,
-            "is_favorite": True
+            "is_favorite": True,
+            "has_reviewed": has_reviewed
         })
     return response
 
@@ -87,6 +89,14 @@ def delete_user_favorite(db: Session, email: EmailStr, course_id: str):
     db.delete(favorite)
     db.commit()
     return favorite
+
+
+def check_has_reviewed(db: Session, email: EmailStr, course_id: str):
+    reviews = db.query(models.CourseReview).\
+                filter(models.CourseReview.email == email).\
+                filter(models.CourseReview.course_id == course_id).all()
+    
+    return reviews
 
 
 def get_subclass(

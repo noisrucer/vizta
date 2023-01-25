@@ -12,12 +12,14 @@ class CourseBase(BaseModel):
 class MainPageCourseOut(CourseBase):
     num_reviews: int = Field(..., ge=0)
     is_favorite: bool
+    has_reviewed: bool
     class Config:
         orm_mode = True
         
 
 class UserFavoriteOut(CourseBase):
     num_reviews: int = Field(..., get=0)
+    has_reviewed: bool
 
 class CourseReviewBase(BaseModel):
     email: EmailStr
