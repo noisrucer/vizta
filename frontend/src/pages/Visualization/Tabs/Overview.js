@@ -21,10 +21,11 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Item from "../Boxes/Item";
+import LinearPercentage from "../Charts/LinearPercentage";
 
 const HorizontalGrid = styled(Item)(({theme}) => ({
   height: "300px",
-  width: "480px"
+  width: "477px"
 }));
 
 const Square = styled(Item)(({theme}) => ({
@@ -62,12 +63,15 @@ const Overivew = (chartData) => {
           <Box>
             <TQSubGrid>
               <h6>Entertaining</h6>
+              <LinearPercentage percentage={chartData.entertaining[0]}></LinearPercentage>
             </TQSubGrid>
             <TQSubGrid>
               <h6>Interactivity</h6>
+              <LinearPercentage percentage={chartData.interactivity[0]}></LinearPercentage>
             </TQSubGrid>
             <TQSubGrid>
               <h6>Delivery</h6>
+              <LinearPercentage percentage={chartData.delivery[0]}></LinearPercentage>
             </TQSubGrid>
           </Box>
         </Box>

@@ -24,7 +24,7 @@ const options = {
   indexAxis: 'y',
   elements: {
     bar: {
-      borderWidth: 0,
+      borderWidth: 2,
     },
   },
   responsive: true,
@@ -33,6 +33,26 @@ const options = {
       display: false
     }
   },
+  // scales: {
+  //   yAxes: {
+  //     grid: {
+  //       drawBorder: true,
+  //       color: "#FFFFFF"
+  //     },
+  //     ticks:{
+  //       beginAtZero: false,
+  //       color: "white",
+  //       fontSize: 12
+  //     }
+  //   },
+  //   xAxes: {
+  //     grid: {
+  //       beginAtZero: false,
+  //       color: "white",
+  //       fontSize: 12
+  //     }
+  //   }
+  // }
 };
 
 

@@ -47,6 +47,7 @@ const baseURL = 'http://127.0.0.1:8000';
 const dataColor = ["#DF6E53", "#EC8B33", "#F4BA41", "#5772B3", "#50B19E"];
 const workloadLabel = ["Very Heavy", "Heavy", "Medium", "Light", "Very Light"];
 const lectureFinalLabel = ["Very Difficult", "Difficult", "Medium", "Easy", "Very Easy"];
+const GPALabel = ["A range", "B range", "C range", "D range", "F"];
 
 function Number({ n }) {
     const { number } = useSpring({
@@ -167,27 +168,15 @@ const Visualization = () => {
 
     const [selectYear, setSelectYear] = useState([])
     const [selectProfessor, setSelectProfessor] = useState([])
-    
-    const [courseInfo, setCourseInfo] = useState({
-        FinalDifficulty: {},
-        GPA: {},
-        LectureDifficulty: {},
-        Pentagon: {},
-        TeachingQuality: {},
-        TimeTable: {},
-        Workload: {}
-    });
 
     const [GPA, setGPA] = useState({
-        labels: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"],
+        labels: GPALabel,
         datasets: [{
             label: "Students Score",
             data: [],
             backgroundColor: dataColor,
         }]
     })
-
-    console.log("GPA: ", GPA);
 
     const [lectureDifficulty, setLectureDifficulty] = useState({
         labels: lectureFinalLabel,
@@ -260,7 +249,6 @@ const Visualization = () => {
                 headers: userToken['headers']
             })
             .then(response => {
-                setCourseInfo(response.data)
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
                     data: response.data.GPA.values,
@@ -380,15 +368,12 @@ const Visualization = () => {
         let path = ""
         if (selectedYear !== "" && selectedProfessor !== "") {
             path = `${baseURL}/visualization/${courseId}/?year=${selectedYear}&professor=${formatProfessor}`
-            console.log("Both satisfied!!!")
         }
         else if (selectedYear !== "" && selectedProfessor === "") {
             path = `${baseURL}/visualization/${courseId}/?year=${selectedYear}`
-            console.log("Only year selected!!!")
         }
         else if (selectedYear === "" && selectedProfessor !== "") {
             path = `${baseURL}/visualization/${courseId}/?professor=${formatProfessor}`
-            console.log("Only professor selected!!!")
         }
         const refreshCourseData = async () => {
             axios.request({
@@ -571,8 +556,8 @@ const Visualization = () => {
 
             <Box sx={{ 
                 width: '100%', 
-                marginTop: 10, 
-                marginBottom: 2, 
+                marginTop: 8, 
+                marginBottom: 1, 
                 marginLeft: 8,
                 display: "flex", 
                 flexDirection: "row",

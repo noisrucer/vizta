@@ -17,10 +17,10 @@ const options = {
   scales: {
     r: {
       angleLines: {
-        color: "grey"
+        color: "#282F3C"
       },
       grid: {
-        color: "grey"
+        color: "#282F3C"
       },
     }
   }
