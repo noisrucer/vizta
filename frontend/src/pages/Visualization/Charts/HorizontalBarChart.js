@@ -33,6 +33,14 @@ const options = {
       display: false
     }
   },
+  scales: {
+    x: {
+      stacked: true
+    },
+    y: {
+      stacked: true
+    }
+  }
   // scales: {
   //   yAxes: {
   //     grid: {

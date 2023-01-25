@@ -43,9 +43,39 @@ const TQSubGrid = styled(Item)(({theme}) => ({
   width: "200px"
 }));
 
+function StackedGPA(gpa) {
+  const chartColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"]
+  const data = {
+    labels: ["A group", "B group", "C group", "D group", "F"],
+    datasets: [
+      {
+        label: "+ group",
+        data: gpa[0],
+        backgroundColor: ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"]
+      },
+      {
+        label: "letter group",
+        data: gpa[1],
+        backgroundColor: chartColor
+      },
+      {
+        label: "- group",
+        data: gpa[2],
+        backgronudColor: ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"]
+      }
+    ]
+  }
+  return data
+}
+
 const Overivew = (chartData) => {
 
   console.log("chartData in overview: ", chartData)
+  console.log("GPA in overview: ", chartData.GPA)
+
+  const GPAData = StackedGPA(chartData.GPA.datasets[0].data)
+  console.log("GPASets: ", GPAData);
+  console.log("ld: ", chartData.lectureDifficulty)
 
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >
@@ -79,7 +109,7 @@ const Overivew = (chartData) => {
       <Stack spacing={2} sx={{marginLeft: 1, merginRight: 1}}>
         <HorizontalGrid>
           <h2>GPA</h2>
-          {/* <HorizontalBarChart chartData={chartData.GPA} /> */}
+          <HorizontalBarChart chartData={GPAData} />
         </HorizontalGrid>
         <HorizontalGrid>
           <h2>Lecture Difficulty</h2>

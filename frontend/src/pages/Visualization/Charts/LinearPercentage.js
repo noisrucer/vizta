@@ -24,7 +24,6 @@ LinearProgressWithLabel.propTypes = {
 };
 
 export default function LinearWithValueLabel(percentage) {
-  console.log("data in linear progress bar: ", percentage)
 
   return (
     <Box sx={{ width: '100%' }}>

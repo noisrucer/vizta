@@ -251,7 +251,7 @@ const Visualization = () => {
             .then(response => {
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
-                    data: response.data.GPA.values,
+                    data: response.data.GPA,
                     backgroundColor: dataColor
                 }]})
                 setLectureDifficulty({...lectureDifficulty, datasets: [{
@@ -382,7 +382,7 @@ const Visualization = () => {
                 headers: userToken['headers']
             })
             .then(response => {
-                console.log(response.data)
+                console.log("render component when select year: ", response.data)
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
                     data: response.data.GPA.values,
