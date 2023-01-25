@@ -84,7 +84,7 @@ const Overivew = (chartData) => {
           <RadarChart chartData={chartData.pentagon}/>
         </Square>
         <Item>
-          <h2>Teaching Quality</h2>
+          <h2>Lecture Quality</h2>
         </Item>
         <Box sx={{display: "flex"}}>
           <TeachingQualityGrid>
@@ -92,7 +92,7 @@ const Overivew = (chartData) => {
           </TeachingQualityGrid>
           <Box>
             <TQSubGrid>
-              <h6>Entertaining</h6>
+              <h6>Entertainment</h6>
               <LinearPercentage percentage={chartData.entertaining[0]}></LinearPercentage>
             </TQSubGrid>
             <TQSubGrid>

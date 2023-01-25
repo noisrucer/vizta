@@ -609,7 +609,10 @@ const Visualization = () => {
                             />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <CourseInfo />
+                        <CourseInfo 
+                            description={courseDescription}
+                            overallScore={overallScore}
+                        />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         <YearlyTrend />
@@ -639,7 +642,7 @@ const Visualization = () => {
                     id="get-by-year"
                     select
                     label="Select Year"
-                    sx={{ width: '200px'}}
+                    sx={{ width: '195px'}}
                     defaultValue=""
                 >
                     {selectYear.map((option) => (

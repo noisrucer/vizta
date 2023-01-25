@@ -8,15 +8,14 @@ export default function TimeTable(chartData) {
   const CreateTimeTableElements = (subclass, timeslots, instructor) => {
     return (
       <Box sx={{
-          height: "95%", 
-          width:"90%", 
-          backgroundColor: "black", 
-          border: "2px solid white",
-          borderRadius: "10%",
+          height: "200px", 
+          width: "200px", 
+          backgroundColor: "#333A46", 
+          border: "2px solid #1D2630",
+          borderRadius: 5,
           marginTop: 1,
           marginBottom: 1,
-          display: "flex",
-          flexDirection: "column",
+          margin: 1
           }}>
         <h1>{subclass}</h1>
         <h3>Instructor:</h3>
@@ -44,11 +43,9 @@ export default function TimeTable(chartData) {
     <Box>
       <Box 
       sx={{
-          height: "230px", 
-          width: "100%", 
+          height: "230px",  
           display: "flex", 
           flexDirection: "row", 
-          flexWrap: "wrap",
           alignItems: "center", 
           justifyContent: "center",
           overflowX: "hidden",
