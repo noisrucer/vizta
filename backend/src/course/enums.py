@@ -31,4 +31,5 @@ class GPA(str, Enum):
     cminus = "C-"
     dplus = "D+"
     d = "D"
+    dminus = "D-"
     fail = "F"

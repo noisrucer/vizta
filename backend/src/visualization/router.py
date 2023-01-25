@@ -190,8 +190,13 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     def to_key_value_list(values, enumTy):
         return glob_utils.dict_as_list(glob_utils.count_enum(values, enumTy))
 
+    gpa_letter = ['A', 'B', 'C', 'D']
+    gpa_count = glob_utils.count_enum([_.gpa for _ in reviews], course_enums.GPA)
+
     result = {
-        "GPA": to_key_value_list([_.gpa for _ in reviews], course_enums.GPA),
+        "GPA": [[gpa_count[_ + '+'] for _ in gpa_letter],
+                [gpa_count[_] for _ in gpa_letter] + [gpa_count['F']],
+                [gpa_count[_ + '-'] for _ in gpa_letter]],
         "LectureDifficulty": to_key_value_list([_.lecture_difficulty for _ in reviews], course_enums.NumericEval),
         "FinalDifficulty": to_key_value_list([_.final_exam_difficulty for _ in reviews], course_enums.NumericEval),
         "Workload": to_key_value_list([_.workload for _ in reviews], course_enums.NumericEval),
