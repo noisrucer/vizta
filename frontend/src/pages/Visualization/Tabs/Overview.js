@@ -72,11 +72,11 @@ const Badges = styled(Box)(({borderColor, backgronudColor}) => ({
 
 function JudgeBadgesColor(average) {
   if(average <= 1.66){
-    return ["#0cc1a9", "#2d3c47ff", "EASY"]
+    return ["#ff403d", "#3b353eff", "HARD"]
   } else if (average <=3.33){
     return ["#e3994e", "#3b353eff", "MEDIUM"]
   } else {
-    return ["#ff403d", "#3b353eff", "HARD"]
+    return ["#0cc1a9", "#2d3c47ff", "EASY"]
   }
 };
 
