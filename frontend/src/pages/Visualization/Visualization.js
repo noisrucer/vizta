@@ -385,7 +385,7 @@ const Visualization = () => {
                 console.log("render component when select year: ", response.data)
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
-                    data: response.data.GPA.values,
+                    data: response.data.GPA,
                     backgroundColor: dataColor
                 }]})
                 setLectureDifficulty({...lectureDifficulty, datasets: [{

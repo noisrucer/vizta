@@ -43,6 +43,13 @@ const TQSubGrid = styled(Item)(({theme}) => ({
   width: "200px"
 }));
 
+const Badges = styled(Box)(({theme}) => ({
+  height: "30px",
+  width: "100px",
+  backgroundColor: "red",
+  borderRadius: 5
+}))
+
 function StackedGPA(gpa) {
   const chartColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"]
   const data = {
@@ -68,10 +75,14 @@ function StackedGPA(gpa) {
   return data
 }
 
+
+
 const Overivew = (chartData) => {
 
   console.log("chartData in overview: ", chartData)
-  console.log("GPA in overview: ", chartData.GPA)
+  const pentagonLining = ["final diificulty", "GPA", "Lecture", "teaching Quality", "workload"]
+  const badges = chartData.pentagon.datasets[0].data
+  console.log("pentagon in overview: ", chartData.pentagon.datasets[0].data)
 
   const GPAData = StackedGPA(chartData.GPA.datasets[0].data)
   console.log("GPASets: ", GPAData);
@@ -92,7 +103,7 @@ const Overivew = (chartData) => {
           </TeachingQualityGrid>
           <Box>
             <TQSubGrid>
-              <h6>Entertainment</h6>
+              <h6>Entertainment </h6>
               <LinearPercentage percentage={chartData.entertaining[0]}></LinearPercentage>
             </TQSubGrid>
             <TQSubGrid>
@@ -108,21 +119,41 @@ const Overivew = (chartData) => {
       </Stack>
       <Stack spacing={2} sx={{marginLeft: 1, merginRight: 1}}>
         <HorizontalGrid>
-          <h2>GPA</h2>
+          <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+            <Box sx={{marginLeft: "47%"}}>
+              <h2>GPA </h2>
+            </Box>
+            <Badges sx={{position: "relative", marginLeft: 'auto'}}/>
+          </Stack>
           <HorizontalBarChart chartData={GPAData} />
         </HorizontalGrid>
         <HorizontalGrid>
-          <h2>Lecture Difficulty</h2>
+          <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+            <Box sx={{marginLeft: "34%"}}>
+              <h2> Lecture Difficulty </h2>
+            </Box>
+            <Badges sx={{position: "relative", marginLeft: 'auto'}}/>
+          </Stack>
           <HorizontalBarChart chartData={chartData.lectureDifficulty} />
         </HorizontalGrid>
       </Stack>
       <Stack spacing={2} sx={{marginLeft: 2}}>
         <HorizontalGrid>
-          <h2>Workload</h2>
+          <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+            <Box sx={{marginLeft: "40%"}}>
+              <h2> Workload </h2>
+            </Box>
+            <Badges sx={{position: "relative", marginLeft: 'auto'}}/>
+          </Stack>
           <HorizontalBarChart chartData={chartData.workload} />
         </HorizontalGrid>
         <HorizontalGrid>
-          <h2>Final Exam Difficulty</h2>
+          <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+            <Box sx={{marginLeft: "29%"}}>
+              <h2> Final Exam Difficulty </h2>
+            </Box>
+            <Badges sx={{position: "relative", marginLeft: 'auto'}}/>
+          </Stack>
           <HorizontalBarChart chartData={chartData.finalDifficulty} />
         </HorizontalGrid>
       </Stack>
