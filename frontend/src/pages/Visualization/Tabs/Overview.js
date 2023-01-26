@@ -80,6 +80,34 @@ function JudgeBadgesColor(average) {
   }
 };
 
+function JudgeGPABadgeColor(average) {
+  if(average === 0){
+    return ["#ff403d", "#3b353eff", "AVg: F"]
+  } else if(average <= 1){
+    return ["#ff403d", "#3b353eff", "AVg: D"]
+  } else if (average <=1.3){
+    return ["#ff403d", "#3b353eff", "AVg: D+"]
+  } else if (average <=1.7){
+    return ["#ff403d", "#3b353eff", "AVg: C-"]
+  } else if (average <= 2){
+    return ["#ff403d", "#3b353eff", "AVg: C"]
+  } else if (average <= 2.3){
+    return ["#ff403d", "#3b353eff", "AVg: C+"]
+  } else if (average <= 2.7){
+    return ["#e3994e", "#3b353eff", "AVg: B-"]
+  } else if (average <= 3){
+    return ["#e3994e", "#3b353eff", "AVg: B"]
+  } else if (average <= 3.3){
+    return ["#e3994e", "#3b353eff", "AVg: B+"]
+  } else if (average <= 3.7){
+    return ["#0cc1a9", "#2d3c47ff", "AVg: A-"]
+  } else if (average <= 4.0){
+    return ["#0cc1a9", "#2d3c47ff", "AVg: A-"]
+  } else {
+    return ["#0cc1a9", "#2d3c47ff", "AVg: A+"]
+  }
+};
+
 function StackedGPA(gpa) {
   const chartColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"]
   const data = {
@@ -114,7 +142,6 @@ const Overivew = (chartData) => {
 
   const GPAData = StackedGPA(chartData.GPA.datasets[0].data)
   console.log("GPASets: ", GPAData);
-  console.log("ld: ", chartData.lectureDifficulty)
 
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >
@@ -151,8 +178,8 @@ const Overivew = (chartData) => {
             <Box sx={{marginLeft: "47%"}}>
               <h2>GPA </h2>
             </Box>
-            <Badges borderColor={JudgeBadgesColor(criteriaAverage[0])[0]} backgroundColor={JudgeBadgesColor(criteriaAverage[0])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
-              <span style={{color: JudgeBadgesColor(criteriaAverage[0])[0]}}>{JudgeBadgesColor(criteriaAverage[0])[2]}</span>
+            <Badges borderColor={JudgeGPABadgeColor(criteriaAverage[1])[0]} backgroundColor={JudgeGPABadgeColor(criteriaAverage[1])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
+              <span style={{color: JudgeGPABadgeColor(criteriaAverage[1])[0]}}>{JudgeGPABadgeColor(criteriaAverage[1])[2]}</span>
             </Badges>
           </Stack>
           <HorizontalBarChart chartData={GPAData} />
