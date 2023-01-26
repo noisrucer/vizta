@@ -172,7 +172,7 @@ const Overivew = (chartData) => {
       <Stack spacing={2} sx={{marginLeft: 2}}>
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-            <Box sx={{marginLeft: "40%"}}>
+            <Box sx={{marginLeft: "41%"}}>
               <h2> Workload </h2>
             </Box>
             <Badges borderColor={JudgeBadgesColor(criteriaAverage[4])[0]} backgroundColor={JudgeBadgesColor(criteriaAverage[4])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
