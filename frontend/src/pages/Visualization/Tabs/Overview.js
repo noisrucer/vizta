@@ -43,12 +43,42 @@ const TQSubGrid = styled(Item)(({theme}) => ({
   width: "200px"
 }));
 
-const Badges = styled(Box)(({theme}) => ({
+const BadgeColorsList = {
+  easy: {
+    border: "#0cc1a9",
+    text: "#0cc1a9",
+    bacground: "#2d3c47ff"
+  },
+  medium: {
+    border: "#e3994e",
+    text: "#e3994e",
+    background: "#3b353eff"
+  },
+  hard: {
+    border: "#ff403d",
+    text: "#ff403d",
+    background: "#3b353eff"
+  }
+}
+
+const Badges = styled(Box)(({borderColor, backgronudColor}) => ({
   height: "30px",
   width: "100px",
-  backgroundColor: "red",
-  borderRadius: 5
+  backgroundColor: backgronudColor,
+  color: "ff403d",
+  borderRadius: 5,
+  border: `2px solid ${borderColor}`,
 }))
+
+function JudgeBadgesColor(average) {
+  if(average <= 1.66){
+    return ["#0cc1a9", "#2d3c47ff", "EASY"]
+  } else if (average <=3.33){
+    return ["#e3994e", "#3b353eff", "MEDIUM"]
+  } else {
+    return ["#ff403d", "#3b353eff", "HARD"]
+  }
+};
 
 function StackedGPA(gpa) {
   const chartColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"]
@@ -72,16 +102,14 @@ function StackedGPA(gpa) {
       }
     ]
   }
-  return data
-}
-
-
+  return data;
+};
 
 const Overivew = (chartData) => {
 
   console.log("chartData in overview: ", chartData)
   const pentagonLining = ["final diificulty", "GPA", "Lecture", "teaching Quality", "workload"]
-  const badges = chartData.pentagon.datasets[0].data
+  const criteriaAverage = chartData.pentagon.datasets[0].data
   console.log("pentagon in overview: ", chartData.pentagon.datasets[0].data)
 
   const GPAData = StackedGPA(chartData.GPA.datasets[0].data)
@@ -123,7 +151,9 @@ const Overivew = (chartData) => {
             <Box sx={{marginLeft: "47%"}}>
               <h2>GPA </h2>
             </Box>
-            <Badges sx={{position: "relative", marginLeft: 'auto'}}/>
+            <Badges borderColor={JudgeBadgesColor(criteriaAverage[0])[0]} backgroundColor={JudgeBadgesColor(criteriaAverage[0])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
+              <span style={{color: JudgeBadgesColor(criteriaAverage[0])[0]}}>{JudgeBadgesColor(criteriaAverage[0])[2]}</span>
+            </Badges>
           </Stack>
           <HorizontalBarChart chartData={GPAData} />
         </HorizontalGrid>
@@ -132,7 +162,9 @@ const Overivew = (chartData) => {
             <Box sx={{marginLeft: "34%"}}>
               <h2> Lecture Difficulty </h2>
             </Box>
-            <Badges sx={{position: "relative", marginLeft: 'auto'}}/>
+            <Badges borderColor={JudgeBadgesColor(criteriaAverage[2])[0]} backgroundColor={JudgeBadgesColor(criteriaAverage[2])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
+              <span style={{color: JudgeBadgesColor(criteriaAverage[2])[0]}}>{JudgeBadgesColor(criteriaAverage[2])[2]}</span>
+            </Badges>
           </Stack>
           <HorizontalBarChart chartData={chartData.lectureDifficulty} />
         </HorizontalGrid>
@@ -143,7 +175,9 @@ const Overivew = (chartData) => {
             <Box sx={{marginLeft: "40%"}}>
               <h2> Workload </h2>
             </Box>
-            <Badges sx={{position: "relative", marginLeft: 'auto'}}/>
+            <Badges borderColor={JudgeBadgesColor(criteriaAverage[4])[0]} backgroundColor={JudgeBadgesColor(criteriaAverage[4])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
+              <span style={{color: JudgeBadgesColor(criteriaAverage[4])[0]}}>{JudgeBadgesColor(criteriaAverage[4])[2]}</span>
+            </Badges>
           </Stack>
           <HorizontalBarChart chartData={chartData.workload} />
         </HorizontalGrid>
@@ -152,7 +186,9 @@ const Overivew = (chartData) => {
             <Box sx={{marginLeft: "29%"}}>
               <h2> Final Exam Difficulty </h2>
             </Box>
-            <Badges sx={{position: "relative", marginLeft: 'auto'}}/>
+            <Badges borderColor={JudgeBadgesColor(criteriaAverage[0])[0]} backgroundColor={JudgeBadgesColor(criteriaAverage[0])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
+              <span style={{color: JudgeBadgesColor(criteriaAverage[0])[0]}}>{JudgeBadgesColor(criteriaAverage[0])[2]}</span>
+            </Badges>
           </Stack>
           <HorizontalBarChart chartData={chartData.finalDifficulty} />
         </HorizontalGrid>
