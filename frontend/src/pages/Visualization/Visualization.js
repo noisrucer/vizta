@@ -605,6 +605,7 @@ const Visualization = () => {
                             interactivity={interactivity}
                             entertaining={entertaining}
                             delivery={delivery}
+                            overallScore={overallScore}
                             />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
@@ -640,6 +641,7 @@ const Visualization = () => {
                     id="get-by-year"
                     select
                     label="Select Year"
+                    variant='standard'
                     sx={{ width: '150px'}}
                     defaultValue=""
                 >
@@ -653,6 +655,7 @@ const Visualization = () => {
                     id="get-by-professor"
                     select
                     label="Select Professor"
+                    variant='standard'
                     sx={{ width: '180px'}}
                     defaultValue=""
                 >

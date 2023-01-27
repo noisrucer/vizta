@@ -12,7 +12,7 @@ const options = {
     }
   },
   scale: {
-    suggestedMax: 10
+    suggestedMax: 5
   },
   scales: {
     r: {

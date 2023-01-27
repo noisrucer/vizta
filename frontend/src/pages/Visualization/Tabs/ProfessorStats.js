@@ -31,8 +31,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   const options = {
     plugins: {
       legend: {
-        display: true,
-        // position: 'right'
+        display: false,
       }
     }
   }
@@ -82,51 +81,14 @@ const ProfessorStats = () => {
             })
         };
         getProfStats();
-    }, [isOpen]);
+    }, []);
   
     return (
-        <>
-            <Button variant="contained" onClick={() => setIsOpen(true)} sx={{ width: "100%" }}>
-                View By Professor
-            </Button>
-            <Drawer
-            PaperProps={{
-              sx: { 
-                borderTopRightRadius: 30,
-                borderTopLeftRadius: 30,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center"
-              }
-            }}
-            anchor="bottom"
-            open={isOpen}
-            onClose={() => setIsOpen(false)}
-            sx={{
-                height: "80%",
-                }}
-            >
-            <Box 
-                textAlign='center' 
-                role='presentation' 
-                sx={{
-                    backgroundColor: "pink",
-                    borderTopRightRadius: 30,
-                    borderTopLeftRadius: 30
-                    }} >
-              <Puller/>
-            </Box>
-
-            <Box p={4} textAlign='center' role='presentation' >
-                <Typography variant="h5" component='div'>
-                By Professor
-                </Typography>
-            </Box>
-            <Box sx={{ width: "60%", height: "400px", display:'flex', alignItems: "center", justifyContent: "center"}}>
+        <Box sx={{width: "180%", height:"520px", display: 'flex', flexDirection: "column", alignItems: 'center'}}>
+            <Box sx={{width:"520px", height:"520px"}}>
                 <Radar data={chartData} options={options}/>
             </Box>
-            </Drawer>
-        </>
+        </Box>
     )};
 
 export default ProfessorStats

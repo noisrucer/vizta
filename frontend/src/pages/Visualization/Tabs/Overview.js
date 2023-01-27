@@ -23,14 +23,28 @@ import Switch from '@mui/material/Switch';
 import Item from "../Boxes/Item";
 import LinearPercentage from "../Charts/LinearPercentage";
 
+function Number({ n }) {
+  const { number } = useSpring({
+      from: { number: 0 },
+      number: n,
+      delay: 200,
+      config: {mass: 1, tension: 20, friction: 10},
+  });
+  return ( 
+      <animated.div style={{ fontSize: '48px'}}>
+              {number.to((n) => n.toFixed(0))}
+      </animated.div>
+  )
+}
+
 const HorizontalGrid = styled(Item)(({theme}) => ({
-  height: "260px",
+  height: "288px",
   width: "455px",
 }));
 
-const Square = styled(Item)(({theme}) => ({
-  height: "310px",
-  width: "280px",
+const Square = styled(Box)(({theme}) => ({
+  height: "300px",
+  width: "300px",
 }));
 
 const TeachingQualityGrid = styled(Item)(({theme}) => ({
@@ -40,7 +54,7 @@ const TeachingQualityGrid = styled(Item)(({theme}) => ({
 
 const TQSubGrid = styled(Item)(({theme}) => ({
   height: "50px",
-  width: "230px"
+  width: "230px",
 }));
 
 const BadgeColorsList = {
@@ -145,10 +159,13 @@ const Overivew = (chartData) => {
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >
       <Stack sx={{marginLeft: 1, marginRight: 1}}>
-        <Item sx={{width: "380px", height: "323px", marginBottom: 3}}>
+        <Item sx={{width: "380px", height: "380px", marginBottom: 3}}>
           <Square>
             <RadarChart chartData={chartData.pentagon}/>
           </Square>
+          <Box sx={{ height:"70px", width:"70px", marginLeft:"auto"}}>
+            <Number n={chartData.overallScore} />
+          </Box>
         </Item>
         <Item>
           <h2>Lecture Quality</h2>
