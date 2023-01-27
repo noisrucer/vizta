@@ -240,29 +240,7 @@ const YearlyTrend = () => {
     console.log("professorList: ", professorList);
 
     return (
-        <>
-            <Button variant="contained" onClick={() => setIsOpen(true)} sx={{ width: "100%" }}>
-                View By Year
-            </Button>
-            <Drawer 
-            PaperProps={{
-              sx: { 
-                borderTopRightRadius: 30,
-                borderTopLeftRadius: 30,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center"
-              }
-            }}
-            anchor="bottom"
-            open={isOpen}
-            onClose={() => setIsOpen(false)}
-            sx={{
-                height: "80%",
-                display:"flex",
-                }}
-            >
+        <Box sx={{width: "180%", height: "520px"}}>
               <Box 
                   textAlign='center' 
                   role='presentation' 
@@ -271,7 +249,6 @@ const YearlyTrend = () => {
                       borderTopRightRadius: 30,
                       borderTopLeftRadius: 30
                       }} >
-                <Puller/>
               </Box>
               <Box 
                 p={4} 
@@ -362,8 +339,7 @@ const YearlyTrend = () => {
                 </Box>
               </>
               }
-            </Drawer>
-        </>
+        </Box>
     )};
 
     export default YearlyTrend;
