@@ -45,12 +45,18 @@ const options = {
       grid: {
         color: "#666666",
         tickColor: "#333A46"
+      },
+      ticks: {
+        color: "white"
       }
     },
     y: {
       stacked: true,
       grid: {
         color: "#333A46"
+      },
+      ticks: {
+        color: "white"
       }
     }
   }
