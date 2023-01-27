@@ -22,6 +22,7 @@ ChartJS.register(
 
 const options = {
   indexAxis: 'y',
+  responsive: true,
   elements: {
     bar: {
       borderWidth: 2,
@@ -30,15 +31,27 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      display: false
-    }
+      display: false,
+    },
+    tooltip: {
+      interaction: {
+        intersect: false,
+      },
+    },
   },
   scales: {
     x: {
-      stacked: true
+      stacked: true,
+      grid: {
+        color: "#666666",
+        tickColor: "#333A46"
+      }
     },
     y: {
-      stacked: true
+      stacked: true,
+      grid: {
+        color: "#333A46"
+      }
     }
   }
   // scales: {

@@ -125,7 +125,7 @@ function JudgeGPABadgeColor(average) {
 function StackedGPA(gpa) {
   const chartColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"]
   const data = {
-    labels: ["A group", "B group", "C group", "D group", "F"],
+    labels: ["A range", "B range", "C range", "D range", "F"],
     datasets: [
       {
         label: "+ group",
@@ -155,6 +155,8 @@ const Overivew = (chartData) => {
 
   const GPAData = StackedGPA(chartData.GPA.datasets[0].data)
   console.log("GPASets: ", GPAData);
+  console.log("ld: ", chartData.lectureDifficulty)
+  console.log("workload: ", chartData.workload)
 
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >

@@ -22,6 +22,12 @@ const options = {
       grid: {
         color: "#282F3C"
       },
+      pointLabels: {
+        color: "white"
+      },
+      ticks: {
+        color: "red",
+      }
     }
   }
 };
