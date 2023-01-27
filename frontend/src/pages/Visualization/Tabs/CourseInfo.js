@@ -31,19 +31,28 @@ const CourseInfo = (courseData) => {
   console.log("CourseData in courseInfo: ",courseData);
 
   return (
-    <Box sx={{height: "550px", width: "1450px"}}>
+    <Box sx={{height: "550px", width: "1450px", overflowX: "hidden"}}>
       <Box sx={{marginLeft: 1}}>
         <Stack sx={{display: "flex", flexDirection: "row"}}>
           <CourseDescriptionGrid sx={{marginRight: 3}}>
-            <h2>Department: {courseData.description.Faculty}</h2>
-            <h2>Prerequisites: </h2>
-            <h5>Description: {courseData.description.Description}</h5>
+            <Box sx={{marginBottom: 1}}>
+              <h2>Course Description</h2>
+            </Box>
+            <Box sx={{display:"flex", flexDirection: "column", alignItems: "flex-start"}}>
+              <h2 style={{marginTop:10}}>Department: {courseData.description.Faculty}</h2>
+              <h2>Prerequisites: </h2>
+              <Box sx={{display:"flex"}}>
+                <h2 style={{marginRight: 20}}>Description: </h2>
+                <Box sx={{border: "4px solid #1D2630", borderRadius: 2, display: "flex", flexDirection: "column", alignItems: "flex-start", overflowY: "scroll", height: "135px"}}>
+                  <h5 style={{marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 10}}>{courseData.description.Description}</h5>
+                </Box>
+              </Box>
+            </Box>
           </CourseDescriptionGrid>
-          <TimeTableGrid>
+          <TimeTableGrid sx={{overflowX: "scroll"}}>
             <Box sx={{marginBottom: 1}}>
               <h2>Time Table</h2>
             </Box>
-            <Divider variant="fullWidth" style={{marginLeft: -10, width: "1200px", borderColor: "#1D2630", borderWidth: 1}}/>
             <TimeTable chartData={courseData.description.Timetable}/>
           </TimeTableGrid>
         </Stack>

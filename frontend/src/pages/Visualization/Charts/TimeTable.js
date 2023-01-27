@@ -11,7 +11,7 @@ export default function TimeTable(chartData) {
           height: "200px", 
           width: "200px", 
           backgroundColor: "#333A46", 
-          border: "2px solid #1D2630",
+          border: "4px solid #1D2630",
           borderRadius: 5,
           marginTop: 1,
           marginBottom: 1,
