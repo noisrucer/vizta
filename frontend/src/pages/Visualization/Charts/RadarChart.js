@@ -16,6 +16,7 @@ const options = {
   },
   scales: {
     r: {
+      beginAtZero: true,
       angleLines: {
         color: "#282F3C"
       },
@@ -26,7 +27,9 @@ const options = {
         color: "white"
       },
       ticks: {
-        color: "red",
+        color: "white",
+        stepSize: 1,
+        backdropColor: 'transparent'
       }
     }
   }
