@@ -38,7 +38,7 @@ export default function TimeTable(chartData) {
               flexDirection: "column",
               alignItems: "flex-start"
               }}>
-              <h4 style={{marginLeft: 20}}>{item.Weekday}: </h4>
+              <h4 style={{marginLeft: 25, fontWeight: "400"}}>{item.Weekday}: </h4>
               <h5 style={{marginLeft: 25, fontWeight: "100"}}>{item.StartTime} ~ {item.EndTime} {item.Location}</h5>
           </Box>
         ))}

@@ -43,7 +43,7 @@ const CourseInfo = (courseData) => {
             <Box sx={{marginBottom: 1}}>
               <h2>Time Table</h2>
             </Box>
-            <Divider variant="fullWidth" style={{marginLeft: -10, width: "1200px", borderColor: "#1D2630", borderWidth: 2}}/>
+            <Divider variant="fullWidth" style={{marginLeft: -10, width: "1200px", borderColor: "#1D2630", borderWidth: 1}}/>
             <TimeTable chartData={courseData.description.Timetable}/>
           </TimeTableGrid>
         </Stack>
