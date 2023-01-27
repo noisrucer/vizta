@@ -15,16 +15,31 @@ export default function TimeTable(chartData) {
           borderRadius: 5,
           marginTop: 1,
           marginBottom: 1,
-          margin: 1
+          margin: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
           }}>
-        <h1>{subclass}</h1>
-        <h3>Instructor:</h3>
-        <h4>{instructor}</h4>
-        <h3>TimeSlots:</h3>
+        <Box sx={{
+            width: "200px", 
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start"
+            }}>
+          <h1 style={{color: "#FFC106", marginLeft: 15}}>{subclass}</h1>
+          <h3 style={{marginLeft: 20}}>Instructor:</h3>
+          <h4 style={{marginLeft: 25, fontWeight: "100"}}>{instructor}</h4>
+          <h3 style={{marginLeft: 20}}>TimeSlots:</h3>
+        </Box>
         {timeslots.map((item) => (
-          <Box>
-            <h4>{item.Weekday}: </h4>
-            <h5>{item.StartTime} ~ {item.EndTime} {item.Location}</h5>
+          <Box sx={{
+              width: "200px", 
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start"
+              }}>
+              <h4 style={{marginLeft: 20}}>{item.Weekday}: </h4>
+              <h5 style={{marginLeft: 25, fontWeight: "100"}}>{item.StartTime} ~ {item.EndTime} {item.Location}</h5>
           </Box>
         ))}
       </Box>
@@ -43,13 +58,11 @@ export default function TimeTable(chartData) {
     <Box>
       <Box 
       sx={{
-          height: "230px",  
+          height: "210px",  
           display: "flex", 
           flexDirection: "row", 
           alignItems: "center", 
-          justifyContent: "center",
-          overflowX: "hidden",
-          overflowY: "scroll" 
+          overflowX: "scroll",
           }}>
         {createTimeTable(timeTableInfo)}
       </Box>

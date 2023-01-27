@@ -2,43 +2,30 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import DoughnutChart from '../Charts/DoughnutChart';
-import { useSpring, animated } from "react-spring";
 import Item from "../Boxes/Item";
 import TimeTable from "../Charts/TimeTable";
+import LockIcon from '@mui/icons-material/Lock';
+import Divider from '@mui/material/Divider';
 
 const CourseDescriptionGrid = styled(Item)(({theme}) => ({
-  height: "270px",
-  width: "484px"
+  height: "260px",
+  width: "460px"
 }))
 
 const TimeTableGrid = styled(Item)(({theme}) => ({
-  height: "270px",
-  width: "884px"
+  height: "260px",
+  width: "860px"
 }))
 
 const GradingRatioGrid = styled(Item)(({theme}) => ({
-  height: "270px",
-  width: "584px"
+  height: "260px",
+  width: "560px"
 }))
 
 const OverallScoreGrid = styled(Item)(({theme}) => ({
-  height: "270px",
-  width: "784px"
+  height: "260px",
+  width: "760px"
 }))
-
-function Number({ n }) {
-  const { number } = useSpring({
-      from: { number: 0 },
-      number: n,
-      delay: 200,
-      config: {mass: 1, tension: 20, friction: 10},
-  });
-  return ( 
-      <animated.div style={{ fontSize: '72px'}}>
-              {number.to((n) => n.toFixed(0))}
-      </animated.div>
-  )
-}
 
 const CourseInfo = (courseData) => {
   console.log("CourseData in courseInfo: ",courseData);
@@ -47,25 +34,37 @@ const CourseInfo = (courseData) => {
     <Box sx={{height: "550px", width: "1450px"}}>
       <Box sx={{marginLeft: 1}}>
         <Stack sx={{display: "flex", flexDirection: "row"}}>
-          <CourseDescriptionGrid sx={{marginRight: 2}}>
+          <CourseDescriptionGrid sx={{marginRight: 3}}>
             <h2>Department: {courseData.description.Faculty}</h2>
             <h2>Prerequisites: </h2>
             <h5>Description: {courseData.description.Description}</h5>
           </CourseDescriptionGrid>
           <TimeTableGrid>
-            Time Table
+            <Box sx={{marginBottom: 1}}>
+              <h2>Time Table</h2>
+            </Box>
+            <Divider variant="fullWidth" style={{marginLeft: -10, width: "1200px", borderColor: "#1D2630", borderWidth: 2}}/>
             <TimeTable chartData={courseData.description.Timetable}/>
           </TimeTableGrid>
         </Stack>
       </Box>
-      <Box sx={{marginLeft: 1, marginTop: 2}}>
+      <Box sx={{marginLeft: 1, marginTop: 3}}>
         <Stack sx={{ display: "flex", flexDirection: "row"}}>
-          <GradingRatioGrid sx={{marginRight: 2}}>
-            Grading Ratio
+          <GradingRatioGrid sx={{marginRight: 3}}>
+            <h2>Grading Ratio</h2>
+            <h3>Final Exam: </h3>
+            <h3>Midterm: </h3>
+            <h3>Assignments: </h3>
+            <h3>Project: </h3>
           </GradingRatioGrid>
           <OverallScoreGrid>
-            OverallScore
-            <Number n={courseData.overallScore} />
+            <Box sx={{marginBottom: 4}}>
+              <h2>Comments</h2>
+            </Box>
+            <Box>
+              <LockIcon sx={{fontSize: 80, color: "grey"}}/>
+              <h3 style={{ color: "grey"}}>To be released</h3>
+            </Box>
           </OverallScoreGrid>
         </Stack>
       </Box>

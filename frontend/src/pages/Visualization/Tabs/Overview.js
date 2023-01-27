@@ -24,23 +24,23 @@ import Item from "../Boxes/Item";
 import LinearPercentage from "../Charts/LinearPercentage";
 
 const HorizontalGrid = styled(Item)(({theme}) => ({
-  height: "300px",
-  width: "477px"
+  height: "260px",
+  width: "455px",
 }));
 
 const Square = styled(Item)(({theme}) => ({
-  height: "350px",
-  width: "400px"
+  height: "310px",
+  width: "280px",
 }));
 
 const TeachingQualityGrid = styled(Item)(({theme}) => ({
-  height: "200px",
-  width: "200px"
+  height: "150px",
+  width: "150px"
 }));
 
 const TQSubGrid = styled(Item)(({theme}) => ({
-  height: "66.66px",
-  width: "200px"
+  height: "50px",
+  width: "230px"
 }));
 
 const BadgeColorsList = {
@@ -136,7 +136,6 @@ function StackedGPA(gpa) {
 const Overivew = (chartData) => {
 
   console.log("chartData in overview: ", chartData)
-  const pentagonLining = ["final diificulty", "GPA", "Lecture", "teaching Quality", "workload"]
   const criteriaAverage = chartData.pentagon.datasets[0].data
   console.log("pentagon in overview: ", chartData.pentagon.datasets[0].data)
 
@@ -146,9 +145,11 @@ const Overivew = (chartData) => {
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >
       <Stack sx={{marginLeft: 1, marginRight: 1}}>
-        <Square sx={{marginBottom: 2}}>
-          <RadarChart chartData={chartData.pentagon}/>
-        </Square>
+        <Item sx={{width: "380px", height: "323px", marginBottom: 3}}>
+          <Square>
+            <RadarChart chartData={chartData.pentagon}/>
+          </Square>
+        </Item>
         <Item>
           <h2>Lecture Quality</h2>
         </Item>
@@ -172,7 +173,7 @@ const Overivew = (chartData) => {
           </Box>
         </Box>
       </Stack>
-      <Stack spacing={2} sx={{marginLeft: 1, merginRight: 1}}>
+      <Stack spacing={3} sx={{marginLeft: 2, merginRight: 1}}>
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
             <Box sx={{marginLeft: "47%"}}>
@@ -196,7 +197,7 @@ const Overivew = (chartData) => {
           <HorizontalBarChart chartData={chartData.lectureDifficulty} />
         </HorizontalGrid>
       </Stack>
-      <Stack spacing={2} sx={{marginLeft: 2}}>
+      <Stack spacing={3} sx={{marginLeft: 3}}>
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
             <Box sx={{marginLeft: "41%"}}>

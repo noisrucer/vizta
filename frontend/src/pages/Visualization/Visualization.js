@@ -23,7 +23,7 @@ import HorizontalBarChart from './Charts/HorizontalBarChart';
 import RadarChart from './Charts/RadarChart';
 import OverallScore from './OverallScore/OverallScore';
 import AppBar from '@mui/material/AppBar';
-import {ByYearDrawer} from "./Drawer/ByYearDrawer";
+import { ByYearDrawer } from "./Drawer/ByYearDrawer";
 import { ByProfessorDrawer } from './Drawer/ByProfessorDrawer';
 import { useSpring, animated } from "react-spring";
 import FormGroup from '@mui/material/FormGroup';
@@ -555,30 +555,29 @@ const Visualization = () => {
             }}>
 
             <Box sx={{ 
-                width: '100%', 
+                width: '93%', 
                 marginTop: 8, 
                 marginBottom: 1, 
-                marginLeft: 8,
                 display: "flex", 
                 flexDirection: "row",
                 alignItems: 'center',
                 }}>
-                <h1>
+                <h2>
                     <span style={{color: "#4FB19E"}}>
                         {courseId} {" "}
                     </span>
                     <span>
                         / {courseDescription.Name}
                     </span>
-                </h1>
-                <Box sx={{marginLeft: 101.5}}>
+                </h2>
+                <Box sx={{marginLeft: "auto"}}>
                     <Button variant="outlined">
-                        Add review
+                        {'>'} Add review
                     </Button>
                 </Box>
             </Box>
         </Box>
-        <Box sx={{display: "flex"}}>
+        <Box sx={{display: "flex", marginLeft:2}}>
             <Box sx={{ bgcolor: '#1D2630', width: 800 }}>
                 <AppBar position="static" sx={{marginLeft: 4, bgcolor: '#1D2630'}}>
                     <Tabs
@@ -611,7 +610,6 @@ const Visualization = () => {
                     <TabPanel value={value} index={1}>
                         <CourseInfo 
                             description={courseDescription}
-                            overallScore={overallScore}
                         />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
@@ -629,20 +627,20 @@ const Visualization = () => {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    marginLeft: 10
+                    marginLeft: 28.5
                 }}>
-                <FormGroup>
+                {/* <FormGroup>
                     <FormControlLabel 
                     control={<MaterialUISwitch defaultChecked />} 
                     label="Label" 
                     onClick={() => {setViewBar(!viewBar)}}
                     />
-                </FormGroup>
+                </FormGroup> */}
                 <TextField 
                     id="get-by-year"
                     select
                     label="Select Year"
-                    sx={{ width: '195px'}}
+                    sx={{ width: '150px'}}
                     defaultValue=""
                 >
                     {selectYear.map((option) => (
@@ -655,7 +653,7 @@ const Visualization = () => {
                     id="get-by-professor"
                     select
                     label="Select Professor"
-                    sx={{ width: '200px'}}
+                    sx={{ width: '180px'}}
                     defaultValue=""
                 >
                     {selectProfessor.map((option) => (
