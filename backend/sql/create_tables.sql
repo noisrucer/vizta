@@ -1,3 +1,4 @@
+-- Active: 1671800850866@@127.0.0.1@3306@vizta
 CREATE TABLE User
 (
     user_id     INT         NOT NULL,
@@ -96,5 +97,34 @@ CREATE TABLE UserFavorite
     course_id VARCHAR(100) NOT NULL,
     PRIMARY KEY (user_id, course_id),
     FOREIGN KEY (user_id) REFERENCES User (user_id),
+    FOREIGN KEY (course_id) REFERENCES Course (course_id)
+);
+
+
+CREATE TABLE prerequisite_set
+(
+    set_id INT NOT NULL,
+    course_id VARCHAR(100) NOT NULL,
+    is_conjunction BOOLEAN NOT NULL,
+    PRIMARY KEY (set_id),
+    FOREIGN KEY (course_id) REFERENCES Course (course_id)
+);
+
+
+CREATE TABLE prerequisite_set_course
+(
+    set_id INT NOT NULL,
+    course_id VARCHAR(100) NOT NULL,
+    PRIMARY KEY(set_id, course_id),
+    FOREIGN KEY (set_id) REFERENCES prerequisite_set (set_id)
+    -- FOREIGN KEY (course_id) REFERENCES Course (course_id)
+);
+
+
+CREATE TABLE prerequisite_type
+(
+    course_id VARCHAR(100) NOT NULL,
+    is_conjunction BOOLEAN NOT NULL,
+    PRIMARY KEY (course_id),
     FOREIGN KEY (course_id) REFERENCES Course (course_id)
 );
