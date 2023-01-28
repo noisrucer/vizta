@@ -106,3 +106,17 @@ class CourseReview(Base):
                     "CourseReview.academic_year == Subclass.academic_year,"
                     "CourseReview.semester == Subclass.semester)"
     )
+    
+    
+class BlockingCourse(Base):
+    __tablename__ = "blocking_course"
+    
+    course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True)
+    blocking_course_id = Column(String(100), nullable=False, primary_key=True)
+    
+
+class CourseAllowedYear(Base):
+    __tablename__ = "course_allowed_year"
+    
+    course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True)
+    allowed_year = Column(SmallInteger, nullable=False, primary_key=True)
