@@ -57,15 +57,15 @@ const CourseInfo = (courseData) => {
                   </Box>
                   <Box sx={{display:"flex", marginLeft:1}}>
                     <h5 style={{color: "#FF5721", marginRight: 10}}>Prerequisites: </h5>
-                    <h5>{courseData.description.Prerequisite}</h5>
+                    <h5 style={{textAlign:"left"}}>{courseData.description.Prerequisite}</h5>
                   </Box>
                   <Box sx={{display: "flex", marginLeft:1}}>
                     <h5 style={{color: "#FF5721", marginRight: 10}}>Blocking Courses: </h5>
-                    <h5>{courseData.description.BlockingCourses.join(", ")}</h5>
+                    <h5 style={{textAlign:"left"}}>{courseData.description.BlockingCourses.join(", ")}</h5>
                   </Box>
                   <Box sx={{display: "flex", marginLeft:1}}>
                     <h5 style={{color: "#FF5721", marginRight: 10}}>Mutual Exclusives: </h5>
-                    <h5>{courseData.description.MutualExclusives.join(", ")}</h5>
+                    <h5 style={{textAlign:"left"}}>{courseData.description.MutualExclusives.join(", ")}</h5>
                   </Box>
                 </Box>
               </Box>
@@ -84,7 +84,7 @@ const CourseInfo = (courseData) => {
                   overflowY: "scroll", 
                   height: "90px"
                   }}>
-                  <h5 style={{marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 10}}>{courseData.description.Description}</h5>
+                  <h5 style={{marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 10, textAlign:"center"}}>{courseData.description.Description}</h5>
                 </Box>
               </Box>
             </Box>
