@@ -31,10 +31,41 @@ const StyledBox = styled(Box)(({ theme }) => ({
   const options = {
     plugins: {
       legend: {
-        display: false,
+        display: true,
+        labels: {
+          color: "#fff",
+          usePointStyle: true,
+          pointStyle: 'circle',
+          useBorderRadius: "false"
+        }
+      },
+      labels: {
+        fontColor: "white"
+      }
+    },
+    scale: {
+      suggestedMax: 5
+    },
+    scales: {
+      r: {
+        beginAtZero: true,
+        angleLines: {
+          color: "#282F3C"
+        },
+        grid: {
+          color: ["#282F3C", "#282F3C", "#282F3C", "#282F3C", "#282F3C", "#282F3C"]
+        },
+        pointLabels: {
+          color: "white"
+        },
+        ticks: {
+          color: "white",
+          stepSize: 1,
+          backdropColor: 'transparent'
+        }
       }
     }
-  }
+  };
 
 const ProfessorStats = () => {
     
