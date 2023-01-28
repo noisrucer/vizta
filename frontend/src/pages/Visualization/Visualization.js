@@ -538,6 +538,8 @@ const Visualization = () => {
       setValue(index);
     };
 
+    const [isOverview, setIsOverview] = useState(true);
+
   return (
     <Box sx={{
         width: "100%",
@@ -588,10 +590,10 @@ const Visualization = () => {
                         variant="fullWidth"
                         aria-label="full width tabs example"
                     >
-                    <Tab label="Overview" {...a11yProps(0)} />
-                    <Tab label="Course Information" {...a11yProps(1)} />
-                    <Tab label="Yearly Trend" {...a11yProps(2)} />
-                    <Tab label="Professor Statistics" {...a11yProps(3)} />
+                    <Tab label="Overview" {...a11yProps(0)} onClick={() => {setIsOverview(true)}}/>
+                    <Tab label="Course Information" {...a11yProps(1)} onClick={() => {setIsOverview(false)}}/>
+                    <Tab label="Yearly Trend" {...a11yProps(2)} onClick={() => {setIsOverview(false)}}/>
+                    <Tab label="Professor Statistics" {...a11yProps(3)} onClick={() => {setIsOverview(false)}}/>
                     </Tabs>
                 </AppBar>
                     <TabPanel value={value} index={0}>
@@ -637,34 +639,39 @@ const Visualization = () => {
                     onClick={() => {setViewBar(!viewBar)}}
                     />
                 </FormGroup> */}
-                <TextField 
-                    id="get-by-year"
-                    select
-                    label="Select Year"
-                    variant='standard'
-                    sx={{ width: '150px'}}
-                    defaultValue=""
-                >
-                    {selectYear.map((option) => (
-                        <MenuItem key={option} value={option} onClick={() => setSelectedYear(option)}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField 
-                    id="get-by-professor"
-                    select
-                    label="Select Professor"
-                    variant='standard'
-                    sx={{ width: '180px'}}
-                    defaultValue=""
-                >
-                    {selectProfessor.map((option) => (
-                        <MenuItem key={option} value={option} onClick={() => setSelectedProfessor(option)}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </TextField>
+                { isOverview ? 
+                    <>
+                        <TextField 
+                            id="get-by-year"
+                            select
+                            label="Select Year"
+                            variant='standard'
+                            sx={{ width: '150px'}}
+                            defaultValue=""
+                        >
+                            {selectYear.map((option) => (
+                                <MenuItem key={option} value={option} onClick={() => setSelectedYear(option)}>
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                        <TextField 
+                            id="get-by-professor"
+                            select
+                            label="Select Professor"
+                            variant='standard'
+                            sx={{ width: '180px'}}
+                            defaultValue=""
+                        >
+                            {selectProfessor.map((option) => (
+                                <MenuItem key={option} value={option} onClick={() => setSelectedProfessor(option)}>
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </> : 
+                    <></> 
+                }
             </Stack>
             </Box>
         </Box>
