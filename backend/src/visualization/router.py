@@ -198,7 +198,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     badges_break_point = [5 / 3, 10 / 3, 15 / 3]
 
     def get_badges(val):
-        return badges_text[next(i for i,v in enumerate(badges_break_point) if v > val)]
+        return 'NONE' if val is None else badges_text[next(i for i,v in enumerate(badges_break_point) if v > val)]
 
     result = {
         "GPA": [[gpa_count[_ + '+'] for _ in gpa_letter],
