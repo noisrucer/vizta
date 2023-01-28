@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import axios from 'axios';
-import { Line } from "react-chartjs-2";
+import LineChart from '../Charts/LineChart';
 import SchoolIcon from '@mui/icons-material/School';
 import GradingIcon from '@mui/icons-material/Grading';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
@@ -17,10 +17,47 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ClassIcon from '@mui/icons-material/Class';
 import TextField from '@mui/material/Textfield';
 import MenuItem from '@mui/material/MenuItem';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import AppBar from '@mui/material/AppBar';
+import PropTypes from 'prop-types';
 
 const baseURL = 'http://127.0.0.1:8000';
 
 const drawerBleeding = 56;
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`vertical-tabpanel-${index}`}
+      aria-labelledby={`vertical-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    'aria-controls': `vertical-tabpanel-${index}`,
+  };
+}
 
 const StyledBox = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'light' ? '#fff' : grey[800],
@@ -235,111 +272,129 @@ const YearlyTrend = () => {
       })
     }
 
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };
+
     console.log("byYear chartData: ", chartData);
     console.log("by year chartDataProfessor: ", chartDataProfessor);
     console.log("professorList: ", professorList);
 
     return (
-        <Box sx={{width: "180%", height: "520px"}}>
-              <Box 
-                  textAlign='center' 
-                  role='presentation' 
-                  sx={{
-                      backgroundColor: "pink",
-                      borderTopRightRadius: 30,
-                      borderTopLeftRadius: 30
-                      }} >
-              </Box>
-              <Box 
-                p={4} 
-                textAlign='center' 
-                role='presentation' 
-                sx={{
-                  display: "flex", 
-                  flexDirection: "row", 
-                  alignItems: "center",
-                  }}>
-                  {isCriteria ? 
-                  <Typography variant="h5" component='div' sx={{marginRight: 50}}>
-                    By Criteria - {title}
-                  </Typography> : 
-                  <Typography variant="h5" component='div' sx={{marginRight: 50}}>
-                    By Professor
-                  </Typography>
-                  }
-                  <TextField 
-                    id="select-view"
-                    select
-                    label="Select View"
-                    defaultValue="byCriteria"
-                    >
-                    {viewOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value} onClick={() => checkIsCriteria(option.value)}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-              </Box>
-              {isCriteria ? 
-              <>
-                <Box sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      justifycontent: 'center', 
-                      width: "50%", 
-                      height: "370px",
-                      }}>
-                    <Line data={chartData} />
-                </Box>
-                <Box sx={{ width: '100%', marginTop: 2, marginBottom: 4}}>
-                  <Stack direction='row' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                      <Button variant="contained" startIcon={<BorderColorIcon />} onClick={() => changeCriteria("FinalExamDifficulty")}>
-                          Final Exam Difficulty
-                      </Button>
-                      <Button variant="contained" startIcon={<GradingIcon />} onClick={() => changeCriteria("GPA")}>
-                          GPA
-                      </Button>
-                      <Button variant="contained" startIcon={<ClassIcon />} onClick={() => changeCriteria("LectureDifficulty")}>
-                          Lecture Difficulty
-                      </Button>
-                      <Button variant="contained" startIcon={<SchoolIcon />} onClick={() => changeCriteria("CourseDelivery")}>
-                          Teaching Quality - Delivery
-                      </Button>
-                      <Button variant="contained" startIcon={<SchoolIcon />} onClick={() => changeCriteria("CourseEntertaining")}>
-                          Teaching Quality - Entertaining
-                      </Button>
-                      <Button variant="contained" startIcon={<SchoolIcon />} onClick={() => changeCriteria("CourseInteractivity")}>
-                          Teaching Quality - Interactivity
-                      </Button>
-                      <Button variant="contained" startIcon={<AccessTimeFilledIcon />} onClick={() => changeCriteria("Workload")}>
-                          Workload
-                      </Button>
-                  </Stack>
-                </Box>
-              </>
-              : 
-              <>
-                <Box sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifycontent: 'center', 
-                  width: "50%", 
-                  height: "370px",
-                  }}>
-                    <Line data={isCriteria ? chartData : chartDataProfessor} />
-                </Box>
-                <Box sx={{ width: '100%', marginTop: 2, marginBottom: 4}}>
-                  <Stack direction='row' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                    {
-                      professorList.map((item, index) => (
-                        <Button onClick={() => handleProfessorClick(index)}>{item}</Button>
-                      ))
-                    }
-                  </Stack>
-                </Box>
-              </>
-              }
+      <Box sx={{width: "180%", height: "520px"}}>
+        <Box
+          sx={{ flexGrow: 1, bgcolor: '#1D2630', display: 'flex', height: 520 }}
+        >
+          <Tabs
+            orientation="vertical"
+            variant="scrollable"
+            value={value}
+            onChange={handleChange}
+            aria-label="Vertical tabs example"
+            sx={{ borderRight: 1, borderColor: 'divider' }}
+          >
+            <Tab label="Final Exam Difficulty" {...a11yProps(0)} onClick={() => changeCriteria("FinalExamDifficulty")}/>
+            <Tab label="GPA" {...a11yProps(1)} onClick={() => changeCriteria("GPA")}/>
+            <Tab label="Lecture Difficulty" {...a11yProps(2)} onClick={() => changeCriteria("LectureDifficulty")}/>
+            <Tab label="Lecture Quality - Delivery" {...a11yProps(3)} onClick={() => changeCriteria("CourseDelivery")}/>
+            <Tab label="Lecture Quality - Entertaining" {...a11yProps(4)} onClick={() => changeCriteria("CourseEntertaining")}/>
+            <Tab label="Lecture Quality - Interactivity" {...a11yProps(5)} onClick={() => changeCriteria("CourseInteractivity")}/>
+            <Tab label="Workload" {...a11yProps(6)} onClick={() => changeCriteria("Workload")}/>
+          </Tabs>
+          <TabPanel value={value} index={0}>
+            <Box sx={{height: "520px", width: "1000px"}}>
+              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+            </Box>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Box sx={{height: "520px", width: "1000px"}}>
+              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+            </Box>
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <Box sx={{height: "520px", width: "1000px"}}>
+              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+            </Box>
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <Box sx={{height: "520px", width: "1000px"}}>
+              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+            </Box>
+          </TabPanel>
+          <TabPanel value={value} index={4}>
+            <Box sx={{height: "520px", width: "1000px"}}>
+              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+            </Box>
+          </TabPanel>
+          <TabPanel value={value} index={5}>
+            <Box sx={{height: "520px", width: "1000px"}}>
+              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+            </Box>
+          </TabPanel>
+          <TabPanel value={value} index={6}>
+            <Box sx={{height: "520px", width: "1000px"}}>
+              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+            </Box>
+          </TabPanel>
         </Box>
+        <Box 
+          p={4} 
+          textAlign='center' 
+          role='presentation' 
+          sx={{
+            display: "flex", 
+            flexDirection: "row", 
+            alignItems: "center",
+            }}>
+            {isCriteria ? 
+            <Typography variant="h5" component='div' sx={{marginRight: 50}}>
+              By Criteria - {title}
+            </Typography> : 
+            <Typography variant="h5" component='div' sx={{marginRight: 50}}>
+              By Professor
+            </Typography>
+            }
+            <TextField 
+              id="select-view"
+              select
+              label="Select View"
+              defaultValue="byCriteria"
+              >
+              {viewOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value} onClick={() => checkIsCriteria(option.value)}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+        </Box>
+        {isCriteria ? 
+        <>
+        </>
+        : 
+        <>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifycontent: 'center', 
+            width: "50%", 
+            height: "370px",
+            }}>
+              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+          </Box>
+          <Box sx={{ width: '100%', marginTop: 2, marginBottom: 4}}>
+            <Stack direction='row' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+              {
+                professorList.map((item, index) => (
+                  <Button onClick={() => handleProfessorClick(index)}>{item}</Button>
+                ))
+              }
+            </Stack>
+          </Box>
+        </>
+        }
+      </Box>
     )};
 
     export default YearlyTrend;

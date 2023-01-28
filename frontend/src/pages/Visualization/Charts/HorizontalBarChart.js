@@ -28,7 +28,6 @@ const options = {
       borderWidth: 2,
     },
   },
-  responsive: true,
   plugins: {
     legend: {
       display: false,

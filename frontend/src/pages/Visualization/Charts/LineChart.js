@@ -3,25 +3,36 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto'
 
 const options = {
-  
+  responsive: true,
   scales: {
     x: {
-      display: true,
+      grid: {
+        color: "#666666",
+        tickColor: "#333A46"
+      },
       ticks: {
-        fontColor: 'white', 
+        color: "white"
       }
     },
     y: {
-      display: true,
+      grid: {
+        color: "#333A46"
+      },
       ticks: {
-        fontColor: 'white', 
+        color: "white"
       }
     }
   },
 
   plugins: {
     legend: {
-      display: false
+      display: true,
+      labels: {
+        color: "#fff",
+        usePointStyle: true,
+        pointStyle: 'circle',
+        useBorderRadius: "false"
+      }
     }
   }
 }

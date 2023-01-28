@@ -21,7 +21,7 @@ const options = {
         color: "#282F3C"
       },
       grid: {
-        color: "#282F3C"
+        color: ["#282F3C", "#282F3C", "#282F3C", "#282F3C", "#282F3C", "#282F3C"]
       },
       pointLabels: {
         color: "white"

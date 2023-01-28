@@ -43,8 +43,8 @@ const HorizontalGrid = styled(Item)(({theme}) => ({
 }));
 
 const Square = styled(Box)(({theme}) => ({
-  height: "300px",
-  width: "300px",
+  height: "360px",
+  width: "360px",
 }));
 
 const TeachingQualityGrid = styled(Item)(({theme}) => ({
@@ -165,8 +165,9 @@ const Overivew = (chartData) => {
           <Square>
             <RadarChart chartData={chartData.pentagon}/>
           </Square>
-          <Box sx={{ height:"70px", width:"70px", marginLeft:"auto"}}>
+          <Box sx={{ position: "absolute", left:80, top: 200, display:"flex"}}>
             <Number n={chartData.overallScore} />
+            <h3 style={{marginTop: 22, marginLeft: 5}}>/ 100</h3>
           </Box>
         </Item>
         <Item>
