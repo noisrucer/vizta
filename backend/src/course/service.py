@@ -230,4 +230,17 @@ def get_mutual_exclusives_by_course_id(db: Session, course_id: str) -> list:
         filter(models.CourseExclusivity.course_id == course_id).all()
     mutexes = [mutex.exclu_course_id for mutex in mutexes]
     return mutexes
+
+
+def get_blocking_courses_by_course_id(db: Session, course_id: str) -> list:
+    blocking_courses = db.query(models.BlockingCourse.blocking_course_id).\
+        filter(models.BlockingCourse.course_id == course_id).all()
+    blocking_courses = [block.blocking_course_id for block in blocking_courses]
+    return blocking_courses
         
+        
+def get_course_allowed_years_by_course_id(db: Session, course_id: str) -> list:
+    allowed_years = db.query(models.CourseAllowedYear.allowed_year).\
+        filter(models.CourseAllowedYear.course_id == course_id).all()
+    allowed_years = [allow.allowed_year for allow in allowed_years]
+    return allowed_years
