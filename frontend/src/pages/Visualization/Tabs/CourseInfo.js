@@ -6,6 +6,10 @@ import Item from "../Boxes/Item";
 import TimeTable from "../Charts/TimeTable";
 import LockIcon from '@mui/icons-material/Lock';
 import Divider from '@mui/material/Divider';
+import Textfield from '@mui/material/Textfield';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
 
 const CourseDescriptionGrid = styled(Item)(({theme}) => ({
   height: "260px",
@@ -29,6 +33,10 @@ const OverallScoreGrid = styled(Item)(({theme}) => ({
 
 const CourseInfo = (courseData) => {
   console.log("CourseData in courseInfo: ",courseData);
+
+  const gradingRatioList = courseData.description.GradingRatio.Values
+
+  console.log("gradingRatioList: ", Object.keys(gradingRatioList))
 
   const gradingRatio = {
     labels: courseData.description.GradingRatio.Constitution,
@@ -56,7 +64,7 @@ const CourseInfo = (courseData) => {
                   display: "flex", 
                   flexDirection: "column", 
                   alignItems: "flex-start",
-                  border: "4px solid #1D2630",
+                  border: "2px solid #1D2630",
                   borderRadius: 2,
                   height: "90px",
                   overflowY: "scroll"
@@ -86,7 +94,7 @@ const CourseInfo = (courseData) => {
                 }}>
                 <h2 style={{marginLeft: 10}}>Description: </h2>
                 <Box sx={{
-                  border: "4px solid #1D2630", 
+                  border: "2px solid #1D2630", 
                   borderRadius: 2, 
                   display: "flex", 
                   flexDirection: "column", 
@@ -94,7 +102,7 @@ const CourseInfo = (courseData) => {
                   overflowY: "scroll", 
                   height: "90px"
                   }}>
-                  <h5 style={{marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 10, textAlign:"center"}}>{courseData.description.Description}</h5>
+                  <h5 style={{marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 10, textAlign:"left"}}>{courseData.description.Description}</h5>
                 </Box>
               </Box>
             </Box>
@@ -115,11 +123,21 @@ const CourseInfo = (courseData) => {
               <Box sx={{ marginLeft: 2, marginTop: -3, height: "250px", width: "250px"}}>
                 <DoughnutChart chartData={gradingRatio} />
               </Box>
-              <Box sx={{backgroundColor: "white", marginLeft: 6, height: "200px", width: "200px"}}>
-                <h3>Final Exam: </h3>
-                <h3>Midterm: </h3>
-                <h3>Assignments: </h3>
-                <h3>Project: </h3>
+              <Box sx={{ marginLeft: 10, height: "200px", width: "200px"}}>
+                <Textfield
+                  id="get-grading-ratio"
+                  select
+                  label="select professor"
+                  variant="outlined"
+                  sx={{width: "160px"}}
+                  defaultValue={Object.values(gradingRatioList)[0]}
+                >
+                  { Object.keys(gradingRatioList).map((key) => {
+                    return <MenuItem key={key} value={gradingRatioList[key]} onClick={() => {console.log(key, gradingRatioList[key])}}>
+                      {key}
+                    </MenuItem>
+                  })}
+                </Textfield>
               </Box>
             </Box>
           </GradingRatioGrid>

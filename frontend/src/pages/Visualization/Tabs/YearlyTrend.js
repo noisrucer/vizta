@@ -283,10 +283,25 @@ const YearlyTrend = () => {
     console.log("professorList: ", professorList);
 
     return (
-      <Box sx={{width: "180%", height: "520px"}}>
+      <Box sx={{width: "250%", height: "520px"}}>
+          <TextField 
+            id="select-view"
+            select
+            variant="standard"
+            label="Select View"
+            defaultValue="byCriteria"
+            sx={{position: "absolute", left: 1260, top: 110, width: "128px"}}
+            >
+            {viewOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value} onClick={() => checkIsCriteria(option.value)}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
         <Box
           sx={{ flexGrow: 1, bgcolor: '#1D2630', display: 'flex', height: 520 }}
-        >
+        > { isCriteria ?
+          <>
           <Tabs
             orientation="vertical"
             variant="scrollable"
@@ -304,96 +319,64 @@ const YearlyTrend = () => {
             <Tab label="Workload" {...a11yProps(6)} onClick={() => changeCriteria("Workload")}/>
           </Tabs>
           <TabPanel value={value} index={0}>
-            <Box sx={{height: "520px", width: "1000px"}}>
+            <Box sx={{height: "520px", width: "1200px"}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Box sx={{height: "520px", width: "1000px"}}>
+            <Box sx={{height: "520px", width: "1200px"}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Box sx={{height: "520px", width: "1000px"}}>
+            <Box sx={{height: "520px", width: "1200px"}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <Box sx={{height: "520px", width: "1000px"}}>
+            <Box sx={{height: "520px", width: "1200px"}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={4}>
-            <Box sx={{height: "520px", width: "1000px"}}>
+            <Box sx={{height: "520px", width: "1200px"}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={5}>
-            <Box sx={{height: "520px", width: "1000px"}}>
+            <Box sx={{height: "520px", width: "1200px"}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={6}>
-            <Box sx={{height: "520px", width: "1000px"}}>
+            <Box sx={{height: "520px", width: "1200px"}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
+          </>
+          : 
+          <>
+            <Box sx={{ marginRight: 10}}>
+              <Stack direction='column' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                {
+                  professorList.map((item, index) => (
+                    <Button onClick={() => handleProfessorClick(index)}>{item}</Button>
+                  ))
+                }
+              </Stack>
+            </Box>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifycontent: 'center', 
+              width: "1200px", 
+              height: "520px",
+              }}>
+                <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+            </Box>
+          </> 
+          }
         </Box>
-        <Box 
-          p={4} 
-          textAlign='center' 
-          role='presentation' 
-          sx={{
-            display: "flex", 
-            flexDirection: "row", 
-            alignItems: "center",
-            }}>
-            {isCriteria ? 
-            <Typography variant="h5" component='div' sx={{marginRight: 50}}>
-              By Criteria - {title}
-            </Typography> : 
-            <Typography variant="h5" component='div' sx={{marginRight: 50}}>
-              By Professor
-            </Typography>
-            }
-            <TextField 
-              id="select-view"
-              select
-              label="Select View"
-              defaultValue="byCriteria"
-              >
-              {viewOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value} onClick={() => checkIsCriteria(option.value)}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-        </Box>
-        {isCriteria ? 
-        <>
-        </>
-        : 
-        <>
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifycontent: 'center', 
-            width: "50%", 
-            height: "370px",
-            }}>
-              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
-          </Box>
-          <Box sx={{ width: '100%', marginTop: 2, marginBottom: 4}}>
-            <Stack direction='row' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-              {
-                professorList.map((item, index) => (
-                  <Button onClick={() => handleProfessorClick(index)}>{item}</Button>
-                ))
-              }
-            </Stack>
-          </Box>
-        </>
-        }
       </Box>
     )};
 
