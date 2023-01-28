@@ -195,3 +195,52 @@ def update_grading_ratio(db: Session,
                 'assignments_ratio': assignments_ratio,
                 'project_ratio': project_ratio})
     db.commit()
+
+
+def get_prerequisites_by_course_id(db: Session, course_id: str):
+    subq = db.query(
+            models.PrerequisiteSetCourse.set_id,
+            models.PrerequisiteSet.course_id,
+            ('(' + 
+            func.replace(
+                func.group_concat(models.PrerequisiteSetCourse.course_id.op('separator')('-')),
+                '-',
+                func.IF(models.PrerequisiteSet.is_conjunction==True, ' AND ', ' OR '))
+            + ')').label('chunk')
+            ).\
+        join(models.PrerequisiteSet, models.PrerequisiteSetCourse.set_id == models.PrerequisiteSet.set_id).\
+        filter(models.PrerequisiteSet.course_id == course_id).\
+        group_by(models.PrerequisiteSetCourse.set_id).subquery('temp')
+
+    res = db.query(
+            func.replace(
+                    func.group_concat(subq.c.chunk.op('separator')('-')),
+                    '-',
+                    func.IF(models.PrerequisiteType.is_conjunction==True, ' AND ', ' OR ')
+                ).label('prereq')).\
+            select_from(subq).\
+            join(models.PrerequisiteType, subq.c.course_id == models.PrerequisiteType.course_id).\
+            group_by(subq.c.course_id).first()
+        
+    return res.prereq
+
+
+def get_mutual_exclusives_by_course_id(db: Session, course_id: str) -> list:
+    mutexes = db.query(models.CourseExclusivity.exclu_course_id).\
+        filter(models.CourseExclusivity.course_id == course_id).all()
+    mutexes = [mutex.exclu_course_id for mutex in mutexes]
+    return mutexes
+
+
+def get_blocking_courses_by_course_id(db: Session, course_id: str) -> list:
+    blocking_courses = db.query(models.BlockingCourse.blocking_course_id).\
+        filter(models.BlockingCourse.course_id == course_id).all()
+    blocking_courses = [block.blocking_course_id for block in blocking_courses]
+    return blocking_courses
+        
+        
+def get_course_allowed_years_by_course_id(db: Session, course_id: str) -> list:
+    allowed_years = db.query(models.CourseAllowedYear.allowed_year).\
+        filter(models.CourseAllowedYear.course_id == course_id).all()
+    allowed_years = [allow.allowed_year for allow in allowed_years]
+    return allowed_years

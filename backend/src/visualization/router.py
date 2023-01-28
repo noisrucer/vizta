@@ -6,6 +6,7 @@ from typing import Union
 from fastapi import APIRouter, Depends
 
 import backend.src.course.models as course_models
+import backend.src.course.service as course_service
 import backend.src.course.enums as course_enums
 import backend.src.course.exceptions as course_exceptions
 
@@ -69,12 +70,21 @@ async def get_course_general_information(course_id: str, db: Session = Depends(g
                 "EndTime": get(tb, course_models.SubclassInfo.etime),
                 "Location": get(tb, course_models.SubclassInfo.class_loca)
             })
-
+    # Prerequisites & Mutex & blocking courses & allowed years
+    prerequisite = course_service.get_prerequisites_by_course_id(db, course.course_id)
+    mutual_exclusives = course_service.get_mutual_exclusives_by_course_id(db, course.course_id)
+    blocking_courses = course_service.get_blocking_courses_by_course_id(db, course.course_id)
+    allowed_years = course_service.get_course_allowed_years_by_course_id(db, course.course_id)
+    
     return {
         "CourseID": course.course_id,
         "Name": course.name,
         "Faculty": course.faculty,
         "Description": course.description,
+        "Prerequisite": prerequisite,
+        "MutualExclusives": mutual_exclusives,
+        "BlockingCourses": blocking_courses,
+        "AllowedYears": allowed_years,
 
         # grading ratio
         "GradingRatio": {

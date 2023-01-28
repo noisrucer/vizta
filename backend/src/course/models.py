@@ -16,13 +16,25 @@ class Course(Base):
     name = Column(String(100), nullable=False)
     description = Column(String(1000), nullable=True)
     faculty = Column(String(100), nullable=False)
+    
+
+class PrerequisiteSet(Base):
+    __tablename__ = "prerequisite_set"
+    set_id = Column(Integer, nullable=False, primary_key=True)
+    course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False)
+    is_conjunction = Column(Boolean, nullable=False)
 
 
-class CoursePrerequisite(Base):
-    __tablename__ = "course_prerequisite"
-
-    course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True)
-    prereq_course_id = Column(String(100), nullable=False, primary_key=True)
+class PrerequisiteSetCourse(Base):
+    __tablename__ = "prerequisite_set_course"
+    set_id = Column(Integer, ForeignKey('prerequisite_set.set_id'), nullable=False, primary_key=True)
+    course_id = Column(String(100), nullable=False, primary_key=True)
+    
+    
+class PrerequisiteType(Base):
+    __tablename__ = "prerequisite_type"
+    course_id = Column(String(100), ForeignKey('course.course_id'), primary_key=True)
+    is_conjunction = Column(Boolean, nullable=False)
 
 
 class CourseExclusivity(Base):
@@ -30,6 +42,7 @@ class CourseExclusivity(Base):
 
     course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True)
     exclu_course_id = Column(String(100), nullable=False, primary_key=True)
+
 
 class Subclass(Base):
     __tablename__ = "subclass"
@@ -93,3 +106,17 @@ class CourseReview(Base):
                     "CourseReview.academic_year == Subclass.academic_year,"
                     "CourseReview.semester == Subclass.semester)"
     )
+    
+    
+class BlockingCourse(Base):
+    __tablename__ = "blocking_course"
+    
+    course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True)
+    blocking_course_id = Column(String(100), nullable=False, primary_key=True)
+    
+
+class CourseAllowedYear(Base):
+    __tablename__ = "course_allowed_year"
+    
+    course_id = Column(String(100), ForeignKey('course.course_id'), nullable=False, primary_key=True)
+    allowed_year = Column(SmallInteger, nullable=False, primary_key=True)
