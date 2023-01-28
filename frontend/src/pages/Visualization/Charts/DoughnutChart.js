@@ -7,6 +7,7 @@ function DoughnutChart({chartData}) {
   const options = {
     plugins: {
       legend: {
+        position: "left",
         labels: {
           color: "#fff",
           usePointStyle: true,

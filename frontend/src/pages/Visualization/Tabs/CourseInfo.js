@@ -30,6 +30,16 @@ const OverallScoreGrid = styled(Item)(({theme}) => ({
 const CourseInfo = (courseData) => {
   console.log("CourseData in courseInfo: ",courseData);
 
+  const gradingRatio = {
+    labels: courseData.description.GradingRatio.Constitution,
+    datasets: [{
+      label: "students answer",
+      data: [0, 50, 0, 50]
+    }]
+  }
+
+  console.log("gradingRatio: ", gradingRatio)
+
   return (
     <Box sx={{height: "550px", width: "1450px", overflowX: "hidden"}}>
       <Box sx={{marginLeft: 1}}>
@@ -101,10 +111,17 @@ const CourseInfo = (courseData) => {
         <Stack sx={{ display: "flex", flexDirection: "row"}}>
           <GradingRatioGrid sx={{marginRight: 3}}>
             <h2>Grading Ratio</h2>
-            <h3>Final Exam: </h3>
-            <h3>Midterm: </h3>
-            <h3>Assignments: </h3>
-            <h3>Project: </h3>
+            <Box sx={{display: "flex", flexDirection: "row"}}>
+              <Box sx={{ marginLeft: 2, marginTop: -3, height: "250px", width: "250px"}}>
+                <DoughnutChart chartData={gradingRatio} />
+              </Box>
+              <Box sx={{backgroundColor: "white", marginLeft: 6, height: "200px", width: "200px"}}>
+                <h3>Final Exam: </h3>
+                <h3>Midterm: </h3>
+                <h3>Assignments: </h3>
+                <h3>Project: </h3>
+              </Box>
+            </Box>
           </GradingRatioGrid>
           <OverallScoreGrid>
             <Box sx={{marginBottom: 4}}>
