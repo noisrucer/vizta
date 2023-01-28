@@ -39,9 +39,9 @@ const CourseInfo = (courseData) => {
               <Box sx={{
                 display:"flex", 
                 flexDirection: "column", 
-                alignItems: "center",
+                alignItems: "flex-start",
                 }}>
-                <h2>Requirements </h2>
+                <h2 style={{marginLeft: 10}}>Requirements: </h2>
                 <Box sx={{
                   display: "flex", 
                   flexDirection: "column", 
@@ -72,9 +72,9 @@ const CourseInfo = (courseData) => {
               <Box sx={{
                 display:"flex", 
                 flexDirection: "column", 
-                alignItems: "center"
+                alignItems: "flex-start"
                 }}>
-                <h2>Description </h2>
+                <h2 style={{marginLeft: 10}}>Description: </h2>
                 <Box sx={{
                   border: "4px solid #1D2630", 
                   borderRadius: 2, 
