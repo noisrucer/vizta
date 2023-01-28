@@ -319,44 +319,44 @@ const YearlyTrend = () => {
             <Tab label="Workload" {...a11yProps(6)} onClick={() => changeCriteria("Workload")}/>
           </Tabs>
           <TabPanel value={value} index={0}>
-            <Box sx={{height: "520px", width: "1200px"}}>
+            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Box sx={{height: "520px", width: "1200px"}}>
+            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <Box sx={{height: "520px", width: "1200px"}}>
+            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <Box sx={{height: "520px", width: "1200px"}}>
+            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={4}>
-            <Box sx={{height: "520px", width: "1200px"}}>
+            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={5}>
-            <Box sx={{height: "520px", width: "1200px"}}>
+            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           <TabPanel value={value} index={6}>
-            <Box sx={{height: "520px", width: "1200px"}}>
+            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
               <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
             </Box>
           </TabPanel>
           </>
           : 
           <>
-            <Box sx={{ marginRight: 10}}>
+            <Box sx={{ marginLeft: 10, marginRight: 10, height: "520px", display: "flex", alignItems: "center"}}>
               <Stack direction='column' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                 {
                   professorList.map((item, index) => (
