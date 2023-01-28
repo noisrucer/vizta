@@ -115,7 +115,8 @@ INSERT INTO Subclass
 VALUES ('A', 'COMP3314', 2022, 1, 'Zhao Hengshuang', 50, 0, 50, 0),
        ('B', 'COMP3314', 2022, 2, 'Kong Lingpeng', 50, 0, 50, 0),
        ('C', 'COMP3314', 2022, 2, 'Yu Y Z', 50, 0, 50, 0),
-       ('A', 'COMP3314', 2023, 1, 'Lo Yu Sum', 50, 0, 50, 0);
+       ('A', 'COMP3314', 2023, 1, 'Lo Yu Sum', 50, 0, 50, 0),
+       ('A', 'COMP3314', 2023, 2, 'Zhao Hengshuang', 60, 0, 40, 0);
 
 INSERT INTO subclass_info
 VALUES ('A', 'COMP3314', 2022, 1, 'Tuesday', '12:30', '13:20', 'MWT7'),
