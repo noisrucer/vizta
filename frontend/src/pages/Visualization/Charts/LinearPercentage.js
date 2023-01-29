@@ -24,10 +24,13 @@ LinearProgressWithLabel.propTypes = {
 };
 
 export default function LinearWithValueLabel(percentage) {
-
+  let score = percentage.percentage
+  if (isNaN(score)){
+    score = 0;
+  }
   return (
     <Box sx={{ width: '100%' }}>
-      <LinearProgressWithLabel value={percentage.percentage * 10} />
+      <LinearProgressWithLabel value={score * 10} />
     </Box>
   );
 }
