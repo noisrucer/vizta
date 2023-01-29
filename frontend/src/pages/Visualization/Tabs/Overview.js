@@ -58,6 +58,11 @@ const TQSubGrid = styled(Item)(({theme}) => ({
 }));
 
 const BadgeColorsList = {
+  null: {
+    border: "#8F8F88",
+    text: "#8F8F88",
+    background: "1D2630"
+  },
   easy: {
     border: "#0cc1a9",
     text: "#0cc1a9",
@@ -85,7 +90,10 @@ const Badges = styled(Box)(({borderColor, backgronudColor}) => ({
 }))
 
 function JudgeBadgesColor(average) {
-  if(average <= 1.66){
+  console.log("average: ", average)
+  if(average === null) {
+    return ["#8F8F88", "#1D2630", "NULL"]
+  } else if(average <= 1.66){
     return ["#ff403d", "#3b353eff", "HARD"]
   } else if (average <=3.33){
     return ["#e3994e", "#3b353eff", "MEDIUM"]
@@ -95,7 +103,9 @@ function JudgeBadgesColor(average) {
 };
 
 function JudgeGPABadgeColor(average) {
-  if(average === 0){
+  if(average === null) {
+    return ["#8F8F88", "#1D2630", "NULL"]
+  } else if(average === 0){
     return ["#ff403d", "#3b353eff", "AVg: F"]
   } else if(average <= 1){
     return ["#ff403d", "#3b353eff", "AVg: D"]
