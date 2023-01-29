@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
@@ -38,15 +39,15 @@ const CourseInfo = (courseData) => {
 
   console.log("gradingRatioList: ", Object.keys(gradingRatioList))
 
-  const gradingRatio = {
+  const [gradingRatio, setGradingRatio] = useState({
     labels: courseData.description.GradingRatio.Constitution,
     datasets: [{
       label: "students answer",
-      data: [0, 50, 0, 50]
+      data: gradingRatioList[Object.keys(gradingRatioList)[0]]
     }]
-  }
+  })
 
-  console.log("gradingRatio: ", gradingRatio)
+  console.log("GradingRatio: ", gradingRatio)
 
   return (
     <Box sx={{height: "550px", width: "1450px", overflowX: "hidden"}}>
@@ -133,7 +134,13 @@ const CourseInfo = (courseData) => {
                   defaultValue={Object.values(gradingRatioList)[0]}
                 >
                   { Object.keys(gradingRatioList).map((key) => {
-                    return <MenuItem key={key} value={gradingRatioList[key]} onClick={() => {console.log(key, gradingRatioList[key])}}>
+                    return <MenuItem 
+                      key={key} 
+                      value={gradingRatioList[key]} 
+                      onClick={() => {setGradingRatio({...gradingRatio, datasets: [{
+                        label: "students answer",
+                        data: gradingRatioList[key]
+                      }]})}}>
                       {key}
                     </MenuItem>
                   })}
