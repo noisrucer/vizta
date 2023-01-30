@@ -229,16 +229,6 @@ const Visualization = () => {
         Timetable: {}
     });
 
-    const [gradingRatio, setGradingRatio] = useState({
-        labels: ["Final Exam", "Midterm", "Assignments", "Project"],
-        datasets: [{
-            label: "",
-            data: [50, 0, 50, 0]
-        }]
-    });
-
-    const [timeTable, setTimeTable] = useState({});
-
     useEffect(() => { // get request from courseInfo, courseDescription, available year and professor
         const fetchCourseData = async () => {
             axios.request({
@@ -316,11 +306,6 @@ const Visualization = () => {
             })
             .then(response => {
                 setCourseDescription(response.data)
-                // setGradingRatio({...gradingRatio, datasets: [{
-                //     label: "",
-                //     data: response.data.GradingRatio.Values
-                // }]})
-                setTimeTable(response.data.Timetable)
             })
             .catch(error => {
                 console.log("error from /visualization/course_id/general_info: ", error)

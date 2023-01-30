@@ -44,6 +44,8 @@ const CourseInfo = (courseData) => {
     datasets: [{
       label: "students answer",
       data: gradingRatioList[Object.keys(gradingRatioList)[0]],
+      backgroundColor: ["#36A2EB", "#FF6384", "#FF9F3F", "#FFCD56"],
+      borderColor: "#333A46"
     }]
   })
 
@@ -108,16 +110,13 @@ const CourseInfo = (courseData) => {
           <GradingRatioGrid sx={{marginRight: 3}}>
             <h2>Grading Ratio</h2>
             <Box sx={{display: "flex", flexDirection: "row"}}>
-              <Box sx={{ marginLeft: 2, marginTop: -3, height: "250px", width: "250px"}}>
-                <DoughnutChart chartData={gradingRatio} />
-              </Box>
-              <Box sx={{ marginLeft: 10, height: "200px", width: "200px"}}>
+              <Box sx={{ height: "200px", width: "200px"}}>
                 <Textfield
                   id="get-grading-ratio"
                   select
                   label="select professor"
-                  variant="outlined"
-                  sx={{width: "160px"}}
+                  variant="standard"
+                  sx={{ width: "160px", marginTop: 0}}
                   defaultValue={Object.values(gradingRatioList)[0]}
                 >
                   { Object.keys(gradingRatioList).map((key) => {
@@ -132,6 +131,9 @@ const CourseInfo = (courseData) => {
                     </MenuItem>
                   })}
                 </Textfield>
+              </Box>
+              <Box sx={{ marginLeft: 7, marginTop: -5, height: "280px", width: "280px"}}>
+                <DoughnutChart chartData={gradingRatio} />
               </Box>
             </Box>
           </GradingRatioGrid>

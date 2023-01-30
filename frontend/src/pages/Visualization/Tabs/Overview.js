@@ -186,7 +186,8 @@ const Overivew = (chartData) => {
           </Square>
           <Box sx={{ position: "absolute", left:80, top: 200, display:"flex"}}>
             <Number n={chartData.overallScore} />
-            <h3 style={{marginTop: 22, marginLeft: 5}}>/ 50</h3>
+            <h1 style={{position: "absolute", left: 24, top: 22}}></h1>
+            <h3 style={{marginTop: 22, marginLeft: 5}}>/ 5.0</h3>
           </Box>
         </Item>
         <Item sx={{height: "180px", width: "380px"}}>
