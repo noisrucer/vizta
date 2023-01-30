@@ -50,10 +50,10 @@ const StyledBox = styled(Box)(({ theme }) => ({
       r: {
         beginAtZero: true,
         angleLines: {
-          color: "#282F3C"
+          color: "grey"
         },
         grid: {
-          color: ["#282F3C", "#282F3C", "#282F3C", "#282F3C", "#282F3C", "#282F3C"]
+          color: "grey"
         },
         pointLabels: {
           color: "white"

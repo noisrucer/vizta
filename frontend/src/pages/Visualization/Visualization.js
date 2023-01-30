@@ -647,7 +647,7 @@ const Visualization = () => {
                             label="Select Year"
                             variant='standard'
                             sx={{ width: '150px'}}
-                            defaultValue=""
+                            defaultValue={selectedYear}
                         >
                             {selectYear.map((option) => (
                                 <MenuItem key={option} value={option} onClick={() => setSelectedYear(option)}>
@@ -661,7 +661,7 @@ const Visualization = () => {
                             label="Select Professor"
                             variant='standard'
                             sx={{ width: '180px'}}
-                            defaultValue=""
+                            defaultValue={selectedProfessor}
                         >
                             {selectProfessor.map((option) => (
                                 <MenuItem key={option} value={option} onClick={() => setSelectedProfessor(option)}>

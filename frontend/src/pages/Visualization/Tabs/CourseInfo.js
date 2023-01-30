@@ -43,7 +43,7 @@ const CourseInfo = (courseData) => {
     labels: courseData.description.GradingRatio.Constitution,
     datasets: [{
       label: "students answer",
-      data: gradingRatioList[Object.keys(gradingRatioList)[0]]
+      data: gradingRatioList[Object.keys(gradingRatioList)[0]],
     }]
   })
 
@@ -65,7 +65,7 @@ const CourseInfo = (courseData) => {
                   display: "flex", 
                   flexDirection: "column", 
                   alignItems: "flex-start",
-                  border: "2px solid #1D2630",
+                  // border: "2px solid #1D2630",
                   borderRadius: 2,
                   height: "90px",
                   overflowY: "scroll"
@@ -95,7 +95,7 @@ const CourseInfo = (courseData) => {
                 }}>
                 <h2 style={{marginLeft: 10}}>Description: </h2>
                 <Box sx={{
-                  border: "2px solid #1D2630", 
+                  // border: "2px solid #1D2630", 
                   borderRadius: 2, 
                   display: "flex", 
                   flexDirection: "column", 
