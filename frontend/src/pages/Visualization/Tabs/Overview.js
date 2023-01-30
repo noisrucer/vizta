@@ -38,23 +38,33 @@ function Number({ n }) {
 }
 
 const HorizontalGrid = styled(Item)(({theme}) => ({
-  height: "288px",
+  height: "260px",
   width: "455px",
 }));
+
+const BarChartGrid = styled(Box)(({ theme }) => ({
+  height: "230px",
+  width: "400px"
+}));
+
+const GPABarChartGrid = styled(Box)(({ theme }) => ({
+  height: "230px",
+  width: "385px"
+}))
 
 const Square = styled(Box)(({theme}) => ({
   height: "360px",
   width: "360px",
 }));
 
-const TeachingQualityGrid = styled(Item)(({theme}) => ({
-  height: "150px",
-  width: "150px"
+const TeachingQualityGrid = styled(Box)(({theme}) => ({
+  height: "120px",
+  width: "120px"
 }));
 
-const TQSubGrid = styled(Item)(({theme}) => ({
-  height: "50px",
-  width: "230px",
+const TQSubGrid = styled(Box)(({theme}) => ({
+  height: "40px",
+  width: "200px",
 }));
 
 const BadgeColorsList = {
@@ -170,8 +180,8 @@ const Overivew = (chartData) => {
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >
       <Stack sx={{marginLeft: 1, marginRight: 1}}>
-        <Item sx={{width: "380px", height: "380px", marginBottom: 3}}>
-          <Square>
+        <Item sx={{width: "380px", height: "340px", marginBottom: 3}}>
+          <Square sx={{marginTop: -1.5}}>
             <RadarChart chartData={chartData.pentagon}/>
           </Square>
           <Box sx={{ position: "absolute", left:80, top: 200, display:"flex"}}>
@@ -179,31 +189,33 @@ const Overivew = (chartData) => {
             <h3 style={{marginTop: 22, marginLeft: 5}}>/ 50</h3>
           </Box>
         </Item>
-        <Item>
-          <h2>Lecture Quality</h2>
-        </Item>
-        <Box sx={{display: "flex"}}>
-          <TeachingQualityGrid>
-            <OverallScore score={Math.round(chartData.teachingQuality[0] * 10)} />
-          </TeachingQualityGrid>
-          <Box>
-            <TQSubGrid>
-              <h6>Entertainment </h6>
-              <LinearPercentage percentage={chartData.entertaining[0]}></LinearPercentage>
-            </TQSubGrid>
-            <TQSubGrid>
-              <h6>Interactivity</h6>
-              <LinearPercentage percentage={chartData.interactivity[0]}></LinearPercentage>
-            </TQSubGrid>
-            <TQSubGrid>
-              <h6>Delivery</h6>
-              <LinearPercentage percentage={chartData.delivery[0]}></LinearPercentage>
-            </TQSubGrid>
+        <Item sx={{height: "180px", width: "380px"}}>
+          <Box sx={{marginBottom: 1}}>
+            <h2>Lecture Quality</h2>
           </Box>
-        </Box>
+          <Box sx={{display: "flex"}}>
+            <TeachingQualityGrid sx={{marginLeft:1}}>
+              <OverallScore score={Math.round(chartData.teachingQuality[0] * 10)} />
+            </TeachingQualityGrid>
+            <Box sx={{marginLeft: 4}}>
+              <TQSubGrid>
+                <h6>Entertainment </h6>
+                <LinearPercentage percentage={chartData.entertaining[0]}></LinearPercentage>
+              </TQSubGrid>
+              <TQSubGrid>
+                <h6>Interactivity</h6>
+                <LinearPercentage percentage={chartData.interactivity[0]}></LinearPercentage>
+              </TQSubGrid>
+              <TQSubGrid>
+                <h6>Delivery</h6>
+                <LinearPercentage percentage={chartData.delivery[0]}></LinearPercentage>
+              </TQSubGrid>
+            </Box>
+          </Box>
+        </Item>
       </Stack>
       <Stack spacing={3} sx={{marginLeft: 2, merginRight: 1}}>
-        <HorizontalGrid>
+        <HorizontalGrid >
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
             <Box sx={{marginLeft: "47%"}}>
               <h2>GPA </h2>
@@ -212,7 +224,9 @@ const Overivew = (chartData) => {
               <span style={{color: JudgeGPABadgeColor(criteriaAverage[1])[0]}}>{JudgeGPABadgeColor(criteriaAverage[1])[2]}</span>
             </Badges>
           </Stack>
-          <HorizontalBarChart chartData={GPAData} />
+          <GPABarChartGrid sx={{ marginLeft: 4, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
+            <HorizontalBarChart chartData={GPAData} />
+          </GPABarChartGrid>
         </HorizontalGrid>
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
@@ -223,7 +237,9 @@ const Overivew = (chartData) => {
               <span style={{color: JudgeBadgesColor(criteriaAverage[2])[0]}}>{JudgeBadgesColor(criteriaAverage[2])[2]}</span>
             </Badges>
           </Stack>
-          <HorizontalBarChart chartData={chartData.lectureDifficulty} />
+          <BarChartGrid sx={{ marginLeft: 2, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
+            <HorizontalBarChart chartData={chartData.lectureDifficulty} />
+          </BarChartGrid>
         </HorizontalGrid>
       </Stack>
       <Stack spacing={3} sx={{marginLeft: 3}}>
@@ -236,7 +252,9 @@ const Overivew = (chartData) => {
               <span style={{color: JudgeBadgesColor(criteriaAverage[4])[0]}}>{JudgeBadgesColor(criteriaAverage[4])[2]}</span>
             </Badges>
           </Stack>
-          <HorizontalBarChart chartData={chartData.workload} />
+          <BarChartGrid sx={{ marginLeft: 2, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
+            <HorizontalBarChart chartData={chartData.workload} />
+          </BarChartGrid>
         </HorizontalGrid>
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
@@ -247,7 +265,9 @@ const Overivew = (chartData) => {
               <span style={{color: JudgeBadgesColor(criteriaAverage[0])[0]}}>{JudgeBadgesColor(criteriaAverage[0])[2]}</span>
             </Badges>
           </Stack>
-          <HorizontalBarChart chartData={chartData.finalDifficulty} />
+          <BarChartGrid sx={{ marginLeft: 2, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
+            <HorizontalBarChart chartData={chartData.finalDifficulty} />
+          </BarChartGrid>
         </HorizontalGrid>
       </Stack>
     </Box>
