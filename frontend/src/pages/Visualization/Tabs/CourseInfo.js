@@ -58,52 +58,39 @@ const CourseInfo = (courseData) => {
               <Box sx={{
                 display:"flex", 
                 flexDirection: "column", 
-                alignItems: "flex-start",
+                alignItems: "center",
                 }}>
-                <h2 style={{marginLeft: 10}}>Requirements: </h2>
+                <h2>General Information </h2>
                 <Box sx={{
                   display: "flex", 
                   flexDirection: "column", 
                   alignItems: "flex-start",
-                  // border: "2px solid #1D2630",
-                  borderRadius: 2,
-                  height: "90px",
+                  border: "4px solid #1D2630",
+                  marginTop: 2,
+                  borderRadius: 5,
+                  height: "195px",
                   overflowY: "scroll"
                   }}>
                   <Box sx={{display: "flex", marginTop: 0.5, marginLeft:1}}>
-                    <h5 style={{color: "#FF5721", marginRight: 10}}>Department: </h5>
-                    <h5>{courseData.description.Faculty}</h5>
+                    <h4 style={{color: "#FF5721", marginRight: 10}}>Department: </h4>
+                    <h4>{courseData.description.Faculty}</h4>
                   </Box>
                   <Box sx={{display:"flex", marginLeft:1}}>
-                    <h5 style={{color: "#FF5721", marginRight: 10}}>Prerequisites: </h5>
-                    <h5 style={{textAlign:"left"}}>{courseData.description.Prerequisite}</h5>
+                    <h4 style={{color: "#FF5721", marginRight: 10}}>Prerequisites: </h4>
+                    <h4 style={{textAlign:"left"}}>{courseData.description.Prerequisite}</h4>
                   </Box>
                   <Box sx={{display: "flex", marginLeft:1}}>
-                    <h5 style={{color: "#FF5721", marginRight: 10}}>Blocking Courses: </h5>
-                    <h5 style={{textAlign:"left"}}>{courseData.description.BlockingCourses.join(", ")}</h5>
+                    <h4 style={{color: "#FF5721", marginRight: 10}}>Blocking Courses: </h4>
+                    <h4 style={{textAlign:"left"}}>{courseData.description.BlockingCourses.join(", ")}</h4>
                   </Box>
                   <Box sx={{display: "flex", marginLeft:1}}>
-                    <h5 style={{color: "#FF5721", marginRight: 10}}>Mutual Exclusives: </h5>
-                    <h5 style={{textAlign:"left"}}>{courseData.description.MutualExclusives.join(", ")}</h5>
+                    <h4 style={{color: "#FF5721", marginRight: 10}}>Mutual Exclusives: </h4>
+                    <h4 style={{textAlign:"left"}}>{courseData.description.MutualExclusives.join(", ")}</h4>
                   </Box>
-                </Box>
-              </Box>
-              <Box sx={{
-                display:"flex", 
-                flexDirection: "column", 
-                alignItems: "flex-start"
-                }}>
-                <h2 style={{marginLeft: 10}}>Description: </h2>
-                <Box sx={{
-                  // border: "2px solid #1D2630", 
-                  borderRadius: 2, 
-                  display: "flex", 
-                  flexDirection: "column", 
-                  alignItems: "flex-start", 
-                  overflowY: "scroll", 
-                  height: "90px"
-                  }}>
-                  <h5 style={{marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 10, textAlign:"left"}}>{courseData.description.Description}</h5>
+                  <Box sx={{display:"flex", marginLeft: 1}}>
+                      <h4 style={{color: "#FF5721", marginRight: 10}}>Description: </h4>
+                      <h4 style={{marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 10, textAlign:"left"}}>{courseData.description.Description}</h4>
+                    </Box>
                 </Box>
               </Box>
             </Box>
