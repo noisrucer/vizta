@@ -184,3 +184,17 @@ INSERT INTO subclass_info
 VALUES ('A', 'COMP3340', 2022, 1, 'Friday', '17:30', '18:20', 'KKLG109'),
        ('A', 'COMP3340', 2022, 1, 'Monday', '16:30', '18:20', 'KKLG109');
 
+--
+-- Debug course
+--
+INSERT INTO Course
+VALUES ('ADEB3340',
+        'Debug Course',
+        'A course for debug purpose, will be removed up on lunch',
+        'Faculty of Engineering');
+
+INSERT INTO Subclass
+VALUES ('A', 'ADEB3340', 2022, 1, 'Prof A', 50, 0, 50, 0),
+       ('B', 'ADEB3340', 2022, 1, 'Prof B', 40, 10, 30, 20),
+       ('A', 'ADEB3340', 2023, 2, 'Prof B', 50, 0, 50, 0),
+       ('B', 'ADEB3340', 2023, 2, 'Prof A', 25, 25, 30, 20)

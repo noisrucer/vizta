@@ -99,7 +99,7 @@ async def get_course_general_information(course_id: str, db: Session = Depends(g
 @router.get('/{course_id}/years',
             dependencies=[Depends(glob_dependencies.get_current_user)])
 async def get_available_years(course_id: str, db: Session = Depends(get_db)):
-    return visualization_service.get_all_years_of_course_review(db, course_id)
+    return visualization_service.get_all_years_of_course_review(db, course_id) + ['All']
 
 
 @router.get('/{course_id}/by_years',
@@ -145,7 +145,7 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
 @router.get('/{course_id}/professors',
             dependencies=[Depends(glob_dependencies.get_current_user)])
 async def get_available_professors(course_id: str, db: Session = Depends(get_db)):
-    return visualization_service.get_all_prof_of_course(db, course_id)
+    return visualization_service.get_all_prof_of_course(db, course_id) + ['All']
 
 
 @router.get('/{course_id}/by_professors',
@@ -208,7 +208,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     badges_break_point = [5 / 3, 10 / 3, 15 / 3]
 
     def get_badges(val):
-        return badges_text[next(i for i,v in enumerate(badges_break_point) if v > val)]
+        return 'NONE' if val is None else badges_text[next(i for i,v in enumerate(badges_break_point) if v >= val)]
 
     result = {
         "GPA": [[gpa_count[_ + '+'] for _ in gpa_letter],

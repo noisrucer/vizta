@@ -222,7 +222,7 @@ def get_prerequisites_by_course_id(db: Session, course_id: str):
             join(models.PrerequisiteType, subq.c.course_id == models.PrerequisiteType.course_id).\
             group_by(subq.c.course_id).first()
         
-    return res.prereq
+    return res.prereq if res is not None else None
 
 
 def get_mutual_exclusives_by_course_id(db: Session, course_id: str) -> list:
