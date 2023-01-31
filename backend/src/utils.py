@@ -30,18 +30,24 @@ def capitalize_variable(var_name: str):
     return ''.join([str(_).capitalize() for _ in var_name.split('_')])
 
 
-def count_enum(values, enumTy):
+def count_enum(values, enumTy, asec=False):
     """
     Count enum in list
     :param values: list of enum value
     :param enumTy: enum type
     :return: { enum key: count }
     """
+        
     return {k.value: 0 for k in enumTy} | Counter(values)
 
 
-def dict_as_list(dct: dict):
-    return {"keys": list(dct.keys()), "values": list(dct.values())}
+def dict_as_list(dct: dict, asc=False):
+    keys = list(dct.keys())
+    values = list(dct.values())
+    if not asc:
+        keys = keys[::-1]
+        values = values[::-1]
+    return {"keys": keys, "values": values}
 
 
 def sql_obj_list_to_dict_list(sql_obj_list):

@@ -110,7 +110,7 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
     avg_column = [mcr.workload,
                   mcr.lecture_difficulty,
                   mcr.final_exam_difficulty,
-                  mcr.course_entertaining,
+                  mcr.course_entertainment,
                   mcr.course_delivery,
                   mcr.course_interactivity]
 
@@ -154,7 +154,7 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
     # First query, average value on reviews by prof
     mcr = course_models.CourseReview
     avg_column = [mcr.workload, mcr.lecture_difficulty, mcr.final_exam_difficulty,
-                  mcr.course_entertaining, mcr.course_delivery, mcr.course_interactivity]
+                  mcr.course_entertainment, mcr.course_delivery, mcr.course_interactivity]
 
     avg_reviews_by_prof = visualization_service.get_prof_stats(db, course_id, avg_column)
 
@@ -167,9 +167,9 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
             "LectureDifficulty": prof_review[avg_column.index(mcr.lecture_difficulty) + 1],
             "FinalDifficulty": prof_review[avg_column.index(mcr.final_exam_difficulty) + 1],
             "Workload": prof_review[avg_column.index(mcr.workload) + 1],
-            "TeachingQuality":
+            "LectureQuality":
                 (
-                        prof_review[avg_column.index(mcr.course_entertaining) + 1] +
+                        prof_review[avg_column.index(mcr.course_entertainment) + 1] +
                         prof_review[avg_column.index(mcr.course_delivery) + 1] +
                         prof_review[avg_column.index(mcr.course_interactivity) + 1]
                 ) / 3
@@ -188,7 +188,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
 
     # Second query, average review
     mcr = course_models.CourseReview
-    avg_column = [mcr.workload, mcr.lecture_difficulty, mcr.final_exam_difficulty, mcr.course_entertaining,
+    avg_column = [mcr.workload, mcr.lecture_difficulty, mcr.final_exam_difficulty, mcr.course_entertainment,
                   mcr.course_delivery, mcr.course_interactivity]
     avg_reviews = visualization_service.get_course_average_review(db, course_id, avg_column, year, professor)
 
@@ -213,12 +213,12 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     result = {
         "GPA": [[gpa_count[_ + '+'] for _ in gpa_letter],
                 [gpa_count[_] for _ in gpa_letter] + [gpa_count['F']],
-                [gpa_count[_ + '-'] for _ in gpa_letter]],
+                [gpa_count[_ + '-'] for _ in gpa_letter if f"{_}-" in gpa_count]],
         "LectureDifficulty": to_key_value_list([_.lecture_difficulty for _ in reviews], course_enums.NumericEval),
         "FinalDifficulty": to_key_value_list([_.final_exam_difficulty for _ in reviews], course_enums.NumericEval),
         "Workload": to_key_value_list([_.workload for _ in reviews], course_enums.NumericEval),
-        "TeachingQuality": {
-            "Entertaining": to_key_value_list([_.course_entertaining for _ in reviews], course_enums.NumericEval),
+        "LectureQuality": {
+            "Entertainment": to_key_value_list([_.course_entertainment for _ in reviews], course_enums.NumericEval),
             "Delivery": to_key_value_list([_.course_delivery for _ in reviews], course_enums.NumericEval),
             "Interactivity": to_key_value_list([_.course_interactivity for _ in reviews], course_enums.NumericEval)
         },
@@ -232,9 +232,9 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
             "LectureDifficulty": avg_reviews[avg_column.index(mcr.lecture_difficulty)],
             "FinalDifficulty": avg_reviews[avg_column.index(mcr.final_exam_difficulty)],
             "Workload": avg_reviews[avg_column.index(mcr.workload)],
-            "TeachingQuality":
+            "LectureQuality":
                 (
-                        avg_reviews[avg_column.index(mcr.course_entertaining)] +
+                        avg_reviews[avg_column.index(mcr.course_entertainment)] +
                         avg_reviews[avg_column.index(mcr.course_delivery)] +
                         avg_reviews[avg_column.index(mcr.course_interactivity)]
                 ) / 3
