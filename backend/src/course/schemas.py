@@ -31,7 +31,7 @@ class CourseReviewBase(BaseModel):
     workload: enums.NumericEval
     lecture_difficulty: enums.NumericEval
     final_exam_difficulty: enums.NumericEval
-    course_entertaining: enums.NumericEval
+    course_entertainment: enums.NumericEval
     course_delivery: enums.NumericEval
     course_interactivity: enums.NumericEval
     final_exam_ratio: int = Field(..., ge=0, le=100)

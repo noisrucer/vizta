@@ -92,7 +92,7 @@ class CourseReview(Base):
     workload = Column(Integer, nullable=False)
     lecture_difficulty = Column(Integer, nullable=False)
     final_exam_difficulty = Column(Integer, nullable=False)
-    course_entertaining = Column(Integer, nullable=False)
+    course_entertainment = Column(Integer, nullable=False)
     course_delivery = Column(Integer, nullable=False)
     course_interactivity = Column(Integer, nullable=False)
     final_exam_ratio = Column(Integer, nullable=False)
