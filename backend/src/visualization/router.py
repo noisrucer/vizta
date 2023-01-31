@@ -75,7 +75,7 @@ async def get_course_general_information(course_id: str, db: Session = Depends(g
     mutual_exclusives = course_service.get_mutual_exclusives_by_course_id(db, course.course_id)
     blocking_courses = course_service.get_blocking_courses_by_course_id(db, course.course_id)
     allowed_years = course_service.get_course_allowed_years_by_course_id(db, course.course_id)
-    
+
     return {
         "CourseID": course.course_id,
         "Name": course.name,
@@ -157,6 +157,7 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
                   mcr.course_entertainment, mcr.course_delivery, mcr.course_interactivity]
 
     avg_reviews_by_prof = visualization_service.get_prof_stats(db, course_id, avg_column)
+    avg_gpa = visualization_service.get_profs_average_gpa(db, course_id)
 
     # convert any Decimal object to float
     avg_reviews_by_prof = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in avg_reviews_by_prof]
@@ -172,7 +173,8 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
                         prof_review[avg_column.index(mcr.course_entertainment) + 1] +
                         prof_review[avg_column.index(mcr.course_delivery) + 1] +
                         prof_review[avg_column.index(mcr.course_interactivity) + 1]
-                ) / 3
+                ) / 3,
+            "GPA": next((g for p, g in avg_gpa if p == prof_review[0]), 'None')
         }
         for prof_review in avg_reviews_by_prof
     }
@@ -208,7 +210,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     badges_break_point = [5 / 3, 10 / 3, 15 / 3]
 
     def get_badges(val):
-        return 'NONE' if val is None else badges_text[next(i for i,v in enumerate(badges_break_point) if v >= val)]
+        return 'NONE' if val is None else badges_text[next(i for i, v in enumerate(badges_break_point) if v >= val)]
 
     result = {
         "GPA": [[gpa_count[_ + '+'] for _ in gpa_letter],

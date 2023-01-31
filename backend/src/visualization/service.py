@@ -11,7 +11,8 @@ def get_course_by_course_id(db: Session, course_id: str):
     return db.query(course_models.Course).filter(course_models.Course.course_id == course_id).first()
 
 
-def get_newest_grading_ratio(db: Session, course_id: str, prof_name: str, grade_constitution: List[InstrumentedAttribute]):
+def get_newest_grading_ratio(db: Session, course_id: str, prof_name: str,
+                             grade_constitution: List[InstrumentedAttribute]):
     return db.query(*[gc.label(gc.key) for gc in grade_constitution]). \
         filter(course_models.Subclass.course_id == course_id,
                course_models.Subclass.professor_name == prof_name,
@@ -89,6 +90,30 @@ def get_course_average_gpa(db: Session, course_id: str,
     return seccion.order_by(course_models.CourseReview.academic_year, course_models.CourseReview.semester).first()
 
 
+def get_profs_average_gpa(db: Session, course_id: str,
+                          year: Union[int, None] = None, professor: Union[str, None] = None):
+    gpa_convertion = case(
+        [
+            (course_models.CourseReview.gpa == g, p)
+            for g, p in gpa_mapping
+        ]
+    )
+
+    seccion = db.query(course_models.Subclass.professor_name, func.avg(gpa_convertion)).\
+        filter(course_models.CourseReview.course_id == course_id).\
+        join(course_models.CourseReview.rsub_class).\
+        group_by(course_models.Subclass.professor_name)
+
+    # Optional filter
+    if year is not None:
+        seccion = seccion.filter(course_models.CourseReview.academic_year == year)
+
+    if professor is not None:
+        seccion = seccion.filter(course_models.Subclass.professor_name == professor)
+
+    return seccion.all()
+
+
 def get_all_years_of_course_review(db: Session, course_id: str):
     all_year = db.query(course_models.CourseReview.academic_year). \
         filter(course_models.CourseReview.course_id == course_id). \
@@ -110,7 +135,7 @@ def get_all_prof_of_course(db: Session, course_id: str):
 
 
 def get_complete_average_review(db: Session, course_id: str,
-                                 avg_column: List[InstrumentedAttribute]):
+                                avg_column: List[InstrumentedAttribute]):
     """
 
     Get average review by year and professor
