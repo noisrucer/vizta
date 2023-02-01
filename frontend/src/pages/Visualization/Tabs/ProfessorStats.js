@@ -108,11 +108,12 @@ const ProfessorStats = () => {
     function renderSwitch(prof){
     
       const handleChange = (event) => {
-        setState({
-          ...state,
-          [event.target.name]: event.target.checked,
-        });
+        console.log("what: ", event.target.name)
+        console.log(event)
+        setState(!(state));
       };
+
+      const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
       console.log("state: ", state)
     
@@ -121,7 +122,7 @@ const ProfessorStats = () => {
           <FormGroup>
             <FormControlLabel
               control={
-                <Switch checked={state} onChange={handleChange} name={prof.label} />
+                <Switch {...label} checked={state} onClick={handleChange} name={prof.label} />
               }
               label={prof.label}
             />

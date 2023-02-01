@@ -175,8 +175,6 @@ const Visualization = () => {
                     backgroundColor: dataColor
                 }]})
                 const teachingQuality = response.data.LectureQuality
-                console.log("viz: ", response.data)
-                console.log("teaching quality: ", teachingQuality)
                 setDelivery(calculateAverage(teachingQuality.Delivery.keys, teachingQuality.Delivery.values))
                 setEntertaining(calculateAverage(teachingQuality.Entertainment.keys, teachingQuality.Entertainment.values))
                 setInteractivity(calculateAverage(teachingQuality.Interactivity.keys, teachingQuality.Interactivity.values))
@@ -286,7 +284,6 @@ const Visualization = () => {
                 headers: userToken['headers']
             })
             .then(response => {
-                console.log("render component when select year: ", response.data)
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
                     data: response.data.GPA,
