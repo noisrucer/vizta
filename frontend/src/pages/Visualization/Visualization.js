@@ -22,9 +22,9 @@ import Typography from '@mui/material/Typography';
 
 
 const baseURL = 'http://127.0.0.1:8000';
-const dataColor = ["#DF6E53", "#EC8B33", "#F4BA41", "#5772B3", "#50B19E"];
-const workloadLabel = ["Very Heavy", "Heavy", "Medium", "Light", "Very Light"];
-const lectureFinalLabel = ["Very Difficult", "Difficult", "Medium", "Easy", "Very Easy"];
+const dataColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"];
+const workloadLabel = ["Very Light", "Light", "Medium", "Heavy", "Very Heavy"];
+const lectureFinalLabel = ["Very Easy", "Easy", "Medium", "Difficult", "Very Difficult"];
 const GPALabel = ["A range", "B range", "C range", "D range", "F"];
 
 function calculateAverage(score, studentEvaluation){
