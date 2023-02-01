@@ -67,29 +67,6 @@ const TQSubGrid = styled(Box)(({theme}) => ({
   width: "200px",
 }));
 
-const BadgeColorsList = {
-  null: {
-    border: "#8F8F88",
-    text: "#8F8F88",
-    background: "1D2630"
-  },
-  easy: {
-    border: "#0cc1a9",
-    text: "#0cc1a9",
-    bacground: "#2d3c47ff"
-  },
-  medium: {
-    border: "#e3994e",
-    text: "#e3994e",
-    background: "#3b353eff"
-  },
-  hard: {
-    border: "#ff403d",
-    text: "#ff403d",
-    background: "#3b353eff"
-  }
-}
-
 const Badges = styled(Box)(({borderColor, backgronudColor}) => ({
   height: "30px",
   width: "100px",
@@ -168,14 +145,10 @@ function StackedGPA(gpa) {
 
 const Overivew = (chartData) => {
 
-  console.log("chartData in overview: ", chartData)
+  // console.log("chartData in overview: ", chartData)
   const criteriaAverage = chartData.pentagon.datasets[0].data
-  console.log("pentagon in overview: ", chartData.pentagon.datasets[0].data)
 
   const GPAData = StackedGPA(chartData.GPA.datasets[0].data)
-  console.log("GPASets: ", GPAData);
-  console.log("ld: ", chartData.lectureDifficulty)
-  console.log("workload: ", chartData.workload)
 
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >

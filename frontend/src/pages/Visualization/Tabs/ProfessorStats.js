@@ -2,11 +2,12 @@ import {useState, useEffect, useContext} from 'react';
 import { UserContext } from '../../../UserContext';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-import { grey } from '@mui/material/colors';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import Switch from '@mui/material/Switch';
 import axios from 'axios';
 import{ Radar } from 'react-chartjs-2';
 
@@ -14,19 +15,6 @@ const baseURL = 'http://127.0.0.1:8000';
 
 const drawerBleeding = 56;
 
-const StyledBox = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'light' ? '#fff' : grey[800],
-  }));
-  
-  const Puller = styled(Box)(({ theme }) => ({
-    width: 30,
-    height: 6,
-    backgroundColor: theme.palette.mode === 'light' ? grey[300] : grey[900],
-    borderRadius: 3,
-    position: 'absolute',
-    top: 8,
-    left: 'calc(50% - 15px)',
-  }));
 
   const options = {
     plugins: {
@@ -75,12 +63,12 @@ const ProfessorStats = () => {
     const {UserToken} = useContext(UserContext)
     const [userToken, setUserToken] = UserToken
 
-    const [isOpen, setIsOpen] = useState(false);
-
     const [chartData, setChartData] = useState({
       labels: ['Lecture Difficulty', 'Final Difficulty', 'Workload', 'Teaching Quality'],
       datasets: []
     });
+
+    const [profList, setProfList] = useState({})
 
     useEffect(() => {
         const getProfStats = async () => {
@@ -92,6 +80,8 @@ const ProfessorStats = () => {
             .then(response => {
               const profData = response.data;
               console.log("by professor: ", response.data)
+              setProfList(Object.keys(profData))
+              console.log("profList: ", profList);
               const tempData = [];
               for (const key in profData) {
                 const newDataset = { 
@@ -113,11 +103,42 @@ const ProfessorStats = () => {
         };
         getProfStats();
     }, []);
+    const [state, setState] = useState(false);
+
+    function renderSwitch(prof){
+    
+      const handleChange = (event) => {
+        setState({
+          ...state,
+          [event.target.name]: event.target.checked,
+        });
+      };
+
+      console.log("state: ", state)
+    
+      return (
+        <FormControl component="fieldset" variant="standard">
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch checked={state} onChange={handleChange} name={prof.label} />
+              }
+              label={prof.label}
+            />
+          </FormGroup>
+        </FormControl>
+      )
+    };
   
     return (
-        <Box sx={{width: "180%", height:"520px", display: 'flex', flexDirection: "column", alignItems: 'center'}}>
+        <Box sx={{width: "180%", height:"520px", display: 'flex', flexDirection: "row", justifyContent: 'space-evenly'}}>
             <Box sx={{width:"520px", height:"520px"}}>
                 <Radar data={chartData} options={options}/>
+            </Box>
+            <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", height: "520px"}}>
+              {chartData.datasets.map((item) => {
+                return renderSwitch(item)
+              })}
             </Box>
         </Box>
     )};
