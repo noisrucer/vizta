@@ -8,6 +8,7 @@ import backend.src.utils as glob_utils
 import backend.src.auth.service as auth_service
 import backend.src.auth.exceptions as auth_exceptions
 import backend.src.course.service as course_service
+import backend.src.course.exceptions as course_exceptions
 import backend.src.user.schemas as schemas
 import backend.src.user.exceptions as exceptions
 import backend.src.user.service as service
@@ -52,3 +53,13 @@ async def update_password(email: EmailStr, update_info: schemas.UpdatePasswordIn
         raise exceptions.WrongPasswordException()
     service.update_password(db, user, update_info['new_password'])
     
+    
+@router.get(
+    '/check-favorite/{email}/{course_id}',
+     dependencies=[Depends(glob_dependencies.get_current_user)]
+    )
+async def is_favorite(email: EmailStr, course_id: str, db: Session=Depends(get_db)):
+    if not course_service.get_course_by_course_id(db, course_id):
+        raise course_exceptions.CourseNotExistException(course_id)
+    fav = course_service.check_exist_user_favorite_course(db, email, course_id)
+    return {"isFavorite": True if fav else False}

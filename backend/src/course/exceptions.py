@@ -3,7 +3,7 @@ from fastapi import HTTPException, status
 class CourseNotExistException(HTTPException):
     def __init__(self, course_id: str):
         self.status_code = status.HTTP_400_BAD_REQUEST
-        self.detail = f"Course: {course_id} does not exist."
+        self.detail = f"{course_id} does not exist."
         
 class UserFavoriteCourseAlreadyExistsException(HTTPException):
     def __init__(self, email: str, course_id: str):
