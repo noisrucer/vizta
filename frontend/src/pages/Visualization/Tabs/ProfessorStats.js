@@ -64,7 +64,7 @@ const ProfessorStats = () => {
     const [userToken, setUserToken] = UserToken
 
     const [chartData, setChartData] = useState({
-      labels: ['Lecture Difficulty', 'Final Difficulty', 'Workload', 'Teaching Quality'],
+      labels: ['Lecture Difficulty', 'Final Difficulty', 'Workload', 'Lecture Quality', 'GPA'],
       datasets: []
     });
 
@@ -86,7 +86,7 @@ const ProfessorStats = () => {
               for (const key in profData) {
                 const newDataset = { 
                   label: key, 
-                  data: [profData[key].LectureDifficulty, profData[key].FinalDifficulty, profData[key].Workload, profData[key].LectureQuality]
+                  data: [profData[key].LectureDifficulty, profData[key].FinalDifficulty, profData[key].Workload, profData[key].LectureQuality, profData[key].GPA]
                 };
                 tempData.push(newDataset);
               };
