@@ -86,7 +86,7 @@ const ProfessorStats = () => {
               for (const key in profData) {
                 const newDataset = { 
                   label: key, 
-                  data: [profData[key].LectureDifficulty, profData[key].FinalDifficulty, profData[key].Workload, profData[key].TeachingQuality]
+                  data: [profData[key].LectureDifficulty, profData[key].FinalDifficulty, profData[key].Workload, profData[key].LectureQuality]
                 };
                 tempData.push(newDataset);
               };
