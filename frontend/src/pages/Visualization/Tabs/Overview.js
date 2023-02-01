@@ -26,13 +26,13 @@ import LinearPercentage from "../Charts/LinearPercentage";
 function Number({ n }) {
   const { number } = useSpring({
       from: { number: 0 },
-      number: n,
+      number: n / 10,
       delay: 200,
       config: {mass: 1, tension: 20, friction: 10},
   });
   return ( 
       <animated.div style={{ fontSize: '48px'}}>
-              {number.to((n) => n.toFixed(0))}
+              {number.to((n) => n.toFixed(1))}
       </animated.div>
   )
 }
