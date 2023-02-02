@@ -19,6 +19,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 
 const baseURL = 'http://127.0.0.1:8000';
@@ -359,6 +362,12 @@ const Visualization = () => {
 
     const [isOverview, setIsOverview] = useState(true);
 
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    const handleFavoriteClick = () => {
+        setIsFavorite(!isFavorite);
+    }
+
   return (
     <Box sx={{
         width: "100%",
@@ -391,6 +400,11 @@ const Visualization = () => {
                     </span>
                 </h2>
                 <Box sx={{marginLeft: "auto"}}>
+                    <IconButton onClick={handleFavoriteClick} sx={{marginRight: 1}}>
+                        {
+                            isFavorite ? <FavoriteIcon sx={{color: "#FF403D", fontSize: 24}}/> : <FavoriteBorderIcon sx={{color: "#FF403D", fontSize: 24}}/>
+                        }
+                    </IconButton>
                     <Button variant="outlined">
                         {'>'} Add review
                     </Button>

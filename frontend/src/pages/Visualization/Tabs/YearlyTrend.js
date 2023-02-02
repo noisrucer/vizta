@@ -288,7 +288,7 @@ const YearlyTrend = () => {
             id="select-view"
             select
             variant="standard"
-            label="Select View"
+            label="Select Criteria"
             defaultValue="byCriteria"
             sx={{position: "absolute", left: 1260, top: 110, width: "128px"}}
             >

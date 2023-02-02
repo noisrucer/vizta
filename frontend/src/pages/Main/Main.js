@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useContext , useEffect } from "react";
+import { useState, useContext , forwardRef, useEffect } from "react";
 import {UserContext} from "../../UserContext";
 import { useParams } from 'react-router-dom';
 import { styled, alpha, useTheme } from '@mui/material/styles';
@@ -25,11 +25,16 @@ import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from "../../components/Snackbar";
 
 const baseURL = 'http://127.0.0.1:8000';
 const temp_color = "#1D2630"
 const favColor = "#25323F"
-// #1D2630
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Item = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#070809' : '#fff',
