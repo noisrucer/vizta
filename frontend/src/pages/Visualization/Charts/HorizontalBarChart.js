@@ -47,7 +47,7 @@ const options = {
       },
       ticks: {
         color: "white"
-      }
+      },
     },
     y: {
       stacked: true,
@@ -56,7 +56,7 @@ const options = {
       },
       ticks: {
         color: "white"
-      }
+      },
     }
   }
   // scales: {

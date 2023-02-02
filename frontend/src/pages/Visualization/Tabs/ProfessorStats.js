@@ -103,14 +103,22 @@ const ProfessorStats = () => {
         };
         getProfStats();
     }, []);
-    const [state, setState] = useState(false);
+    const [state, setState] = useState({
+      "Zhao Hengshuang": false,
+      "Lo Yu Sum": false,
+      "Kong Lingpeng": false,
+      "Yu Y Z": false
+    });
 
     function renderSwitch(prof){
     
       const handleChange = (event) => {
-        console.log("what: ", event.target.name)
+        console.log("what: ", Object.keys(state))
         console.log(event)
-        setState(!(state));
+        setState({
+          ...state, 
+          [event.target.name]: true
+        });
       };
 
       const label = { inputProps: { 'aria-label': 'Switch demo' } };
@@ -118,7 +126,6 @@ const ProfessorStats = () => {
       console.log("state: ", state)
     
       return (
-        <FormControl component="fieldset" variant="standard">
           <FormGroup>
             <FormControlLabel
               control={
@@ -127,7 +134,6 @@ const ProfessorStats = () => {
               label={prof.label}
             />
           </FormGroup>
-        </FormControl>
       )
     };
   
@@ -137,9 +143,11 @@ const ProfessorStats = () => {
                 <Radar data={chartData} options={options}/>
             </Box>
             <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", height: "520px"}}>
-              {chartData.datasets.map((item) => {
-                return renderSwitch(item)
-              })}
+              <FormControl component="fieldset" variant="standard">
+                {chartData.datasets.map((item) => {
+                  return renderSwitch(item)
+                })}
+              </FormControl>
             </Box>
         </Box>
     )};

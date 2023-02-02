@@ -8,11 +8,14 @@ const options = {
       display: false
     },
     labels: {
-      fontColor: "white"
+      fontColor: "white",
     }
   },
   scale: {
-    suggestedMax: 5
+    suggestedMax: 5,
+    ticks: {
+      fontSize: 14
+    }
   },
   scales: {
     r: {
@@ -29,7 +32,7 @@ const options = {
       ticks: {
         color: "white",
         stepSize: 1,
-        backdropColor: 'transparent'
+        backdropColor: 'transparent',
       }
     }
   }

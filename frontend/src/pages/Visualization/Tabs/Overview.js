@@ -92,29 +92,29 @@ function JudgeGPABadgeColor(average) {
   if(average === null) {
     return ["#8F8F88", "#1D2630", "NULL"]
   } else if(average === 0){
-    return ["#ff403d", "#3b353eff", "AVg: F"]
+    return ["#ff403d", "#3b353eff", "Avg: F"]
   } else if(average <= 1){
-    return ["#ff403d", "#3b353eff", "AVg: D"]
+    return ["#ff403d", "#3b353eff", "Avg: D"]
   } else if (average <=1.3){
-    return ["#ff403d", "#3b353eff", "AVg: D+"]
+    return ["#ff403d", "#3b353eff", "Avg: D+"]
   } else if (average <=1.7){
-    return ["#ff403d", "#3b353eff", "AVg: C-"]
+    return ["#ff403d", "#3b353eff", "Avg: C-"]
   } else if (average <= 2){
-    return ["#ff403d", "#3b353eff", "AVg: C"]
+    return ["#ff403d", "#3b353eff", "Avg: C"]
   } else if (average <= 2.3){
-    return ["#ff403d", "#3b353eff", "AVg: C+"]
+    return ["#ff403d", "#3b353eff", "Avg: C+"]
   } else if (average <= 2.7){
-    return ["#e3994e", "#3b353eff", "AVg: B-"]
+    return ["#e3994e", "#3b353eff", "Avg: B-"]
   } else if (average <= 3){
-    return ["#e3994e", "#3b353eff", "AVg: B"]
+    return ["#e3994e", "#3b353eff", "Avg: B"]
   } else if (average <= 3.3){
-    return ["#e3994e", "#3b353eff", "AVg: B+"]
+    return ["#e3994e", "#3b353eff", "Avg: B+"]
   } else if (average <= 3.7){
-    return ["#0cc1a9", "#2d3c47ff", "AVg: A-"]
+    return ["#0cc1a9", "#2d3c47ff", "Avg: A-"]
   } else if (average <= 4.0){
-    return ["#0cc1a9", "#2d3c47ff", "AVg: A-"]
+    return ["#0cc1a9", "#2d3c47ff", "Avg: A-"]
   } else {
-    return ["#0cc1a9", "#2d3c47ff", "AVg: A+"]
+    return ["#0cc1a9", "#2d3c47ff", "Avg: A+"]
   }
 };
 
@@ -165,7 +165,7 @@ const Overivew = (chartData) => {
         </Item>
         <Item sx={{height: "180px", width: "380px"}}>
           <Box sx={{marginBottom: 1}}>
-            <h2>Lecture Quality</h2>
+            <h3 style={{fontSize: "19px"}}>Lecture Quality</h3>
           </Box>
           <Box sx={{display: "flex"}}>
             <TeachingQualityGrid sx={{marginLeft:1}}>
@@ -173,15 +173,15 @@ const Overivew = (chartData) => {
             </TeachingQualityGrid>
             <Box sx={{marginLeft: 4}}>
               <TQSubGrid>
-                <h6>Entertainment </h6>
+                <h5>Entertainment </h5>
                 <LinearPercentage percentage={chartData.entertaining[0]}></LinearPercentage>
               </TQSubGrid>
               <TQSubGrid>
-                <h6>Interactivity</h6>
+                <h5>Interactivity</h5>
                 <LinearPercentage percentage={chartData.interactivity[0]}></LinearPercentage>
               </TQSubGrid>
               <TQSubGrid>
-                <h6>Delivery</h6>
+                <h5>Delivery</h5>
                 <LinearPercentage percentage={chartData.delivery[0]}></LinearPercentage>
               </TQSubGrid>
             </Box>
@@ -192,7 +192,7 @@ const Overivew = (chartData) => {
         <HorizontalGrid >
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
             <Box sx={{marginLeft: "47%"}}>
-              <h2>GPA </h2>
+              <h3 style={{fontSize: "19px"}}>GPA </h3>
             </Box>
             <Badges borderColor={JudgeGPABadgeColor(criteriaAverage[1])[0]} backgroundColor={JudgeGPABadgeColor(criteriaAverage[1])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
               <span style={{color: JudgeGPABadgeColor(criteriaAverage[1])[0]}}>{JudgeGPABadgeColor(criteriaAverage[1])[2]}</span>
@@ -205,7 +205,7 @@ const Overivew = (chartData) => {
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
             <Box sx={{marginLeft: "34%"}}>
-              <h2> Lecture Difficulty </h2>
+              <h3 style={{fontSize: "19px"}}> Lecture Difficulty </h3>
             </Box>
             <Badges borderColor={JudgeBadgesColor(criteriaAverage[2])[0]} backgroundColor={JudgeBadgesColor(criteriaAverage[2])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
               <span style={{color: JudgeBadgesColor(criteriaAverage[2])[0]}}>{JudgeBadgesColor(criteriaAverage[2])[2]}</span>
@@ -220,7 +220,7 @@ const Overivew = (chartData) => {
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
             <Box sx={{marginLeft: "41%"}}>
-              <h2> Workload </h2>
+              <h3 style={{fontSize: "19px"}}> Workload </h3>
             </Box>
             <Badges borderColor={JudgeBadgesColor(criteriaAverage[4])[0]} backgroundColor={JudgeBadgesColor(criteriaAverage[4])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
               <span style={{color: JudgeBadgesColor(criteriaAverage[4])[0]}}>{JudgeBadgesColor(criteriaAverage[4])[2]}</span>
@@ -233,7 +233,7 @@ const Overivew = (chartData) => {
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
             <Box sx={{marginLeft: "29%"}}>
-              <h2> Final Exam Difficulty </h2>
+              <h3 style={{fontSize: "19px"}}> Final Exam Difficulty </h3>
             </Box>
             <Badges borderColor={JudgeBadgesColor(criteriaAverage[0])[0]} backgroundColor={JudgeBadgesColor(criteriaAverage[0])[1]} sx={{position: "relative", marginLeft: 'auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
               <span style={{color: JudgeBadgesColor(criteriaAverage[0])[0]}}>{JudgeBadgesColor(criteriaAverage[0])[2]}</span>

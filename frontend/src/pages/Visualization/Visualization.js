@@ -398,8 +398,8 @@ const Visualization = () => {
             </Box>
         </Box>
         <Box sx={{display: "flex", marginLeft:2}}>
-            <Box sx={{ bgcolor: '#1D2630', width: 800 }}>
-                <AppBar position="static" sx={{marginLeft: 4, bgcolor: "#1D2630"}}>
+            <Box sx={{ backgroundColor: '#1D2630', width: 800 }}>
+                <AppBar position="static" sx={{ marginLeft: 4, backgroundColor: "#1D2630"}}>
                     <Tabs
                         value={value}
                         onChange={handleChange}
