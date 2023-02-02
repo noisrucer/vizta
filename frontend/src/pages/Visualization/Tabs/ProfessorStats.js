@@ -15,6 +15,9 @@ const baseURL = 'http://127.0.0.1:8000';
 
 const drawerBleeding = 56;
 
+const chartBorderColor = ["#36A2EB", "#FF6384", "#FF9F3F", "#FFCD56"]
+const chartBackgroundColor = ['rgba(54, 162, 235, 0.3)', 'rgba(255, 99, 132, 0.3)', 'rgba(255, 159, 63, 0.3)', 'rgba(255, 205, 86, 0.3)']
+
 
   const options = {
     plugins: {
@@ -68,6 +71,11 @@ const ProfessorStats = () => {
       datasets: []
     });
 
+    const [conditionalChartData, setConditionalChartData] = useState({
+      labels: ['Lecture Difficulty', 'Final Difficulty', 'Workload', 'Lecture Quality', 'GPA'],
+      datasets: []
+    })
+
     const [profList, setProfList] = useState({})
 
     useEffect(() => {
@@ -82,12 +90,16 @@ const ProfessorStats = () => {
               console.log("by professor: ", response.data)
               setProfList(Object.keys(profData))
               const tempData = [];
+              let count = 0;
               for (const key in profData) {
                 const newDataset = { 
                   label: key, 
-                  data: [profData[key].LectureDifficulty, profData[key].FinalDifficulty, profData[key].Workload, profData[key].LectureQuality, profData[key].GPA]
+                  data: [profData[key].LectureDifficulty, profData[key].FinalDifficulty, profData[key].Workload, profData[key].LectureQuality, profData[key].GPA],
+                  borderColor: chartBorderColor[count],
+                  backgroundColor: chartBackgroundColor[count]
                 };
                 tempData.push(newDataset);
+                count += 1;
               };
               if (tempData.length > Object.keys(profData).length - 1){
                 setChartData({
@@ -111,17 +123,19 @@ const ProfessorStats = () => {
     }, {});
     
     const [state, setState] = useState(initialState);
+    const [switchClicked, setSwitchClicked] = useState(false)
+
+    console.log("switchClicked: ", switchClicked)
 
     useEffect(() => {
       setState(initialState);
     }, [chartData]);
 
-    console.log("State: ", state)
-
 
     function renderSwitch(prof){
     
       const handleChange = (event) => {
+        setSwitchClicked(true);
         setState({
           ...state, 
           [event.target.name]: !state[event.target.name]
@@ -141,16 +155,32 @@ const ProfessorStats = () => {
           </FormGroup>
       )
     };
+
+    useEffect(() => {
+      let temp = [];
+      for (const key in state){
+        if (state[key] === true){
+          for (const data in chartData.datasets){
+            if (chartData.datasets[data].label === key) {
+              temp.push(chartData.datasets[data])
+            }
+          }
+        }
+      }
+      setConditionalChartData({...conditionalChartData, datasets: temp});
+      console.log("original: ", chartData);
+      console.log("conditional: ", conditionalChartData);
+    },[state])
   
     return (
         <Box sx={{width: "180%", height:"520px", display: 'flex', flexDirection: "row", justifyContent: 'space-evenly'}}>
             <Box sx={{width:"520px", height:"520px"}}>
-                <Radar data={chartData} options={options}/>
+                <Radar data={switchClicked ? conditionalChartData : chartData} options={options}/>
             </Box>
             <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", height: "520px"}}>
               <FormControl component="fieldset" variant="standard">
                 {chartData.datasets.map((item) => {
-                  console.log("state in return: ",state)
+                  // console.log("state in return: ",state)
                   return renderSwitch(item)
                 })}
               </FormControl>

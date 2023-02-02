@@ -67,9 +67,9 @@ const CourseInfo = (courseData) => {
                   display: "flex", 
                   flexDirection: "column", 
                   alignItems: "flex-start",
-                  border: "4px solid #1D2630",
+                  // border: "3px solid #1D2630",
                   marginTop: 2,
-                  borderRadius: 5,
+                  borderRadius: 0,
                   height: "195px",
                   overflowY: "scroll"
                   }}>

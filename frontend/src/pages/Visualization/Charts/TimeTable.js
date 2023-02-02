@@ -11,8 +11,8 @@ export default function TimeTable(chartData) {
           height: "200px", 
           width: "200px", 
           backgroundColor: "#333A46", 
-          border: "4px solid #1D2630",
-          borderRadius: 5,
+          border: "3px solid #1D2630",
+          borderRadius: 2,
           marginTop: 1,
           marginBottom: 1,
           margin: 1,
@@ -27,9 +27,9 @@ export default function TimeTable(chartData) {
             alignItems: "flex-start"
             }}>
           <h1 style={{color: "#FFC106", marginLeft: 15}}>{subclass}</h1>
-          <h3 style={{marginLeft: 20}}>Instructor:</h3>
-          <h4 style={{marginLeft: 25, fontWeight: "100"}}>{instructor}</h4>
-          <h3 style={{marginLeft: 20}}>TimeSlots:</h3>
+          <h3 style={{color: "#FFC106", marginLeft: 15}}>Instructor:</h3>
+          <h4 style={{marginLeft: 15, fontWeight: "100"}}>{instructor}</h4>
+          <h3 style={{color: "#FFC106", marginLeft: 15}}>TimeSlots:</h3>
         </Box>
         {timeslots.map((item) => (
           <Box sx={{
@@ -38,8 +38,8 @@ export default function TimeTable(chartData) {
               flexDirection: "column",
               alignItems: "flex-start"
               }}>
-              <h4 style={{marginLeft: 25, fontWeight: "400"}}>{item.Weekday}: </h4>
-              <h5 style={{marginLeft: 25, fontWeight: "100"}}>{item.StartTime} ~ {item.EndTime} {item.Location}</h5>
+              <h4 style={{marginLeft: 15, fontWeight: "400"}}>{item.Weekday}: </h4>
+              <h5 style={{marginLeft: 15, fontWeight: "100"}}>{item.StartTime} ~ {item.EndTime} {item.Location}</h5>
           </Box>
         ))}
       </Box>
