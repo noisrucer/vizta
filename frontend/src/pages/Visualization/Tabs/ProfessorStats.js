@@ -103,29 +103,32 @@ const ProfessorStats = () => {
         getProfStats();
     }, []);
 
-    console.log("profList: ", profList);
+    console.log("chartData: ", chartData)
 
-    const initialState = [].reduce((acc, name) => {
-      acc[name] = false;
+    const initialState = chartData.datasets.reduce((acc, dataset) => {
+      acc[dataset.label] = true;
       return acc;
     }, {});
     
     const [state, setState] = useState(initialState);
 
+    useEffect(() => {
+      setState(initialState);
+    }, [chartData]);
+
+    console.log("State: ", state)
+
+
     function renderSwitch(prof){
     
       const handleChange = (event) => {
-        console.log("what: ", Object.keys(state))
-        console.log(event)
         setState({
           ...state, 
-          [event.target.name]: !(state[event.target.name])
+          [event.target.name]: !state[event.target.name]
         });
       };
 
       const label = { inputProps: { 'aria-label': 'Switch demo' } };
-
-      console.log("state: ", state)
     
       return (
           <FormGroup>
@@ -147,6 +150,7 @@ const ProfessorStats = () => {
             <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", height: "520px"}}>
               <FormControl component="fieldset" variant="standard">
                 {chartData.datasets.map((item) => {
+                  console.log("state in return: ",state)
                   return renderSwitch(item)
                 })}
               </FormControl>

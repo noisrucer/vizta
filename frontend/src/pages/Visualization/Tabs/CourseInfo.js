@@ -74,23 +74,23 @@ const CourseInfo = (courseData) => {
                   overflowY: "scroll"
                   }}>
                   <Box sx={{display: "flex", marginTop: 0.5, marginLeft:1}}>
-                    <h4 style={{color: "#FF5721", marginRight: 10}}>Department: </h4>
+                    <h4 style={{color: "#FFC106", marginRight: 10}}>Department: </h4>
                     <h4>{courseData.description.Faculty}</h4>
                   </Box>
                   <Box sx={{display:"flex", marginLeft:1}}>
-                    <h4 style={{color: "#FF5721", marginRight: 10}}>Prerequisites: </h4>
+                    <h4 style={{color: "#FFC106", marginRight: 10}}>Prerequisites: </h4>
                     <h4 style={{textAlign:"left"}}>{courseData.description.Prerequisite}</h4>
                   </Box>
                   <Box sx={{display: "flex", marginLeft:1}}>
-                    <h4 style={{color: "#FF5721", marginRight: 10}}>Blocking Courses: </h4>
+                    <h4 style={{color: "#FFC106", marginRight: 10}}>Blocking Courses: </h4>
                     <h4 style={{textAlign:"left"}}>{courseData.description.BlockingCourses.join(", ")}</h4>
                   </Box>
                   <Box sx={{display: "flex", marginLeft:1}}>
-                    <h4 style={{color: "#FF5721", marginRight: 10}}>Mutual Exclusives: </h4>
+                    <h4 style={{color: "#FFC106", marginRight: 10}}>Mutual Exclusives: </h4>
                     <h4 style={{textAlign:"left"}}>{courseData.description.MutualExclusives.join(", ")}</h4>
                   </Box>
                   <Box sx={{display:"flex", marginLeft: 1}}>
-                      <h4 style={{color: "#FF5721", marginRight: 10}}>Description: </h4>
+                      <h4 style={{color: "#FFC106", marginRight: 10}}>Description: </h4>
                       <h4 style={{marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 10, textAlign:"left"}}>{courseData.description.Description}</h4>
                     </Box>
                 </Box>
