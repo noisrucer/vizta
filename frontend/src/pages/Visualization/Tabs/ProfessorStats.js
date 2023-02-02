@@ -81,7 +81,6 @@ const ProfessorStats = () => {
               const profData = response.data;
               console.log("by professor: ", response.data)
               setProfList(Object.keys(profData))
-              console.log("profList: ", profList);
               const tempData = [];
               for (const key in profData) {
                 const newDataset = { 
@@ -103,12 +102,15 @@ const ProfessorStats = () => {
         };
         getProfStats();
     }, []);
-    const [state, setState] = useState({
-      "Zhao Hengshuang": false,
-      "Lo Yu Sum": false,
-      "Kong Lingpeng": false,
-      "Yu Y Z": false
-    });
+
+    console.log("profList: ", profList);
+
+    const initialState = [].reduce((acc, name) => {
+      acc[name] = false;
+      return acc;
+    }, {});
+    
+    const [state, setState] = useState(initialState);
 
     function renderSwitch(prof){
     
@@ -117,7 +119,7 @@ const ProfessorStats = () => {
         console.log(event)
         setState({
           ...state, 
-          [event.target.name]: true
+          [event.target.name]: !(state[event.target.name])
         });
       };
 
@@ -129,7 +131,7 @@ const ProfessorStats = () => {
           <FormGroup>
             <FormControlLabel
               control={
-                <Switch {...label} checked={state} onClick={handleChange} name={prof.label} />
+                <Switch {...label} checked={state[prof.label]} onClick={handleChange} name={prof.label} />
               }
               label={prof.label}
             />
