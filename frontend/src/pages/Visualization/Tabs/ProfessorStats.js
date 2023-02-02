@@ -16,7 +16,7 @@ const baseURL = 'http://127.0.0.1:8000';
 const drawerBleeding = 56;
 
 const chartBorderColor = ["#36A2EB", "#FF6384", "#FF9F3F", "#FFCD56"]
-const chartBackgroundColor = ['rgba(54, 162, 235, 0.3)', 'rgba(255, 99, 132, 0.3)', 'rgba(255, 159, 63, 0.3)', 'rgba(255, 205, 86, 0.3)']
+const chartBackgroundColor = ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 159, 63, 0.5)', 'rgba(255, 205, 86, 0.5)']
 
 
   const options = {
