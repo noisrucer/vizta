@@ -165,9 +165,9 @@ const ProfessorStats = () => {
   
     return (
       <Box sx={{diaplay: "flex", flexDirection: "column", alignItems: "center"}}>
-        <Box sx={{width: "180%", marginLeft: -20, display: "flex", justifyContent: "center"}}>
+        {/* <Box sx={{width: "180%", marginLeft: -20, display: "flex", justifyContent: "center"}}>
           <h1>Overall</h1>
-        </Box>
+        </Box> */}
         <Box sx={{width: "180%", height:"520px", display: 'flex', flexDirection: "row", justifyContent: 'center'}}>
           <Box sx={{marginRight: 10, width:"520px", height:"520px"}}>
             <Radar data={switchClicked ? conditionalChartData : chartData} options={options}/>
