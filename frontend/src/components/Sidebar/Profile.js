@@ -1,16 +1,16 @@
 import axios from 'axios'
-import {useState, useEffect, useContext} from 'react'
+import {useState, useEffect, useContext, forwardRef} from 'react'
 import { UserContext } from '../../UserContext'
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import Typography from "@mui/material/Typography";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import CssBaseline from "@mui/material/CssBaseline";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
+import Snackbar from "../../components/Snackbar";
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function Profile(){
 
@@ -24,6 +24,36 @@ function Profile(){
   const [email, setEmail] = useState(" ");
   const [enteredYear, setEnteredYear] = useState(" ");
   const [major, setMajor] = useState(" ");
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("")
+
+  const validate = () => {
+    if (password.length === 0 || confirmPassword.length < 8)
+    {
+      return false;
+    }
+    if (!(/[A-Z]/.test(confirmPassword))){
+      return false;
+    } 
+    if (!(/[0-9]/.test(confirmPassword))){
+      return false;
+    }
+
+    return true;
+  };
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const [openErrorMessage, setOpenErrorMessage] = useState(false);
+  const closeErrorMessage = () => {
+    setOpenErrorMessage(false)
+  }
+
+  const [successMessage, setSuccessMessage] = useState("");
+  const [openSuccessMessage, setOpenSuccessMessage] = useState(false);
+  const closeSuccessMessage = () => {
+    setOpenSuccessMessage(false)
+  }
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -66,7 +96,14 @@ function Profile(){
     })
     .then(response => {
       const data = response.data
-      console.log("response from /users/users/email: ", data)
+      console.log("response from /users/users/email: ", response)
+      setSuccessMessage("Password update successful!")
+      setOpenSuccessMessage(true)
+    })
+    .catch(err => {
+      console.log("error when submit: ", err)
+      setErrorMessage(err.response.data.detail)
+      setOpenErrorMessage(true)
     })
   }
 
@@ -123,20 +160,40 @@ function Profile(){
           <TextField sx={{marginBottom: 2}}
             id="password"
             name="password"
-            label="Password"
+            label="Old password"
+            type="password"
+            onChange ={(e)=>setPassword(e.target.value)}
           />
           <TextField sx={{marginBottom: 2}}
             id="newPassword"
             name="newPassword"
-            label="Reset Password"
+            label="New password"
+            helperText="Minimum 8 characters with at least 1 upper case and 1 number"
+            type="password"
+            onChange ={(e)=>setConfirmPassword(e.target.value)}
           />
           <Button
             type="submit"
             variant="contained"
+            disabled = {!validate()}
           >
             Reset Password
           </Button>
         </Box>
+        <Snackbar
+          open={openErrorMessage}
+          closeFunc={closeErrorMessage}
+          message={errorMessage}
+        />
+        <Snackbar
+          open={openSuccessMessage}
+          closeFunc={closeSuccessMessage}
+          message={successMessage}
+        >
+          <Alert onClose={closeSuccessMessage} severity="success" sx={{ width: '100%' }}>
+            Password Update Successful!
+          </Alert>
+        </Snackbar>
       </Box>
   )
 }

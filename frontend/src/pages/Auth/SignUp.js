@@ -73,12 +73,20 @@ const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const validate = () => {
-    if (email.length > 0 && password.length > 0 && confirmPassword.length > 0)
+    if (email.length === 0 || password.length === 0 || confirmPassword.length === 0)
     {
-      return true;
-    } else {
       return false;
     }
+    if (!(/[A-Z]/.test(password))){
+      return false;
+    } 
+    if (!(/[0-9]/.test(password))){
+      return false;
+    }
+    if (!(password.length >= 8)){
+      return false;
+    }
+      return true;
   }
 
   const handleMajorChange = (e) => {
@@ -124,8 +132,6 @@ const SignUp = () => {
       setConfirmPasswordError(false);
     }
 
-    console.log("password error?: ", passwordError)
-    console.log("confirm password error?: ", confirmPasswordError)
   }, [password, confirmPassword]);
 
   const closeErrorMessage = () => {
@@ -364,6 +370,7 @@ const SignUp = () => {
                 name="password"
                 label="Password"
                 type="password"
+                helperText="Minimum 8 characters with at least 1 upper case and 1 number"
                 error = {passwordError && clickedSignUpButton}
                 onChange = {handlePasswordChange}
               />

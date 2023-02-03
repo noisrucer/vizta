@@ -458,7 +458,7 @@ const Visualization = () => {
                 alignItems: 'center',
                 }}>
                 <h2>
-                    <span style={{color: "#4FB19E"}}>
+                    <span style={{color: "#FFC106"}}>
                         {courseId} {" "}
                     </span>
                     <span>
