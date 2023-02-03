@@ -48,11 +48,11 @@ async def get_user_profile(email: EmailStr, db: Session=Depends(get_db)):
 )
 async def update_password(email: EmailStr, update_info: schemas.UpdatePasswordIn, db: Session=Depends(get_db)):
     update_info = update_info.dict()
-    if update_info['old_password'] == update_info['new_password']:
-        raise exceptions.SameOldAndNewPassword()
     user = auth_service.authenticate_user(db, email, update_info['old_password'])
     if not user:
         raise exceptions.WrongPasswordException()
+    if update_info['old_password'] == update_info['new_password']:
+        raise exceptions.SameOldAndNewPassword()
     service.update_password(db, user, update_info['new_password'])
     
     
