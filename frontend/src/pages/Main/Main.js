@@ -378,7 +378,7 @@ const Main = () => {
           <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
             {alertMessage}
           </Alert>
-      </Snackbar>
+        </Snackbar>
       </Box>
     )
 };
