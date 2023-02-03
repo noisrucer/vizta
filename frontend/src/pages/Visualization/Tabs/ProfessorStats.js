@@ -87,7 +87,6 @@ const ProfessorStats = () => {
             })
             .then(response => {
               const profData = response.data;
-              console.log("by professor: ", response.data)
               setProfList(Object.keys(profData))
               const tempData = [];
               let count = 0;
@@ -115,8 +114,6 @@ const ProfessorStats = () => {
         getProfStats();
     }, []);
 
-    console.log("chartData: ", chartData)
-
     const initialState = chartData.datasets.reduce((acc, dataset) => {
       acc[dataset.label] = true;
       return acc;
@@ -124,8 +121,6 @@ const ProfessorStats = () => {
     
     const [state, setState] = useState(initialState);
     const [switchClicked, setSwitchClicked] = useState(false)
-
-    console.log("switchClicked: ", switchClicked)
 
     useEffect(() => {
       setState(initialState);
