@@ -78,20 +78,32 @@ const CourseInfo = (courseData) => {
                     <h4>{courseData.description.Faculty}</h4>
                   </Box>
                   <Box sx={{display:"flex", marginLeft:1}}>
-                    <h4 style={{color: "#FFC106", marginRight: 10}}>Prerequisites: </h4>
-                    <h4 style={{textAlign:"left"}}>{courseData.description.Prerequisite}</h4>
+                    {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Prerequisites: </h4> */}
+                    <h4 style={{textAlign:"left"}}>
+                      <label style={{color: "#FFC106"}}>Prerequisites: </label>
+                      {courseData.description.Prerequisite}
+                      </h4>
                   </Box>
                   <Box sx={{display: "flex", marginLeft:1}}>
-                    <h4 style={{color: "#FFC106", marginRight: 10}}>Blocking Courses: </h4>
-                    <h4 style={{textAlign:"left"}}>{courseData.description.BlockingCourses.join(", ")}</h4>
+                    {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Blocking Courses: </h4> */}
+                    <h4 style={{textAlign:"left"}}>
+                      <label style={{color: "#FFC106"}}>Prerequisites: </label>
+                      {courseData.description.BlockingCourses.join(", ")}
+                    </h4>
                   </Box>
                   <Box sx={{display: "flex", marginLeft:1}}>
-                    <h4 style={{color: "#FFC106", marginRight: 10}}>Mutual Exclusives: </h4>
-                    <h4 style={{textAlign:"left"}}>{courseData.description.MutualExclusives.join(", ")}</h4>
+                    {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Mutual Exclusives: </h4> */}
+                    <h4 style={{textAlign:"left"}}>
+                      <label style={{color: "#FFC106"}}>Mutual Exclusives: </label>
+                      {courseData.description.MutualExclusives.join(", ")}
+                    </h4>
                   </Box>
                   <Box sx={{display:"flex", marginLeft: 1}}>
-                      <h4 style={{color: "#FFC106", marginRight: 10}}>Description: </h4>
-                      <h4 style={{marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 10, textAlign:"left"}}>{courseData.description.Description}</h4>
+                      {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Description: </h4> */}
+                      <h4 style={{marginTop:0, marginRight: 10, marginBottom: 10, textAlign:"left"}}>
+                        <label style={{color: "#FFC106"}}>Description: </label>
+                        {courseData.description.Description}
+                      </h4>
                     </Box>
                 </Box>
               </Box>
