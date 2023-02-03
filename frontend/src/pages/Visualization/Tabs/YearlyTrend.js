@@ -2,22 +2,21 @@ import {useState, useEffect, useContext} from 'react';
 import { UserContext } from '../../../UserContext';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-import { grey } from '@mui/material/colors';
 import axios from 'axios';
 import LineChart from '../Charts/LineChart';
 import TextField from '@mui/material/Textfield';
 import MenuItem from '@mui/material/MenuItem';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import PropTypes from 'prop-types';
+import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
 const baseURL = 'http://127.0.0.1:8000';
 
 const drawerBleeding = 56;
+
+const chartBorderColor = ["#36A2EB", "#FF6384", "#FF9F3F", "#FFCD56"]
+const chartBackgroundColor = ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 159, 63, 0.5)', 'rgba(255, 205, 86, 0.5)']
 
 const criteria = [
   {
@@ -65,6 +64,8 @@ const YearlyTrend = () => {
       datasets: []
     })
 
+    const [conditionalChartData, setConditionalChartData] = useState(chartData)
+
     useEffect(() => {
       const getYearlyTrend = async () => {
         axios.request({
@@ -74,20 +75,24 @@ const YearlyTrend = () => {
         })
         .then(response => {
             const yearData = response.data;
-            const tempData = []
-
+            const tempData = [];
+            let count = 0;
             setProfessorList(yearData.professors);
 
             yearData.professors.map((item, index) => {
 
               const newDataSet = {
                 label: item,
-                data: yearData.FinalExamDifficulty[index]
+                data: yearData.FinalExamDifficulty[index],
+                borderColor: chartBorderColor[count],
+                backgroundColor: chartBackgroundColor[count]
               };
               tempData.push(newDataSet);
+              count += 1;
             });
             if (tempData.length > Object.keys(yearData.professors).length - 1){
               setChartData({...chartData, labels: yearData.years, datasets: tempData});
+              setConditionalChartData({...conditionalChartData, labels: yearData.years})
             }
         })
         .catch(error => {
@@ -109,15 +114,17 @@ const YearlyTrend = () => {
       .then(response => {
           const yearData = response.data;
           const tempData = []
-          console.log("hello: ", yearData)
-
+          let count = 0;
           yearData.professors.map((item, index) => {
 
             const newDataSet = {
               label: item,
-              data: yearData[criteria][index]
+              data: yearData[criteria][index],
+              borderColor: chartBorderColor[count],
+              backgroundColor: chartBackgroundColor[count]
             };
             tempData.push(newDataSet);
+            count += 1;
           });
           if (tempData.length > Object.keys(yearData.professors).length - 1) {
             setChartData({...chartData, labels: yearData.years, datasets: tempData});
@@ -128,11 +135,59 @@ const YearlyTrend = () => {
       })
     }
 
-    console.log("byYear chartData: ", chartData);
-    console.log("professorList: ", professorList);
+    const initialState = chartData.datasets.reduce((acc, dataset) => {
+      acc[dataset.label] = true;
+      return acc;
+    }, {});
+    
+    const [state, setState] = useState(initialState);
+    const [switchClicked, setSwitchClicked] = useState(false)
+
+    useEffect(() => {
+      setState(initialState);
+    }, [chartData]);
+
+
+    function renderSwitch(prof){
+    
+      const handleChange = (event) => {
+        setSwitchClicked(true);
+        setState({
+          ...state, 
+          [event.target.name]: !state[event.target.name]
+        });
+      };
+
+      const label = { inputProps: { 'aria-label': 'Switch demo' } };
+    
+      return (
+          <FormGroup>
+            <FormControlLabel sx={{width: "250px"}}
+              control={
+                <Switch {...label} checked={state[prof.label]} onClick={handleChange} name={prof.label} />
+              }
+              label={prof.label}
+            />
+          </FormGroup>
+      )
+    };
+
+    useEffect(() => {
+      let temp = [];
+      for (const key in state){
+        if (state[key] === true){
+          for (const data in chartData.datasets){
+            if (chartData.datasets[data].label === key) {
+              temp.push(chartData.datasets[data])
+            }
+          }
+        }
+      }
+      setConditionalChartData({...conditionalChartData, datasets: temp});
+    },[state])
 
     return (
-      <Box sx={{width: "100%", height: "520px"}}>
+      <Box sx={{width: "100%", height: "520px", display: "flex", alignItems: "center"}}>
           <TextField 
             id="select-view"
             select
@@ -148,12 +203,17 @@ const YearlyTrend = () => {
             ))}
           </TextField>
         <Box
-          sx={{marginLeft: 20, bgcolor: '#1D2630', display:"flex", flexDirection: "column", alignItems: 'center', height: 520 }}
+          sx={{bgcolor: '#1D2630', marginRight: 15, display:"flex", flexDirection: "column", alignItems: 'center', height: 520 }}
         >
           <h1>{title}</h1>
-          <Box sx={{height: "520px", width: "900px"}}>
-            <LineChart chartData={chartData} />
+          <Box sx={{height: "520px", width: "950px"}}>
+            <LineChart chartData={switchClicked ? conditionalChartData : chartData} />
           </Box>
+        </Box>
+        <Box>
+          {chartData.datasets.map((item) => {
+            return renderSwitch(item)
+          })}
         </Box>
       </Box>
     )};
