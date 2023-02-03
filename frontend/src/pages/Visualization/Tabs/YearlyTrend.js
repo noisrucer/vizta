@@ -187,14 +187,14 @@ const YearlyTrend = () => {
     },[state])
 
     return (
-      <Box sx={{width: "100%", height: "520px", display: "flex", alignItems: "center"}}>
+      <Box sx={{marginLeft: 10, width: "100%", height: "520px", display: "flex", alignItems: "center"}}>
           <TextField 
             id="select-view"
             select
             variant="standard"
             label="Select Criteria"
             defaultValue="Final Exam"
-            sx={{position: "absolute", left: 1260, top: 110, width: "128px"}}
+            sx={{position: "absolute", left: 900, top: 180, width: "150px"}}
             >
             {criteria.map((option) => (
               <MenuItem key={option.label} value={option.label} onClick={() => changeCriteria(option.value, option.label)}>
@@ -203,7 +203,7 @@ const YearlyTrend = () => {
             ))}
           </TextField>
         <Box
-          sx={{bgcolor: '#1D2630', marginRight: 15, display:"flex", flexDirection: "column", alignItems: 'center', height: 520 }}
+          sx={{bgcolor: '#1D2630', marginRight: 5, display:"flex", flexDirection: "column", alignItems: 'center', height: 520 }}
         >
           <h1>{title}</h1>
           <Box sx={{height: "520px", width: "950px"}}>
