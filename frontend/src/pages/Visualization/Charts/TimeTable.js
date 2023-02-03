@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Box from "@mui/material/Box";
+import { Divider } from '@mui/material';
 
 export default function TimeTable(chartData) {
 
@@ -26,7 +27,8 @@ export default function TimeTable(chartData) {
             flexDirection: "column",
             alignItems: "flex-start"
             }}>
-          <h1 style={{color: "#FFC106", marginLeft: 15}}>{subclass}</h1>
+          <h1 style={{color: "#0cc1a9", marginLeft: 15}}>{subclass}</h1>
+          <Divider sx={{marginTop: -0.1, marginLeft: 0.4, marginBottom: 0.5, width: "195px", borderWidth: 1, backgroundColor: "black"}}></Divider>
           <h3 style={{color: "#FFC106", marginLeft: 15}}>Instructor:</h3>
           <h4 style={{marginLeft: 15, fontWeight: "100"}}>{instructor}</h4>
           <h3 style={{color: "#FFC106", marginLeft: 15}}>TimeSlots:</h3>
