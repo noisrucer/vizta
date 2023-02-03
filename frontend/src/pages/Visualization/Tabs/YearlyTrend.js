@@ -116,18 +116,7 @@ const YearlyTrend = () => {
     const {UserToken} = useContext(UserContext)
     const [userToken, setUserToken] = UserToken
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [isCriteria, setIsCriteria] = useState(true);
-
     const [professorList, setProfessorList] = useState([]);
-
-    function checkIsCriteria(value) {
-      if(value === "byCriteria"){
-        setIsCriteria(true);
-      } else {
-        setIsCriteria(false);
-      }
-    }
 
     const [chartData, setChartData] = useState({
       labels: [],
@@ -197,113 +186,7 @@ const YearlyTrend = () => {
       })
     }
 
-    const [chartDataProfessor, setChartDataProfessor] = useState({
-      labels: [],
-      datasets: []
-    })
-
-    useEffect(() => {
-
-      if (!isCriteria) {
-        axios.request({
-          method: 'get',
-          url: `${baseURL}/visualization/${courseId}/by_years`,
-          headers: userToken['headers']
-        })
-        .then(response => {
-          const yearData = response.data;
-
-          console.log("YearData in yearprof: ", yearData);
-
-          const fed = {
-            label: "Final Exam Difficulty",
-            data: yearData.FinalExamDifficulty[0]
-          };
-          const gpa = {
-            label: "GPA",
-            data: yearData.GPA[0]
-          };
-          const ld = {
-            label: "Lecture Difficulty",
-            data: yearData.LectureDifficulty[0]
-          };
-          // const tq = {
-          //   label: "Teaching Quality",
-          //   data: yearData.TeachingQuality[0]
-          // };
-          const w = {
-            label: "Workload",
-            data: yearData.Workload[0]
-          };
-
-          const tempData = [fed, gpa, ld, w];
-
-          setChartDataProfessor({...chartDataProfessor, 
-            labels: yearData.years,
-            datasets: tempData
-            });
-
-        })
-        .catch(error => {
-            console.log("error from /visualization/course_id/by_years: ", error)
-        })
-        console.log("professor List: ", professorList)
-      }
-    },[isCriteria])
-
-    const handleProfessorClick = (index) => {
-      axios.request({
-        method: 'get',
-        url: `${baseURL}/visualization/${courseId}/by_years`,
-        headers: userToken['headers']
-      })
-      .then(response => {
-        const yearData = response.data;
-
-        console.log("YearData in yearprof: ", yearData);
-
-        const fed = {
-          label: "Final Exam Difficulty",
-          data: yearData.FinalExamDifficulty[index]
-        };
-        const gpa = {
-          label: "GPA",
-          data: yearData.GPA[index]
-        };
-        const ld = {
-          label: "Lecture Difficulty",
-          data: yearData.LectureDifficulty[index]
-        };
-        // const tq = {
-        //   label: "Teaching Quality",
-        //   data: yearData.TeachingQuality[0]
-        // };
-        const w = {
-          label: "Workload",
-          data: yearData.Workload[index]
-        };
-
-        const tempData = [fed, gpa, ld, w];
-
-        setChartDataProfessor({...chartDataProfessor, 
-          labels: yearData.years,
-          datasets: tempData
-          });
-
-      })
-      .catch(error => {
-          console.log("error from /visualization/course_id/by_years: ", error)
-      })
-    }
-
-    const [value, setValue] = useState(0);
-
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
-
     console.log("byYear chartData: ", chartData);
-    console.log("by year chartDataProfessor: ", chartDataProfessor);
     console.log("professorList: ", professorList);
 
     return (
@@ -324,32 +207,10 @@ const YearlyTrend = () => {
           </TextField>
         <Box
           sx={{ flexGrow: 1, bgcolor: '#1D2630', display: 'flex', height: 520 }}
-        > { isCriteria ?
-          <Box sx={{height: "520px", width: "1200px"}}>
-            <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+        >
+          <Box sx={{height: "520px", width: "900px"}}>
+            <LineChart chartData={chartData} />
           </Box>
-          : 
-          <>
-            <Box sx={{ marginLeft: 10, marginRight: 10, height: "520px", display: "flex", alignItems: "center"}}>
-              <Stack direction='column' spacing={2} sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                {
-                  professorList.map((item, index) => (
-                    <Button onClick={() => handleProfessorClick(index)}>{item}</Button>
-                  ))
-                }
-              </Stack>
-            </Box>
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifycontent: 'center', 
-              width: "1200px", 
-              height: "520px",
-              }}>
-                <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
-            </Box>
-          </> 
-          }
         </Box>
       </Box>
     )};
