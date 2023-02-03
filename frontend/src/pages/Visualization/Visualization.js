@@ -1,5 +1,5 @@
 import '@fontsource/public-sans';
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState, forwardRef } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../UserContext';
 import { useParams } from 'react-router-dom';
@@ -22,7 +22,12 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from "../../components/Snackbar";
 
+const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
 const baseURL = 'http://127.0.0.1:8000';
 const dataColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"];
@@ -83,8 +88,9 @@ const Visualization = () => {
     const params = useParams()
     const courseId = params.courseId
 
-    const {UserToken} = useContext(UserContext)
-    const [userToken, setUserToken] = UserToken
+    const {UserToken, UserData} = useContext(UserContext);
+    const [userToken, setUserToken] = UserToken;
+    const [userData, setUserData] = UserData;
 
     const [selectYear, setSelectYear] = useState([])
     const [selectProfessor, setSelectProfessor] = useState([])
@@ -149,7 +155,62 @@ const Visualization = () => {
         Timetable: {}
     });
 
-    useEffect(() => { // get request from courseInfo, courseDescription, available year and professor
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    const [open, setOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpen(false);
+    };
+
+    const handleFavoriteClick = () => {
+        setOpen(true)
+        const data = {
+            "email": userData,
+            "course_id": courseId
+          }
+          if (isFavorite === false){
+            const addFavorite = async () => {
+              axios.request({
+                method: 'post',
+                url: `${baseURL}/courses/favorite`, 
+                data,
+                headers: userToken['headers']
+              })
+              .then(response => {
+                console.log("response from /courses/favorite: ", response)
+              })
+              .catch(error => {
+                console.log("error in addFavorite: ", error)
+              })
+            };
+            addFavorite();
+            setAlertMessage("Successfully added to favorites!")
+          }
+          else {
+            const deleteFavorite = async () => {
+              axios.request({
+                method: 'delete',
+                url: `${baseURL}/courses/favorite/${userData}/${courseId}`,
+                headers: userToken['headers']
+              })
+              .then(response => {
+                console.log("response from /courses/favorite/email/courses delete: ",response)
+              })
+              .catch(error => {
+                console.log("error in delete favorite: ", error)
+              })
+            };
+            deleteFavorite();
+            setAlertMessage("Successfully removed from favorites!")
+          }
+          setIsFavorite(!isFavorite);
+    }
+
+    useEffect(() => { // get request from courseInfo, courseDescription, available year and professor, favorites
         const fetchCourseData = async () => {
             axios.request({
                 method: 'get',
@@ -261,6 +322,21 @@ const Visualization = () => {
         };
         getAvailableProfessors();
 
+        const getFavorites = async () => {
+            axios.request({
+                method: 'get',
+                url: `${baseURL}/users/check-favorite/${userData}/${courseId}`,
+                headers: userToken['headers']
+            })
+            .then(response => {
+                setIsFavorite(response.data.isFavorite)
+            })
+            .catch(error => {
+                console.log("error from /users/check-favorites: ", error)
+            })
+        };
+        getFavorites();
+
     }, [])
 
     const [selectedYear, setSelectedYear] = useState("All");
@@ -355,18 +431,8 @@ const Visualization = () => {
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
-  
-    const handleChangeIndex = (index) => {
-      setValue(index);
-    };
 
     const [isOverview, setIsOverview] = useState(true);
-
-    const [isFavorite, setIsFavorite] = useState(false);
-
-    const handleFavoriteClick = () => {
-        setIsFavorite(!isFavorite);
-    }
 
   return (
     <Box sx={{
@@ -500,6 +566,11 @@ const Visualization = () => {
             </Stack>
             </Box>
         </Box>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {alertMessage}
+          </Alert>
+        </Snackbar>
     </Box>
   )
 }
