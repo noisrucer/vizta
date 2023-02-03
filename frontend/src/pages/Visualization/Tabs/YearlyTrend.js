@@ -3,28 +3,52 @@ import { UserContext } from '../../../UserContext';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import axios from 'axios';
 import LineChart from '../Charts/LineChart';
-import SchoolIcon from '@mui/icons-material/School';
-import GradingIcon from '@mui/icons-material/Grading';
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import ClassIcon from '@mui/icons-material/Class';
 import TextField from '@mui/material/Textfield';
 import MenuItem from '@mui/material/MenuItem';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import AppBar from '@mui/material/AppBar';
 import PropTypes from 'prop-types';
 
 const baseURL = 'http://127.0.0.1:8000';
 
 const drawerBleeding = 56;
+
+const criteria = [
+  {
+    value: "FinalExamDifficulty",
+    label: "Final Exam"
+  },
+  {
+    value: "GPA",
+    label: "GPA"
+  },
+  {
+    value: "LectureDifficulty",
+    label: "Lecture Difficulty"
+  },
+  {
+    value: "CourseDelivery",
+    label: "Delivery"
+  },
+  {
+    value: "CourseEntertainment",
+    label: "Entertainment"
+  },
+  {
+    value: "CourseInteractivity",
+    label: "Interactivity"
+  },
+  {
+    value: "Workload",
+    label: "Workload"
+  },
+];
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -289,11 +313,11 @@ const YearlyTrend = () => {
             select
             variant="standard"
             label="Select Criteria"
-            defaultValue="byCriteria"
+            defaultValue="Final Exam"
             sx={{position: "absolute", left: 1260, top: 110, width: "128px"}}
             >
-            {viewOptions.map((option) => (
-              <MenuItem key={option.value} value={option.value} onClick={() => checkIsCriteria(option.value)}>
+            {criteria.map((option) => (
+              <MenuItem key={option.label} value={option.label} onClick={() => changeCriteria(option.value)}>
                 {option.label}
               </MenuItem>
             ))}
@@ -301,59 +325,9 @@ const YearlyTrend = () => {
         <Box
           sx={{ flexGrow: 1, bgcolor: '#1D2630', display: 'flex', height: 520 }}
         > { isCriteria ?
-          <>
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={value}
-            onChange={handleChange}
-            aria-label="Vertical tabs example"
-            sx={{ borderRight: 1, borderColor: 'divider' }}
-          >
-            <Tab label="Final Exam Difficulty" {...a11yProps(0)} onClick={() => changeCriteria("FinalExamDifficulty")}/>
-            <Tab label="GPA" {...a11yProps(1)} onClick={() => changeCriteria("GPA")}/>
-            <Tab label="Lecture Difficulty" {...a11yProps(2)} onClick={() => changeCriteria("LectureDifficulty")}/>
-            <Tab label="Lecture Quality - Delivery" {...a11yProps(3)} onClick={() => changeCriteria("CourseDelivery")}/>
-            <Tab label="Lecture Quality - Entertaining" {...a11yProps(4)} onClick={() => changeCriteria("CourseEntertaining")}/>
-            <Tab label="Lecture Quality - Interactivity" {...a11yProps(5)} onClick={() => changeCriteria("CourseInteractivity")}/>
-            <Tab label="Workload" {...a11yProps(6)} onClick={() => changeCriteria("Workload")}/>
-          </Tabs>
-          <TabPanel value={value} index={0}>
-            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
-              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
-            </Box>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
-              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
-            </Box>
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
-              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
-            </Box>
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
-              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
-            </Box>
-          </TabPanel>
-          <TabPanel value={value} index={4}>
-            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
-              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
-            </Box>
-          </TabPanel>
-          <TabPanel value={value} index={5}>
-            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
-              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
-            </Box>
-          </TabPanel>
-          <TabPanel value={value} index={6}>
-            <Box sx={{height: "520px", width: "1200px", marginTop: -3}}>
-              <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
-            </Box>
-          </TabPanel>
-          </>
+          <Box sx={{height: "520px", width: "1200px"}}>
+            <LineChart chartData={isCriteria ? chartData : chartDataProfessor} />
+          </Box>
           : 
           <>
             <Box sx={{ marginLeft: 10, marginRight: 10, height: "520px", display: "flex", alignItems: "center"}}>
