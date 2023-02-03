@@ -123,6 +123,9 @@ const SignUp = () => {
     } else {
       setConfirmPasswordError(false);
     }
+
+    console.log("password error?: ", passwordError)
+    console.log("confirm password error?: ", confirmPasswordError)
   }, [password, confirmPassword]);
 
   const closeErrorMessage = () => {
@@ -198,6 +201,7 @@ const SignUp = () => {
       })
       .then(response => {
         console.log(response)
+        setOpenErrorMessage(false)
         navigate('/auth/sign-in');
       })
       .catch(error => {
