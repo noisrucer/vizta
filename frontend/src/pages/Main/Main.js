@@ -10,15 +10,9 @@ import Box from "@mui/material/Box";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import TextField from "../../components/TextField";
 import Typography from '@mui/material/Typography';
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
-import StarIcon from '@mui/icons-material/Star';
 import axios from 'axios';
 import Pagination from "@mui/material/Pagination";
 import Stack from '@mui/material/Stack';
@@ -110,6 +104,15 @@ const Main = () => {
     const [favoritesChanged, setFavoritesChanged] = useState(false);
     const [query, setQuery] = useState("");
 
+    const [open, setOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpen(false);
+    };
+
     useEffect(() => {
       const fetchCourseData = async () => {
         axios.request({
@@ -146,6 +149,7 @@ const Main = () => {
     const filteredCourses = getFilteredCourses(query, courses)
 
     const handleFavoritesButtonClick = (id, isFavorites) => {
+      setOpen(true)
       const data = {
         "email": userData,
         "course_id": id
@@ -166,6 +170,7 @@ const Main = () => {
           })
         };
         addFavorite();
+        setAlertMessage("Successfully added to favorites!")
       } 
       else {
         const deleteFavorite = async () => {
@@ -182,6 +187,7 @@ const Main = () => {
           })
         };
         deleteFavorite();
+        setAlertMessage("Successfully removed from favorites!")
       }
 
       setFavoritesChanged(!favoritesChanged);
@@ -368,6 +374,11 @@ const Main = () => {
           </Item>
           </Box>
         </Box>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {alertMessage}
+          </Alert>
+      </Snackbar>
       </Box>
     )
 };
