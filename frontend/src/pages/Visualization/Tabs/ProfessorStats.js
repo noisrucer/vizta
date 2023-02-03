@@ -2,11 +2,9 @@ import {useState, useEffect, useContext} from 'react';
 import { UserContext } from '../../../UserContext';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
 import Switch from '@mui/material/Switch';
 import axios from 'axios';
 import{ Radar } from 'react-chartjs-2';
@@ -163,8 +161,6 @@ const ProfessorStats = () => {
         }
       }
       setConditionalChartData({...conditionalChartData, datasets: temp});
-      console.log("original: ", chartData);
-      console.log("conditional: ", conditionalChartData);
     },[state])
   
     return (
@@ -175,7 +171,6 @@ const ProfessorStats = () => {
             <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", height: "520px"}}>
               <FormControl component="fieldset" variant="standard">
                 {chartData.datasets.map((item) => {
-                  // console.log("state in return: ",state)
                   return renderSwitch(item)
                 })}
               </FormControl>
