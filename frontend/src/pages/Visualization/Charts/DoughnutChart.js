@@ -16,6 +16,9 @@ function DoughnutChart({chartData}) {
         }
       },
       datalabels: {
+        formatter: (value) => {
+          return value + "%"
+        },
         display: true,
         align: 'bottom',
         backgroundColor: '#ccc',
