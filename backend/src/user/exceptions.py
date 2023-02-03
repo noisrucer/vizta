@@ -9,4 +9,9 @@ class UserNotFoundException(HTTPException):
 class WrongPasswordException(HTTPException):
     def __init__(self):
         self.status_code = status.HTTP_400_BAD_REQUEST
-        self.detail = "Wrong password"
+        self.detail = "Wrong password!"
+        
+class SameOldAndNewPassword(HTTPException):
+    def __init__(self):
+        self.status_code = status.HTTP_400_BAD_REQUEST
+        self.detail = "Please provide a new password!"
