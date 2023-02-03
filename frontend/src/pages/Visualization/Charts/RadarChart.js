@@ -8,20 +8,32 @@ const options = {
       display: false
     },
     labels: {
-      fontColor: "white"
+      fontColor: "white",
     }
   },
   scale: {
-    suggestedMax: 10
+    suggestedMax: 5,
+    ticks: {
+      fontSize: 14
+    }
   },
   scales: {
     r: {
+      beginAtZero: true,
       angleLines: {
         color: "grey"
       },
       grid: {
         color: "grey"
       },
+      pointLabels: {
+        color: "white"
+      },
+      ticks: {
+        color: "white",
+        stepSize: 1,
+        backdropColor: 'transparent',
+      }
     }
   }
 };

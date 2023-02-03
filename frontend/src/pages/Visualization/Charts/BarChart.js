@@ -18,7 +18,7 @@ const options = {
 
   plugins: {
     legend: {
-      display: false
+      display: false,
     }
   }
 }

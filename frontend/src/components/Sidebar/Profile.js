@@ -5,6 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 
 function stringToColor(string) {
@@ -43,6 +44,12 @@ function Profile(){
   const [userData, setUserData] = UserData
   const [userToken, setUserToken] = UserToken
 
+  console.log("userData in profile: ", userData);
+
+  const [email, setEmail] = useState(" ");
+  const [enteredYear, setEnteredYear] = useState(" ");
+  const [major, setMajor] = useState(" ");
+
   useEffect(() => {
     const fetchProfileData = async () => {
       axios.request({
@@ -53,6 +60,9 @@ function Profile(){
       .then(response => {
         const data = response.data
         console.log(`response from /users/profile/${userData}: `, data)
+        setEmail(data.email)
+        setEnteredYear(data.entered_year);
+        setMajor(data.major)
       })
       .catch(error => {
         console.log("error from /users/profile/email: ", error)
@@ -60,6 +70,30 @@ function Profile(){
     };
     fetchProfileData();
   },[])
+
+  console.log(major)
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    console.log("password in profile: ", data.get('password'));
+    console.log("reset password in profile: ", data.get('newPassword'));
+
+    axios.request({
+      method: 'patch',
+      url: `${baseURL}/users/users/${userData}`,
+      data: {
+        old_password: data.get('password'),
+        new_password: data.get('newPassword')
+      },
+      headers: userToken['headers']
+    })
+    .then(response => {
+      const data = response.data
+      console.log("response from /users/users/email: ", data)
+    })
+  }
 
   return (
     <>
@@ -71,6 +105,7 @@ function Profile(){
       </Stack>
       <Box
       component="form"
+      onSubmit={handleSubmit}
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
         display: 'flex',
@@ -82,117 +117,48 @@ function Profile(){
       autoComplete="off"
     >
       <TextField
-        id="outlined-read-only-input"
-        label="Read Only"
-        defaultValue="Hello World"
+        id="email"
+        label="email"
+        defaultValue={email}
+        value={email}
         InputProps={{
           readOnly: true,
         }}
       />
       <TextField
-        required
-        id="filled-required"
-        label="Required"
-        defaultValue="Hello World"
-        variant="filled"
+        id="enteredYear"
+        label="Entered Year"
+        defaultValue={enteredYear}
+        value = {enteredYear}
+        InputProps={{
+          readOnly: true,
+        }}
       />
       <TextField
-        disabled
-        id="filled-disabled"
-        label="Disabled"
-        defaultValue="Hello World"
-        variant="filled"
+        id="major"
+        label="Major"
+        defaultValue={major}
+        value = {major}
+        InputProps={{
+          readOnly: true,
+        }}
       />
       <TextField
-        id="filled-password-input"
+        id="password"
+        name="password"
         label="Password"
-        type="password"
-        autoComplete="current-password"
-        variant="filled"
       />
       <TextField
-        id="filled-read-only-input"
-        label="Read Only"
-        defaultValue="Hello World"
-        InputProps={{
-          readOnly: true,
-        }}
-        variant="filled"
+        id="newPassword"
+        name="newPassword"
+        label="Reset Password"
       />
-      <TextField
-        id="filled-number"
-        label="Number"
-        type="number"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        variant="filled"
-      />
-      <TextField
-        id="filled-search"
-        label="Search field"
-        type="search"
-        variant="filled"
-      />
-      <TextField
-        id="filled-helperText"
-        label="Helper text"
-        defaultValue="Default Value"
-        helperText="Some important text"
-        variant="filled"
-      />
-      <TextField
-        required
-        id="standard-required"
-        label="Required"
-        defaultValue="Hello World"
-        variant="standard"
-      />
-      <TextField
-        disabled
-        id="standard-disabled"
-        label="Disabled"
-        defaultValue="Hello World"
-        variant="standard"
-      />
-      <TextField
-        id="standard-password-input"
-        label="Password"
-        type="password"
-        autoComplete="current-password"
-        variant="standard"
-      />
-      <TextField
-        id="standard-read-only-input"
-        label="Read Only"
-        defaultValue="Hello World"
-        InputProps={{
-          readOnly: true,
-        }}
-        variant="standard"
-      />
-      <TextField
-        id="standard-number"
-        label="Number"
-        type="number"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        variant="standard"
-      />
-      <TextField
-        id="standard-search"
-        label="Search field"
-        type="search"
-        variant="standard"
-      />
-      <TextField
-        id="standard-helperText"
-        label="Helper text"
-        defaultValue="Default Value"
-        helperText="Some important text"
-        variant="standard"
-      />
+      <Button
+        type="submit"
+        variant="contained"
+      >
+        Reset Password
+      </Button>
     </Box>
   </>
   )

@@ -22,17 +22,63 @@ ChartJS.register(
 
 const options = {
   indexAxis: 'y',
+  responsive: true,
   elements: {
     bar: {
-      borderWidth: 0,
+      borderWidth: 2,
     },
   },
-  responsive: true,
   plugins: {
     legend: {
-      display: false
-    }
+      display: false,
+    },
+    tooltip: {
+      interaction: {
+        intersect: false,
+      },
+    },
   },
+  scales: {
+    x: {
+      stacked: true,
+      grid: {
+        color: "#666666",
+        tickColor: "#333A46"
+      },
+      ticks: {
+        color: "white"
+      },
+    },
+    y: {
+      stacked: true,
+      grid: {
+        color: "#333A46"
+      },
+      ticks: {
+        color: "white"
+      },
+    }
+  }
+  // scales: {
+  //   yAxes: {
+  //     grid: {
+  //       drawBorder: true,
+  //       color: "#FFFFFF"
+  //     },
+  //     ticks:{
+  //       beginAtZero: false,
+  //       color: "white",
+  //       fontSize: 12
+  //     }
+  //   },
+  //   xAxes: {
+  //     grid: {
+  //       beginAtZero: false,
+  //       color: "white",
+  //       fontSize: 12
+  //     }
+  //   }
+  // }
 };
 
 

@@ -4,7 +4,10 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 const OverallScore = (props) => {
-  const { score } = props;
+  let { score } = props;
+  if (isNaN(score)){
+    score = 0;
+  }
 
   // function for calculating the color
   const calcColor = (percent, start, end) => {
