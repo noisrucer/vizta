@@ -50,64 +50,6 @@ const criteria = [
   },
 ];
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
-}
-
-const StyledBox = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'light' ? '#fff' : grey[800],
-  }));
-  
-  const Puller = styled(Box)(({ theme }) => ({
-    width: 30,
-    height: 6,
-    backgroundColor: theme.palette.mode === 'light' ? grey[300] : grey[900],
-    borderRadius: 3,
-    position: 'absolute',
-    top: 8,
-    left: 'calc(50% - 15px)',
-  }));
-
-  const viewOptions = [
-    {
-      value: "byCriteria",
-      label: "By Criteria"
-    },
-    {
-      value: "byProfessor",
-      label: "By Professor"
-    }
-  ];
-
 const YearlyTrend = () => {
     
     const params = useParams()
@@ -155,10 +97,10 @@ const YearlyTrend = () => {
     getYearlyTrend();
     }, [])
 
-    const [title, setTitle] = useState("Final Exam Difficulty")
+    const [title, setTitle] = useState("Final Exam")
 
-    function changeCriteria(criteria) {
-      setTitle(criteria)
+    function changeCriteria(criteria, name) {
+      setTitle(name)
       axios.request({
         method: 'get',
         url: `${baseURL}/visualization/${courseId}/by_years`,
@@ -190,7 +132,7 @@ const YearlyTrend = () => {
     console.log("professorList: ", professorList);
 
     return (
-      <Box sx={{width: "250%", height: "520px"}}>
+      <Box sx={{width: "100%", height: "520px"}}>
           <TextField 
             id="select-view"
             select
@@ -200,14 +142,15 @@ const YearlyTrend = () => {
             sx={{position: "absolute", left: 1260, top: 110, width: "128px"}}
             >
             {criteria.map((option) => (
-              <MenuItem key={option.label} value={option.label} onClick={() => changeCriteria(option.value)}>
+              <MenuItem key={option.label} value={option.label} onClick={() => changeCriteria(option.value, option.label)}>
                 {option.label}
               </MenuItem>
             ))}
           </TextField>
         <Box
-          sx={{ flexGrow: 1, bgcolor: '#1D2630', display: 'flex', height: 520 }}
+          sx={{marginLeft: 20, bgcolor: '#1D2630', display:"flex", flexDirection: "column", alignItems: 'center', height: 520 }}
         >
+          <h1>{title}</h1>
           <Box sx={{height: "520px", width: "900px"}}>
             <LineChart chartData={chartData} />
           </Box>
