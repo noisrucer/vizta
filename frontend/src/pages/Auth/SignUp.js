@@ -276,8 +276,9 @@ const SignUp = () => {
               <Grid item xs={1}>
                 <Button
                   variant = "contained"
-                  size = "large"
+                  size = "medium"
                   onClick = {handleVerification}
+                  sx={{marginTop: 1.1, width: "105px"}}
                 >
                   Verify
                 </Button>
@@ -300,6 +301,7 @@ const SignUp = () => {
                   variant = "contained"
                   size = "medium"
                   onClick = {handleConfirmVerification}
+                  sx={{marginTop: 1.1, width: "105px"}}
                 >
                   Confirm
                 </Button>
@@ -342,6 +344,7 @@ const SignUp = () => {
                 type="major"
                 value={major}
                 onChange={handleMajorChange}
+                sx={{width: "190px"}}
               >
                 {majors.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
