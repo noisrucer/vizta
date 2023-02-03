@@ -122,7 +122,7 @@ const CourseInfo = (courseData) => {
           <GradingRatioGrid sx={{marginRight: 3}}>
             <h2>Grading Ratio</h2>
             <Box sx={{display: "flex", flexDirection: "row"}}>
-              <Box sx={{ marginLeft: 23, marginTop: -5, height: "280px", width: "280px"}}>
+              <Box sx={{ marginLeft: 18, marginTop: -5, height: "280px", width: "280px"}}>
                 <DoughnutChart chartData={gradingRatio} />
               </Box>
               <Box sx={{ height: "200px", width: "200px"}}>
@@ -131,7 +131,7 @@ const CourseInfo = (courseData) => {
                   select
                   // label="select professor"
                   variant="standard"
-                  sx={{ width: "130px", marginTop: -4, marginLeft: -10}}
+                  sx={{ width: "130px", marginTop: -4, marginLeft: -3}}
                   defaultValue={Object.values(gradingRatioList)[0]}
                 >
                   { Object.keys(gradingRatioList).map((key) => {
