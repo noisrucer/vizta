@@ -124,7 +124,7 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
 
     return {
         "years": all_year,
-        "professors": all_prof,
+        "professors": sorted(all_prof),
         **{
             glob_utils.capitalize_variable(ac.key): [
                 # i + 1 as first column is year in avg_reviews
@@ -161,6 +161,7 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
 
     # convert any Decimal object to float
     avg_reviews_by_prof = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in avg_reviews_by_prof]
+    avg_reviews_by_prof = sorted(avg_reviews_by_prof, key = lambda x: x[0])
 
     return {
         prof_review[0]: {
