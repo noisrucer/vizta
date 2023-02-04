@@ -4,6 +4,9 @@ import { Line } from 'react-chartjs-2';
 
 const options = {
   responsive: true,
+  scale: {
+    suggestedMax: 5
+  },
   scales: {
     x: {
       grid: {
@@ -15,11 +18,13 @@ const options = {
       }
     },
     y: {
+      beginAtZero: true,
       grid: {
         color: "#333A46"
       },
       ticks: {
-        color: "white"
+        color: "white",
+        stepSize: 0.5
       }
     }
   },
