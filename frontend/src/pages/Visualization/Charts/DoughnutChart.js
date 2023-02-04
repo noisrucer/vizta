@@ -1,16 +1,6 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import ChartAnnotation from 'chartjs-plugin-annotation';
-import {Chart} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-// Chart.register(ChartDataLabels);
-// Chart.defaults.global.plugins.datalabels.display = false
-
-// var chart = new Chart({
-//   plugins: [ChartDataLabels],
-// })
-
-// console.log(chart)
 
 function DoughnutChart({chartData}) {
 

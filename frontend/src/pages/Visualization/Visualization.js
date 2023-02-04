@@ -109,7 +109,7 @@ const Visualization = () => {
         datasets: [{
             label: "Students Score",
             data: [],
-            backgroundColor: dataColor
+            backgroundColor: dataColor,
         }]
     })
 
@@ -221,7 +221,7 @@ const Visualization = () => {
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
                     data: response.data.GPA,
-                    backgroundColor: dataColor
+                    backgroundColor: dataColor,
                 }]})
                 setLectureDifficulty({...lectureDifficulty, datasets: [{
                     label: "Students Score",

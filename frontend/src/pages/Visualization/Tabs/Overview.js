@@ -1,25 +1,11 @@
 import '@fontsource/public-sans';
-import { useEffect, useContext, useState } from 'react';
-import axios from 'axios';
-import { UserContext } from '../../../UserContext';
-import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/Textfield';
-import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
-import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import BarChart from "../Charts/BarChart"
-import DoughnutChart from '../Charts/DoughnutChart';
 import HorizontalBarChart from '../Charts/HorizontalBarChart';
 import RadarChart from '../Charts/RadarChart';
 import OverallScore from '../OverallScore/OverallScore';
-import AppBar from '@mui/material/AppBar';
 import { useSpring, animated } from "react-spring";
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import Item from "../Boxes/Item";
 import LinearPercentage from "../Charts/LinearPercentage";
 
