@@ -205,7 +205,7 @@ const YearlyTrend = () => {
         <Box
           sx={{bgcolor: '#1D2630', marginRight: 5, display:"flex", flexDirection: "column", alignItems: 'center', height: 520 }}
         >
-          <h1>{title}</h1>
+          <h2>{title}</h2>
           <Box sx={{height: "520px", width: "1000px", marginLeft: -10}}>
             <LineChart chartData={switchClicked ? conditionalChartData : chartData} />
           </Box>
