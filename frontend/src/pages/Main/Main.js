@@ -86,7 +86,7 @@ const Search = styled("div")(({ theme }) => ({
     if (!query) {
       return items;
     }
-    return items.filter((courses) => courses.course_id.includes(query));
+    return items.filter((courses) => courses.course_id.toLowerCase().includes(query.toLowerCase()) || courses.name.toLowerCase().includes(query.toLowerCase()));
   };
 
 const Main = () => {
