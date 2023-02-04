@@ -244,6 +244,10 @@ const Overivew = (chartData) => {
           </BarChartGrid>
         </HorizontalGrid>
       </Stack>
+      <h6 style={{position: "absolute", top: 405.3, left: 480, color: "lightgrey"}}># Students:</h6>
+      <h6 style={{position: "absolute", top: 410, left: 961, color: "lightgrey"}}># Students:</h6>
+      <h6 style={{position: "absolute", top: 694, left: 490, color: "lightgrey"}}># Students:</h6>
+      <h6 style={{position: "absolute", top: 694, left: 970, color: "lightgrey"}}># Students:</h6>
     </Box>
   )
 }
