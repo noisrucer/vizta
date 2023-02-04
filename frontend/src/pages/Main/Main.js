@@ -21,7 +21,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from "../../components/Snackbar";
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 const baseURL = 'http://127.0.0.1:8000';
 const temp_color = "#1D2630"
@@ -297,7 +297,7 @@ const Main = () => {
                   </List> :
                   <>
                     <List>
-                      <MailOutlineIcon sx={{fontSize: "60px", color: "grey"}}/>
+                      <ArchiveIcon sx={{fontSize: "60px", color: "grey"}}/>
                       <h3 style={{color:'grey'}}>No Items to display</h3>
                     </List>
                     <Divider variant="fullWidth" style={{width: "620px", marginBottom: 10}}/>
@@ -362,7 +362,7 @@ const Main = () => {
                 </List> :
                 <>
                   <List>
-                    <MailOutlineIcon sx={{fontSize: "60px", color: "grey"}}/>
+                    <ArchiveIcon sx={{fontSize: "60px", color: "grey"}}/>
                     <h3 style={{color:'grey'}}>No Items to display</h3>
                   </List>
                   <Divider variant="fullWidth" style={{width: "620px", marginBottom: 10}}/>
