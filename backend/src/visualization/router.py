@@ -188,6 +188,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
                                     db: Session = Depends(get_db)):
     # First query, all review
     reviews = visualization_service.get_all_review(db, course_id, year, professor)
+    total_num_reviews = len(reviews)
 
     # Second query, average review
     mcr = course_models.CourseReview
@@ -213,10 +214,27 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     def get_badges(val):
         return 'NONE' if val is None else badges_text[next(i for i, v in enumerate(badges_break_point) if v >= val)]
 
+    # print(to_key_value_list([_.lecture_difficulty for _ in reviews], course_enums.NumericEval))
+    # print([[gpa_count[_ + '+'] for _ in gpa_letter],
+    #             [gpa_count[_] for _ in gpa_letter] + [gpa_count['F']],
+    #             [gpa_count[_ + '-'] for _ in gpa_letter if f"{_}-" in gpa_count]])
+    # print(to_key_value_list([_.lecture_difficulty for _ in reviews], course_enums.NumericEval))
+    
+    
+    gpa_response = {'keys': ['A','B','C','D','F'], 'values': [
+        glob_utils.count_letter_group_num(gpa_count, 'A'),
+        glob_utils.count_letter_group_num(gpa_count, 'B'),
+        glob_utils.count_letter_group_num(gpa_count, 'C'),
+        glob_utils.count_letter_group_num(gpa_count, 'D'),
+        glob_utils.count_letter_group_num(gpa_count, 'F')
+        ]}
+
     result = {
-        "GPA": [[gpa_count[_ + '+'] for _ in gpa_letter],
-                [gpa_count[_] for _ in gpa_letter] + [gpa_count['F']],
-                [gpa_count[_ + '-'] for _ in gpa_letter if f"{_}-" in gpa_count]],
+        "TotalNumReviews": total_num_reviews,
+        # "GPA": [[gpa_count[_ + '+'] for _ in gpa_letter],
+        #         [gpa_count[_] for _ in gpa_letter] + [gpa_count['F']],
+        #         [gpa_count[_ + '-'] for _ in gpa_letter if f"{_}-" in gpa_count]],
+        "GPA": gpa_response,
         "LectureDifficulty": to_key_value_list([_.lecture_difficulty for _ in reviews], course_enums.NumericEval),
         "FinalDifficulty": to_key_value_list([_.final_exam_difficulty for _ in reviews], course_enums.NumericEval),
         "Workload": to_key_value_list([_.workload for _ in reviews], course_enums.NumericEval),
