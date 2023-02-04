@@ -9,6 +9,14 @@ const options = {
   },
   scales: {
     x: {
+      title: {
+        display: true,
+        text: "Years",
+        color: "white",
+        font: {
+          size: 15
+        }
+      },
       grid: {
         color: "#666666",
         tickColor: "#333A46"
@@ -18,6 +26,15 @@ const options = {
       }
     },
     y: {
+      title: {
+        display: true,
+        text: "Score",
+        color: "white",
+        font: {
+          size: 15
+        },
+        padding: 20
+      },
       beginAtZero: true,
       grid: {
         color: "#333A46"
