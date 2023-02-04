@@ -17,7 +17,8 @@ class Timetable(BaseModel):
 
 
 class GeneralVisualizationOut(BaseModel):
-    GPA: list[list[int]]
+    TotalNumReviews: int
+    GPA: Mapping[str,  list]
     LectureDifficulty: Mapping[str,  Union[list[int], list[course_enums.NumericEval]]]
     FinalDifficulty: Mapping[str,  Union[list[int], list[course_enums.NumericEval]]]
     Workload: Mapping[str, Union[list[int], list[course_enums.NumericEval]]]
