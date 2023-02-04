@@ -70,8 +70,8 @@ const options = {
       },
       beforeBuildTicks: function(axis) {
         console.log("axis", axis);
-        if (axis.max < 3) {
-          axis.options.ticks.stepSize = 2
+        if (axis.max < 5) {
+          axis.options.ticks.stepSize = 1
         } else {
           axis.options.ticks.stepSize = Math.round(axis.max / 5 + 1)
         }
