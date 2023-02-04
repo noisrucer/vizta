@@ -194,7 +194,7 @@ const YearlyTrend = () => {
             variant="standard"
             label="Select Criteria"
             defaultValue="Final Exam"
-            sx={{position: "absolute", left: 900, top: 180, width: "150px"}}
+            sx={{position: "absolute", left: 870, top: 180, width: "150px"}}
             >
             {criteria.map((option) => (
               <MenuItem key={option.label} value={option.label} onClick={() => changeCriteria(option.value, option.label)}>
@@ -206,11 +206,11 @@ const YearlyTrend = () => {
           sx={{bgcolor: '#1D2630', marginRight: 5, display:"flex", flexDirection: "column", alignItems: 'center', height: 520 }}
         >
           <h1>{title}</h1>
-          <Box sx={{height: "520px", width: "950px"}}>
+          <Box sx={{height: "520px", width: "1000px", marginLeft: -10}}>
             <LineChart chartData={switchClicked ? conditionalChartData : chartData} />
           </Box>
         </Box>
-        <Box>
+        <Box sx={{marginLeft: 10}}>
           {chartData.datasets.map((item) => {
             return renderSwitch(item)
           })}
