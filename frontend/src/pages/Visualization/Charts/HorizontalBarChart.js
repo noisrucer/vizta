@@ -9,6 +9,8 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import {Chart} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 // import faker from 'faker';
 
 ChartJS.register(
@@ -36,6 +38,23 @@ const options = {
       interaction: {
         intersect: false,
       },
+    },
+    datalabels: {
+      formatter: function (value, context) {
+        const currNum = context.dataset.data[context.dataIndex]
+        if (!currNum) {
+          return ""
+        } 
+
+        var totalNum = 0
+        context.dataset.data.forEach(x => {totalNum += x})
+        const original = context.dataset.data
+        return Math.round(currNum / totalNum * 100) + "%"
+      },
+      color: "white",
+      font: {
+        size: 9.5
+      }
     },
   },
   scales: {
@@ -85,7 +104,7 @@ const options = {
 
 function HorizontalBarChart({chartData}) {
   return (
-    <Bar data={chartData} options={options}/>
+    <Bar data={chartData} options={options} plugins={[ChartDataLabels]}/>
   )
 }
 

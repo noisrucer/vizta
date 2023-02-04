@@ -33,7 +33,10 @@ const chartBackgroundColor = ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5
       }
     },
     scale: {
-      suggestedMax: 5
+      suggestedMax: 5,
+      pointLabels: {
+        fontSize: 30
+      }
     },
     scales: {
       r: {
@@ -45,7 +48,11 @@ const chartBackgroundColor = ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5
           color: "grey"
         },
         pointLabels: {
+          font: {
+            size: 12
+          },
           color: "white"
+          
         },
         ticks: {
           color: "white",
@@ -169,7 +176,7 @@ const ProfessorStats = () => {
           <h1>Overall</h1>
         </Box> */}
         <Box sx={{width: "180%", height:"550px", display: 'flex', flexDirection: "row", justifyContent: 'center'}}>
-          <Box sx={{marginRight: 10, width:"550px", height:"550px"}}>
+          <Box sx={{marginRight: 10, width:"580px", height:"580px"}}>
             <Radar data={switchClicked ? conditionalChartData : chartData} options={options}/>
           </Box>
           <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", height: "520px"}}>

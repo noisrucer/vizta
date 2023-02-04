@@ -31,7 +31,7 @@ function Number({ n }) {
       config: {mass: 1, tension: 20, friction: 10},
   });
   return ( 
-      <animated.div style={{ fontSize: '48px'}}>
+      <animated.div style={{ fontSize: '42px'}}>
               {number.to((n) => n.toFixed(1))}
       </animated.div>
   )
@@ -78,7 +78,7 @@ const Badges = styled(Box)(({borderColor, backgronudColor}) => ({
 
 function JudgeBadgesColor(average) {
   if(average === null) {
-    return ["#8F8F88", "#1D2630", "NULL"]
+    return ["#8F8F88", "#1D2630", "NONE"]
   } else if(average <= 1.66){
     return ["#ff403d", "#3b353eff", "HARD"]
   } else if (average <=3.33){
@@ -90,7 +90,7 @@ function JudgeBadgesColor(average) {
 
 function JudgeGPABadgeColor(average) {
   if(average === null) {
-    return ["#8F8F88", "#1D2630", "NULL"]
+    return ["#8F8F88", "#1D2630", "NONE"]
   } else if(average === 0){
     return ["#ff403d", "#3b353eff", "Avg: F"]
   } else if(average <= 1){

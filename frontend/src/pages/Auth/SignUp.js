@@ -135,8 +135,20 @@ const SignUp = () => {
   }, [password, confirmPassword]);
 
   const closeErrorMessage = () => {
-    setOpenErrorMessage(false)
+    setOpenErrorMessage(false);
   }
+
+  useEffect(() => {
+    if (openErrorMessage) {
+      const timeoutId = setTimeout(() => {
+        setOpenErrorMessage(false);
+      }, 2000);
+  
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [openErrorMessage]);
 
   function onChangeVerificationCode (evt) {
     evt.preventDefault();

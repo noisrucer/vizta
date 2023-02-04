@@ -49,6 +49,12 @@ export default function Sidebar() {
 
   const navigate = useNavigate();
 
+  console.log("usertoken: ", userToken)
+  
+  const handleLogoutClick = () => {
+    setUserToken({...userToken, headers: ""})
+  }
+
   return (
     <Box sx={{ display: 'flex'}}>
       <CssBaseline />
@@ -60,10 +66,8 @@ export default function Sidebar() {
             <>
               <Button variant="primary" href="/" sx={{position: "absolute", right: 300}}>Home</Button>
               <Button variant="primary" href="/main/All" sx={{position: "absolute", right: 220}}>Main</Button>
-              <Button variant="primary" href="/favorites" sx={{position: "absolute", right: 100}}>Favorites</Button>
-              <Button variant="primary" href="/profile" sx={{ position: "absolute", right: 20 }}>
-                <SettingsIcon sx={{color: "#FFFFFF"}}/>
-              </Button>
+              <Button variant="primary" href="/profile" sx={{position: "absolute", right: 120}}>Profile</Button>
+              <Button variant="primary" href="/" sx={{ position: "absolute", right: 20 }} onClick={handleLogoutClick}>Logout</Button>
             </> : 
             <>
               <Button variant="primary" href="/auth/sign-in" sx={{marginLeft: 'auto'}}>Log In</Button>
