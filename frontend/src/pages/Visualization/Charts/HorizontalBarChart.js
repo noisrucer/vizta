@@ -65,8 +65,17 @@ const options = {
         tickColor: "#333A46"
       },
       ticks: {
+        stepSize: 1,
         color: "white"
       },
+      beforeBuildTicks: function(axis) {
+        console.log("axis", axis);
+        if (axis.max < 3) {
+          axis.options.ticks.stepSize = 2
+        } else {
+          axis.options.ticks.stepSize = Math.round(axis.max / 5 + 1)
+        }
+      }
     },
     y: {
       stacked: true,
