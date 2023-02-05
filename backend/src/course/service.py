@@ -154,6 +154,18 @@ def get_user_review(
     return user_review
 
 
+def check_already_reviewed(db:Session, email: str, course_id: str):
+    user_review = db.query(models.CourseReview).filter(
+        and_(
+            models.CourseReview.email == email,
+            models.CourseReview.course_id == course_id,
+        )
+    ).all()
+    
+    return True if user_review else False
+
+
+
 def get_majority_ratio(db: Session,
                        subclass_id: str,
                        course_id: str,
