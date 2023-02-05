@@ -48,8 +48,6 @@ export default function Sidebar() {
   const [isLoggedIn, setIsLoggedIn] = IsLoggedIn
 
   const navigate = useNavigate();
-
-  console.log("usertoken: ", userToken)
   
   const handleLogoutClick = () => {
     setUserToken({...userToken, headers: ""})
@@ -64,7 +62,6 @@ export default function Sidebar() {
           {
             isLoggedIn ? 
             <>
-              <Button variant="primary" href="/" sx={{position: "absolute", right: 300}}>Home</Button>
               <Button variant="primary" href="/main/All" sx={{position: "absolute", right: 220}}>Main</Button>
               <Button variant="primary" href="/profile" sx={{position: "absolute", right: 120}}>Profile</Button>
               <Button variant="primary" href="/" sx={{ position: "absolute", right: 20 }} onClick={handleLogoutClick}>Logout</Button>
