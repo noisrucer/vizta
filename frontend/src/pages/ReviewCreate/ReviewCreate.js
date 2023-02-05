@@ -400,7 +400,7 @@ export default function ReviewCreate() {
     "workload",
     "lecture_difficulty",
     "final_exam_difficulty",
-    "course_entertaining",
+    "course_entertainment",
     "course_delivery",
     "course_interactivity",
     "final_exam_ratio",
@@ -416,7 +416,7 @@ export default function ReviewCreate() {
   ]
 
   const lectureQualitySection = [
-    "course_entertaining",
+    "course_entertainment",
     "course_delivery",
     "course_interactivity"
   ]
