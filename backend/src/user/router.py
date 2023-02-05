@@ -65,3 +65,10 @@ async def is_favorite(email: EmailStr, course_id: str, db: Session=Depends(get_d
         raise course_exceptions.CourseNotExistException(course_id)
     fav = course_service.check_exist_user_favorite_course(db, email, course_id)
     return {"isFavorite": True if fav else False}
+
+@router.get(
+    '/check-reviewed/{email}/{course_id}',
+     dependencies=[Depends(glob_dependencies.get_current_user)]
+    )
+async def check_already_reviewed(email: EmailStr, course_id: str, db: Session=Depends(get_db)):
+    return course_service.check_already_reviewed(db, email, course_id)
