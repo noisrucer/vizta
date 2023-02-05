@@ -50,6 +50,15 @@ function calculateOverallAverage(delivery, entertaining, interactivity){
     return [overall, 5 - overall]
 }
 
+const NumReviewBox = styled(Box)(() => ({
+    height: "30px",
+    width: "100px",
+    backgroundColor: "#1D2630",
+    color: "white",
+    borderRadius: 5,
+    border: `2px solid white`,
+  }))
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
   
@@ -157,6 +166,8 @@ const Visualization = () => {
 
     const [isFavorite, setIsFavorite] = useState(false);
 
+    const [numReviews, setNumReviews] = useState(0)
+
     const [open, setOpen] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const handleClose = (event, reason) => {
@@ -218,9 +229,10 @@ const Visualization = () => {
                 headers: userToken['headers']
             })
             .then(response => {
+                console.log("response: ", response)
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
-                    data: response.data.GPA,
+                    data: response.data.GPA.values,
                     backgroundColor: dataColor,
                 }]})
                 setLectureDifficulty({...lectureDifficulty, datasets: [{
@@ -363,9 +375,10 @@ const Visualization = () => {
                 headers: userToken['headers']
             })
             .then(response => {
+                setNumReviews(response.data.TotalNumReviews)
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
-                    data: response.data.GPA,
+                    data: response.data.GPA.values,
                     backgroundColor: dataColor
                 }]})
                 setLectureDifficulty({...lectureDifficulty, datasets: [{
@@ -466,13 +479,19 @@ const Visualization = () => {
                     </span>
                 </h2>
                 <Box sx={{marginLeft: "auto"}}>
+                    {isOverview ? 
+                        <Button disabled sx={{marginRight: 1}}>
+                            Total Reviews: {numReviews}
+                        </Button> : 
+                        <></> 
+                    }
                     <IconButton onClick={handleFavoriteClick} sx={{marginRight: 1}}>
                         {
                             isFavorite ? <FavoriteIcon sx={{color: "#FF403D", fontSize: 24}}/> : <FavoriteBorderIcon sx={{color: "#FF403D", fontSize: 24}}/>
                         }
                     </IconButton>
                     <Button variant="outlined">
-                        {'>'} Add review
+                        Add review
                     </Button>
                 </Box>
             </Box>
