@@ -6,7 +6,7 @@ function DoughnutChart({chartData}) {
 
   const options = {
     layout: {
-      padding: -20
+      padding: -15
     },
     plugins: {
       tooltip: {
@@ -14,13 +14,15 @@ function DoughnutChart({chartData}) {
       },
       legend: {
         position: "right",
+        padding: {
+          left: 2
+        },
         labels: {
           filter: (legendItem, data) => data.datasets[0].data[legendItem.index] != 0,
           color: "#fff",
           usePointStyle: true,
           pointStyle: 'circle',
           useBorderRadius: "false",
-          padding: 15
         }
       },
       datalabels: {
