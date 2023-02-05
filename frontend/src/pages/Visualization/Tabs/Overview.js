@@ -142,7 +142,7 @@ const Overivew = (chartData) => {
           <Square sx={{marginTop: -1.5}}>
             <RadarChart chartData={chartData.pentagon}/>
           </Square>
-          <Box sx={{ position: "absolute", left:80, top: 200, display:"flex"}}>
+          <Box sx={{ position: "relative", top:-330, left: 25, display:"flex"}}>
             <Number n={chartData.overallScore} />
             <h1 style={{position: "absolute", left: 24, top: 22}}></h1>
             <h3 style={{marginTop: 22, marginLeft: 5}}>/ 5.0</h3>
