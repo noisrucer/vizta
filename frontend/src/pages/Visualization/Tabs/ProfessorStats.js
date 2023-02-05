@@ -120,10 +120,13 @@ const ProfessorStats = () => {
     }, []);
 
     const initialState = chartData.datasets.reduce((acc, dataset) => {
-      acc[dataset.label] = true;
+      acc[dataset.label] = false;
       return acc;
     }, {});
-    
+
+    initialState[Object.keys(initialState)[0]] = true;
+    initialState[Object.keys(initialState)[1]] = true;
+
     const [state, setState] = useState(initialState);
     const [switchClicked, setSwitchClicked] = useState(false)
 
@@ -177,7 +180,7 @@ const ProfessorStats = () => {
         </Box> */}
         <Box sx={{width: "180%", height:"550px", display: 'flex', flexDirection: "row", justifyContent: 'center'}}>
           <Box sx={{marginRight: 10, width:"580px", height:"580px"}}>
-            <Radar data={switchClicked ? conditionalChartData : chartData} options={options}/>
+            <Radar data={ conditionalChartData } options={options}/>
           </Box>
           <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", height: "520px"}}>
             <FormControl component="fieldset" variant="standard">

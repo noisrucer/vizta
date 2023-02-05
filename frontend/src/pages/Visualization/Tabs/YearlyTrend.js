@@ -136,14 +136,18 @@ const YearlyTrend = () => {
     }
 
     const initialState = chartData.datasets.reduce((acc, dataset) => {
-      acc[dataset.label] = true;
+      acc[dataset.label] = false;
       return acc;
     }, {});
+
+    initialState[Object.keys(initialState)[0]] = true;
+    initialState[Object.keys(initialState)[1]] = true;
     
     const [state, setState] = useState(initialState);
     const [switchClicked, setSwitchClicked] = useState(false)
 
     useEffect(() => {
+
       setState(initialState);
     }, [chartData]);
 
@@ -207,7 +211,7 @@ const YearlyTrend = () => {
         >
           <h2>{title}</h2>
           <Box sx={{height: "520px", width: "1000px", marginLeft: -10}}>
-            <LineChart chartData={switchClicked ? conditionalChartData : chartData} />
+            <LineChart chartData={conditionalChartData} />
           </Box>
         </Box>
         <Box sx={{marginLeft: 10}}>
