@@ -35,7 +35,7 @@ const options = {
     },
     tooltip: {
       interaction: {
-        intersect: false,
+        intersect: true,
       },
     },
     datalabels: {
@@ -68,7 +68,6 @@ const options = {
         color: "white"
       },
       beforeBuildTicks: function(axis) {
-        console.log("axis", axis);
         if (axis.max < 5) {
           axis.options.ticks.stepSize = 1
         } else {
@@ -86,26 +85,6 @@ const options = {
       },
     }
   }
-  // scales: {
-  //   yAxes: {
-  //     grid: {
-  //       drawBorder: true,
-  //       color: "#FFFFFF"
-  //     },
-  //     ticks:{
-  //       beginAtZero: false,
-  //       color: "white",
-  //       fontSize: 12
-  //     }
-  //   },
-  //   xAxes: {
-  //     grid: {
-  //       beginAtZero: false,
-  //       color: "white",
-  //       fontSize: 12
-  //     }
-  //   }
-  // }
 };
 
 
