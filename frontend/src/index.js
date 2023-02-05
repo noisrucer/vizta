@@ -36,7 +36,9 @@ root.render(
   <BrowserRouter>
     <ThemeProvider theme={darkTheme}>
       <UserProvider>
-        <App />
+        <SnackbarProvider maxSnack={3} autoHideDuration={5000}>
+          <App />
+        </SnackbarProvider>
       </UserProvider>
     </ThemeProvider>
   </BrowserRouter>
