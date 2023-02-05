@@ -106,6 +106,18 @@ const Visualization = () => {
     const [selectYear, setSelectYear] = useState([])
     const [selectProfessor, setSelectProfessor] = useState([])
 
+    const [hasReviewed, setHasReviewed] = useState(false);
+
+    axios.request({
+        method: "get",
+        url: `${baseURL}/users/check-reviewed/${userData}/${courseId}`,
+        headers: userToken['headers']
+    })
+    .then(response => {
+        console.log("has reviewed: ", response.data)
+        setHasReviewed(response.data)
+    })
+
     const [GPA, setGPA] = useState({
         labels: GPALabel,
         datasets: [{
@@ -492,9 +504,15 @@ const Visualization = () => {
                             isFavorite ? <FavoriteIcon sx={{color: "#FF403D", fontSize: 24}}/> : <FavoriteBorderIcon sx={{color: "#FF403D", fontSize: 24}}/>
                         }
                     </IconButton>
-                    <Button variant="outlined"  onClick={() => navigate(`/review/${params.courseId}`)}>
-                        Add review
-                    </Button>
+                    {
+                        hasReviewed ?
+                        <Button variant="outlined" disabled onClick={() => navigate(`/review/${params.courseId}`)}>
+                            Add review
+                        </Button> :
+                        <Button variant="outlined"  onClick={() => navigate(`/review/${params.courseId}`)}>
+                            Add review
+                        </Button>
+                    }
                 </Box>
             </Box>
         </Box>
