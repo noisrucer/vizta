@@ -464,7 +464,7 @@ const Visualization = () => {
 
             <Box sx={{ 
                 width: '93%', 
-                marginTop: 10, 
+                marginTop: 9, 
                 marginBottom: 1, 
                 display: "flex", 
                 flexDirection: "row",

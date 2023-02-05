@@ -6,7 +6,7 @@ function DoughnutChart({chartData}) {
 
   const options = {
     layout: {
-      padding: -10
+      padding: -20
     },
     plugins: {
       tooltip: {
@@ -19,7 +19,8 @@ function DoughnutChart({chartData}) {
           color: "#fff",
           usePointStyle: true,
           pointStyle: 'circle',
-          useBorderRadius: "false"
+          useBorderRadius: "false",
+          padding: 15
         }
       },
       datalabels: {

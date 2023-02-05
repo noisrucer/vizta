@@ -178,8 +178,8 @@ const ProfessorStats = () => {
         {/* <Box sx={{width: "180%", marginLeft: -20, display: "flex", justifyContent: "center"}}>
           <h1>Overall</h1>
         </Box> */}
-        <Box sx={{width: "180%", height:"550px", display: 'flex', flexDirection: "row", justifyContent: 'center'}}>
-          <Box sx={{marginRight: 10, width:"580px", height:"580px"}}>
+        <Box sx={{width: "180%", height:"540px", display: 'flex', flexDirection: "row", justifyContent: 'center'}}>
+          <Box sx={{marginRight: 10, width:"570px", height:"570px"}}>
             <Radar data={ conditionalChartData } options={options}/>
           </Box>
           <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", height: "520px"}}>

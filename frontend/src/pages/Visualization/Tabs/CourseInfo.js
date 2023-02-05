@@ -52,7 +52,7 @@ const CourseInfo = (courseData) => {
   console.log("GradingRatio: ", gradingRatio)
 
   return (
-    <Box sx={{height: "550px", width: "1350px", overflowX: "hidden"}}>
+    <Box sx={{height: "540px", width: "1350px", overflowX: "hidden"}}>
       <Box sx={{marginLeft: 1}}>
         <Stack sx={{display: "flex", flexDirection: "row"}}>
           <CourseDescriptionGrid sx={{marginRight: 3}}>
