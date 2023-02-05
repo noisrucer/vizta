@@ -232,7 +232,7 @@ class ReviewSection extends React.Component {
   }
 }
 
-function SubmitReview(data, userToken, onSuccess) {
+function SubmitReview(data, userToken, enqueueSnackbar, onSuccess) {
   console.log(data)
 
   axios.request({
@@ -242,9 +242,11 @@ function SubmitReview(data, userToken, onSuccess) {
     headers: userToken['headers']
   }).then(response => {
     console.log(response)
+    enqueueSnackbar('Your review has been submitted!', {autoHideDuration: 5000, variant: 'success'});
     onSuccess();
   })
     .catch(err => {
+      enqueueSnackbar('Failed to submit review!', {autoHideDuration: 5000, variant: 'error'});
       console.log(err)
     })
 }
@@ -567,8 +569,7 @@ export default function ReviewCreate() {
         <Fab variant="extended"
              onClick={() => ReviewStep !== StepList.length - 1 ?
                setReviewStep(ReviewStep + 1) :
-               SubmitReview(ReviewData, userToken, () => {
-                 enqueueSnackbar('Your review has been submitted!', {autoHideDuration: 5000, variant: 'success'});
+               SubmitReview(ReviewData, userToken, enqueueSnackbar, () => {
                  navigate(`/visualization/${params.courseId}`)
                })}>
 
