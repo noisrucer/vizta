@@ -130,11 +130,10 @@ function StackedGPA(gpa) {
 };
 
 const Overivew = (chartData) => {
-
   // console.log("chartData in overview: ", chartData)
   const criteriaAverage = chartData.pentagon.datasets[0].data
 
-  const GPAData = StackedGPA(chartData.GPA.datasets[0].data)
+  const GPAData = chartData.GPA
 
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >
@@ -174,7 +173,7 @@ const Overivew = (chartData) => {
           </Box>
         </Item>
       </Stack>
-      <Stack spacing={3} sx={{marginLeft: 2, merginRight: 1}}>
+      <Stack spacing={3} sx={{marginLeft: 2}}>
         <HorizontalGrid >
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
             <Box sx={{marginLeft: "47%"}}>
