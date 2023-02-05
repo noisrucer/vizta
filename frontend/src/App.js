@@ -26,6 +26,9 @@ const darkTheme = createTheme({
     },
     background: {
       default: temp_color
+    },
+    action: {
+      disabled: "lightgrey",
     }
   },
 });
