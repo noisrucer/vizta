@@ -87,7 +87,7 @@ const CourseInfo = (courseData) => {
                   <Box sx={{display: "flex", marginLeft:1,  marginBottom: 1}}>
                     {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Blocking Courses: </h4> */}
                     <h4 style={{textAlign:"left"}}>
-                      <label style={{color: "#FF5721"}}>Prerequisites: </label>
+                      <label style={{color: "#FF5721"}}>Blocking Courses: </label>
                       {courseData.description.BlockingCourses.join(", ")}
                     </h4>
                   </Box>
@@ -135,13 +135,16 @@ const CourseInfo = (courseData) => {
                   defaultValue={Object.values(gradingRatioList)[0]}
                 >
                   { Object.keys(gradingRatioList).map((key) => {
+                    // const filteredGradingRatioList = gradingRatioList[key].filter(function(val) { return val != 0})
                     return <MenuItem 
                       key={key} 
                       value={gradingRatioList[key]} 
                       onClick={() => {setGradingRatio({...gradingRatio, datasets: [{
                         label: "students answer",
                         data: gradingRatioList[key]
-                      }]})}}>
+                      }],
+
+                      })}}>
                       {key}
                     </MenuItem>
                   })}

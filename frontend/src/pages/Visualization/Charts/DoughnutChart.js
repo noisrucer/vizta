@@ -15,6 +15,7 @@ function DoughnutChart({chartData}) {
       legend: {
         position: "right",
         labels: {
+          filter: (legendItem, data) => data.datasets[0].data[legendItem.index] != 0,
           color: "#fff",
           usePointStyle: true,
           pointStyle: 'circle',
