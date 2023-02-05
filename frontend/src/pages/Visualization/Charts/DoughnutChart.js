@@ -5,7 +5,13 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 function DoughnutChart({chartData}) {
 
   const options = {
+    layout: {
+      padding: -10
+    },
     plugins: {
+      tooltip: {
+        enabled: false
+      },
       legend: {
         position: "right",
         labels: {
