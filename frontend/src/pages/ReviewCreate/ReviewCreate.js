@@ -165,9 +165,24 @@ class ReviewSection extends React.Component {
 
   constructor(props) {
 
+    let lLabel = ""
+    if ('lLabel' in props) {
+      lLabel = props.lLabel
+    }
+
+    let rLabel = ""
+    if ('rLabel' in props) {
+      rLabel = props.rLabel
+    }
+
     let max = 5
     if ('max' in props) {
       max = props.max
+    }
+
+    let min = 1
+    if ('min' in props) {
+      min = props.min
     }
 
     let step = 1
@@ -179,12 +194,17 @@ class ReviewSection extends React.Component {
 
     this.state = {
       max: max,
+      min: min,
+      lLabel: lLabel,
+      rLabel: rLabel,
       step: step,
       ...this.props.reviewItems.reduce((a, b) => (a[b] = this.props.itemValues[b] || 0 , a), {})
     }
   }
 
   render() {
+
+    const label = this.state.lLabel !== "" && this.state.rLabel !== "";
 
     const card = (
       <CardContent sx={{mx: 3, my: 5}}>
@@ -198,14 +218,23 @@ class ReviewSection extends React.Component {
                   <Grid item xs="3">
                     {VariableNameCapitalize(v)}
                   </Grid>
-                  <Grid item xs="9">
+                  {
+                    label ?
+                      (
+                        <Grid item xs="2">
+                          {this.state.lLabel}
+                        </Grid>
+                      ) :
+                      null
+                  }
+                  <Grid item xs={label ? 6 : 9}>
                     <PrettoSlider
                       valueLabelDisplay="auto"
                       aria-label="pretto slider"
                       value={this.state[v]}
                       step={this.state.step}
                       marks
-                      min={0}
+                      min={this.state.min}
                       max={this.state.max}
                       onChange={(e, nv) => {
                         this.setState(MergeDict(this.state, {[v]: this.props.valueCheck(v, nv)}))
@@ -215,6 +244,15 @@ class ReviewSection extends React.Component {
                       }}
                     />
                   </Grid>
+                  {
+                    label ?
+                      (
+                        <Grid item xs="1">
+                          {this.state.rLabel}
+                        </Grid>
+                      ) :
+                      null
+                  }
                 </Grid>
               )
             )
@@ -246,7 +284,14 @@ function SubmitReview(data, userToken, enqueueSnackbar, onSuccess) {
     onSuccess();
   })
     .catch(err => {
-      enqueueSnackbar('Failed to submit review!', {autoHideDuration: 5000, variant: 'error'});
+
+      var reason = "Reason here";
+
+      enqueueSnackbar(
+        <div> Failed to submit review ! <br/>
+          {reason}
+        </div>
+        , {autoHideDuration: 5000, variant: 'error'});
       console.log(err)
     })
 }
@@ -431,7 +476,7 @@ export default function ReviewCreate() {
       academic_year: 2022,
       semester: 1,
       gpa: "F",
-      ...reviewList.reduce((a, b) => (a[b] = 0 , a), {})
+      ...reviewList.reduce((a, b) => (a[b] = b.endsWith('ratio') ? 0 : 1 , a), {})
     }
   );
   const [courseDescription, setCourseDescription] = useState({
@@ -508,18 +553,23 @@ export default function ReviewCreate() {
                             title="Course Rating"
                             reviewItems={courseRatingSection}
                             itemValues={ReviewData}
+                            lLabel="Easy"
+                            rLabel="Hard"
                             valueCheck={checkValue}
                             handleValueChange={AlterReviewData}/>),
             (<ReviewSection key="Lecture Quality Rating"
                             title="Lecture Quality Rating"
                             reviewItems={lectureQualitySection}
                             itemValues={ReviewData}
+                            lLabel="Poor"
+                            rLabel="Exceptional"
                             valueCheck={checkValue}
                             handleValueChange={AlterReviewData}/>),
             (<ReviewSection key="Course Grading Distribution"
                             title="Course Grading Distribution"
                             reviewItems={gradeDistrSection}
                             itemValues={ReviewData}
+                            min={0}
                             max={100}
                             step={5}
                             valueCheck={checkValue}
