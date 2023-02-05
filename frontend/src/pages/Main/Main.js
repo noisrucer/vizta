@@ -10,15 +10,9 @@ import Box from "@mui/material/Box";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import TextField from "../../components/TextField";
 import Typography from '@mui/material/Typography';
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
-import StarIcon from '@mui/icons-material/Star';
 import axios from 'axios';
 import Pagination from "@mui/material/Pagination";
 import Stack from '@mui/material/Stack';
@@ -27,6 +21,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from "../../components/Snackbar";
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 const baseURL = 'http://127.0.0.1:8000';
 const temp_color = "#1D2630"
@@ -91,7 +86,7 @@ const Search = styled("div")(({ theme }) => ({
     if (!query) {
       return items;
     }
-    return items.filter((courses) => courses.course_id.includes(query));
+    return items.filter((courses) => courses.course_id.toLowerCase().includes(query.toLowerCase()) || courses.name.toLowerCase().includes(query.toLowerCase()));
   };
 
 const Main = () => {
@@ -109,6 +104,15 @@ const Main = () => {
     const [favorites, setFavorites] = useState([]);
     const [favoritesChanged, setFavoritesChanged] = useState(false);
     const [query, setQuery] = useState("");
+
+    const [open, setOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpen(false);
+    };
 
     useEffect(() => {
       const fetchCourseData = async () => {
@@ -146,6 +150,7 @@ const Main = () => {
     const filteredCourses = getFilteredCourses(query, courses)
 
     const handleFavoritesButtonClick = (id, isFavorites) => {
+      setOpen(true)
       const data = {
         "email": userData,
         "course_id": id
@@ -166,6 +171,7 @@ const Main = () => {
           })
         };
         addFavorite();
+        setAlertMessage("Successfully added to favorites!")
       } 
       else {
         const deleteFavorite = async () => {
@@ -182,6 +188,7 @@ const Main = () => {
           })
         };
         deleteFavorite();
+        setAlertMessage("Successfully removed from favorites!")
       }
 
       setFavoritesChanged(!favoritesChanged);
@@ -289,8 +296,11 @@ const Main = () => {
                       ))}
                   </List> :
                   <>
-                    <List>No Items to display</List>
-                    <Divider variant="fullWidth" style={{width: "620px"}}/>
+                    <List>
+                      <ArchiveIcon sx={{fontSize: "60px", color: "grey"}}/>
+                      <h3 style={{color:'grey'}}>No Items to display</h3>
+                    </List>
+                    <Divider variant="fullWidth" style={{width: "620px", marginBottom: 10}}/>
                   </>
                   }
                   <Stack spacing={2} sx={{display: "flex", alignItems: "center"}}>
@@ -351,8 +361,11 @@ const Main = () => {
                     ))}
                 </List> :
                 <>
-                  <List>No Items to display</List>
-                  <Divider variant="fullWidth" style={{width: "620px"}}/>
+                  <List>
+                    <ArchiveIcon sx={{fontSize: "60px", color: "grey"}}/>
+                    <h3 style={{color:'grey'}}>No Items to display</h3>
+                  </List>
+                  <Divider variant="fullWidth" style={{width: "620px", marginBottom: 10}}/>
                 </>
                 }
                 <Stack spacing={2} sx={{display: "flex", alignItems: "center"}}>
@@ -368,6 +381,11 @@ const Main = () => {
           </Item>
           </Box>
         </Box>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {alertMessage}
+          </Alert>
+        </Snackbar>
       </Box>
     )
 };

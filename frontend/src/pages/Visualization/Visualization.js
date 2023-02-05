@@ -1,5 +1,5 @@
 import '@fontsource/public-sans';
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState, forwardRef } from 'react';
 import axios from 'axios';
 import { UserContext } from '../../UserContext';
 import {useNavigate, useParams} from 'react-router-dom';
@@ -22,7 +22,12 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from "../../components/Snackbar";
 
+const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
 const baseURL = 'http://127.0.0.1:8000';
 const dataColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"];
@@ -45,9 +50,18 @@ function calculateOverallAverage(delivery, entertaining, interactivity){
     return [overall, 5 - overall]
 }
 
+const NumReviewBox = styled(Box)(() => ({
+    height: "30px",
+    width: "100px",
+    backgroundColor: "#1D2630",
+    color: "white",
+    borderRadius: 5,
+    border: `2px solid white`,
+  }))
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-
+  
     return (
       <div
         role="tabpanel"
@@ -85,8 +99,9 @@ const Visualization = () => {
     const params = useParams()
     const courseId = params.courseId
 
-    const {UserToken} = useContext(UserContext)
-    const [userToken, setUserToken] = UserToken
+    const {UserToken, UserData} = useContext(UserContext);
+    const [userToken, setUserToken] = UserToken;
+    const [userData, setUserData] = UserData;
 
     const [selectYear, setSelectYear] = useState([])
     const [selectProfessor, setSelectProfessor] = useState([])
@@ -105,7 +120,7 @@ const Visualization = () => {
         datasets: [{
             label: "Students Score",
             data: [],
-            backgroundColor: dataColor
+            backgroundColor: dataColor,
         }]
     })
 
@@ -151,7 +166,64 @@ const Visualization = () => {
         Timetable: {}
     });
 
-    useEffect(() => { // get request from courseInfo, courseDescription, available year and professor
+    const [isFavorite, setIsFavorite] = useState(false);
+
+    const [numReviews, setNumReviews] = useState(0)
+
+    const [open, setOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpen(false);
+    };
+
+    const handleFavoriteClick = () => {
+        setOpen(true)
+        const data = {
+            "email": userData,
+            "course_id": courseId
+          }
+          if (isFavorite === false){
+            const addFavorite = async () => {
+              axios.request({
+                method: 'post',
+                url: `${baseURL}/courses/favorite`,
+                data,
+                headers: userToken['headers']
+              })
+              .then(response => {
+                console.log("response from /courses/favorite: ", response)
+              })
+              .catch(error => {
+                console.log("error in addFavorite: ", error)
+              })
+            };
+            addFavorite();
+            setAlertMessage("Successfully added to favorites!")
+          }
+          else {
+            const deleteFavorite = async () => {
+              axios.request({
+                method: 'delete',
+                url: `${baseURL}/courses/favorite/${userData}/${courseId}`,
+                headers: userToken['headers']
+              })
+              .then(response => {
+                console.log("response from /courses/favorite/email/courses delete: ",response)
+              })
+              .catch(error => {
+                console.log("error in delete favorite: ", error)
+              })
+            };
+            deleteFavorite();
+            setAlertMessage("Successfully removed from favorites!")
+          }
+          setIsFavorite(!isFavorite);
+    }
+
+    useEffect(() => { // get request from courseInfo, courseDescription, available year and professor, favorites
         const fetchCourseData = async () => {
             axios.request({
                 method: 'get',
@@ -159,10 +231,11 @@ const Visualization = () => {
                 headers: userToken['headers']
             })
             .then(response => {
+                console.log("response: ", response)
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
-                    data: response.data.GPA,
-                    backgroundColor: dataColor
+                    data: response.data.GPA.values,
+                    backgroundColor: dataColor,
                 }]})
                 setLectureDifficulty({...lectureDifficulty, datasets: [{
                     label: "Students Score",
@@ -263,6 +336,21 @@ const Visualization = () => {
         };
         getAvailableProfessors();
 
+        const getFavorites = async () => {
+            axios.request({
+                method: 'get',
+                url: `${baseURL}/users/check-favorite/${userData}/${courseId}`,
+                headers: userToken['headers']
+            })
+            .then(response => {
+                setIsFavorite(response.data.isFavorite)
+            })
+            .catch(error => {
+                console.log("error from /users/check-favorites: ", error)
+            })
+        };
+        getFavorites();
+
     }, [])
 
     const [selectedYear, setSelectedYear] = useState("All");
@@ -289,9 +377,10 @@ const Visualization = () => {
                 headers: userToken['headers']
             })
             .then(response => {
+                setNumReviews(response.data.TotalNumReviews)
                 setGPA({...GPA, datasets: [{
                     label: "Students Score",
-                    data: response.data.GPA,
+                    data: response.data.GPA.values,
                     backgroundColor: dataColor
                 }]})
                 setLectureDifficulty({...lectureDifficulty, datasets: [{
@@ -353,22 +442,12 @@ const Visualization = () => {
     const [conditionalPentagon, setConditionalPentagon] = useState(pentagon);
 
     const [value, setValue] = useState(0);
-
+  
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
 
-    const handleChangeIndex = (index) => {
-      setValue(index);
-    };
-
     const [isOverview, setIsOverview] = useState(true);
-
-    const [isFavorite, setIsFavorite] = useState(false);
-
-    const handleFavoriteClick = () => {
-        setIsFavorite(!isFavorite);
-    }
 
   return (
     <Box sx={{
@@ -382,19 +461,19 @@ const Visualization = () => {
             flexDirection: "column", 
             alignItems: "center", 
             width: "100%",
-            justifyContent: "center"
+            justifyContent: "center",
             }}>
 
-            <Box sx={{
-                width: '93%',
-                marginTop: 8,
-                marginBottom: 1,
-                display: "flex",
+            <Box sx={{ 
+                width: '93%', 
+                marginTop: 9,
+                marginBottom: 1, 
+                display: "flex", 
                 flexDirection: "row",
                 alignItems: 'center',
                 }}>
                 <h2>
-                    <span style={{color: "#4FB19E"}}>
+                    <span style={{color: "#FFC106"}}>
                         {courseId} {" "}
                     </span>
                     <span>
@@ -402,13 +481,19 @@ const Visualization = () => {
                     </span>
                 </h2>
                 <Box sx={{marginLeft: "auto"}}>
+                    {isOverview ?
+                        <Button disabled sx={{marginRight: 1}}>
+                            Total Reviews: {numReviews}
+                        </Button> :
+                        <></>
+                    }
                     <IconButton onClick={handleFavoriteClick} sx={{marginRight: 1}}>
                         {
                             isFavorite ? <FavoriteIcon sx={{color: "#FF403D", fontSize: 24}}/> : <FavoriteBorderIcon sx={{color: "#FF403D", fontSize: 24}}/>
                         }
                     </IconButton>
                     <Button variant="outlined"  onClick={() => navigate(`/review/${params.courseId}`)}>
-                        {'>'} Add review
+                        Add review
                     </Button>
                 </Box>
             </Box>
@@ -431,12 +516,12 @@ const Visualization = () => {
                     </Tabs>
                 </AppBar>
                     <TabPanel value={value} index={0}>
-                        <Overview
-                            GPA={GPA}
-                            lectureDifficulty={lectureDifficulty}
-                            finalDifficulty={finalDifficulty}
-                            workload={workload}
-                            pentagon={pentagon}
+                        <Overview 
+                            GPA={GPA} 
+                            lectureDifficulty={lectureDifficulty} 
+                            finalDifficulty={finalDifficulty} 
+                            workload={workload} 
+                            pentagon={pentagon} 
                             teachingQuality={overallTeachingQuality}
                             interactivity={interactivity}
                             entertaining={entertaining}
@@ -445,7 +530,7 @@ const Visualization = () => {
                             />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <CourseInfo
+                        <CourseInfo 
                             description={courseDescription}
                         />
                     </TabPanel>
@@ -457,7 +542,7 @@ const Visualization = () => {
                     </TabPanel>
             </Box>
             <Box>
-             <Stack
+             <Stack 
                 spacing={2} 
                 direction="row"
                 sx={{
@@ -466,9 +551,9 @@ const Visualization = () => {
                     justifyContent: "center",
                     marginLeft: 28.5
                 }}>
-                { isOverview ?
+                { isOverview ? 
                     <>
-                        <TextField
+                        <TextField 
                             id="get-by-year"
                             select
                             label="Select Year"
@@ -482,7 +567,7 @@ const Visualization = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                        <TextField
+                        <TextField 
                             id="get-by-professor"
                             select
                             label="Select Professor"
@@ -496,12 +581,17 @@ const Visualization = () => {
                                 </MenuItem>
                             ))}
                         </TextField>
-                    </> :
-                    <></>
+                    </> : 
+                    <></> 
                 }
             </Stack>
             </Box>
         </Box>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            {alertMessage}
+          </Alert>
+        </Snackbar>
     </Box>
   )
 }

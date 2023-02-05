@@ -1,25 +1,11 @@
 import '@fontsource/public-sans';
-import { useEffect, useContext, useState } from 'react';
-import axios from 'axios';
-import { UserContext } from '../../../UserContext';
-import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/Textfield';
-import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
-import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import BarChart from "../Charts/BarChart"
-import DoughnutChart from '../Charts/DoughnutChart';
 import HorizontalBarChart from '../Charts/HorizontalBarChart';
 import RadarChart from '../Charts/RadarChart';
 import OverallScore from '../OverallScore/OverallScore';
-import AppBar from '@mui/material/AppBar';
 import { useSpring, animated } from "react-spring";
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import Item from "../Boxes/Item";
 import LinearPercentage from "../Charts/LinearPercentage";
 
@@ -31,7 +17,7 @@ function Number({ n }) {
       config: {mass: 1, tension: 20, friction: 10},
   });
   return ( 
-      <animated.div style={{ fontSize: '48px'}}>
+      <animated.div style={{ fontSize: '42px'}}>
               {number.to((n) => n.toFixed(1))}
       </animated.div>
   )
@@ -78,11 +64,11 @@ const Badges = styled(Box)(({borderColor, backgronudColor}) => ({
 
 function JudgeBadgesColor(average) {
   if(average === null) {
-    return ["#8F8F88", "#1D2630", "NULL"]
+    return ["#8F8F88", "#1D2630", "NONE"]
   } else if(average <= 1.66){
     return ["#ff403d", "#3b353eff", "HARD"]
   } else if (average <=3.33){
-    return ["#e3994e", "#3b353eff", "MEDIUM"]
+    return ["#DFB040", "#3B3A3E", "MEDIUM"]
   } else {
     return ["#0cc1a9", "#2d3c47ff", "EASY"]
   }
@@ -90,7 +76,7 @@ function JudgeBadgesColor(average) {
 
 function JudgeGPABadgeColor(average) {
   if(average === null) {
-    return ["#8F8F88", "#1D2630", "NULL"]
+    return ["#8F8F88", "#1D2630", "NONE"]
   } else if(average === 0){
     return ["#ff403d", "#3b353eff", "Avg: F"]
   } else if(average <= 1){
@@ -104,11 +90,11 @@ function JudgeGPABadgeColor(average) {
   } else if (average <= 2.3){
     return ["#ff403d", "#3b353eff", "Avg: C+"]
   } else if (average <= 2.7){
-    return ["#e3994e", "#3b353eff", "Avg: B-"]
+    return ["#DFB040", "#3B3A3E", "Avg: B-"]
   } else if (average <= 3){
-    return ["#e3994e", "#3b353eff", "Avg: B"]
+    return ["#DFB040", "#3B3A3E", "Avg: B"]
   } else if (average <= 3.3){
-    return ["#e3994e", "#3b353eff", "Avg: B+"]
+    return ["#DFB040", "#3B3A3E", "Avg: B+"]
   } else if (average <= 3.7){
     return ["#0cc1a9", "#2d3c47ff", "Avg: A-"]
   } else if (average <= 4.0){
@@ -144,11 +130,10 @@ function StackedGPA(gpa) {
 };
 
 const Overivew = (chartData) => {
-
   // console.log("chartData in overview: ", chartData)
   const criteriaAverage = chartData.pentagon.datasets[0].data
 
-  const GPAData = StackedGPA(chartData.GPA.datasets[0].data)
+  const GPAData = chartData.GPA
 
   return (
     <Box sx={{display: "flex", flexDirection: "row"}} >
@@ -157,7 +142,7 @@ const Overivew = (chartData) => {
           <Square sx={{marginTop: -1.5}}>
             <RadarChart chartData={chartData.pentagon}/>
           </Square>
-          <Box sx={{ position: "absolute", left:80, top: 200, display:"flex"}}>
+          <Box sx={{ position: "relative", top:-330, left: 25, display:"flex"}}>
             <Number n={chartData.overallScore} />
             <h1 style={{position: "absolute", left: 24, top: 22}}></h1>
             <h3 style={{marginTop: 22, marginLeft: 5}}>/ 5.0</h3>
@@ -188,7 +173,7 @@ const Overivew = (chartData) => {
           </Box>
         </Item>
       </Stack>
-      <Stack spacing={3} sx={{marginLeft: 2, merginRight: 1}}>
+      <Stack spacing={3} sx={{marginLeft: 2}}>
         <HorizontalGrid >
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
             <Box sx={{marginLeft: "47%"}}>
@@ -201,6 +186,7 @@ const Overivew = (chartData) => {
           <GPABarChartGrid sx={{ marginLeft: 4, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <HorizontalBarChart chartData={GPAData} />
           </GPABarChartGrid>
+          <h6 style={{position: "relative", top: -38, left: -170}}># students:</h6>
         </HorizontalGrid>
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
@@ -214,6 +200,7 @@ const Overivew = (chartData) => {
           <BarChartGrid sx={{ marginLeft: 2, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <HorizontalBarChart chartData={chartData.lectureDifficulty} />
           </BarChartGrid>
+          <h6 style={{position: "relative", top: -33.5, left: -160}}># students:</h6>
         </HorizontalGrid>
       </Stack>
       <Stack spacing={3} sx={{marginLeft: 3}}>
@@ -229,6 +216,7 @@ const Overivew = (chartData) => {
           <BarChartGrid sx={{ marginLeft: 2, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <HorizontalBarChart chartData={chartData.workload} />
           </BarChartGrid>
+          <h6 style={{position: "relative", top: -33.5, left: -166}}># students:</h6>
         </HorizontalGrid>
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
@@ -242,6 +230,7 @@ const Overivew = (chartData) => {
           <BarChartGrid sx={{ marginLeft: 2, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <HorizontalBarChart chartData={chartData.finalDifficulty} />
           </BarChartGrid>
+          <h6 style={{position: "relative", top: -33.5, left: -159}}># students:</h6>
         </HorizontalGrid>
       </Stack>
     </Box>

@@ -33,7 +33,10 @@ const chartBackgroundColor = ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5
       }
     },
     scale: {
-      suggestedMax: 5
+      suggestedMax: 5,
+      pointLabels: {
+        fontSize: 30
+      }
     },
     scales: {
       r: {
@@ -45,7 +48,11 @@ const chartBackgroundColor = ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5
           color: "grey"
         },
         pointLabels: {
+          font: {
+            size: 12
+          },
           color: "white"
+          
         },
         ticks: {
           color: "white",
@@ -113,10 +120,13 @@ const ProfessorStats = () => {
     }, []);
 
     const initialState = chartData.datasets.reduce((acc, dataset) => {
-      acc[dataset.label] = true;
+      acc[dataset.label] = false;
       return acc;
     }, {});
-    
+
+    initialState[Object.keys(initialState)[0]] = true;
+    initialState[Object.keys(initialState)[1]] = true;
+
     const [state, setState] = useState(initialState);
     const [switchClicked, setSwitchClicked] = useState(false)
 
@@ -168,9 +178,9 @@ const ProfessorStats = () => {
         {/* <Box sx={{width: "180%", marginLeft: -20, display: "flex", justifyContent: "center"}}>
           <h1>Overall</h1>
         </Box> */}
-        <Box sx={{width: "180%", height:"520px", display: 'flex', flexDirection: "row", justifyContent: 'center'}}>
-          <Box sx={{marginRight: 10, width:"520px", height:"520px"}}>
-            <Radar data={switchClicked ? conditionalChartData : chartData} options={options}/>
+        <Box sx={{width: "180%", height:"540px", display: 'flex', flexDirection: "row", justifyContent: 'center'}}>
+          <Box sx={{marginRight: 10, width:"570px", height:"570px"}}>
+            <Radar data={ conditionalChartData } options={options}/>
           </Box>
           <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", height: "520px"}}>
             <FormControl component="fieldset" variant="standard">

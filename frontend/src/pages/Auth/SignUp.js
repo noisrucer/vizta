@@ -73,12 +73,20 @@ const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const validate = () => {
-    if (email.length > 0 && password.length > 0 && confirmPassword.length > 0)
+    if (email.length === 0 || password.length === 0 || confirmPassword.length === 0)
     {
-      return true;
-    } else {
       return false;
     }
+    if (!(/[A-Z]/.test(password))){
+      return false;
+    } 
+    if (!(/[0-9]/.test(password))){
+      return false;
+    }
+    if (!(password.length >= 8)){
+      return false;
+    }
+      return true;
   }
 
   const handleMajorChange = (e) => {
@@ -123,11 +131,24 @@ const SignUp = () => {
     } else {
       setConfirmPasswordError(false);
     }
+
   }, [password, confirmPassword]);
 
   const closeErrorMessage = () => {
-    setOpenErrorMessage(false)
+    setOpenErrorMessage(false);
   }
+
+  useEffect(() => {
+    if (openErrorMessage) {
+      const timeoutId = setTimeout(() => {
+        setOpenErrorMessage(false);
+      }, 2000);
+  
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [openErrorMessage]);
 
   function onChangeVerificationCode (evt) {
     evt.preventDefault();
@@ -198,6 +219,7 @@ const SignUp = () => {
       })
       .then(response => {
         console.log(response)
+        setOpenErrorMessage(false)
         navigate('/auth/sign-in');
       })
       .catch(error => {
@@ -360,6 +382,7 @@ const SignUp = () => {
                 name="password"
                 label="Password"
                 type="password"
+                helperText="Minimum 8 characters with at least 1 upper case and 1 number"
                 error = {passwordError && clickedSignUpButton}
                 onChange = {handlePasswordChange}
               />

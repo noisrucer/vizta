@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 // import faker from 'faker';
 
 ChartJS.register(
@@ -34,8 +35,25 @@ const options = {
     },
     tooltip: {
       interaction: {
-        intersect: false,
+        intersect: true,
       },
+    },
+    datalabels: {
+      formatter: function (value, context) {
+        const currNum = context.dataset.data[context.dataIndex]
+        if (!currNum) {
+          return ""
+        } 
+
+        var totalNum = 0
+        context.dataset.data.forEach(x => {totalNum += x})
+        const original = context.dataset.data
+        return Math.round(currNum / totalNum * 100) + "%"
+      },
+      color: "white",
+      font: {
+        size: 9.5
+      }
     },
   },
   scales: {
@@ -46,8 +64,16 @@ const options = {
         tickColor: "#333A46"
       },
       ticks: {
+        stepSize: 1,
         color: "white"
       },
+      beforeBuildTicks: function(axis) {
+        if (axis.max < 5) {
+          axis.options.ticks.stepSize = 1
+        } else {
+          axis.options.ticks.stepSize = Math.round(axis.max / 5 + 1)
+        }
+      }
     },
     y: {
       stacked: true,
@@ -59,33 +85,13 @@ const options = {
       },
     }
   }
-  // scales: {
-  //   yAxes: {
-  //     grid: {
-  //       drawBorder: true,
-  //       color: "#FFFFFF"
-  //     },
-  //     ticks:{
-  //       beginAtZero: false,
-  //       color: "white",
-  //       fontSize: 12
-  //     }
-  //   },
-  //   xAxes: {
-  //     grid: {
-  //       beginAtZero: false,
-  //       color: "white",
-  //       fontSize: 12
-  //     }
-  //   }
-  // }
 };
 
 
 
 function HorizontalBarChart({chartData}) {
   return (
-    <Bar data={chartData} options={options}/>
+    <Bar data={chartData} options={options} plugins={[ChartDataLabels]}/>
   )
 }
 

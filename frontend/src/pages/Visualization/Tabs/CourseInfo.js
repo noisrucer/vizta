@@ -14,22 +14,22 @@ import InputLabel from '@mui/material/InputLabel';
 
 const CourseDescriptionGrid = styled(Item)(({theme}) => ({
   height: "260px",
-  width: "460px"
+  width: "500px"
 }))
 
 const TimeTableGrid = styled(Item)(({theme}) => ({
   height: "260px",
-  width: "860px"
+  width: "900px"
 }))
 
 const GradingRatioGrid = styled(Item)(({theme}) => ({
   height: "260px",
-  width: "560px"
+  width: "600px"
 }))
 
 const OverallScoreGrid = styled(Item)(({theme}) => ({
   height: "260px",
-  width: "760px"
+  width: "800px"
 }))
 
 const CourseInfo = (courseData) => {
@@ -52,7 +52,7 @@ const CourseInfo = (courseData) => {
   console.log("GradingRatio: ", gradingRatio)
 
   return (
-    <Box sx={{height: "550px", width: "1450px", overflowX: "hidden"}}>
+    <Box sx={{height: "540px", width: "1350px", overflowX: "hidden"}}>
       <Box sx={{marginLeft: 1}}>
         <Stack sx={{display: "flex", flexDirection: "row"}}>
           <CourseDescriptionGrid sx={{marginRight: 3}}>
@@ -73,25 +73,37 @@ const CourseInfo = (courseData) => {
                   height: "195px",
                   overflowY: "scroll"
                   }}>
-                  <Box sx={{display: "flex", marginTop: 0.5, marginLeft:1}}>
-                    <h4 style={{color: "#FFC106", marginRight: 10}}>Department: </h4>
+                  <Box sx={{display: "flex", marginTop: 0.5, marginLeft:1,  marginBottom: 1}}>
+                    <h4 style={{color: "#FF5721", marginRight: 10}}>Department: </h4>
                     <h4>{courseData.description.Faculty}</h4>
                   </Box>
-                  <Box sx={{display:"flex", marginLeft:1}}>
-                    <h4 style={{color: "#FFC106", marginRight: 10}}>Prerequisites: </h4>
-                    <h4 style={{textAlign:"left"}}>{courseData.description.Prerequisite}</h4>
+                  <Box sx={{display:"flex", marginLeft:1, marginBottom: 1}}>
+                    {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Prerequisites: </h4> */}
+                    <h4 style={{textAlign:"left"}}>
+                      <label style={{color: "#FF5721"}}>Prerequisites: </label>
+                      {courseData.description.Prerequisite}
+                      </h4>
                   </Box>
-                  <Box sx={{display: "flex", marginLeft:1}}>
-                    <h4 style={{color: "#FFC106", marginRight: 10}}>Blocking Courses: </h4>
-                    <h4 style={{textAlign:"left"}}>{courseData.description.BlockingCourses.join(", ")}</h4>
+                  <Box sx={{display: "flex", marginLeft:1,  marginBottom: 1}}>
+                    {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Blocking Courses: </h4> */}
+                    <h4 style={{textAlign:"left"}}>
+                      <label style={{color: "#FF5721"}}>Blocking Courses: </label>
+                      {courseData.description.BlockingCourses.join(", ")}
+                    </h4>
                   </Box>
-                  <Box sx={{display: "flex", marginLeft:1}}>
-                    <h4 style={{color: "#FFC106", marginRight: 10}}>Mutual Exclusives: </h4>
-                    <h4 style={{textAlign:"left"}}>{courseData.description.MutualExclusives.join(", ")}</h4>
+                  <Box sx={{display: "flex", marginLeft:1,  marginBottom: 1}}>
+                    {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Mutual Exclusives: </h4> */}
+                    <h4 style={{textAlign:"left"}}>
+                      <label style={{color: "#FF5721"}}>Mutual Exclusives: </label>
+                      {courseData.description.MutualExclusives.join(", ")}
+                    </h4>
                   </Box>
                   <Box sx={{display:"flex", marginLeft: 1}}>
-                      <h4 style={{color: "#FFC106", marginRight: 10}}>Description: </h4>
-                      <h4 style={{marginTop:5, marginLeft: 10, marginRight: 10, marginBottom: 10, textAlign:"left"}}>{courseData.description.Description}</h4>
+                      {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Description: </h4> */}
+                      <h4 style={{marginTop:0, marginRight: 10, marginBottom: 10, textAlign:"left"}}>
+                        <label style={{color: "#FF5721"}}>Description: </label>
+                        {courseData.description.Description}
+                      </h4>
                     </Box>
                 </Box>
               </Box>
@@ -110,7 +122,7 @@ const CourseInfo = (courseData) => {
           <GradingRatioGrid sx={{marginRight: 3}}>
             <h2>Grading Ratio</h2>
             <Box sx={{display: "flex", flexDirection: "row"}}>
-              <Box sx={{ marginLeft: 23, marginTop: -5, height: "280px", width: "280px"}}>
+              <Box sx={{ marginLeft: 18, marginTop: -5, height: "280px", width: "280px"}}>
                 <DoughnutChart chartData={gradingRatio} />
               </Box>
               <Box sx={{ height: "200px", width: "200px"}}>
@@ -119,17 +131,20 @@ const CourseInfo = (courseData) => {
                   select
                   // label="select professor"
                   variant="standard"
-                  sx={{ width: "130px", marginTop: -4, marginLeft: -10}}
+                  sx={{ width: "130px", marginTop: -4, marginLeft: -3}}
                   defaultValue={Object.values(gradingRatioList)[0]}
                 >
                   { Object.keys(gradingRatioList).map((key) => {
+                    // const filteredGradingRatioList = gradingRatioList[key].filter(function(val) { return val != 0})
                     return <MenuItem 
                       key={key} 
                       value={gradingRatioList[key]} 
                       onClick={() => {setGradingRatio({...gradingRatio, datasets: [{
                         label: "students answer",
                         data: gradingRatioList[key]
-                      }]})}}>
+                      }],
+
+                      })}}>
                       {key}
                     </MenuItem>
                   })}

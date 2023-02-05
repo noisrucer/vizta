@@ -27,7 +27,10 @@ const options = {
         color: "grey"
       },
       pointLabels: {
-        color: "white"
+        color: "white",
+        font: {
+          size: 10.15
+        }
       },
       ticks: {
         color: "white",
