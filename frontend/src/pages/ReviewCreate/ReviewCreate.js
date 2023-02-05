@@ -15,6 +15,8 @@ import {styled} from "@mui/material/styles";
 import Slider from '@mui/material/Slider';
 import Grid from "@mui/material/Grid";
 import SendIcon from '@mui/icons-material/Send';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 import FormHelperText from '@mui/material/FormHelperText';
 import useBreakpoints from "./useBreakpoints";
@@ -43,7 +45,7 @@ const baseURL = 'http://127.0.0.1:8000';
 
 const indents = 12;
 
-const Item = styled(Box)(({ theme }) => ({
+const Item = styled(Box)(({theme}) => ({
   backgroundColor: '#26323F',
   ...theme.typography.body2,
   padding: theme.spacing(1),
@@ -178,60 +180,50 @@ class ReviewSection extends React.Component {
     this.state = {
       max: max,
       step: step,
-      ...this.props.reviewItems.reduce((a, b) => (a[b] = 0 , a), {})
+      ...this.props.reviewItems.reduce((a, b) => (a[b] = this.props.itemValues[b] || 0 , a), {})
     }
   }
 
   render() {
 
     const card = (
-      <React.Fragment>
-        <CardContent sx={{mx: 3, my: 5}}>
-          {/*<Typography sx={{fontSize: 14, color: "red"}} color="text.secondary" gutterBottom>*/}
-          {/*  Must complete*/}
-          {/*</Typography>*/}
-          <Typography sx={{color: "#fff"}} variant="h3" component="div">
-            {this.props.title}
-          </Typography>
-          <Box sx={{my: 4, mx: 3}}>
-            {
-              this.props.reviewItems.map((v, i) => (
-                  <Grid sx={{my: 1}} container spacing={4} alignItems="center" key={i}>
-                    <Grid item xs="3">
-                      {VariableNameCapitalize(v)}
-                    </Grid>
-                    <Grid item xs="9">
-                      <PrettoSlider
-                        valueLabelDisplay="auto"
-                        aria-label="pretto slider"
-                        value={this.state[v]}
-                        step={this.state.step}
-                        marks
-                        min={0}
-                        max={this.state.max}
-                        onChange={(e, nv) => {
-                          this.setState(MergeDict(this.state, {[v]: this.props.valueCheck(v, nv)}))
-                        }}
-                        onChangeCommitted={(e, nv) => {
-                          this.props.handleValueChange(v, nv);
-                        }}
-                      />
-                    </Grid>
+      <CardContent sx={{mx: 3, my: 5}}>
+        <Typography sx={{color: "#fff"}} variant="h3" component="div">
+          {this.props.title}
+        </Typography>
+        <Box sx={{my: 4, mx: 3}}>
+          {
+            this.props.reviewItems.map((v, i) => (
+                <Grid sx={{my: 1}} container spacing={4} alignItems="center" key={i}>
+                  <Grid item xs="3">
+                    {VariableNameCapitalize(v)}
                   </Grid>
-                )
+                  <Grid item xs="9">
+                    <PrettoSlider
+                      valueLabelDisplay="auto"
+                      aria-label="pretto slider"
+                      value={this.state[v]}
+                      step={this.state.step}
+                      marks
+                      min={0}
+                      max={this.state.max}
+                      onChange={(e, nv) => {
+                        this.setState(MergeDict(this.state, {[v]: this.props.valueCheck(v, nv)}))
+                      }}
+                      onChangeCommitted={(e, nv) => {
+                        this.props.handleValueChange(v, nv);
+                      }}
+                    />
+                  </Grid>
+                </Grid>
               )
-            }
-          </Box>
-        </CardContent>
-      </React.Fragment>
+            )
+          }
+        </Box>
+      </CardContent>
     )
 
-    const boxStyle = {mx: indents + 50, my: 3, minWidth: 550};
-    if ('marginRight' in this.props)
-      boxStyle['marginRight'] = this.props['marginRight']
-    if ('marginLeft' in this.props)
-      boxStyle['marginLeft'] = this.props['marginLeft']
-
+    const boxStyle = {my: 3, width: 800};
     return (
       <Item sx={boxStyle}>
         {card}
@@ -437,7 +429,7 @@ export default function ReviewCreate() {
       academic_year: 2022,
       semester: 1,
       gpa: "F",
-      ...reviewList.reduce((a, b) => (a[b] = 1 , a), {})
+      ...reviewList.reduce((a, b) => (a[b] = 0 , a), {})
     }
   );
   const [courseDescription, setCourseDescription] = useState({
@@ -501,7 +493,7 @@ export default function ReviewCreate() {
         ))}
       </Stepper>
 
-      <Box sx={{width: "100%", height: "100%"}}>
+      <Box sx={{width: "100%", height: "100%", display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         {
           [
             (<SubclassSection
@@ -566,16 +558,25 @@ export default function ReviewCreate() {
         }
       </Box>
 
-      <Fab sx={{mx: indents, float: "right"}} variant="extended"
-           onClick={() => ReviewStep !== StepList.length - 1 ?
-             setReviewStep(ReviewStep + 1) :
-             SubmitReview(ReviewData, userToken, () => {
-               enqueueSnackbar('Your review has been submitted!', {autoHideDuration: 5000, variant: 'success'});
-               navigate(`/visualization/${params.courseId}`)
-             })}>
-        <SendIcon sx={{mr: 1}}/>
-        {ReviewStep !== StepList.length - 1 ? "Next" : "Submit"}
-      </Fab>
+      <Box sx={{mx: indents, float: "right"}}>
+        <Fab sx={{marginRight: 3}} variant="extended" disabled={ReviewStep === 0}
+             onClick={() => setReviewStep(ReviewStep - 1)}>
+          <ChevronLeftIcon sx={{mr: 1}}/>
+          Back
+        </Fab>
+        <Fab variant="extended"
+             onClick={() => ReviewStep !== StepList.length - 1 ?
+               setReviewStep(ReviewStep + 1) :
+               SubmitReview(ReviewData, userToken, () => {
+                 enqueueSnackbar('Your review has been submitted!', {autoHideDuration: 5000, variant: 'success'});
+                 navigate(`/visualization/${params.courseId}`)
+               })}>
+
+          {ReviewStep !== StepList.length - 1 ? <ChevronRightIcon sx={{mr: 1}}/> : <SendIcon sx={{mr: 1}}/>}
+          {ReviewStep !== StepList.length - 1 ? "Next" : "Submit"}
+        </Fab>
+      </Box>
+
     </React.Fragment>
   )
     ;
