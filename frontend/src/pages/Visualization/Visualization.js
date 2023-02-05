@@ -459,12 +459,12 @@ const Visualization = () => {
             flexDirection: "column", 
             alignItems: "center", 
             width: "100%",
-            justifyContent: "center"
+            justifyContent: "center",
             }}>
 
             <Box sx={{ 
                 width: '93%', 
-                marginTop: 8, 
+                marginTop: 10, 
                 marginBottom: 1, 
                 display: "flex", 
                 flexDirection: "row",

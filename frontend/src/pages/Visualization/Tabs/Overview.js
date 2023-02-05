@@ -68,7 +68,7 @@ function JudgeBadgesColor(average) {
   } else if(average <= 1.66){
     return ["#ff403d", "#3b353eff", "HARD"]
   } else if (average <=3.33){
-    return ["#e3994e", "#3b353eff", "MEDIUM"]
+    return ["#DFB040", "#3B3A3E", "MEDIUM"]
   } else {
     return ["#0cc1a9", "#2d3c47ff", "EASY"]
   }
@@ -90,11 +90,11 @@ function JudgeGPABadgeColor(average) {
   } else if (average <= 2.3){
     return ["#ff403d", "#3b353eff", "Avg: C+"]
   } else if (average <= 2.7){
-    return ["#e3994e", "#3b353eff", "Avg: B-"]
+    return ["#DFB040", "#3B3A3E", "Avg: B-"]
   } else if (average <= 3){
-    return ["#e3994e", "#3b353eff", "Avg: B"]
+    return ["#DFB040", "#3B3A3E", "Avg: B"]
   } else if (average <= 3.3){
-    return ["#e3994e", "#3b353eff", "Avg: B+"]
+    return ["#DFB040", "#3B3A3E", "Avg: B+"]
   } else if (average <= 3.7){
     return ["#0cc1a9", "#2d3c47ff", "Avg: A-"]
   } else if (average <= 4.0){
@@ -186,6 +186,7 @@ const Overivew = (chartData) => {
           <GPABarChartGrid sx={{ marginLeft: 4, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <HorizontalBarChart chartData={GPAData} />
           </GPABarChartGrid>
+          <h6 style={{position: "relative", top: -38, left: -170}}># students:</h6>
         </HorizontalGrid>
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
@@ -199,6 +200,7 @@ const Overivew = (chartData) => {
           <BarChartGrid sx={{ marginLeft: 2, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <HorizontalBarChart chartData={chartData.lectureDifficulty} />
           </BarChartGrid>
+          <h6 style={{position: "relative", top: -33.5, left: -160}}># students:</h6>
         </HorizontalGrid>
       </Stack>
       <Stack spacing={3} sx={{marginLeft: 3}}>
@@ -214,6 +216,7 @@ const Overivew = (chartData) => {
           <BarChartGrid sx={{ marginLeft: 2, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <HorizontalBarChart chartData={chartData.workload} />
           </BarChartGrid>
+          <h6 style={{position: "relative", top: -33.5, left: -166}}># students:</h6>
         </HorizontalGrid>
         <HorizontalGrid>
           <Stack sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
@@ -227,12 +230,9 @@ const Overivew = (chartData) => {
           <BarChartGrid sx={{ marginLeft: 2, marginTop: -1, display: "flex", alignItems: "center", justifyContent: "center"}}>
             <HorizontalBarChart chartData={chartData.finalDifficulty} />
           </BarChartGrid>
+          <h6 style={{position: "relative", top: -33.5, left: -159}}># students:</h6>
         </HorizontalGrid>
       </Stack>
-      <h6 style={{position: "absolute", top: 405.3, left: 480, color: "lightgrey"}}># Students:</h6>
-      <h6 style={{position: "absolute", top: 410, left: 961, color: "lightgrey"}}># Students:</h6>
-      <h6 style={{position: "absolute", top: 694, left: 490, color: "lightgrey"}}># Students:</h6>
-      <h6 style={{position: "absolute", top: 694, left: 970, color: "lightgrey"}}># Students:</h6>
     </Box>
   )
 }
