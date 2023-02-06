@@ -7,7 +7,7 @@ import Item from "../Boxes/Item";
 import TimeTable from "../Charts/TimeTable";
 import LockIcon from "@mui/icons-material/Lock";
 import Divider from "@mui/material/Divider";
-import Textfield from "@mui/material/Textfield";
+import Textfield from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";

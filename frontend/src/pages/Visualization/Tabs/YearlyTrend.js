@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import LineChart from '../Charts/LineChart';
-import TextField from '@mui/material/Textfield';
+import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
