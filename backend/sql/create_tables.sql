@@ -68,7 +68,7 @@ CREATE TABLE SubclassInfo
 
 CREATE TABLE CourseReview
 (
-    user_id               INT  NOT NULL,
+    email                 VARCHAR(50) NOT NULL,
     subclass_id           VARCHAR(100) NOT NULL,
     course_id             VARCHAR(100) NOT NULL,
     academic_year         INT          NOT NULL,
@@ -80,8 +80,8 @@ CREATE TABLE CourseReview
     course_entertaining   TINYINT ENUM(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) NOT NULL,
     course_delivery       TINYINT ENUM(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) NOT NULL,
     course_interactivity  TINYINT ENUM(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) NOT NULL,
-    PRIMARY KEY (user_id, subclass_id, course_id, academic_year, semester),
-    FOREIGN KEY (user_id) REFERENCES User (user_id),
+    PRIMARY KEY (email, subclass_id, course_id, academic_year, semester),
+    FOREIGN KEY (email) REFERENCES User (email),
     FOREIGN KEY (subclass_id) REFERENCES Subclass (subclass_id),
     FOREIGN KEY (course_id) REFERENCES Subclass (course_id),
     FOREIGN KEY (academic_year) REFERENCES Subclass (academic_year),
