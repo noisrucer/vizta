@@ -10,8 +10,8 @@ from backend.src.database import Base
 class User(Base):
     __tablename__ = "user"
     
-    user_id = Column(Integer, primary_key=True)
-    email = Column(String(100), unique=True, nullable=False)
+    # user_id = Column(Integer, primary_key=True)
+    email = Column(String(100), primary_key = True, unique=True, nullable=False)
     entered_year = Column(SmallInteger, unique=False, nullable=False)
     major = Column(String(50), nullable=False)
     password = Column(String(100), nullable=False)
