@@ -98,7 +98,7 @@ function JudgeGPABadgeColor(average) {
   } else if (average <= 4.302325581395349) {
     return ["#0cc1a9", "#2d3c47ff", "Avg: A-"];
   } else if (average <= 4.651162790697675) {
-    return ["#0cc1a9", "#2d3c47ff", "Avg: A-"];
+    return ["#0cc1a9", "#2d3c47ff", "Avg: A"];
   } else {
     return ["#0cc1a9", "#2d3c47ff", "Avg: A+"];
   }
