@@ -1,12 +1,13 @@
 -- Active: 1671800850866@@127.0.0.1@3306@vizta
 CREATE TABLE User
 (
-    user_id     INT         NOT NULL,
+    -- user_id     INT         NOT NULL,
     email       VARCHAR(50) NOT NULL,
     enteredYear VARCHAR(4)  NOT NULL,
     major       VARCHAR(30) NOT NULL,
     password    VARCHAR(30) NOT NULL,
-    created_at  TIMESTAMP   NOT NULL
+    created_at  TIMESTAMP   NOT NULL,
+    PRIMARY KEY (email)
 );
 
 CREATE TABLE Course
