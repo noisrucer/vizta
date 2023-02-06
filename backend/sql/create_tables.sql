@@ -94,10 +94,10 @@ CREATE TABLE CourseReview
 
 CREATE TABLE UserFavorite
 (
-    user_id INT NOT NULL,
+    uemail INT NOT NULL,
     course_id VARCHAR(100) NOT NULL,
-    PRIMARY KEY (user_id, course_id),
-    FOREIGN KEY (user_id) REFERENCES User (user_id),
+    PRIMARY KEY (email, course_id),
+    FOREIGN KEY (email) REFERENCES User (email),
     FOREIGN KEY (course_id) REFERENCES Course (course_id)
 );
 
