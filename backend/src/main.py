@@ -40,4 +40,4 @@ app.include_router(visualization_router)
 
 @app.get("/")
 async def root():
-    return {"message": "hello to the root page"}
+    return {"message": "hello to the root"}
