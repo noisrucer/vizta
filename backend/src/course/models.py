@@ -11,7 +11,6 @@ from backend.src.database import Base
 
 class Course(Base):
     __tablename__ = "course"
-
     course_id = Column(String(100), nullable=False, primary_key=True)
     name = Column(String(100), nullable=False)
     description = Column(String(1000), nullable=True)
