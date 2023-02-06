@@ -1,6 +1,6 @@
 import datetime
 from collections import Counter
-
+from typing import List
 from backend.src.email import email_sender
 
 
@@ -13,7 +13,7 @@ def get_current_year():
     return now.year
 
 
-def extract_sub_dict(dct: dict, included_keys: list[str]):
+def extract_sub_dict(dct: dict, included_keys: List[str]):
     return {k: v for k, v in dct.items() if k in included_keys}
 
 
