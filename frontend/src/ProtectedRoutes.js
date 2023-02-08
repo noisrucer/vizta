@@ -4,7 +4,7 @@ import SignIn from "./pages/Auth/SignIn";
 import { UserContext } from "./UserContext";
 import axios from "axios";
 
-const baseURL = "http://127.0.0.1:8000";
+const baseURL = "https://vizta.onrender.com";
 
 console.log("RC", UserContext);
 

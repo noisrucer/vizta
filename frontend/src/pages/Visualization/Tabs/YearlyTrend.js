@@ -1,56 +1,60 @@
-import {useState, useEffect, useContext} from 'react';
-import { UserContext } from '../../../UserContext';
-import { useParams } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import axios from 'axios';
-import LineChart from '../Charts/LineChart';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../../UserContext";
+import { useParams } from "react-router-dom";
+import Box from "@mui/material/Box";
+import axios from "axios";
+import LineChart from "../Charts/LineChart";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 
-const baseURL = 'http://127.0.0.1:8000';
+const baseURL = "https://vizta.onrender.com";
 
 const drawerBleeding = 56;
 
-const chartBorderColor = ["#36A2EB", "#FF6384", "#FF9F3F", "#FFCD56"]
-const chartBackgroundColor = ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 159, 63, 0.5)', 'rgba(255, 205, 86, 0.5)']
+const chartBorderColor = ["#36A2EB", "#FF6384", "#FF9F3F", "#FFCD56"];
+const chartBackgroundColor = [
+  "rgba(54, 162, 235, 0.5)",
+  "rgba(255, 99, 132, 0.5)",
+  "rgba(255, 159, 63, 0.5)",
+  "rgba(255, 205, 86, 0.5)",
+];
 
 const criteria = [
   {
     value: "FinalExamDifficulty",
-    label: "Final Exam"
+    label: "Final Exam",
   },
   {
     value: "GPA",
-    label: "GPA"
+    label: "GPA",
   },
   {
     value: "LectureDifficulty",
-    label: "Lecture Difficulty"
+    label: "Lecture Difficulty",
   },
   {
     value: "CourseDelivery",
-    label: "Delivery"
+    label: "Delivery",
   },
   {
     value: "CourseEntertainment",
-    label: "Entertainment"
+    label: "Entertainment",
   },
   {
     value: "CourseInteractivity",
-    label: "Interactivity"
+    label: "Interactivity",
   },
   {
     value: "Workload",
-    label: "Workload"
+    label: "Workload",
   },
 ];
 
 const YearlyTrend = () => {
-
   const [windowSize, setWindowSize] = useState([
     window.innerWidth,
     window.innerHeight,
@@ -61,97 +65,108 @@ const YearlyTrend = () => {
       setWindowSize([window.innerWidth, window.innerHeight]);
     };
 
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
 
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener("resize", handleWindowResize);
     };
   });
 
   console.log("window size: ", windowSize);
-    
-  const params = useParams()
-  const courseId = params.courseId
 
-  const {UserToken} = useContext(UserContext)
-  const [userToken, setUserToken] = UserToken
+  const params = useParams();
+  const courseId = params.courseId;
+
+  const { UserToken } = useContext(UserContext);
+  const [userToken, setUserToken] = UserToken;
 
   const [professorList, setProfessorList] = useState([]);
 
   const [chartData, setChartData] = useState({
     labels: [],
-    datasets: []
-  })
+    datasets: [],
+  });
 
-  const [conditionalChartData, setConditionalChartData] = useState(chartData)
+  const [conditionalChartData, setConditionalChartData] = useState(chartData);
 
   useEffect(() => {
     const getYearlyTrend = async () => {
-      axios.request({
-          method: 'get',
+      axios
+        .request({
+          method: "get",
           url: `${baseURL}/visualization/${courseId}/by_years`,
-          headers: userToken['headers']
-      })
-      .then(response => {
+          headers: userToken["headers"],
+        })
+        .then((response) => {
           const yearData = response.data;
           const tempData = [];
           let count = 0;
           setProfessorList(yearData.professors);
 
           yearData.professors.map((item, index) => {
-
             const newDataSet = {
               label: item,
               data: yearData.FinalExamDifficulty[index],
               borderColor: chartBorderColor[count],
-              backgroundColor: chartBackgroundColor[count]
+              backgroundColor: chartBackgroundColor[count],
             };
             tempData.push(newDataSet);
             count += 1;
           });
-          if (tempData.length > Object.keys(yearData.professors).length - 1){
-            setChartData({...chartData, labels: yearData.years, datasets: tempData});
-            setConditionalChartData({...conditionalChartData, labels: yearData.years})
+          if (tempData.length > Object.keys(yearData.professors).length - 1) {
+            setChartData({
+              ...chartData,
+              labels: yearData.years,
+              datasets: tempData,
+            });
+            setConditionalChartData({
+              ...conditionalChartData,
+              labels: yearData.years,
+            });
           }
-      })
-      .catch(error => {
-          console.log("error from /visualization/course_id/by_years: ", error)
-      })
-  };
-  getYearlyTrend();
-  }, [])
+        })
+        .catch((error) => {
+          console.log("error from /visualization/course_id/by_years: ", error);
+        });
+    };
+    getYearlyTrend();
+  }, []);
 
-  const [title, setTitle] = useState("Final Exam")
+  const [title, setTitle] = useState("Final Exam");
 
   function changeCriteria(criteria, name) {
-    setTitle(name)
-    axios.request({
-      method: 'get',
-      url: `${baseURL}/visualization/${courseId}/by_years`,
-      headers: userToken['headers']
-    })
-    .then(response => {
+    setTitle(name);
+    axios
+      .request({
+        method: "get",
+        url: `${baseURL}/visualization/${courseId}/by_years`,
+        headers: userToken["headers"],
+      })
+      .then((response) => {
         const yearData = response.data;
-        const tempData = []
+        const tempData = [];
         let count = 0;
         yearData.professors.map((item, index) => {
-
           const newDataSet = {
             label: item,
             data: yearData[criteria][index],
             borderColor: chartBorderColor[count],
-            backgroundColor: chartBackgroundColor[count]
+            backgroundColor: chartBackgroundColor[count],
           };
           tempData.push(newDataSet);
           count += 1;
         });
         if (tempData.length > Object.keys(yearData.professors).length - 1) {
-          setChartData({...chartData, labels: yearData.years, datasets: tempData});
+          setChartData({
+            ...chartData,
+            labels: yearData.years,
+            datasets: tempData,
+          });
         }
-    })
-    .catch(error => {
-        console.log("error from /visualization/course_id/by_years: ", error)
-    })
+      })
+      .catch((error) => {
+        console.log("error from /visualization/course_id/by_years: ", error);
+      });
   }
 
   const initialState = chartData.datasets.reduce((acc, dataset) => {
@@ -161,84 +176,125 @@ const YearlyTrend = () => {
 
   initialState[Object.keys(initialState)[0]] = true;
   initialState[Object.keys(initialState)[1]] = true;
-  
+
   const [state, setState] = useState(initialState);
-  const [switchClicked, setSwitchClicked] = useState(false)
+  const [switchClicked, setSwitchClicked] = useState(false);
 
   useEffect(() => {
-
     setState(initialState);
   }, [chartData]);
 
-
-  function renderSwitch(prof){
-  
+  function renderSwitch(prof) {
     const handleChange = (event) => {
       setSwitchClicked(true);
       setState({
-        ...state, 
-        [event.target.name]: !state[event.target.name]
+        ...state,
+        [event.target.name]: !state[event.target.name],
       });
     };
 
-    const label = { inputProps: { 'aria-label': 'Switch demo' } };
-  
+    const label = { inputProps: { "aria-label": "Switch demo" } };
+
     return (
-        <FormGroup>
-          <FormControlLabel sx={{width: "250px"}}
-            control={
-              <Switch {...label} checked={state[prof.label]} onClick={handleChange} name={prof.label} />
-            }
-            label={prof.label}
-          />
-        </FormGroup>
-    )
-  };
+      <FormGroup>
+        <FormControlLabel
+          sx={{ width: "250px" }}
+          control={
+            <Switch
+              {...label}
+              checked={state[prof.label]}
+              onClick={handleChange}
+              name={prof.label}
+            />
+          }
+          label={prof.label}
+        />
+      </FormGroup>
+    );
+  }
 
   useEffect(() => {
     let temp = [];
-    for (const key in state){
-      if (state[key] === true){
-        for (const data in chartData.datasets){
+    for (const key in state) {
+      if (state[key] === true) {
+        for (const data in chartData.datasets) {
           if (chartData.datasets[data].label === key) {
-            temp.push(chartData.datasets[data])
+            temp.push(chartData.datasets[data]);
           }
         }
       }
     }
-    setConditionalChartData({...conditionalChartData, datasets: temp});
-  },[state])
+    setConditionalChartData({ ...conditionalChartData, datasets: temp });
+  }, [state]);
 
   return (
-    <Box sx={{ width: windowSize[0], height: windowSize[1] / 1.4, display: "flex", alignItems: "center"}}>
-        <TextField 
-          id="select-view"
-          select
-          variant="standard"
-          label="Select Criteria"
-          defaultValue="Final Exam"
-          sx={{position: "absolute", left: `${windowSize[0]/1.75}px`, top: (windowSize[1] / 796) * 200, width: "150px"}}
-          >
-          {criteria.map((option) => (
-            <MenuItem key={option.label} value={option.label} onClick={() => changeCriteria(option.value, option.label)}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-      <Box
-        sx={{bgcolor: '#1D2630', display:"flex", flexDirection: "column", alignItems: 'center' }}
+    <Box
+      sx={{
+        width: windowSize[0],
+        height: windowSize[1] / 1.4,
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <TextField
+        id="select-view"
+        select
+        variant="standard"
+        label="Select Criteria"
+        defaultValue="Final Exam"
+        sx={{
+          position: "absolute",
+          left: `${windowSize[0] / 1.75}px`,
+          top: (windowSize[1] / 796) * 200,
+          width: "150px",
+        }}
       >
-        <h2 style={{position: "absolute", left: `${windowSize[0]/3}px`, top: (windowSize[1] / 796) * 210}}>{title}</h2>
-        <Box sx={{ width: windowSize[0] / 1.5, height: windowSize[1] / 1.5, position: "absolute", left: (windowSize[0] / 1440) * 30, top: (windowSize[1] / 796) * 250}}>
+        {criteria.map((option) => (
+          <MenuItem
+            key={option.label}
+            value={option.label}
+            onClick={() => changeCriteria(option.value, option.label)}
+          >
+            {option.label}
+          </MenuItem>
+        ))}
+      </TextField>
+      <Box
+        sx={{
+          bgcolor: "#1D2630",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h2
+          style={{
+            position: "absolute",
+            left: `${windowSize[0] / 3}px`,
+            top: (windowSize[1] / 796) * 210,
+          }}
+        >
+          {title}
+        </h2>
+        <Box
+          sx={{
+            width: windowSize[0] / 1.5,
+            height: windowSize[1] / 1.5,
+            position: "absolute",
+            left: (windowSize[0] / 1440) * 30,
+            top: (windowSize[1] / 796) * 250,
+          }}
+        >
           <LineChart chartData={conditionalChartData} />
         </Box>
       </Box>
-      <Box sx={{position: "absolute", left: windowSize[0]/1.275}}>
+      <Box sx={{ position: "absolute", left: windowSize[0] / 1.275 }}>
         {chartData.datasets.map((item) => {
-          return renderSwitch(item)
+          return renderSwitch(item);
         })}
       </Box>
     </Box>
-  )};
+  );
+};
 
-  export default YearlyTrend;
+export default YearlyTrend;

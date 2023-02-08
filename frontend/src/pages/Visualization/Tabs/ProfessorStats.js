@@ -9,7 +9,7 @@ import Switch from "@mui/material/Switch";
 import axios from "axios";
 import { Radar } from "react-chartjs-2";
 
-const baseURL = "http://127.0.0.1:8000";
+const baseURL = "https://vizta.onrender.com";
 
 const drawerBleeding = 56;
 
@@ -67,7 +67,6 @@ const options = {
 };
 
 const ProfessorStats = () => {
-
   const [windowSize, setWindowSize] = useState([
     window.innerWidth,
     window.innerHeight,
@@ -78,15 +77,15 @@ const ProfessorStats = () => {
       setWindowSize([window.innerWidth, window.innerHeight]);
     };
 
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
 
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener("resize", handleWindowResize);
     };
   });
 
   console.log("window size: ", windowSize);
-  
+
   const params = useParams();
   const courseId = params.courseId;
 
@@ -234,16 +233,16 @@ const ProfessorStats = () => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
-          marginLeft: 10
+          marginLeft: 10,
         }}
       >
-        <Box 
-          sx={{ 
-            marginRight: windowSize[0] / 144, 
-            width: windowSize[1]/1.5, 
-            height: windowSize[1]/1.5,
-            }}
-          >
+        <Box
+          sx={{
+            marginRight: windowSize[0] / 144,
+            width: windowSize[1] / 1.5,
+            height: windowSize[1] / 1.5,
+          }}
+        >
           <Radar data={conditionalChartData} options={options} />
         </Box>
         <Box
@@ -252,7 +251,7 @@ const ProfessorStats = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            height: windowSize[1]/1.5,
+            height: windowSize[1] / 1.5,
           }}
         >
           <FormControl component="fieldset" variant="standard">

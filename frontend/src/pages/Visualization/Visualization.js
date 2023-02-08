@@ -29,7 +29,7 @@ const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const baseURL = "http://127.0.0.1:8000";
+const baseURL = "https://vizta.onrender.com";
 const dataColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"];
 const workloadLabel = ["Very Light", "Light", "Medium", "Heavy", "Very Heavy"];
 const lectureFinalLabel = [
@@ -77,7 +77,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: windowSize[0]/480 }}>
+        <Box sx={{ p: windowSize[0] / 480 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -99,7 +99,6 @@ function a11yProps(index) {
 }
 
 const Visualization = () => {
-
   const [windowSize, setWindowSize] = useState([
     window.innerWidth,
     window.innerHeight,
@@ -110,10 +109,10 @@ const Visualization = () => {
       setWindowSize([window.innerWidth, window.innerHeight]);
     };
 
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
 
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener("resize", handleWindowResize);
     };
   });
 
@@ -673,7 +672,7 @@ const Visualization = () => {
             <span style={{ color: "#FFC106" }}>{courseId} </span>
             <span>/ {courseDescription.Name}</span>
           </h2>
-          <Box sx={{ marginLeft: "auto"}}>
+          <Box sx={{ marginLeft: "auto" }}>
             {isOverview ? (
               <Button disabled sx={{ marginRight: 1 }}>
                 Total Reviews: {numReviews}
@@ -707,11 +706,15 @@ const Visualization = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ display: "flex", marginLeft: windowSize[0] / 720}}>
+      <Box sx={{ display: "flex", marginLeft: windowSize[0] / 720 }}>
         <Box sx={{ backgroundColor: "#1D2630", width: windowSize[0] / 1.8 }}>
           <AppBar
             position="static"
-            sx={{ marginLeft: windowSize[0] / 360, backgroundColor: "#1D2630", width: windowSize[0] / 1.8 }}
+            sx={{
+              marginLeft: windowSize[0] / 360,
+              backgroundColor: "#1D2630",
+              width: windowSize[0] / 1.8,
+            }}
           >
             <Tabs
               value={value}
@@ -775,7 +778,7 @@ const Visualization = () => {
             <ProfessorStats />
           </TabPanel>
         </Box>
-        <Box sx={{ width: windowSize[0] / 2.55, height: "50px"}}>
+        <Box sx={{ width: windowSize[0] / 2.55, height: "50px" }}>
           <Stack
             spacing={2}
             direction="row"

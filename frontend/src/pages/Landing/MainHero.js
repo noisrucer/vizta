@@ -1,16 +1,15 @@
 import { UserProvider } from "../..";
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../UserContext";
-import Box from "@mui/material/Box"
+import Box from "@mui/material/Box";
 
 import config from "../../config/index.json";
 import "../../styles/main.css";
 
 import axios from "axios";
-const baseURL = "http://127.0.0.1:8000";
+const baseURL = "https://vizta.onrender.com";
 
 const MainHero = () => {
-
   const { mainHero } = config;
   const [isAuth, setIsAuth] = useState(false);
   const { UserData, UserToken, IsLoggedIn } = useContext(UserContext);
