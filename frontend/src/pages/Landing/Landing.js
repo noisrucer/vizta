@@ -1,4 +1,4 @@
-import React from "react";
+import {useContext, useEffect, useState} from "react";
 import { UserContext } from "../../UserContext";
 import About from "./About";
 import Canvas from "./Canvas";
@@ -12,24 +12,44 @@ import Product from "./Product";
 import "../../styles/main.css";
 
 const Landing = () => {
-  const { IsLanding } = React.useContext(UserContext);
+
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  });
+
+  console.log("window size: ", windowSize);
+
+  const { IsLanding } = useContext(UserContext);
   const [isLanding, setIsLanding] = IsLanding;
 
   setIsLanding(true);
   return (
-    <div className={`bg-background grid gap-y-16 overflow-hidden`}>
-      <div className={`relative bg-background`}>
-        <div className="max-w-7xl mx-auto">
-          <div
-            className={`relative z-10 pb-8 bg-background sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32`}
-          >
+    <div className={`bg-background grid gap-y-16 overflow-hidden`} style={{display: "flex", flexDirection: "column", justifyContent: "center", height: windowSize[1]}}>
+      <div className={`relative bg-background`} style={{display: "flex", height: windowSize[1], flexDirection: "column", justifyContent: "center", alignItems: "flex-start"}}>
+        <div style={{ marginLeft: 100 * windowSize[0] / 1440, zIndex: 1}}>
+          <div style={{position: "absolute", left: -20, top: -10}}>
             <Header />
-            <MainHero />
           </div>
+          <MainHero />
         </div>
-        <MainHeroImage />
+        <div style={{zIndex: 0}}>
+          <MainHeroImage />
+        </div>
       </div>
-      <Canvas />
+      <Canvas/>
       {/* <LazyShow>
         <>
           <Product />
