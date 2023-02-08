@@ -67,6 +67,26 @@ const options = {
 };
 
 const ProfessorStats = () => {
+
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  });
+
+  console.log("window size: ", windowSize);
+  
   const params = useParams();
   const courseId = params.courseId;
 
@@ -209,14 +229,20 @@ const ProfessorStats = () => {
         </Box> */}
       <Box
         sx={{
-          width: "180%",
-          height: "540px",
+          width: windowSize[0] * 0.8,
+          height: windowSize[1] * 0.7,
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
         }}
       >
-        <Box sx={{ marginRight: 10, width: "570px", height: "570px" }}>
+        <Box 
+          sx={{ 
+            marginRight: 10, 
+            width: windowSize[1]/1.5, 
+            height: windowSize[1]/1.5,
+            }}
+          >
           <Radar data={conditionalChartData} options={options} />
         </Box>
         <Box
@@ -224,7 +250,8 @@ const ProfessorStats = () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            height: "520px",
+            alignItems: "center",
+            height: windowSize[1]/1.5,
           }}
         >
           <FormControl component="fieldset" variant="standard">

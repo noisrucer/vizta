@@ -1,8 +1,26 @@
-import * as React from "react";
+import {useState, useEffect} from "react";
 import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
 
 export default function TimeTable(chartData) {
+
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  });
+
   const timeTableInfo = chartData.chartData;
 
   const CreateTimeTableElements = (subclass, timeslots, instructor) => {
@@ -28,6 +46,7 @@ export default function TimeTable(chartData) {
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
+            justifyContent: "center",
           }}
         >
           <h1 style={{ color: "white", marginLeft: 15, marginTop: 4 }}>
@@ -86,7 +105,7 @@ export default function TimeTable(chartData) {
     <Box>
       <Box
         sx={{
-          height: "210px",
+          height: windowSize[1] / 3.8,
           display: "flex",
           flexDirection: "row",
           alignItems: "center",

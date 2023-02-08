@@ -99,6 +99,24 @@ function a11yProps(index) {
 }
 
 const Visualization = () => {
+
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  });
+
   const navigate = useNavigate();
 
   const params = useParams();
@@ -690,10 +708,10 @@ const Visualization = () => {
         </Box>
       </Box>
       <Box sx={{ display: "flex", marginLeft: 2 }}>
-        <Box sx={{ backgroundColor: "#1D2630", width: 800 }}>
+        <Box sx={{ backgroundColor: "#1D2630", width: windowSize[0] / 1.8 }}>
           <AppBar
             position="static"
-            sx={{ marginLeft: 4, backgroundColor: "#1D2630" }}
+            sx={{ marginLeft: 4, backgroundColor: "#1D2630", width: windowSize[0] / 1.8 }}
           >
             <Tabs
               value={value}
@@ -733,7 +751,7 @@ const Visualization = () => {
               />
             </Tabs>
           </AppBar>
-          <TabPanel value={value} index={0}>
+          <TabPanel value={value} index={0} >
             <Overview
               GPA={GPA}
               lectureDifficulty={lectureDifficulty}
@@ -747,25 +765,22 @@ const Visualization = () => {
               overallScore={overallScore}
             />
           </TabPanel>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={value} index={1} >
             <CourseInfo description={courseDescription} />
           </TabPanel>
-          <TabPanel value={value} index={2}>
+          <TabPanel value={value} index={2} >
             <YearlyTrend />
           </TabPanel>
-          <TabPanel value={value} index={3}>
+          <TabPanel value={value} index={3} >
             <ProfessorStats />
           </TabPanel>
         </Box>
-        <Box>
+        <Box sx={{ width: windowSize[0] / 2.55, height: "50px"}}>
           <Stack
             spacing={2}
             direction="row"
             sx={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginLeft: 28.5,
             }}
           >
             {isOverview ? (
@@ -775,7 +790,7 @@ const Visualization = () => {
                   select
                   label="Select Year"
                   variant="standard"
-                  sx={{ width: "150px" }}
+                  sx={{ width: "150px", marginLeft: "auto" }}
                   defaultValue={selectedYear}
                 >
                   {selectYear.map((option) => (

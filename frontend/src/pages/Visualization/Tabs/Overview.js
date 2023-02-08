@@ -1,4 +1,5 @@
 import "@fontsource/public-sans";
+import {useState, useEffect} from "react"
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
@@ -142,54 +143,65 @@ function StackedGPA(gpa) {
 }
 
 const Overivew = (chartData) => {
-  // console.log("chartData in overview: ", chartData)
   const criteriaAverage = chartData.pentagon.datasets[0].data;
-  console.log("criteriAverage[1]", criteriaAverage[1]);
-  console.log("ChartDtaa", chartData);
-  console.log("criAvg", criteriaAverage);
 
   const GPAData = chartData.GPA;
-  console.log("adsfasfasas", GPAData);
+
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  });
+
+  console.log("window size: ", windowSize);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "row" }}>
       <Stack sx={{ marginLeft: 1, marginRight: 1 }}>
-        <Item sx={{ width: "380px", height: "340px", marginBottom: 3 }}>
-          <Square sx={{ marginTop: -1.5 }}>
+        <Item sx={{ width: windowSize[0] / 3.8, height: windowSize[1] / 2.35, marginBottom: 3 }}>
+          <Square sx={{ marginTop: -1.5, width: windowSize[0] / 3.8, height: windowSize[1] / 2.3 }}>
             <RadarChart chartData={chartData.pentagon} />
           </Square>
-          <Box
-            sx={{ position: "relative", top: -330, left: 25, display: "flex" }}
-          >
+          <Box sx={{display:"flex", position: "absolute", top: 225, left: 80, display: "flex"}}>
             <Number n={chartData.overallScore} />
-            <h1 style={{ position: "absolute", left: 24, top: 22 }}></h1>
-            <h3 style={{ marginTop: 22, marginLeft: 5 }}>/ 5.0</h3>
+            <h3 style={{marginTop: 25, marginLeft: 5}}>/ 5.0</h3>
           </Box>
         </Item>
-        <Item sx={{ height: "180px", width: "380px" }}>
+        <Item sx={{ width: windowSize[0]/3.8, height: windowSize[1]/ 4.4 }}>
           <Box sx={{ marginBottom: 1 }}>
             <h3 style={{ fontSize: "19px" }}>Lecture Quality</h3>
           </Box>
           <Box sx={{ display: "flex" }}>
-            <TeachingQualityGrid sx={{ marginLeft: 1 }}>
+            <TeachingQualityGrid sx={{ marginLeft: 1, width: windowSize[1] / 6.5, height: windowSize[1] / 6.5}}>
               <OverallScore
                 score={Math.round(chartData.teachingQuality[0] * 10)}
               />
             </TeachingQualityGrid>
-            <Box sx={{ marginLeft: 4 }}>
-              <TQSubGrid>
+            <Box sx={{ marginLeft: windowSize[0] / 350 }}>
+              <TQSubGrid sx={{width: windowSize[0] / 7.15, height: windowSize[1] / 20}}>
                 <h5>Entertainment </h5>
                 <LinearPercentage
                   percentage={chartData.entertaining[0]}
                 ></LinearPercentage>
               </TQSubGrid>
-              <TQSubGrid>
+              <TQSubGrid sx={{width: windowSize[0] / 7.15, height: windowSize[1] / 20}}>
                 <h5>Interactivity</h5>
                 <LinearPercentage
                   percentage={chartData.interactivity[0]}
                 ></LinearPercentage>
               </TQSubGrid>
-              <TQSubGrid>
+              <TQSubGrid sx={{width: windowSize[0] / 7.15, height: windowSize[1] / 20}}>
                 <h5>Delivery</h5>
                 <LinearPercentage
                   percentage={chartData.delivery[0]}
@@ -200,18 +212,17 @@ const Overivew = (chartData) => {
         </Item>
       </Stack>
       <Stack spacing={3} sx={{ marginLeft: 2 }}>
-        <HorizontalGrid>
+        <HorizontalGrid sx={{width: windowSize[0]/3.16, height: windowSize[1]/3.05}}>
           <Stack
             sx={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-between",
             }}
           >
-            <Box sx={{ marginLeft: "47%" }}>
-              <h3 style={{ fontSize: "19px" }}>GPA </h3>
-            </Box>
+            <Box sx={{width: "100px", height: "30px"}}></Box>
+            <h3 style={{ fontSize: "19px" }}>GPA </h3>
             <Badges
               borderColor={
                 criteriaAverage[1]
@@ -224,8 +235,6 @@ const Overivew = (chartData) => {
                   : "#1D2630"
               }
               sx={{
-                position: "relative",
-                marginLeft: "auto",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -251,32 +260,31 @@ const Overivew = (chartData) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              width: windowSize[0] / 3.65,
+              height: windowSize[1] / 3.65
             }}
           >
             <HorizontalBarChart chartData={GPAData} />
           </GPABarChartGrid>
-          <h6 style={{ position: "relative", top: -38, left: -170 }}>
+          {/* <h6 style={{ position: "relative", top: -38, left: -170 }}>
             # students:
-          </h6>
+          </h6> */}
         </HorizontalGrid>
-        <HorizontalGrid>
+        <HorizontalGrid sx={{width: windowSize[0]/3.16, height: windowSize[1]/3.05}}>
           <Stack
             sx={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-between",
             }}
           >
-            <Box sx={{ marginLeft: "34%" }}>
-              <h3 style={{ fontSize: "19px" }}> Lecture Difficulty </h3>
-            </Box>
+            <Box sx={{width: "100px", height: "30px"}}></Box>
+            <h3 style={{ fontSize: "19px" }}> Lecture Difficulty </h3>
             <Badges
               borderColor={JudgeBadgesColor(criteriaAverage[2])[0]}
               backgroundColor={JudgeBadgesColor(criteriaAverage[2])[1]}
               sx={{
-                position: "relative",
-                marginLeft: "auto",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -294,34 +302,33 @@ const Overivew = (chartData) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              width: windowSize[0] / 3.6,
+              height: windowSize[1] / 3.6
             }}
           >
             <HorizontalBarChart chartData={chartData.lectureDifficulty} />
           </BarChartGrid>
-          <h6 style={{ position: "relative", top: -33.5, left: -160 }}>
+          {/* <h6 style={{ position: "relative", top: -33.5, left: -160 }}>
             # students:
-          </h6>
+          </h6> */}
         </HorizontalGrid>
       </Stack>
       <Stack spacing={3} sx={{ marginLeft: 3 }}>
-        <HorizontalGrid>
+        <HorizontalGrid sx={{width: windowSize[0]/3.16, height: windowSize[1]/3.05}}>
           <Stack
             sx={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-between",
             }}
           >
-            <Box sx={{ marginLeft: "41%" }}>
-              <h3 style={{ fontSize: "19px" }}> Workload </h3>
-            </Box>
+            <Box sx={{width: "100px", height: "30px"}}></Box>
+            <h3 style={{ fontSize: "19px" }}> Workload </h3>
             <Badges
               borderColor={JudgeBadgesColor(criteriaAverage[4])[0]}
               backgroundColor={JudgeBadgesColor(criteriaAverage[4])[1]}
               sx={{
-                position: "relative",
-                marginLeft: "auto",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -339,32 +346,31 @@ const Overivew = (chartData) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              width: windowSize[0] / 3.6,
+              height: windowSize[1] / 3.6
             }}
           >
             <HorizontalBarChart chartData={chartData.workload} />
           </BarChartGrid>
-          <h6 style={{ position: "relative", top: -33.5, left: -166 }}>
+          {/* <h6 style={{ position: "relative", top: -33.5, left: -166 }}>
             # students:
-          </h6>
+          </h6> */}
         </HorizontalGrid>
-        <HorizontalGrid>
+        <HorizontalGrid sx={{width: windowSize[0]/3.16, height: windowSize[1]/3.05}}>
           <Stack
             sx={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-between",
             }}
           >
-            <Box sx={{ marginLeft: "29%" }}>
-              <h3 style={{ fontSize: "19px" }}> Final Exam Difficulty </h3>
-            </Box>
+            <Box sx={{width: "100px", height: "30px"}}></Box>
+            <h3 style={{ fontSize: "19px" }}> Final Exam Difficulty </h3>
             <Badges
               borderColor={JudgeBadgesColor(criteriaAverage[0])[0]}
               backgroundColor={JudgeBadgesColor(criteriaAverage[0])[1]}
               sx={{
-                position: "relative",
-                marginLeft: "auto",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -382,13 +388,15 @@ const Overivew = (chartData) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              width: windowSize[0] / 3.6,
+              height: windowSize[1] / 3.6
             }}
           >
             <HorizontalBarChart chartData={chartData.finalDifficulty} />
           </BarChartGrid>
-          <h6 style={{ position: "relative", top: -33.5, left: -159 }}>
+          {/* <h6 style={{ position: "relative", top: -33.5, left: -159 }}>
             # students:
-          </h6>
+          </h6> */}
         </HorizontalGrid>
       </Stack>
     </Box>

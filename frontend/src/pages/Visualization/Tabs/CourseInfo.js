@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
@@ -35,6 +35,23 @@ const OverallScoreGrid = styled(Item)(({ theme }) => ({
 const CourseInfo = (courseData) => {
   console.log("CourseData in courseInfo: ", courseData);
 
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  });
+
   const gradingRatioList = courseData.description.GradingRatio.Values;
 
   console.log("gradingRatioList: ", Object.keys(gradingRatioList));
@@ -54,10 +71,10 @@ const CourseInfo = (courseData) => {
   console.log("GradingRatio: ", gradingRatio);
 
   return (
-    <Box sx={{ height: "540px", width: "1350px", overflowX: "hidden" }}>
+    <Box sx={{ width: windowSize[0] /1.03, height:windowSize[1]/1.4, overflowX: "hidden", overflowY: "hidden" }}>
       <Box sx={{ marginLeft: 1 }}>
         <Stack sx={{ display: "flex", flexDirection: "row" }}>
-          <CourseDescriptionGrid sx={{ marginRight: 3 }}>
+          <CourseDescriptionGrid sx={{ width: windowSize[0]/3.05, height: windowSize[1]/3.05, marginRight: 3 }}>
             <Box
               sx={{
                 display: "flex",
@@ -145,7 +162,7 @@ const CourseInfo = (courseData) => {
               </Box>
             </Box>
           </CourseDescriptionGrid>
-          <TimeTableGrid sx={{ overflowX: "scroll" }}>
+          <TimeTableGrid sx={{ width: windowSize[0]/1.7, height: windowSize[1]/3.05, overflowX: "scroll" }}>
             <Box sx={{ marginBottom: 1 }}>
               <h2>Time Table</h2>
             </Box>
@@ -155,56 +172,68 @@ const CourseInfo = (courseData) => {
       </Box>
       <Box sx={{ marginLeft: 1, marginTop: 3 }}>
         <Stack sx={{ display: "flex", flexDirection: "row" }}>
-          <GradingRatioGrid sx={{ marginRight: 3 }}>
-            <h2>Grading Ratio</h2>
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
-              <Box
-                sx={{
-                  marginLeft: 18,
-                  marginTop: -5,
-                  height: "280px",
-                  width: "280px",
-                }}
-              >
-                <DoughnutChart chartData={gradingRatio} />
-              </Box>
-              <Box sx={{ height: "200px", width: "200px" }}>
-                <Textfield
-                  id="get-grading-ratio"
-                  select
-                  // label="select professor"
-                  variant="standard"
-                  sx={{ width: "130px", marginTop: -4, marginLeft: -3 }}
-                  defaultValue={Object.values(gradingRatioList)[0]}
-                >
-                  {Object.keys(gradingRatioList).map((key) => {
-                    // const filteredGradingRatioList = gradingRatioList[key].filter(function(val) { return val != 0})
-                    return (
-                      <MenuItem
-                        key={key}
-                        value={gradingRatioList[key]}
-                        onClick={() => {
-                          setGradingRatio({
-                            ...gradingRatio,
-                            datasets: [
-                              {
-                                label: "students answer",
-                                data: gradingRatioList[key],
-                              },
-                            ],
-                          });
-                        }}
-                      >
-                        {key}
-                      </MenuItem>
-                    );
-                  })}
-                </Textfield>
-              </Box>
+          <GradingRatioGrid sx={{ width: windowSize[0]/2.4, height: windowSize[1]/3.05, marginRight: 3 }}>
+            <Stack 
+              sx={{ 
+                display: "flex", 
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                }}>
+              <Box sx={{width: "200px"}}></Box>
+              <h2>Grading Ratio</h2>
+              <Box sx={{ width: "200px" }}>
+                  <Textfield
+                    id="get-grading-ratio"
+                    select
+                    // label="select professor"
+                    variant="standard"
+                    defaultValue={Object.values(gradingRatioList)[0]}
+                  >
+                    {Object.keys(gradingRatioList).map((key) => {
+                      // const filteredGradingRatioList = gradingRatioList[key].filter(function(val) { return val != 0})
+                      return (
+                        <MenuItem
+                          key={key}
+                          value={gradingRatioList[key]}
+                          onClick={() => {
+                            setGradingRatio({
+                              ...gradingRatio,
+                              datasets: [
+                                {
+                                  label: "students answer",
+                                  data: gradingRatioList[key],
+                                },
+                              ],
+                            });
+                          }}
+                        >
+                          {key}
+                        </MenuItem>
+                      );
+                    })}
+                  </Textfield>
+                </Box>
+              </Stack>
+            <Box
+              sx={{
+                marginLeft: 18,
+                marginTop: -3,
+                width: windowSize[1] / 3,
+                height: windowSize[0] / 3.1,
+              }}
+            >
+              <DoughnutChart chartData={gradingRatio} />
             </Box>
           </GradingRatioGrid>
-          <OverallScoreGrid>
-            <Box sx={{ marginBottom: 4 }}>
+          <OverallScoreGrid sx={{
+            width: windowSize[0]/2.005, 
+            height: windowSize[1]/3.05,
+            display: "flex",
+            flexDirection: "column",
+
+            }}>
+            <Box sx={{ marginBottom: windowSize[1] / 140 }}>
               <h2>Comments</h2>
             </Box>
             <Box>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useContext, forwardRef, useEffect } from "react";
+import { useState, useContext, forwardRef, useEffect, useRef } from "react";
 import { UserContext } from "../../UserContext";
 import { useParams } from "react-router-dom";
 import { styled, alpha, useTheme } from "@mui/material/styles";
@@ -98,6 +98,23 @@ const Main = () => {
   const params = useParams();
   const faculty = params.faculty;
   console.log("faculty: ", faculty);
+
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  });
 
   // document.body.style.backgroundColor = "#110F44"
   const { UserToken, UserData } = useContext(UserContext);
@@ -247,11 +264,10 @@ const Main = () => {
   );
 
   return (
-    <Box>
-      <Box display="flex" justifyContent="space-around" sx={{ marginTop: 10 }}>
-        <Box sx={{ marginTop: "50px" }}>
+    <Box sx={{width: windowSize[0], height: windowSize[1], display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-around"}}>
+        <Box>
           <Item sx={{ backgroundColor: temp_color }}>
-            <Box sx={{}}>
+            <Box>
               <Search
                 sx={{
                   marginRight: "5px",
@@ -350,7 +366,7 @@ const Main = () => {
         </Box>
         <Box>
           <Item
-            sx={{ boxShadow: 6, backgroundColor: favColor, marginTop: "50px" }}
+            sx={{ boxShadow: 6, backgroundColor: favColor }}
           >
             <Typography variant="h5" sx={{ marginTop: "17px" }}>
               Favorites
@@ -436,7 +452,6 @@ const Main = () => {
             </Box>
           </Item>
         </Box>
-      </Box>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           {alertMessage}
