@@ -10,6 +10,8 @@ import { useSpring, animated } from "react-spring";
 import Item from "../Boxes/Item";
 import LinearPercentage from "../Charts/LinearPercentage";
 
+const macWindowSize = [1440, 796]
+
 function Number({ n }) {
   const { number } = useSpring({
     from: { number: 0 },
@@ -163,27 +165,26 @@ const Overivew = (chartData) => {
       window.removeEventListener('resize', handleWindowResize);
     };
   });
-
   console.log("window size: ", windowSize);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "row" }}>
-      <Stack sx={{ marginLeft: 1, marginRight: 1 }}>
-        <Item sx={{ width: windowSize[0] / 3.8, height: windowSize[1] / 2.35, marginBottom: 3 }}>
-          <Square sx={{ marginTop: -1.5, width: windowSize[0] / 3.8, height: windowSize[1] / 2.3 }}>
+      <Stack sx={{ marginLeft: windowSize[0]/1440, marginRight: windowSize[0]/1440 }}>
+        <Item sx={{ width: windowSize[0] / 3.8, height: windowSize[1] / 2.35, marginBottom: windowSize[1] / 245 }}>
+          <Square sx={{ marginTop: (-windowSize[1] / 796) * 1.5, marginLeft: windowSize[0] / 1440, width: windowSize[0] / 3.8, height: windowSize[1] / 2.3 }}>
             <RadarChart chartData={chartData.pentagon} />
           </Square>
-          <Box sx={{display:"flex", position: "absolute", top: 225, left: 80, display: "flex"}}>
+          <Box sx={{display:"flex", position: "absolute", top: (windowSize[1] / 796) * 225, left: (windowSize[0] / 1440) * 80, display: "flex"}}>
             <Number n={chartData.overallScore} />
             <h3 style={{marginTop: 25, marginLeft: 5}}>/ 5.0</h3>
           </Box>
         </Item>
         <Item sx={{ width: windowSize[0]/3.8, height: windowSize[1]/ 4.4 }}>
-          <Box sx={{ marginBottom: 1 }}>
+          <Box sx={{ marginBottom: windowSize[1]/796 }}>
             <h3 style={{ fontSize: "19px" }}>Lecture Quality</h3>
           </Box>
           <Box sx={{ display: "flex" }}>
-            <TeachingQualityGrid sx={{ marginLeft: 1, width: windowSize[1] / 6.5, height: windowSize[1] / 6.5}}>
+            <TeachingQualityGrid sx={{ marginLeft: windowSize[0]/1440, width: windowSize[1] / 6.5, height: windowSize[1] / 6.5}}>
               <OverallScore
                 score={Math.round(chartData.teachingQuality[0] * 10)}
               />
@@ -211,7 +212,7 @@ const Overivew = (chartData) => {
           </Box>
         </Item>
       </Stack>
-      <Stack spacing={3} sx={{ marginLeft: 2 }}>
+      <Stack spacing={windowSize[1] / 270} sx={{ marginLeft: windowSize[0] / 750 }}>
         <HorizontalGrid sx={{width: windowSize[0]/3.16, height: windowSize[1]/3.05}}>
           <Stack
             sx={{
@@ -313,7 +314,7 @@ const Overivew = (chartData) => {
           </h6> */}
         </HorizontalGrid>
       </Stack>
-      <Stack spacing={3} sx={{ marginLeft: 3 }}>
+      <Stack spacing={windowSize[1] / 270} sx={{ marginLeft: windowSize[0] / 480 }}>
         <HorizontalGrid sx={{width: windowSize[0]/3.16, height: windowSize[1]/3.05}}>
           <Stack
             sx={{

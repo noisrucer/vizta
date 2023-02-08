@@ -65,39 +65,6 @@ const NumReviewBox = styled(Box)(() => ({
   border: `2px solid white`,
 }));
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    "aria-controls": `vertical-tabpanel-${index}`,
-  };
-}
-
 const Visualization = () => {
 
   const [windowSize, setWindowSize] = useState([
@@ -116,6 +83,39 @@ const Visualization = () => {
       window.removeEventListener('resize', handleWindowResize);
     };
   });
+
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`full-width-tabpanel-${index}`}
+        aria-labelledby={`full-width-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: windowSize[0]/480 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+  
+  function a11yProps(index) {
+    return {
+      id: `vertical-tab-${index}`,
+      "aria-controls": `vertical-tabpanel-${index}`,
+    };
+  }
 
   const navigate = useNavigate();
 
@@ -146,7 +146,7 @@ const Visualization = () => {
     labels: GPALabel,
     datasets: [
       {
-        label: "Students Score",
+        label: "# Students",
         data: [],
         backgroundColor: dataColor,
       },
@@ -157,7 +157,7 @@ const Visualization = () => {
     labels: lectureFinalLabel,
     datasets: [
       {
-        label: "Students Score",
+        label: "# Students",
         data: [],
         backgroundColor: dataColor,
       },
@@ -168,7 +168,7 @@ const Visualization = () => {
     labels: lectureFinalLabel,
     datasets: [
       {
-        label: "Students Score",
+        label: "# Students",
         data: [],
         backgroundColor: dataColor,
       },
@@ -179,7 +179,7 @@ const Visualization = () => {
     labels: workloadLabel,
     datasets: [
       {
-        label: "Students Score",
+        label: "# Students",
         data: [],
         backgroundColor: dataColor,
       },
@@ -298,7 +298,7 @@ const Visualization = () => {
             ...GPA,
             datasets: [
               {
-                label: "Students Score",
+                label: "# Students",
                 data: response.data.GPA.values,
                 backgroundColor: dataColor,
               },
@@ -308,7 +308,7 @@ const Visualization = () => {
             ...lectureDifficulty,
             datasets: [
               {
-                label: "Students Score",
+                label: "# Students",
                 data: response.data.LectureDifficulty.values,
                 backgroundColor: dataColor,
               },
@@ -318,7 +318,7 @@ const Visualization = () => {
             ...finalDifficulty,
             datasets: [
               {
-                label: "Students Score",
+                label: "# Students",
                 data: response.data.FinalDifficulty.values,
                 backgroundColor: dataColor,
               },
@@ -328,7 +328,7 @@ const Visualization = () => {
             ...workload,
             datasets: [
               {
-                label: "Students Score",
+                label: "# Students",
                 data: response.data.Workload.values,
                 backgroundColor: dataColor,
               },
@@ -514,7 +514,7 @@ const Visualization = () => {
             ...GPA,
             datasets: [
               {
-                label: "Students Score",
+                label: "# Students",
                 data: response.data.GPA.values,
                 backgroundColor: dataColor,
               },
@@ -524,7 +524,7 @@ const Visualization = () => {
             ...lectureDifficulty,
             datasets: [
               {
-                label: "Students Score",
+                label: "# Students",
                 data: response.data.LectureDifficulty.values,
                 backgroundColor: dataColor,
               },
@@ -534,7 +534,7 @@ const Visualization = () => {
             ...finalDifficulty,
             datasets: [
               {
-                label: "Students Score",
+                label: "# Students",
                 data: response.data.FinalDifficulty.values,
                 backgroundColor: dataColor,
               },
@@ -544,7 +544,7 @@ const Visualization = () => {
             ...workload,
             datasets: [
               {
-                label: "Students Score",
+                label: "# Students",
                 data: response.data.Workload.values,
                 backgroundColor: dataColor,
               },
@@ -662,7 +662,7 @@ const Visualization = () => {
         <Box
           sx={{
             width: "93%",
-            marginTop: 9,
+            marginTop: windowSize[1] / 73,
             marginBottom: 1,
             display: "flex",
             flexDirection: "row",
@@ -673,7 +673,7 @@ const Visualization = () => {
             <span style={{ color: "#FFC106" }}>{courseId} </span>
             <span>/ {courseDescription.Name}</span>
           </h2>
-          <Box sx={{ marginLeft: "auto" }}>
+          <Box sx={{ marginLeft: "auto"}}>
             {isOverview ? (
               <Button disabled sx={{ marginRight: 1 }}>
                 Total Reviews: {numReviews}
@@ -707,11 +707,11 @@ const Visualization = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ display: "flex", marginLeft: 2 }}>
+      <Box sx={{ display: "flex", marginLeft: windowSize[0] / 720}}>
         <Box sx={{ backgroundColor: "#1D2630", width: windowSize[0] / 1.8 }}>
           <AppBar
             position="static"
-            sx={{ marginLeft: 4, backgroundColor: "#1D2630", width: windowSize[0] / 1.8 }}
+            sx={{ marginLeft: windowSize[0] / 360, backgroundColor: "#1D2630", width: windowSize[0] / 1.8 }}
           >
             <Tabs
               value={value}
@@ -751,7 +751,7 @@ const Visualization = () => {
               />
             </Tabs>
           </AppBar>
-          <TabPanel value={value} index={0} >
+          <TabPanel value={value} index={0}>
             <Overview
               GPA={GPA}
               lectureDifficulty={lectureDifficulty}

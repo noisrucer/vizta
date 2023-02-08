@@ -72,9 +72,9 @@ const CourseInfo = (courseData) => {
 
   return (
     <Box sx={{ width: windowSize[0] /1.03, height:windowSize[1]/1.4, overflowX: "hidden", overflowY: "hidden" }}>
-      <Box sx={{ marginLeft: 1 }}>
+      <Box sx={{ marginLeft: windowSize[0] / 1440 }}>
         <Stack sx={{ display: "flex", flexDirection: "row" }}>
-          <CourseDescriptionGrid sx={{ width: windowSize[0]/3.05, height: windowSize[1]/3.05, marginRight: 3 }}>
+          <CourseDescriptionGrid sx={{ width: windowSize[0]/3.05, height: windowSize[1]/3.05, marginRight: windowSize[0] / 480 }}>
             <Box
               sx={{
                 display: "flex",
@@ -110,12 +110,12 @@ const CourseInfo = (courseData) => {
                       marginBottom: 1,
                     }}
                   >
-                    <h4 style={{ color: "#FF5721", marginRight: 10 }}>
+                    <h4 style={{ color: "#FF5721", marginRight: windowSize[0] / 144 }}>
                       Department:{" "}
                     </h4>
                     <h4>{courseData.description.Faculty}</h4>
                   </Box>
-                  <Box sx={{ display: "flex", marginLeft: 1, marginBottom: 1 }}>
+                  <Box sx={{ display: "flex", marginLeft: windowSize[0] / 1440, marginBottom: windowSize[1] / 796 }}>
                     {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Prerequisites: </h4> */}
                     <h4 style={{ textAlign: "left" }}>
                       <label style={{ color: "#FF5721" }}>
@@ -124,7 +124,7 @@ const CourseInfo = (courseData) => {
                       {courseData.description.Prerequisite || "None"}
                     </h4>
                   </Box>
-                  <Box sx={{ display: "flex", marginLeft: 1, marginBottom: 1 }}>
+                  <Box sx={{ display: "flex", marginLeft: windowSize[0] / 1440, marginBottom: windowSize[1] / 796 }}>
                     {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Blocking Courses: </h4> */}
                     <h4 style={{ textAlign: "left" }}>
                       <label style={{ color: "#FF5721" }}>
@@ -134,7 +134,7 @@ const CourseInfo = (courseData) => {
                         "None"}
                     </h4>
                   </Box>
-                  <Box sx={{ display: "flex", marginLeft: 1, marginBottom: 1 }}>
+                  <Box sx={{ display: "flex", marginLeft: windowSize[0] / 1440, marginBottom: windowSize[1] / 796 }}>
                     {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Mutual Exclusives: </h4> */}
                     <h4 style={{ textAlign: "left" }}>
                       <label style={{ color: "#FF5721" }}>
@@ -144,7 +144,7 @@ const CourseInfo = (courseData) => {
                         "None"}
                     </h4>
                   </Box>
-                  <Box sx={{ display: "flex", marginLeft: 1 }}>
+                  <Box sx={{ display: "flex", marginLeft: windowSize[0] / 1440 }}>
                     {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Description: </h4> */}
                     <h4
                       style={{
@@ -163,16 +163,16 @@ const CourseInfo = (courseData) => {
             </Box>
           </CourseDescriptionGrid>
           <TimeTableGrid sx={{ width: windowSize[0]/1.7, height: windowSize[1]/3.05, overflowX: "scroll" }}>
-            <Box sx={{ marginBottom: 1 }}>
+            <Box sx={{ marginBottom: windowSize[1] / 796 }}>
               <h2>Time Table</h2>
             </Box>
             <TimeTable chartData={courseData.description.Timetable} />
           </TimeTableGrid>
         </Stack>
       </Box>
-      <Box sx={{ marginLeft: 1, marginTop: 3 }}>
+      <Box sx={{ marginLeft: windowSize[0] / 1440, marginTop: windowSize[1] / 270 }}>
         <Stack sx={{ display: "flex", flexDirection: "row" }}>
-          <GradingRatioGrid sx={{ width: windowSize[0]/2.4, height: windowSize[1]/3.05, marginRight: 3 }}>
+          <GradingRatioGrid sx={{ width: windowSize[0]/2.4, height: windowSize[1]/3.05, marginRight: windowSize[0] / 480 }}>
             <Stack 
               sx={{ 
                 display: "flex", 

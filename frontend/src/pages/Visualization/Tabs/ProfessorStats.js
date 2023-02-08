@@ -238,7 +238,7 @@ const ProfessorStats = () => {
       >
         <Box 
           sx={{ 
-            marginRight: 10, 
+            marginRight: windowSize[0] / 144, 
             width: windowSize[1]/1.5, 
             height: windowSize[1]/1.5,
             }}

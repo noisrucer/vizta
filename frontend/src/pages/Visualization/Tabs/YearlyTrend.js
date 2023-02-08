@@ -217,7 +217,7 @@ const YearlyTrend = () => {
           variant="standard"
           label="Select Criteria"
           defaultValue="Final Exam"
-          sx={{position: "absolute", left: `${windowSize[0]/1.625}px`, top: 180, width: "150px"}}
+          sx={{position: "absolute", left: `${windowSize[0]/1.75}px`, top: (windowSize[1] / 796) * 200, width: "150px"}}
           >
           {criteria.map((option) => (
             <MenuItem key={option.label} value={option.label} onClick={() => changeCriteria(option.value, option.label)}>
@@ -228,12 +228,12 @@ const YearlyTrend = () => {
       <Box
         sx={{bgcolor: '#1D2630', display:"flex", flexDirection: "column", alignItems: 'center' }}
       >
-        <h2 style={{position: "absolute", left: `${windowSize[0]/2.8}px`, top: 200}}>{title}</h2>
-        <Box sx={{ width: windowSize[0] / 1.4, height: windowSize[1] / 1.4, position: "absolute", left: 30, top: 230}}>
+        <h2 style={{position: "absolute", left: `${windowSize[0]/3}px`, top: (windowSize[1] / 796) * 210}}>{title}</h2>
+        <Box sx={{ width: windowSize[0] / 1.5, height: windowSize[1] / 1.5, position: "absolute", left: (windowSize[0] / 1440) * 30, top: (windowSize[1] / 796) * 250}}>
           <LineChart chartData={conditionalChartData} />
         </Box>
       </Box>
-      <Box sx={{position: "absolute", left: windowSize[0]/1.23}}>
+      <Box sx={{position: "absolute", left: windowSize[0]/1.275}}>
         {chartData.datasets.map((item) => {
           return renderSwitch(item)
         })}
