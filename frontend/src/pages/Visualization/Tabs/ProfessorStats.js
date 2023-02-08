@@ -234,6 +234,7 @@ const ProfessorStats = () => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "center",
+          marginLeft: 10
         }}
       >
         <Box 
