@@ -65,6 +65,39 @@ const NumReviewBox = styled(Box)(() => ({
   border: `2px solid white`,
 }));
 
+function TabPanel(props) {
+  const { children, value, index, windowSize, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: windowSize[0]/480 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
+  };
+}
+
 const Visualization = () => {
 
   const [windowSize, setWindowSize] = useState([
@@ -83,39 +116,6 @@ const Visualization = () => {
       window.removeEventListener('resize', handleWindowResize);
     };
   });
-
-  function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`full-width-tabpanel-${index}`}
-        aria-labelledby={`full-width-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: windowSize[0]/480 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-  
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-  };
-  
-  function a11yProps(index) {
-    return {
-      id: `vertical-tab-${index}`,
-      "aria-controls": `vertical-tabpanel-${index}`,
-    };
-  }
 
   const navigate = useNavigate();
 
@@ -751,7 +751,7 @@ const Visualization = () => {
               />
             </Tabs>
           </AppBar>
-          <TabPanel value={value} index={0}>
+          <TabPanel value={value} index={0} windowSize={windowSize}>
             <Overview
               GPA={GPA}
               lectureDifficulty={lectureDifficulty}
@@ -765,13 +765,13 @@ const Visualization = () => {
               overallScore={overallScore}
             />
           </TabPanel>
-          <TabPanel value={value} index={1} >
+          <TabPanel value={value} index={1} windowSize={windowSize}>
             <CourseInfo description={courseDescription} />
           </TabPanel>
-          <TabPanel value={value} index={2} >
+          <TabPanel value={value} index={2} windowSize={windowSize}>
             <YearlyTrend />
           </TabPanel>
-          <TabPanel value={value} index={3} >
+          <TabPanel value={value} index={3} windowSize={windowSize}>
             <ProfessorStats />
           </TabPanel>
         </Box>
