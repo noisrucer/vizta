@@ -11,7 +11,7 @@ const UserProvider = (props) => {
   const [userToken, setUserToken] = useState(() => {
     const loadUserToken = JSON.parse(localStorage.getItem("userToken"));
     // console.log("Initial useContext after refresh (userToken): ", loadUserToken)
-    return loadUserToken;
+    return loadUserToken ? loadUserToken : { headers: "" };
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
