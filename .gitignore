@@ -12,6 +12,7 @@
 .env
 /venv/
 **/venv/
+.idea/
 venv/
 # testing
 /coverage

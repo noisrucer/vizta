@@ -1,0 +1,5 @@
+-- Active: 1671800850866@@127.0.0.1@3306@vizta
+
+INSERT INTO blocking_course VALUES
+('COMP3314', 'TEST1'),
+('COMP3314', 'TEST2');
