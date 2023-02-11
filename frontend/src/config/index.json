@@ -29,7 +29,7 @@
   "mainHero": {
     "title": "VIZTA",
     "subtitle": "Better plan your courses",
-    "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+    "description": "Have you struggled to find appropriate courses during the add & drop period? VIZTA offers a powerful visualization tool for course evaluation including GPA, workload, lecture difficulty, final exam difficulty, and lecture quality. You can also select a specific year and professor to see detailed results.",
     "img": "/assets/images/overview23.png",
     "primaryAction": {
       "text": "Sign Up",
