@@ -87,6 +87,8 @@ const SignIn = () => {
         }
       })
       .catch((err) => {
+        console.log("err:", err);
+        console.log("err.response:", err.response);
         setErrorMessage(err.response.data.detail);
         setOpenErrorMessage(true);
 
