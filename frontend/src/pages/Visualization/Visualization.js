@@ -141,7 +141,7 @@ const Visualization = () => {
       setHasReviewed(response.data);
     });
 
-  const [GPA, setGPA] = useState({
+  const [GPA, setGPA] = useState({ // GPA and all other criteria components for chart.js has to be formatted in this format: {labels: , datasets:[{...}]}
     labels: GPALabel,
     datasets: [
       {
@@ -185,6 +185,7 @@ const Visualization = () => {
     ],
   });
 
+  // useState values that set the LectureQuality values
   const [delivery, setDelivery] = useState([]);
   const [entertaining, setEntertaining] = useState([]);
   const [interactivity, setInteractivity] = useState([]);
@@ -208,7 +209,7 @@ const Visualization = () => {
 
   const [overallScore, setOverallScore] = useState(0);
 
-  const [courseDescription, setCourseDescription] = useState({
+  const [courseDescription, setCourseDescription] = useState({ // this state is sent to CourseInfo page
     CourseID: "",
     Description: "",
     Faculty: "",
@@ -280,7 +281,7 @@ const Visualization = () => {
 
   useEffect(() => {
     // get request from courseInfo, courseDescription, available year and professor, favorites
-    const fetchCourseData = async () => {
+    const fetchCourseData = async () => { // get GPA, LectureQuality, LectureDifficulty, FinalDifficulty, Workload, and Pentagon values - note that this is the very first render (before the user selects year and professor), this component only runs once, first time the page renders
       axios
         .request({
           method: "get",
@@ -413,7 +414,7 @@ const Visualization = () => {
     };
     fetchCourseData();
 
-    const fecthCourseGeneralInfo = async () => {
+    const fecthCourseGeneralInfo = async () => { // get CourseDescription
       axios
         .request({
           method: "get",
@@ -432,7 +433,7 @@ const Visualization = () => {
     };
     fecthCourseGeneralInfo();
 
-    const getAvailableYears = async () => {
+    const getAvailableYears = async () => { // get list of available years for toggle select textfield 
       axios
         .request({
           method: "get",
@@ -448,7 +449,7 @@ const Visualization = () => {
     };
     getAvailableYears();
 
-    const getAvailableProfessors = async () => {
+    const getAvailableProfessors = async () => { // get list of available professors for toggle select textfield
       axios
         .request({
           method: "get",
@@ -467,7 +468,7 @@ const Visualization = () => {
     };
     getAvailableProfessors();
 
-    const getFavorites = async () => {
+    const getFavorites = async () => { // get favorite is true or false
       axios
         .request({
           method: "get",
@@ -484,6 +485,7 @@ const Visualization = () => {
     getFavorites();
   }, []);
 
+  // select option for select textfield default to "All"
   const [selectedYear, setSelectedYear] = useState("All");
   const [selectedProfessor, setSelectedProfessor] = useState("All");
 
@@ -500,7 +502,7 @@ const Visualization = () => {
     } else {
       path = `${baseURL}/visualization/${courseId}`;
     }
-    const refreshCourseData = async () => {
+    const refreshCourseData = async () => { // request sent everytime user clicks the select textfield option with different values, change GPA, LectrueQuality, LectureDifficulty, FinalDifficulty, Workload, and pentagon values
       axios
         .request({
           method: "get",
@@ -508,7 +510,7 @@ const Visualization = () => {
           headers: userToken["headers"],
         })
         .then((response) => {
-          setNumReviews(response.data.TotalNumReviews);
+          setNumReviews(response.data.TotalNumReviews); // also, number of reviews update upon year and professor change
           setGPA({
             ...GPA,
             datasets: [
