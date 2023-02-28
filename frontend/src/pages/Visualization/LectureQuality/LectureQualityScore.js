@@ -1,11 +1,12 @@
 import React from 'react';
-import OverallScoreProvider from './OverallScoreProvider';
+import LectureQualityScoreProvider from './LectureQualityScoreProvider';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-const OverallScore = (props) => {
+// this is a overallscore calculation for the lecture quality in Overview page
+const LectureQualityScore = (props) => {
   let { score } = props;
-  if (isNaN(score)){
+  if (isNaN(score)) {
     score = 0;
   }
 
@@ -20,7 +21,7 @@ const OverallScore = (props) => {
   };
 
   return (
-    <OverallScoreProvider valueStart={0} valueEnd={score}>
+    <LectureQualityScoreProvider valueStart={0} valueEnd={score}>
       {(value) => (
         <CircularProgressbar
           value={value}
@@ -45,8 +46,8 @@ const OverallScore = (props) => {
           strokeWidth={10}
         />
       )}
-    </OverallScoreProvider>
+    </LectureQualityScoreProvider>
   );
 };
 
-export default OverallScore;
+export default LectureQualityScore;

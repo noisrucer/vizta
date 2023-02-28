@@ -1,6 +1,6 @@
 import React from 'react';
 
-const OverallScoreProvider = ({ valueStart, valueEnd, children }) => {
+const LectureQualityScoreProvider = ({ valueStart, valueEnd, children }) => {
   const [value, setValue] = React.useState(valueStart);
   React.useEffect(() => {
     setValue(valueEnd);
@@ -8,4 +8,4 @@ const OverallScoreProvider = ({ valueStart, valueEnd, children }) => {
 
   return children(value);
 };
-export default OverallScoreProvider;
+export default LectureQualityScoreProvider;

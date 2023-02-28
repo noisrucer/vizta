@@ -130,12 +130,11 @@ const Visualization = () => {
 
   const [hasReviewed, setHasReviewed] = useState(false);
 
-  axios
-    .request({
-      method: "get",
-      url: `${baseURL}/users/check-reviewed/${userData}/${courseId}`,
-      headers: userToken["headers"],
-    })
+  axios.request({
+    method: "get",
+    url: `${baseURL}/users/check-reviewed/${userData}/${courseId}`,
+    headers: userToken["headers"],
+  })
     .then((response) => {
       console.log("has reviewed: ", response.data);
       setHasReviewed(response.data);
