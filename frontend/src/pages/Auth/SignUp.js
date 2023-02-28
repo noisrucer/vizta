@@ -25,7 +25,8 @@ import Snackbar from "../../components/Snackbar";
 import Copyright from "./Copyright";
 import MenuItem from "@mui/material/MenuItem";
 
-const baseURL = "https://vizta.onrender.com";
+// const baseURL = "https://vizta.onrender.com";
+const baseURL = process.env.REACT_APP_BASEURL;
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;

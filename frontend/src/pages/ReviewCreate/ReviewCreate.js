@@ -41,7 +41,8 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-const baseURL = "https://vizta.onrender.com";
+// const baseURL = "https://vizta.onrender.com";
+const baseURL = process.env.REACT_APP_BASEURL;
 
 const indents = 12;
 
@@ -692,8 +693,8 @@ export default function ReviewCreate() {
             ReviewStep !== StepList.length - 1
               ? setReviewStep(ReviewStep + 1)
               : SubmitReview(ReviewData, userToken, enqueueSnackbar, () => {
-                  navigate(`/visualization/${params.courseId}`);
-                })
+                navigate(`/visualization/${params.courseId}`);
+              })
           }
         >
           {ReviewStep !== StepList.length - 1 ? (

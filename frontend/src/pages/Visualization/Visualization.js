@@ -29,7 +29,8 @@ const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const baseURL = "https://vizta.onrender.com";
+// const baseURL = "https://vizta.onrender.com";
+const baseURL = process.env.REACT_APP_BASEURL;
 const dataColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"];
 const workloadLabel = ["Very Light", "Light", "Medium", "Heavy", "Very Heavy"];
 const lectureFinalLabel = [
@@ -104,7 +105,7 @@ const Visualization = () => {
     window.innerHeight,
   ]);
 
-  useEffect(() => {
+  useEffect(() => { // window resize and box size changes correspondingly
     const handleWindowResize = () => {
       setWindowSize([window.innerWidth, window.innerHeight]);
     };
@@ -130,7 +131,7 @@ const Visualization = () => {
 
   const [hasReviewed, setHasReviewed] = useState(false);
 
-  axios.request({
+  axios.request({ // checks reviewed status
     method: "get",
     url: `${baseURL}/users/check-reviewed/${userData}/${courseId}`,
     headers: userToken["headers"],

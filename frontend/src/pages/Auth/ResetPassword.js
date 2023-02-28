@@ -18,7 +18,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Snackbar from "../../components/Snackbar";
 
 import Copyright from "./Copyright";
-const baseURL = "https://vizta.onrender.com";
+// const baseURL = "https://vizta.onrender.com";
+const baseURL = process.env.REACT_APP_BASEURL;
 
 const ResetPassword = () => {
   const navigate = useNavigate();

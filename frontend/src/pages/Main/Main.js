@@ -23,7 +23,8 @@ import MuiAlert from "@mui/material/Alert";
 import Snackbar from "../../components/Snackbar";
 import ArchiveIcon from "@mui/icons-material/Archive";
 
-const baseURL = "https://vizta.onrender.com";
+// const baseURL = "https://vizta.onrender.com";
+const baseURL = process.env.REACT_APP_BASEURL;
 const temp_color = "#1D2630";
 const favColor = "#25323F";
 

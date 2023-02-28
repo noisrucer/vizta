@@ -9,7 +9,8 @@ import Switch from "@mui/material/Switch";
 import axios from "axios";
 import { Radar } from "react-chartjs-2";
 
-const baseURL = "https://vizta.onrender.com";
+// const baseURL = "https://vizta.onrender.com";
+const baseURL = process.env.REACT_APP_BASEURL;
 
 const drawerBleeding = 56;
 

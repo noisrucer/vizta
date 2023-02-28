@@ -30,13 +30,13 @@ const Verification = () => {
       email: 'u3572962@connect.hku.hk',
       verification_code: data.get("verification")
     })
-    .then(response => {
-      console.log(response)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-    
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
     // console.log({
     //   authentication: data.get("authentication")
     // });
