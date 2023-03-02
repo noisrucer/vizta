@@ -15,6 +15,7 @@ import Overview from "./Tabs/Overview";
 import CourseInfo from "./Tabs/CourseInfo";
 import YearlyTrend from "./Tabs/YearlyTrend";
 import ProfessorStats from "./Tabs/ProfessorStats";
+import NivoCharts from "./Tabs/NivoCharts";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import PropTypes from "prop-types";
@@ -754,6 +755,13 @@ const Visualization = () => {
                   setIsOverview(false);
                 }}
               />
+              <Tab
+                label="Nivo Charts"
+                {...a11yProps(4)}
+                onCLick={() => {
+                  setIsOverview(false);
+                }}
+              />
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0} windowSize={windowSize}>
@@ -778,6 +786,9 @@ const Visualization = () => {
           </TabPanel>
           <TabPanel value={value} index={3} windowSize={windowSize}>
             <ProfessorStats />
+          </TabPanel>
+          <TabPanel value={value} index={4} windowSize={windowSize}>
+            <NivoCharts />
           </TabPanel>
         </Box>
         <Box sx={{ width: windowSize[0] / 2.55, height: "50px" }}>
