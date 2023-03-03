@@ -30,8 +30,8 @@ const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-// const baseURL = "https://vizta.onrender.com";
-const baseURL = process.env.REACT_APP_BASEURL;
+const baseURL = "https://vizta.onrender.com";
+// const baseURL = process.env.REACT_APP_BASEURL;
 const dataColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"];
 const workloadLabel = ["Very Light", "Light", "Medium", "Heavy", "Very Heavy"];
 const lectureFinalLabel = [

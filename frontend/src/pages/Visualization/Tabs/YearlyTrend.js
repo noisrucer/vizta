@@ -11,8 +11,8 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 
-// const baseURL = "https://vizta.onrender.com";
-const baseURL = process.env.REACT_APP_BASEURL;
+const baseURL = "https://vizta.onrender.com";
+// const baseURL = process.env.REACT_APP_BASEURL;
 
 const drawerBleeding = 56;
 
