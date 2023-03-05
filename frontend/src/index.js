@@ -3,12 +3,18 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
+import { UserProvider } from "./UserContext";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
+        <SnackbarProvider maxSnack={3} autoHideDuration={5000}>
+          <App />
+        </SnackbarProvider>
+      </BrowserRouter>
+    </UserProvider>
   </React.StrictMode>
 );
