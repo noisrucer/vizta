@@ -9,14 +9,15 @@ const CourseInfo = () => {
     <Box
       display="grid"
       gridTemplateColumns="repeat(12,1fr)"
-      gridTemplateRows="repeat(12,1fr)"
+      gridAutoRows={{ xs: "100px", lg: "1fr" }}
       gap="20px"
-      marginTop={3}
-      marginBottom={{ xs: 3 }}
+      marginTop={4}
+      marginBottom={3}
+      sx={{ height: "100%" }}
     >
       <Box
-        gridColumn={{ xs: "span 12", md: "span 5", lg: "span 5" }}
-        gridRow="span 26"
+        gridColumn={{ xs: "span 12", lg: "span 5" }}
+        gridRow={{ xs: "span 3", lg: "span 2" }}
         backgroundColor={colors.primary[400]}
         display="flex"
         alignItems="center"
@@ -26,8 +27,8 @@ const CourseInfo = () => {
         {/*Put GENERAL INFO in Here */}
       </Box>
       <Box
-        gridColumn={{ xs: "span 12", md: "span 7", lg: "span 7" }}
-        gridRow="span 13"
+        gridColumn={{ xs: "span 12", lg: "span 7" }}
+        gridRow={{ xs: "span 3", lg: "span 1" }}
         backgroundColor={colors.primary[400]}
         display="flex"
         alignItems="center"
@@ -37,8 +38,8 @@ const CourseInfo = () => {
         {/*Put GRADING RATIO in Here */}
       </Box>
       <Box
-        gridColumn={{ xs: "span 12", md: "span 7", lg: "span 7" }}
-        gridRow="span 13"
+        gridColumn={{ xs: "span 12", lg: "span 7" }}
+        gridRow={{ xs: "span 3", lg: "span 1" }}
         backgroundColor={colors.primary[400]}
         display="flex"
         alignItems="center"

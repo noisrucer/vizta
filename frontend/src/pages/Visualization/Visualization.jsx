@@ -46,10 +46,12 @@ function TabPanel(props) {
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
+      style={{ height: "100%" }}
     >
       {value === index && (
-        <Box sx={{}}>
-          <Typography>{children}</Typography>
+        <Box sx={{ height: "100%" }}>
+          {children}
+          {/* <Typography sx={{ height: "90%" }}>{children}</Typography> */}
         </Box>
       )}
     </div>
@@ -364,8 +366,9 @@ const Visualization = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        paddingLeft: { xs: "10px", md: "30px" },
-        paddingRight: { xs: "10px", md: "30px" },
+        paddingLeft: { xs: "20px", md: "30px" },
+        paddingRight: { xs: "20px", md: "30px" },
+        height: { xs: "100%", lg: "85vh" },
       }}
     >
       <Box

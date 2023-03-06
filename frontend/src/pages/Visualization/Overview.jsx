@@ -10,15 +10,16 @@ const Overview = () => {
     <Box
       display="grid"
       gridTemplateColumns="repeat(14,1fr)"
-      gridTemplateRows="repeat(12,1fr)"
+      gridAutoRows={{ xs: "100px", lg: "1fr" }}
       gap="20px"
-      marginTop={3}
-      marginBottom={{ xs: 3 }}
+      marginTop={4}
+      marginBottom={3}
+      sx={{ height: "100%" }}
     >
       {/* Row 1 */}
       <Box
-        gridColumn={{ xs: "span 14", md: "span 7", lg: "span 4" }}
-        gridRow="span 16"
+        gridColumn={{ xs: "span 14", lg: "span 4" }}
+        gridRow={{ xs: "span 3", lg: "span 4" }}
         backgroundColor={colors.primary[400]}
         display="flex"
         alignItems="center"
@@ -28,8 +29,8 @@ const Overview = () => {
         {/*Put RADAR CHART in Here */}
       </Box>
       <Box
-        gridColumn={{ xs: "span 14", md: "span 7", lg: "span 5" }}
-        gridRow="span 13"
+        gridColumn={{ xs: "span 14", lg: "span 5" }}
+        gridRow="span 3"
         backgroundColor={colors.primary[400]}
         display="flex"
         alignItems="center"
@@ -39,8 +40,8 @@ const Overview = () => {
         {/*Put GPA in Here */}
       </Box>
       <Box
-        gridColumn={{ xs: "span 14", md: "span 7", lg: "span 5" }}
-        gridRow="span 13"
+        gridColumn={{ xs: "span 14", lg: "span 5" }}
+        gridRow="span 3"
         backgroundColor={colors.primary[400]}
         display="flex"
         alignItems="center"
@@ -51,8 +52,8 @@ const Overview = () => {
       </Box>
       {/* Row 2 */}
       <Box
-        gridColumn={{ xs: "span 14", md: "span 7", lg: "span 5" }}
-        gridRow="span 13"
+        gridColumn={{ xs: "span 14", lg: "span 5" }}
+        gridRow="span 3"
         backgroundColor={colors.primary[400]}
         display="flex"
         alignItems="center"
@@ -62,8 +63,8 @@ const Overview = () => {
         {/*Put LECTURE DIFFICULTY in Here */}
       </Box>
       <Box
-        gridColumn={{ xs: "span 14", md: "span 7", lg: "span 5" }}
-        gridRow="span 13"
+        gridColumn={{ xs: "span 14", lg: "span 5" }}
+        gridRow="span 3"
         backgroundColor={colors.primary[400]}
         display="flex"
         alignItems="center"
@@ -73,8 +74,8 @@ const Overview = () => {
         {/*Put EXAM DIFFICULTY in Here */}
       </Box>
       <Box
-        gridColumn={{ xs: "span 14", md: "span 7", lg: "span 4" }}
-        gridRow="span 10"
+        gridColumn={{ xs: "span 14", lg: "span 4" }}
+        gridRow={{ xs: "span 3", lg: "span 2" }}
         backgroundColor={colors.primary[400]}
         display="flex"
         alignItems="center"

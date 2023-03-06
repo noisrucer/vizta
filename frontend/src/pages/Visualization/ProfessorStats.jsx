@@ -9,20 +9,23 @@ const ProfessorStats = () => {
     <Box
       display="grid"
       gridTemplateColumns="repeat(12,1fr)"
-      gridTemplateRows="repeat(12,1fr)"
+      gridAutoRows={{ xs: "100px", lg: "1fr" }}
       gap="20px"
-      marginTop={3}
-      marginBottom={{ xs: 3 }}
+      marginTop={4}
+      marginBottom={3}
+      sx={{ height: "100%" }}
     >
       <Box
         gridColumn="span 12"
-        gridRow="span 26"
+        gridRow={{ xs: "span 6", lg: "span 1" }}
         backgroundColor={colors.primary[400]}
         display="flex"
-        alignItems="center"
-        justifyContent="center"
+        flexDirection="row"
         borderRadius="2%"
-      ></Box>
+      >
+        <Box width="80%"></Box>
+        <Box width="20%"></Box>
+      </Box>
     </Box>
   );
 };
