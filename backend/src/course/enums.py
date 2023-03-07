@@ -6,7 +6,7 @@ class Faculty(str, Enum):
     bba = "BBA"
     bsc = "BSC"
     cc = "CC"
-    
+
 class NumericEval(int, Enum):
     one = 1
     two = 2
