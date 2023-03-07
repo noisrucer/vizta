@@ -1,11 +1,9 @@
 ---
-name: Extra
-about: Extra
+name: Docs
+about: Documentation
 title: ""
 labels: ""
 assignees: ""
 ---
 
 ## Description
-
-## Comments
