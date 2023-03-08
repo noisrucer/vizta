@@ -29,7 +29,6 @@ const CourseInfo = (courseData) => {
         borderRadius="2%"
       >
         {/*Put GENERAL INFO in Here */}
-
         <Box
           sx={{
             display: "flex",

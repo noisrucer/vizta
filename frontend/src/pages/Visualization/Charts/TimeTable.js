@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
+import { useTheme } from "@mui/material";
+import { ColorModeContext, tokens } from "../../../theme";
 
 export default function TimeTable(chartData) {
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const timeTableInfo = chartData.chartData;
 
@@ -12,7 +16,7 @@ export default function TimeTable(chartData) {
                 sx={{
                     height: "200px",
                     width: "200px",
-                    backgroundColor: "#1F2B3F", //#333A46
+                    backgroundColor: colors.primary[400],
                     border: "0.05px solid #70D9BD",
                     borderRadius: 2,
                     marginTop: 1,
