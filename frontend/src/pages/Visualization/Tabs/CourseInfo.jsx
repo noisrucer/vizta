@@ -3,8 +3,10 @@ import { useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
 import NivoPieChart from "../Charts/NivoPieChart";
 import pieData from "./NivoData/PieData";
+import TimeTable from "../Charts/TimeTable";
 
-const CourseInfo = () => {
+const CourseInfo = (courseData) => {
+  console.log("coursedata: ", courseData)
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -52,6 +54,7 @@ const CourseInfo = () => {
         borderRadius="2%"
       >
         {/*Put TIMETABLE in Here */}
+        <TimeTable chartData={courseData.description.Timetable} />
       </Box>
     </Box>
   );

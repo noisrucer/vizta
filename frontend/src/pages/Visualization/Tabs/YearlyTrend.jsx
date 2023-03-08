@@ -14,7 +14,7 @@ const YearlyTrend = () => {
   const colors = tokens(theme.palette.mode);
 
   const [chartData, setChartData] = useState({
-    labels: [],
+    labels: ["prof A", "prof B"],
     datasets: ["prof A", "prof B"],
   });
 
