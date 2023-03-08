@@ -43,6 +43,37 @@ const lectureFinalLabel = [
 ];
 const GPALabel = ["A range", "B range", "C range", "D range", "F"];
 
+const criteria = [
+  {
+    value: "FinalExamDifficulty",
+    label: "Final Exam",
+  },
+  {
+    value: "GPA",
+    label: "GPA",
+  },
+  {
+    value: "LectureDifficulty",
+    label: "Lecture Difficulty",
+  },
+  {
+    value: "CourseDelivery",
+    label: "Delivery",
+  },
+  {
+    value: "CourseEntertainment",
+    label: "Entertainment",
+  },
+  {
+    value: "CourseInteractivity",
+    label: "Interactivity",
+  },
+  {
+    value: "Workload",
+    label: "Workload",
+  },
+];
+
 function calculateAverage(score, studentEvaluation) {
   var sum = 0;
   var numAns = 0;
@@ -94,6 +125,9 @@ function a11yProps(index) {
 }
 
 const Visualization = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const params = useParams();
   const courseId = params.courseId;
   const navigate = useNavigate();
@@ -108,19 +142,12 @@ const Visualization = () => {
   const [overallScore, setOverallScore] = useState(0);
 
   const [isOverview, setIsOverview] = useState(true);
+  const [isYearlyTrend, setIsYearlyTrend] = useState(false);
   const [numReviews, setNumReviews] = useState(0);
   const [hasReviewed, setHasReviewed] = useState(false);
 
-  axios.request({ // checks reviewed status
-    method: "get",
-    url: `${baseURL}/users/check-reviewed/${userData}/${courseId}`,
-    headers: userToken["headers"],
-  })
-    .then((response) => {
-      console.log("has reviewed: ", response.data);
-      setHasReviewed(response.data);
-    });
-
+  const [selectedYear, setSelectedYear] = useState("All");
+  const [selectedProfessor, setSelectedProfessor] = useState("All");
 
   const [GPA, setGPA] = useState({ // GPA and all other criteria components for chart.js has to be formatted in this format: {labels: , datasets:[{...}]}
     labels: GPALabel,
@@ -166,7 +193,6 @@ const Visualization = () => {
     ],
   });
 
-  // useState values that set the LectureQuality values
   const [delivery, setDelivery] = useState([]);
   const [entertaining, setEntertaining] = useState([]);
   const [interactivity, setInteractivity] = useState([]);
@@ -188,6 +214,8 @@ const Visualization = () => {
     ],
   });
 
+  const [conditionalPentagon, setConditionalPentagon] = useState(pentagon);
+
   const [courseDescription, setCourseDescription] = useState({
     CourseID: "",
     Description: "",
@@ -203,6 +231,16 @@ const Visualization = () => {
   const [alertMessage, setAlertMessage] = useState("");
 
   const [value, setValue] = useState(0);
+
+  axios.request({ // checks reviewed status
+    method: "get",
+    url: `${baseURL}/users/check-reviewed/${userData}/${courseId}`,
+    headers: userToken["headers"],
+  })
+    .then((response) => {
+      console.log("has reviewed: ", response.data);
+      setHasReviewed(response.data);
+    });
 
   const handleFavoriteClick = () => {
     setOpen(true);
@@ -255,10 +293,6 @@ const Visualization = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const [selectedYear, setSelectedYear] = useState("All");
-  const [selectedProfessor, setSelectedProfessor] = useState("All");
-  const [conditionalPentagon, setConditionalPentagon] = useState(pentagon);
 
   useEffect(() => {
     // get request from courseInfo, courseDescription, available year and professor, favorites
@@ -467,8 +501,39 @@ const Visualization = () => {
     getFavorites();
   }, []);
 
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  function changeCriteria(criteria, name) {
+    axios
+      .request({
+        method: "get",
+        url: `${baseURL}/visualization/${courseId}/by_years`,
+        headers: userToken["headers"],
+      })
+      .then((response) => {
+        const yearData = response.data;
+        const tempData = [];
+        let count = 0;
+        yearData.professors.map((item, index) => {
+          const newDataSet = {
+            label: item,
+            data: yearData[criteria][index],
+            // borderColor: chartBorderColor[count],
+            // backgroundColor: chartBackgroundColor[count],
+          };
+          tempData.push(newDataSet);
+          count += 1;
+        });
+        if (tempData.length > Object.keys(yearData.professors).length - 1) {
+          // setChartData({
+          //   ...chartData,
+          //   labels: yearData.years,
+          //   datasets: tempData,
+          // });
+        }
+      })
+      .catch((error) => {
+        console.log("error from /visualization/course_id/by_years: ", error);
+      });
+  }
 
   return (
     <Box
@@ -520,7 +585,7 @@ const Visualization = () => {
           </IconButton>
           {hasReviewed ? (
             <Button
-              variant="outlined"
+              variant="contained"
               disabled
               sx={{
                 bgcolor: `${colors.greenAccent[500]}`,
@@ -570,6 +635,7 @@ const Visualization = () => {
               {...a11yProps(0)}
               onClick={() => {
                 setIsOverview(true);
+                setIsYearlyTrend(false);
               }}
               sx={{ fontSize: { xs: "10px", md: "12px" } }}
             />
@@ -578,6 +644,7 @@ const Visualization = () => {
               {...a11yProps(1)}
               onClick={() => {
                 setIsOverview(false);
+                setIsYearlyTrend(false);
               }}
               sx={{ fontSize: { xs: "10px", md: "12px" } }}
             />
@@ -586,6 +653,7 @@ const Visualization = () => {
               {...a11yProps(2)}
               onClick={() => {
                 setIsOverview(false);
+                setIsYearlyTrend(true);
               }}
               sx={{ fontSize: { xs: "10px", md: "12px" } }}
             />
@@ -594,6 +662,7 @@ const Visualization = () => {
               {...a11yProps(3)}
               onClick={() => {
                 setIsOverview(false);
+                setIsYearlyTrend(false);
               }}
               sx={{ fontSize: { xs: "10px", md: "12px" } }}
             />
@@ -666,6 +735,42 @@ const Visualization = () => {
                       onClick={() => setSelectedProfessor(option)}
                     >
                       {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </>
+            ) : (
+              <></>
+            )}
+            {isYearlyTrend ? (
+              <>
+                <TextField
+                  id="select-view"
+                  select
+                  variant="standard"
+                  label="Select Criteria"
+                  defaultValue="Final Exam"
+                  color="secondary"
+                  sx={{
+                    width: "130px",
+                    marginLeft: "auto",
+                    "& label.Mui-focused": {
+                      color: `${colors.greenAccent[500]}`,
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "&.Mui-focused fieldset": {
+                        borderColor: `${colors.greenAccent[500]}`,
+                      },
+                    },
+                  }}
+                >
+                  {criteria.map((option) => (
+                    <MenuItem
+                      key={option.label}
+                      value={option.label}
+                      onClick={() => changeCriteria(option.value, option.label)}
+                    >
+                      {option.label}
                     </MenuItem>
                   ))}
                 </TextField>
