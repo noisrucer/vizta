@@ -7,10 +7,13 @@ import NivoRadarChart from "../Charts/NivoRadarChart";
 import barData from "./NivoData/BarData";
 import pieData from "./NivoData/PieData";
 import radarData from "./NivoData/RadarData";
+import LinearPercentage from "../Charts/ProgessiveBar/LinearPercentage";
+import LectureQualityScore from "../Charts/ProgessiveBar/LectureQuailtyScore";
 
-const Overview = () => {
+const Overview = (chartData) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  console.log("chartData: ", chartData)
   return (
     //Grid & Charts
     <Box
@@ -94,9 +97,25 @@ const Overview = () => {
         borderRadius="2%"
       >
         {/*Put LECTURE QUALITY in Here */}
-
+        <LectureQualityScore
+          score={Math.round(chartData.teachingQuality[0] * 10)}
+        />
+        <Box sx={{ width: "280px", marginLeft: 4 }}>
+          <h5 style={{ marginBottom: -1 }}>Entertainment </h5>
+          <LinearPercentage
+            percentage={chartData.entertaining[0]}
+          ></LinearPercentage>
+          <h5 style={{ marginBottom: -1 }}>Interactivity</h5>
+          <LinearPercentage
+            percentage={chartData.interactivity[0]}
+          ></LinearPercentage>
+          <h5 style={{ marginBottom: -1 }}>Delivery</h5>
+          <LinearPercentage
+            percentage={chartData.delivery[0]}
+          ></LinearPercentage>
+        </Box>
       </Box>
-    </Box>
+    </Box >
   );
 };
 

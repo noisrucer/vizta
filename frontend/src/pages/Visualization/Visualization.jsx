@@ -782,7 +782,18 @@ const Visualization = () => {
         </Box>
       </Box>
       <TabPanel value={value} index={0}>
-        <Overview></Overview>
+        <Overview
+          GPA={GPA}
+          lectureDifficulty={lectureDifficulty}
+          finalDifficulty={finalDifficulty}
+          workload={workload}
+          pentagon={pentagon}
+          teachingQuality={overallTeachingQuality}
+          interactivity={interactivity}
+          entertaining={entertaining}
+          delivery={delivery}
+          overallScore={overallScore}
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <CourseInfo description={courseDescription} />
