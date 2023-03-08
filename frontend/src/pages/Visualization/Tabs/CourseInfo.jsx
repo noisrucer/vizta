@@ -29,6 +29,76 @@ const CourseInfo = (courseData) => {
         borderRadius="2%"
       >
         {/*Put GENERAL INFO in Here */}
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <h2>General Information </h2>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              // border: "3px solid #1D2630",
+              marginTop: 2,
+              borderRadius: 0,
+            }}
+          >
+            <Box sx={{ display: "flex" }}>
+              <h4 style={{ textAlign: "left" }}>
+                <label style={{ color: "#FF5721" }}>
+                  Department: {" "}
+                </label>
+              </h4>
+              <h4>{courseData.description.Faculty || "None"}</h4>
+            </Box>
+            <Box sx={{ display: "flex" }}>
+              <h4 style={{ textAlign: "left" }}>
+                <label style={{ color: "#FF5721" }}>
+                  Prerequisites: {" "}
+                </label>
+                {courseData.description.Prerequisite || "None"}
+              </h4>
+            </Box>
+            <Box sx={{ display: "flex", }}>
+              <h4 style={{ textAlign: "left" }}>
+                <label style={{ color: "#FF5721" }}>
+                  Blocking Courses:{" "}
+                </label>
+                {courseData.description.BlockingCourses.join(", ") || "None"}
+              </h4>
+            </Box>
+            <Box sx={{ display: "flex", }}>
+              {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Mutual Exclusives: </h4> */}
+              <h4 style={{ textAlign: "left" }}>
+                <label style={{ color: "#FF5721" }}>
+                  Mutual Exclusives:{" "}
+                </label>
+                {courseData.description.MutualExclusives.join(", ") ||
+                  "None"}
+              </h4>
+            </Box>
+            <Box sx={{ display: "flex" }}>
+              {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Description: </h4> */}
+              <h4
+                style={{
+                  marginTop: 0,
+                  marginRight: 10,
+                  marginBottom: 10,
+                  textAlign: "left",
+                }}
+              >
+                <label style={{ color: "#FF5721" }}>Description: </label>
+                {courseData.description.Description}
+              </h4>
+            </Box>
+          </Box>
+        </Box>
+
       </Box>
       <Box
         gridColumn={{ xs: "span 12", lg: "span 7" }}
