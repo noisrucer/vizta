@@ -11,7 +11,7 @@ const NivoPieChart = ({ data /* see data tab */ }) => {
 
         <ResponsivePie
             data={data}
-            margin={{}}
+            margin={{ top: 20, right: 50, bottom: 60, left: 50 }}
             innerRadius={0.5}
             padAngle={0.7}
             cornerRadius={3}

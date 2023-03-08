@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -14,7 +15,7 @@ const YearlyTrend = () => {
 
   const [chartData, setChartData] = useState({
     labels: [],
-    datasets: [],
+    datasets: ["prof A", "prof B"],
   });
 
   const initialState = chartData.datasets.reduce((acc, dataset) => {
@@ -46,7 +47,6 @@ const YearlyTrend = () => {
     return (
       <FormGroup>
         <FormControlLabel
-          sx={{ width: "250px" }}
           control={
             <Switch
               {...label}
@@ -68,7 +68,7 @@ const YearlyTrend = () => {
       gap="20px"
       marginTop={4}
       marginBottom={3}
-      sx={{ height: "500px" }}
+      sx={{ height: "100%" }}
     >
       <Box
         gridColumn="span 12"
@@ -78,13 +78,15 @@ const YearlyTrend = () => {
         flexDirection="row"
         borderRadius="2%"
       >
-        <Box sx={{ width: "80%", height: "555px" }}>
+        <Box width="80%" height="500px">
           <NivoLineChart data={lineData} />
         </Box>
-        <Box width="20%">
-          {chartData.datasets.map((item) => {
-            return renderSwitch(item);
-          })}
+        <Box width="20%" sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <FormControl component="fieldset" variant="standard">
+            {chartData.datasets.map((item) => {
+              return renderSwitch(item);
+            })}
+          </FormControl>
         </Box>
       </Box>
     </Box>

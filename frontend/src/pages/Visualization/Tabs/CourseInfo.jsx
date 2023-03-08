@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
+import NivoPieChart from "../Charts/NivoPieChart";
+import pieData from "./NivoData/PieData";
 
 const CourseInfo = () => {
   const theme = useTheme();
@@ -36,6 +38,9 @@ const CourseInfo = () => {
         borderRadius="2%"
       >
         {/*Put GRADING RATIO in Here */}
+        <Box sx={{ height: "200px", width: "200px" }}>
+          <NivoPieChart data={pieData} />
+        </Box>
       </Box>
       <Box
         gridColumn={{ xs: "span 12", lg: "span 7" }}

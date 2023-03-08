@@ -10,7 +10,7 @@ const NivoLineChart = ({ data }) => {
     return (
         <ResponsiveLine
             data={data}
-            margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+            margin={{ top: 50, right: 110, bottom: 25, left: 60 }}
             xScale={{ type: 'point' }}
             yScale={{
                 type: 'linear',
