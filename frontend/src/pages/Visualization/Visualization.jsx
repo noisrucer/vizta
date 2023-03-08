@@ -24,11 +24,39 @@ import {
   Heading32,
   ContentWrap,
 } from "../../components/GlobalStyledComponents";
-import Overview from "./Overview";
+import Overview from "./Tabs/Overview";
 import PropTypes from "prop-types";
-import CourseInfo from "./CourseInfo";
-import YearlyTrend from "./YearlyTrend";
-import ProfessorStats from "./ProfessorStats";
+import CourseInfo from "./Tabs/CourseInfo";
+import YearlyTrend from "./Tabs/YearlyTrend";
+import ProfessorStats from "./Tabs/ProfessorStats";
+
+const baseURL = process.env.REACT_APP_BASEURL;
+
+const dataColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"];
+const workloadLabel = ["Very Light", "Light", "Medium", "Heavy", "Very Heavy"];
+const lectureFinalLabel = [
+  "Very Easy",
+  "Easy",
+  "Medium",
+  "Difficult",
+  "Very Difficult",
+];
+const GPALabel = ["A range", "B range", "C range", "D range", "F"];
+
+function calculateAverage(score, studentEvaluation) {
+  var sum = 0;
+  var numAns = 0;
+  score.map((item, index) => {
+    sum += item * studentEvaluation[index];
+    numAns += studentEvaluation[index];
+  });
+  return [sum / numAns, 5 - sum / numAns];
+}
+
+function calculateOverallAverage(delivery, entertaining, interactivity) {
+  const overall = (delivery[0] + entertaining[0] + interactivity[0]) / 3;
+  return [overall * 2, 5 - overall];
+}
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -67,10 +95,6 @@ function a11yProps(index) {
 
 const Visualization = () => {
   const params = useParams();
-  const baseURL = "https://vizta.onrender.com";
-  const [isOverview, setIsOverview] = useState(true);
-  const [numReviews, setNumReviews] = useState(0);
-  const [hasReviewed, setHasReviewed] = useState(false);
   const courseId = params.courseId;
   const navigate = useNavigate();
 
@@ -80,6 +104,89 @@ const Visualization = () => {
 
   const [selectYear, setSelectYear] = useState([]);
   const [selectProfessor, setSelectProfessor] = useState([]);
+
+  const [overallScore, setOverallScore] = useState(0);
+
+  const [isOverview, setIsOverview] = useState(true);
+  const [numReviews, setNumReviews] = useState(0);
+  const [hasReviewed, setHasReviewed] = useState(false);
+
+  axios.request({ // checks reviewed status
+    method: "get",
+    url: `${baseURL}/users/check-reviewed/${userData}/${courseId}`,
+    headers: userToken["headers"],
+  })
+    .then((response) => {
+      console.log("has reviewed: ", response.data);
+      setHasReviewed(response.data);
+    });
+
+
+  const [GPA, setGPA] = useState({ // GPA and all other criteria components for chart.js has to be formatted in this format: {labels: , datasets:[{...}]}
+    labels: GPALabel,
+    datasets: [
+      {
+        label: "# Students",
+        data: [],
+        backgroundColor: dataColor,
+      },
+    ],
+  });
+
+  const [lectureDifficulty, setLectureDifficulty] = useState({
+    labels: lectureFinalLabel,
+    datasets: [
+      {
+        label: "# Students",
+        data: [],
+        backgroundColor: dataColor,
+      },
+    ],
+  });
+
+  const [finalDifficulty, setFinalDifficulty] = useState({
+    labels: lectureFinalLabel,
+    datasets: [
+      {
+        label: "# Students",
+        data: [],
+        backgroundColor: dataColor,
+      },
+    ],
+  });
+
+  const [workload, setWorkload] = useState({
+    labels: workloadLabel,
+    datasets: [
+      {
+        label: "# Students",
+        data: [],
+        backgroundColor: dataColor,
+      },
+    ],
+  });
+
+  // useState values that set the LectureQuality values
+  const [delivery, setDelivery] = useState([]);
+  const [entertaining, setEntertaining] = useState([]);
+  const [interactivity, setInteractivity] = useState([]);
+  const [overallTeachingQuality, setOverallTeachingQuality] = useState([]);
+
+  const [pentagon, setPentagon] = useState({
+    labels: [
+      "Final Difficulty",
+      "GPA",
+      "Lecture Difficulty",
+      "Teaching Quality",
+      "Workload",
+    ],
+    datasets: [
+      {
+        label: "Overall Score",
+        data: [5, 5, 5, 5, 5],
+      },
+    ],
+  });
 
   const [courseDescription, setCourseDescription] = useState({
     CourseID: "",
@@ -151,160 +258,162 @@ const Visualization = () => {
 
   const [selectedYear, setSelectedYear] = useState("All");
   const [selectedProfessor, setSelectedProfessor] = useState("All");
+  const [conditionalPentagon, setConditionalPentagon] = useState(pentagon);
 
   useEffect(() => {
     // get request from courseInfo, courseDescription, available year and professor, favorites
-    // const fetchCourseData = async () => {
-    //   axios
-    //     .request({
-    //       method: "get",
-    //       url: `${baseURL}/visualization/${courseId}`,
-    //       headers: userToken["headers"],
-    //     })
-    //     .then((response) => {
-    //       console.log("response.data.GPA.values: ", response.data.GPA.values);
-    //       console.log(
-    //         "response.data.LectureDifficulty.values: ",
-    //         response.data.LectureDifficulty.values
-    //       );
-    //       setGPA({
-    //         ...GPA,
-    //         datasets: [
-    //           {
-    //             label: "# Students",
-    //             data: response.data.GPA.values,
-    //             backgroundColor: dataColor,
-    //           },
-    //         ],
-    //       });
-    //       setLectureDifficulty({
-    //         ...lectureDifficulty,
-    //         datasets: [
-    //           {
-    //             label: "# Students",
-    //             data: response.data.LectureDifficulty.values,
-    //             backgroundColor: dataColor,
-    //           },
-    //         ],
-    //       });
-    //       setFinalDifficulty({
-    //         ...finalDifficulty,
-    //         datasets: [
-    //           {
-    //             label: "# Students",
-    //             data: response.data.FinalDifficulty.values,
-    //             backgroundColor: dataColor,
-    //           },
-    //         ],
-    //       });
-    //       setWorkload({
-    //         ...workload,
-    //         datasets: [
-    //           {
-    //             label: "# Students",
-    //             data: response.data.Workload.values,
-    //             backgroundColor: dataColor,
-    //           },
-    //         ],
-    //       });
-    //       const teachingQuality = response.data.LectureQuality;
-    //       setDelivery(
-    //         calculateAverage(
-    //           teachingQuality.Delivery.keys,
-    //           teachingQuality.Delivery.values
-    //         )
-    //       );
-    //       setEntertaining(
-    //         calculateAverage(
-    //           teachingQuality.Entertainment.keys,
-    //           teachingQuality.Entertainment.values
-    //         )
-    //       );
-    //       setInteractivity(
-    //         calculateAverage(
-    //           teachingQuality.Interactivity.keys,
-    //           teachingQuality.Interactivity.values
-    //         )
-    //       );
-    //       setOverallTeachingQuality(
-    //         calculateOverallAverage(
-    //           calculateAverage(
-    //             teachingQuality.Delivery.keys,
-    //             teachingQuality.Delivery.values
-    //           ),
-    //           calculateAverage(
-    //             teachingQuality.Entertainment.keys,
-    //             teachingQuality.Entertainment.values
-    //           ),
-    //           calculateAverage(
-    //             teachingQuality.Interactivity.keys,
-    //             teachingQuality.Interactivity.values
-    //           )
-    //         )
-    //       );
-    //       setPentagon({
-    //         ...pentagon,
-    //         datasets: [
-    //           {
-    //             label: "Overall Score",
-    //             data: [
-    //               response.data.Pentagon.FinalDifficulty,
-    //               response.data.Pentagon.GPA * (5.0 / 4.3),
-    //               response.data.Pentagon.LectureDifficulty,
-    //               response.data.Pentagon.LectureQuality,
-    //               response.data.Pentagon.Workload,
-    //             ],
-    //           },
-    //         ],
-    //       });
-    //       const sum = [
-    //         response.data.Pentagon.FinalDifficulty,
-    //         (response.data.Pentagon.GPA * 5.0) / 4.3,
-    //         response.data.Pentagon.LectureDifficulty,
-    //         response.data.Pentagon.LectureQuality,
-    //         response.data.Pentagon.Workload,
-    //       ].reduce((acc, curr) => acc + Math.round(curr * 100) / 100, 0);
-    //       setOverallScore(Math.round((sum / 5) * 10));
-    //       setConditionalPentagon({
-    //         ...conditionalPentagon,
-    //         datasets: [
-    //           {
-    //             label: "Overall Score",
-    //             data: [
-    //               response.data.Pentagon.FinalDifficulty,
-    //               (response.data.Pentagon.GPA * 5.0) / 4.3,
-    //               response.data.Pentagon.LectureDifficulty,
-    //               response.data.Pentagon.LectureQuality,
-    //               response.data.Pentagon.Workload,
-    //             ],
-    //           },
-    //         ],
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       console.log("error from /visualization/course_id: ", error);
-    //     });
-    // };
-    // fetchCourseData();
+    const fetchCourseData = async () => {
+      axios
+        .request({
+          method: "get",
+          url: `${baseURL}/visualization/${courseId}`,
+          headers: userToken["headers"],
+        })
+        .then((response) => {
+          console.log("response.data.GPA.values: ", response.data.GPA.values);
+          console.log(
+            "response.data.LectureDifficulty.values: ",
+            response.data.LectureDifficulty.values
+          );
+          setNumReviews(response.data.TotalNumReviews);
+          setGPA({
+            ...GPA,
+            datasets: [
+              {
+                label: "# Students",
+                data: response.data.GPA.values,
+                backgroundColor: dataColor,
+              },
+            ],
+          });
+          setLectureDifficulty({
+            ...lectureDifficulty,
+            datasets: [
+              {
+                label: "# Students",
+                data: response.data.LectureDifficulty.values,
+                backgroundColor: dataColor,
+              },
+            ],
+          });
+          setFinalDifficulty({
+            ...finalDifficulty,
+            datasets: [
+              {
+                label: "# Students",
+                data: response.data.FinalDifficulty.values,
+                backgroundColor: dataColor,
+              },
+            ],
+          });
+          setWorkload({
+            ...workload,
+            datasets: [
+              {
+                label: "# Students",
+                data: response.data.Workload.values,
+                backgroundColor: dataColor,
+              },
+            ],
+          });
+          const teachingQuality = response.data.LectureQuality;
+          setDelivery(
+            calculateAverage(
+              teachingQuality.Delivery.keys,
+              teachingQuality.Delivery.values
+            )
+          );
+          setEntertaining(
+            calculateAverage(
+              teachingQuality.Entertainment.keys,
+              teachingQuality.Entertainment.values
+            )
+          );
+          setInteractivity(
+            calculateAverage(
+              teachingQuality.Interactivity.keys,
+              teachingQuality.Interactivity.values
+            )
+          );
+          setOverallTeachingQuality(
+            calculateOverallAverage(
+              calculateAverage(
+                teachingQuality.Delivery.keys,
+                teachingQuality.Delivery.values
+              ),
+              calculateAverage(
+                teachingQuality.Entertainment.keys,
+                teachingQuality.Entertainment.values
+              ),
+              calculateAverage(
+                teachingQuality.Interactivity.keys,
+                teachingQuality.Interactivity.values
+              )
+            )
+          );
+          setPentagon({
+            ...pentagon,
+            datasets: [
+              {
+                label: "Overall Score",
+                data: [
+                  response.data.Pentagon.FinalDifficulty,
+                  response.data.Pentagon.GPA * (5.0 / 4.3),
+                  response.data.Pentagon.LectureDifficulty,
+                  response.data.Pentagon.LectureQuality,
+                  response.data.Pentagon.Workload,
+                ],
+              },
+            ],
+          });
+          const sum = [
+            response.data.Pentagon.FinalDifficulty,
+            (response.data.Pentagon.GPA * 5.0) / 4.3,
+            response.data.Pentagon.LectureDifficulty,
+            response.data.Pentagon.LectureQuality,
+            response.data.Pentagon.Workload,
+          ].reduce((acc, curr) => acc + Math.round(curr * 100) / 100, 0);
+          setOverallScore(Math.round((sum / 5) * 10));
+          setConditionalPentagon({
+            ...conditionalPentagon,
+            datasets: [
+              {
+                label: "Overall Score",
+                data: [
+                  response.data.Pentagon.FinalDifficulty,
+                  (response.data.Pentagon.GPA * 5.0) / 4.3,
+                  response.data.Pentagon.LectureDifficulty,
+                  response.data.Pentagon.LectureQuality,
+                  response.data.Pentagon.Workload,
+                ],
+              },
+            ],
+          });
+        })
+        .catch((error) => {
+          console.log("error from /visualization/course_id: ", error);
+        });
+    };
+    fetchCourseData();
 
-    // const fecthCourseGeneralInfo = async () => {
-    //   axios
-    //     .request({
-    //       method: "get",
-    //       url: `${baseURL}/visualization/${courseId}/general_info`,
-    //       headers: userToken["headers"],
-    //     })
-    //     .then((response) => {
-    //       setCourseDescription(response.data);
-    //     })
-    //     .catch((error) => {
-    //       console.log(
-    //         "error from /visualization/course_id/general_info: ",
-    //         error
-    //       );
-    //     });
-    // };
-    // fecthCourseGeneralInfo();
+    const fecthCourseGeneralInfo = async () => {
+      axios
+        .request({
+          method: "get",
+          url: `${baseURL}/visualization/${courseId}/general_info`,
+          headers: userToken["headers"],
+        })
+        .then((response) => {
+          setCourseDescription(response.data);
+        })
+        .catch((error) => {
+          console.log(
+            "error from /visualization/course_id/general_info: ",
+            error
+          );
+        });
+    };
+    fecthCourseGeneralInfo();
 
     const getAvailableYears = async () => {
       axios

@@ -27,7 +27,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../theme";
 
-const baseURL = "https://vizta.onrender.com";
+const baseURL = process.env.REACT_APP_BASEURL;
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;

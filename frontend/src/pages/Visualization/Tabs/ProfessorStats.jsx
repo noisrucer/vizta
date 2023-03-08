@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material";
-import { ColorModeContext, tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../../theme";
 
-const YearlyTrend = () => {
+const ProfessorStats = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -30,4 +30,4 @@ const YearlyTrend = () => {
   );
 };
 
-export default YearlyTrend;
+export default ProfessorStats;

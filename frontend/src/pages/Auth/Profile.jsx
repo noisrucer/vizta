@@ -15,7 +15,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 });
 
 function Profile() {
-  const baseURL = "https://vizta.onrender.com";
+  const baseURL = process.env.REACT_APP_BASEURL;
   const { UserToken, UserData } = useContext(UserContext);
   const [userData, setUserData] = UserData;
   const [userToken, setUserToken] = UserToken;

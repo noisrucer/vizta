@@ -1,6 +1,12 @@
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material";
-import { ColorModeContext, tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../../theme";
+import NivoBarChart from "../Charts/NivoBarChart";
+import NivoPieChart from "../Charts/NivoPieChart";
+import NivoRadarChart from "../Charts/NivoRadarChart";
+import barData from "./NivoData/BarData";
+import pieData from "./NivoData/PieData";
+import radarData from "./NivoData/RadarData";
 
 const Overview = () => {
   const theme = useTheme();
@@ -27,6 +33,7 @@ const Overview = () => {
         borderRadius="2%"
       >
         {/*Put RADAR CHART in Here */}
+        <NivoRadarChart data={radarData} />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 5" }}
@@ -38,6 +45,7 @@ const Overview = () => {
         borderRadius="2%"
       >
         {/*Put GPA in Here */}
+        <NivoBarChart data={barData} />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 5" }}
@@ -49,6 +57,7 @@ const Overview = () => {
         borderRadius="2%"
       >
         {/*Put WORKLOAD in Here */}
+        <NivoBarChart data={barData} />
       </Box>
       {/* Row 2 */}
       <Box
@@ -61,6 +70,7 @@ const Overview = () => {
         borderRadius="2%"
       >
         {/*Put LECTURE DIFFICULTY in Here */}
+        <NivoBarChart data={barData} />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 5" }}
@@ -72,6 +82,7 @@ const Overview = () => {
         borderRadius="2%"
       >
         {/*Put EXAM DIFFICULTY in Here */}
+        <NivoBarChart data={barData} />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 4" }}
@@ -83,6 +94,7 @@ const Overview = () => {
         borderRadius="2%"
       >
         {/*Put LECTURE QUALITY in Here */}
+
       </Box>
     </Box>
   );

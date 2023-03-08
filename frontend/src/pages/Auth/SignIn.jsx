@@ -21,10 +21,11 @@ import { useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../theme";
 
 import Copyright from "./Copyright";
-const baseURL = "https://vizta.onrender.com";
+const baseURL = process.env.REACT_APP_BASEURL;
 
 const SignIn = () => {
   const navigate = useNavigate();
+  console.log(".env: ", process.env.REACT_APP_BASEURL);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

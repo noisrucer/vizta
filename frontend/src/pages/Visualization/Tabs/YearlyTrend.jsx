@@ -1,8 +1,10 @@
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material";
-import { ColorModeContext, tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../../theme";
+import NivoLineChart from "../Charts/NivoLineChart";
+import lineData from "./NivoData/LineData";
 
-const ProfessorStats = () => {
+const YearlyTrend = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -13,7 +15,7 @@ const ProfessorStats = () => {
       gap="20px"
       marginTop={4}
       marginBottom={3}
-      sx={{ height: "100%" }}
+      sx={{ height: "500px" }}
     >
       <Box
         gridColumn="span 12"
@@ -23,11 +25,15 @@ const ProfessorStats = () => {
         flexDirection="row"
         borderRadius="2%"
       >
-        <Box width="80%"></Box>
-        <Box width="20%"></Box>
+        <Box sx={{ width: "80%", height: "500px" }}>
+          <NivoLineChart data={lineData} />
+        </Box>
+        <Box width="20%">
+
+        </Box>
       </Box>
     </Box>
   );
 };
 
-export default ProfessorStats;
+export default YearlyTrend;

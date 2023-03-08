@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material";
-import { ColorModeContext, tokens } from "../../theme";
+import { ColorModeContext, tokens } from "../../../theme";
 
 const CourseInfo = () => {
   const theme = useTheme();
