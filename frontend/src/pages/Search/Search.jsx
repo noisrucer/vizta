@@ -135,26 +135,6 @@ const Main = () => {
     };
     fetchCourseData();
 
-    const fetchFavoritesData = async () => {
-      axios
-        .request({
-          method: "get",
-          url: `${baseURL}/courses/favorites/${userData}`,
-          headers: userToken["headers"],
-        })
-        .then((response) => {
-          const favorites = response.data;
-          console.log(
-            `response from /courses/favorites/${userData}: `,
-            favorites
-          );
-          setFavorites(favorites);
-        })
-        .catch((error) => {
-          console.log("error in favorites: ", error);
-        });
-    };
-    fetchFavoritesData();
   }, [favoritesChanged]);
 
   const filteredCourses = getFilteredCourses(query, courses);
@@ -221,12 +201,6 @@ const Main = () => {
     to: pageSize,
   });
 
-  const [favoritesPagination, setFavoritesPagination] = useState({
-    count: 0,
-    from: 0,
-    to: pageSize,
-  });
-
   const handlePageChange = (event, page) => {
     console.log(page);
     const from = (page - 1) * pageSize;
@@ -234,18 +208,7 @@ const Main = () => {
     setPagination({ ...pagination, from: from, to: to });
   };
 
-  const handleFavoritesPageChange = (event, page) => {
-    console.log(page);
-    const from = (page - 1) * pageSize;
-    const to = (page - 1) * pageSize + pageSize;
-    setFavoritesPagination({ ...favoritesPagination, from: from, to: to });
-  };
-
   const slicedCourses = filteredCourses.slice(pagination.from, pagination.to);
-  const slicedFavorites = favorites.slice(
-    favoritesPagination.from,
-    favoritesPagination.to
-  );
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -260,7 +223,7 @@ const Main = () => {
         padding: "20px",
       }}
     >
-      <Box sx={{ width: { xs: "400px", md: "600px", lg: "700px" } }}>
+      <Box sx={{ boxShadow: 6, width: { xs: "400px", md: "600px", lg: "700px" } }}>
         <Item
           sx={{
             backgroundColor: colors.primary[400],
@@ -384,92 +347,6 @@ const Main = () => {
           </Box>
         </Item>
       </Box>
-      {/* <Box>
-        <Item sx={{ boxShadow: 6, backgroundColor: favColor }}>
-          <Typography variant="h5" sx={{ marginTop: "17px" }}>
-            Favorites
-          </Typography>
-          <Box
-            sx={{
-              marginTop: "10px",
-            }}
-          >
-            {slicedFavorites.length > 0 ? (
-              <List>
-                {slicedFavorites.map((value) => (
-                  <>
-                    <ListItem key={value.course_id}>
-                      <IconButton
-                        key={value.course_id}
-                        onClick={() =>
-                          handleFavoritesButtonClick(
-                            value.course_id,
-                            value.is_favorite
-                          )
-                        }
-                      >
-                        {value.is_favorite ? (
-                          <FavoriteIcon sx={{ color: "#FF403D" }} />
-                        ) : (
-                          <FavoriteBorderIcon sx={{ color: "#FF403D" }} />
-                        )}
-                      </IconButton>
-                      <ListItemButton
-                        onClick={() => handleListItemClick(value.course_id)}
-                      >
-                        <ListItemText
-                          sx={{ marginLeft: "30px" }}
-                          primary={value.course_id}
-                          secondary={
-                            <React.Fragment>
-                              <Typography
-                                sx={{ display: "inline" }}
-                                component="span"
-                                variant="body2"
-                                color="text.primary"
-                              >
-                                {value.name}
-                              </Typography>
-                            </React.Fragment>
-                          }
-                        />
-                        <ListItemText
-                          secondary={`reviews: ${value.num_reviews}`}
-                          style={{ position: "absolute", left: "460px" }}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                    <Divider
-                      variant="fullWidth"
-                      style={{ width: "620px", borderColor: favColor }}
-                    />
-                  </>
-                ))}
-              </List>
-            ) : (
-              <>
-                <List>
-                  <ArchiveIcon sx={{ fontSize: "60px", color: "grey" }} />
-                  <h3 style={{ color: "grey" }}>No Items to display</h3>
-                </List>
-                <Divider
-                  variant="fullWidth"
-                  style={{ width: "620px", marginBottom: 10 }}
-                />
-              </>
-            )}
-            <Stack spacing={2} sx={{ display: "flex", alignItems: "center" }}>
-              <Pagination
-                count={Math.ceil(favorites.length / pageSize)}
-                variant="outlined"
-                shape="rounded"
-                size="large"
-                onChange={handleFavoritesPageChange}
-              />
-            </Stack>
-          </Box>
-        </Item>
-      </Box> */}
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           {alertMessage}

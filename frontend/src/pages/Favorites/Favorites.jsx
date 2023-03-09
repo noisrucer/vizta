@@ -212,7 +212,7 @@ const Favorites = () => {
                 justifyContent: "space-around",
             }}
         >
-            <Box>
+            <Box sx={{ width: { xs: "400px", md: "600px", lg: "700px" } }}>
                 <Item sx={{ boxShadow: 6, backgroundColor: colors.primary[400] }}>
                     <Typography variant="h5" sx={{ marginTop: "17px", color: "text.primary" }}>
                         Favorites
@@ -266,13 +266,17 @@ const Favorites = () => {
                                                 />
                                                 <ListItemText
                                                     secondary={`reviews: ${value.num_reviews}`}
-                                                    style={{ position: "absolute", left: "460px" }}
+                                                    sx={{
+                                                        display: "flex",
+                                                        justifyContent: "flex-end",
+                                                        marginLeft: { xs: "30px", md: "0px" },
+                                                    }}
                                                 />
                                             </ListItemButton>
                                         </ListItem>
                                         <Divider
                                             variant="fullWidth"
-                                            style={{ width: "620px", borderColor: colors.primary[400] }}
+                                            style={{ borderColor: colors.primary[400] }}
                                         />
                                     </>
                                 ))}
@@ -285,7 +289,7 @@ const Favorites = () => {
                                 </List>
                                 <Divider
                                     variant="fullWidth"
-                                    style={{ width: "620px", marginBottom: 10 }}
+                                    style={{ marginBottom: 10 }}
                                 />
                             </>
                         )}
