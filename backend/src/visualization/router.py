@@ -199,6 +199,7 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
     # convert any Decimal object to float
     avg_reviews_by_prof = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in avg_reviews_by_prof]
     avg_reviews_by_prof = sorted(avg_reviews_by_prof, key = lambda x: x[0])
+    
 
     return [
         {
@@ -312,6 +313,19 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
                 f"{label_name_no_space}Color": constants.WORKLOAD_COLOR[label_name_no_space]
             }
         )
+        
+    entertainment = to_key_value_list([_.course_entertainment for _ in reviews], course_enums.NumericEval)
+    delivery = to_key_value_list([_.course_delivery for _ in reviews], course_enums.NumericEval)
+    interactivity = to_key_value_list([_.course_interactivity for _ in reviews], course_enums.NumericEval)
+    
+    entertainment_avg, delivery_avg, interactivity_avg = 0, 0, 0
+    for i in range(len(entertainment['keys'])):
+        entertainment_avg += entertainment['keys'][i] * entertainment['values'][i]
+        delivery_avg += delivery['keys'][i] * delivery['values'][i]
+        interactivity_avg += interactivity['keys'][i] * interactivity['values'][i]
+    entertainment_avg = entertainment_avg / sum(entertainment['values']) * 20
+    delivery_avg = delivery_avg / sum(delivery['values']) * 20
+    interactivity_avg = interactivity_avg / sum(interactivity['values']) * 20
 
     result = {
         "TotalNumReviews": total_num_reviews,
@@ -320,9 +334,9 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
         "FinalDifficulty": final_difficulty_response,
         "Workload": workload_response,
         "LectureQuality": {
-            "Entertainment": to_key_value_list([_.course_entertainment for _ in reviews], course_enums.NumericEval),
-            "Delivery": to_key_value_list([_.course_delivery for _ in reviews], course_enums.NumericEval),
-            "Interactivity": to_key_value_list([_.course_interactivity for _ in reviews], course_enums.NumericEval)
+            "Entertainment": int(entertainment_avg),
+            "Delivery": int(delivery_avg),
+            "Interactivity": int(interactivity_avg),
         },
         "Badges": {
             "LectureDifficulty": get_badges(avg_reviews[avg_column.index(mcr.lecture_difficulty)]),

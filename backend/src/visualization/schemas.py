@@ -22,7 +22,7 @@ class GeneralVisualizationOut(BaseModel):
     LectureDifficulty: list[dict]
     FinalDifficulty: list[dict]
     Workload: list[dict]
-    LectureQuality: Mapping[str, Mapping[str, Union[list[int], list[course_enums.NumericEval]]]]
+    LectureQuality: Mapping[str, int]
     Badges: Mapping[str,  str]
     Pentagon: list[dict]
     Timetable: Union[Mapping[str, Timetable], None]
