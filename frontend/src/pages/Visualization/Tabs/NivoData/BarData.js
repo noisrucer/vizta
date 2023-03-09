@@ -14,8 +14,6 @@ const barData =
             "kebabColor": "hsl(134, 70%, 50%)",
             "fries": 116,
             "friesColor": "hsl(84, 70%, 50%)",
-            "donut": 148,
-            "donutColor": "hsl(230, 70%, 50%)"
         },
         {
             "group": "B group",
@@ -29,8 +27,6 @@ const barData =
             "kebabColor": "hsl(135, 70%, 50%)",
             "fries": 33,
             "friesColor": "hsl(246, 70%, 50%)",
-            "donut": 108,
-            "donutColor": "hsl(227, 70%, 50%)"
         },
         {
             "group": "C group",
@@ -44,8 +40,6 @@ const barData =
             "kebabColor": "hsl(134, 70%, 50%)",
             "fries": 72,
             "friesColor": "hsl(303, 70%, 50%)",
-            "donut": 200,
-            "donutColor": "hsl(63, 70%, 50%)"
         },
         {
             "group": "D group",
@@ -59,8 +53,6 @@ const barData =
             "kebabColor": "hsl(119, 70%, 50%)",
             "fries": 15,
             "friesColor": "hsl(288, 70%, 50%)",
-            "donut": 95,
-            "donutColor": "hsl(97, 70%, 50%)"
         },
         {
             "group": "Fail",
@@ -74,8 +66,6 @@ const barData =
             "kebabColor": "hsl(236, 70%, 50%)",
             "fries": 28,
             "friesColor": "hsl(85, 70%, 50%)",
-            "donut": 10,
-            "donutColor": "hsl(258, 70%, 50%)"
         }
     ]
 

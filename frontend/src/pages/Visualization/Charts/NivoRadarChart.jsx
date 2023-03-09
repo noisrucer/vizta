@@ -21,6 +21,20 @@ const NivoRadarChart = ({ data /* see data tab */ }) => {
             dotColor={{ theme: 'background' }}
             dotBorderWidth={2}
             colors={{ scheme: 'nivo' }}
+            theme={{
+                textColor: colors.primary[100],
+                tooltip: {
+                    container: {
+                        background: "black", // set the background color of the tooltip to black
+                    },
+                    basic: {
+                        whiteSpace: 'pre',
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: "white", // set the text color of the tooltip to white
+                    },
+                },
+            }}
             blendMode="multiply"
             motionConfig="wobbly"
             legends={[

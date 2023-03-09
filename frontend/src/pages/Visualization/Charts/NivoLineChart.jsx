@@ -11,6 +11,20 @@ const NivoLineChart = ({ data }) => {
         <ResponsiveLine
             data={data}
             margin={{ top: 50, right: 110, bottom: 25, left: 60 }}
+            theme={{
+                textColor: colors.primary[100],
+                tooltip: {
+                    container: {
+                        background: "black", // set the background color of the tooltip to black
+                    },
+                    basic: {
+                        whiteSpace: 'pre',
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: "white", // set the text color of the tooltip to white
+                    },
+                },
+            }}
             xScale={{ type: 'point' }}
             yScale={{
                 type: 'linear',

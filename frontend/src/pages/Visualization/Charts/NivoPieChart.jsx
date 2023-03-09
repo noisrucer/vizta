@@ -17,6 +17,20 @@ const NivoPieChart = ({ data /* see data tab */ }) => {
             cornerRadius={3}
             activeOuterRadiusOffset={8}
             borderWidth={1}
+            theme={{
+                textColor: colors.primary[100],
+                tooltip: {
+                    container: {
+                        background: "black", // set the background color of the tooltip to black
+                    },
+                    basic: {
+                        whiteSpace: 'pre',
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: "white", // set the text color of the tooltip to white
+                    },
+                },
+            }}
             borderColor={{
                 from: 'color',
                 modifiers: [
@@ -108,31 +122,6 @@ const NivoPieChart = ({ data /* see data tab */ }) => {
                         id: 'javascript'
                     },
                     id: 'lines'
-                }
-            ]}
-            legends={[
-                {
-                    anchor: 'bottom',
-                    direction: 'row',
-                    justify: false,
-                    translateX: 0,
-                    translateY: 56,
-                    itemsSpacing: 0,
-                    itemWidth: 100,
-                    itemHeight: 18,
-                    itemTextColor: '#999',
-                    itemDirection: 'left-to-right',
-                    itemOpacity: 1,
-                    symbolSize: 18,
-                    symbolShape: 'circle',
-                    effects: [
-                        {
-                            on: 'hover',
-                            style: {
-                                itemTextColor: '#000'
-                            }
-                        }
-                    ]
                 }
             ]}
         />

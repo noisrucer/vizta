@@ -34,13 +34,7 @@ const baseURL = process.env.REACT_APP_BASEURL;
 
 const dataColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"];
 const workloadLabel = ["Very Light", "Light", "Medium", "Heavy", "Very Heavy"];
-const lectureFinalLabel = [
-  "Very Easy",
-  "Easy",
-  "Medium",
-  "Difficult",
-  "Very Difficult",
-];
+const lectureFinalLabel = ["Very Easy", "Easy", "Medium", "Difficult", "Very Difficult"];
 const GPALabel = ["A range", "B range", "C range", "D range", "F"];
 
 const criteria = [
@@ -148,6 +142,8 @@ const Visualization = () => {
 
   const [selectedYear, setSelectedYear] = useState("All");
   const [selectedProfessor, setSelectedProfessor] = useState("All");
+
+  const [overviewData, setOverviewData] = useState({})
 
   const [GPA, setGPA] = useState({ // GPA and all other criteria components for chart.js has to be formatted in this format: {labels: , datasets:[{...}]}
     labels: GPALabel,
@@ -303,11 +299,8 @@ const Visualization = () => {
           headers: userToken["headers"],
         })
         .then((response) => {
-          console.log("response.data.GPA.values: ", response.data.GPA.values);
-          console.log(
-            "response.data.LectureDifficulty.values: ",
-            response.data.LectureDifficulty.values
-          );
+          console.log("response: ", response)
+          setOverviewData(response.data)
           setNumReviews(response.data.TotalNumReviews);
           setGPA({
             ...GPA,
@@ -555,6 +548,7 @@ const Visualization = () => {
           headers: userToken["headers"],
         })
         .then((response) => {
+          setOverviewData(response.data)
           setNumReviews(response.data.TotalNumReviews); // also, number of reviews update upon year and professor change
           setGPA({
             ...GPA,
@@ -926,16 +920,17 @@ const Visualization = () => {
       </Box>
       <TabPanel value={value} index={0}>
         <Overview
-          GPA={GPA}
-          lectureDifficulty={lectureDifficulty}
-          finalDifficulty={finalDifficulty}
-          workload={workload}
+          data={overviewData}
+          // GPA={GPA}
+          // lectureDifficulty={lectureDifficulty}
+          // finalDifficulty={finalDifficulty}
+          // workload={workload}
           pentagon={pentagon}
           teachingQuality={overallTeachingQuality}
           interactivity={interactivity}
           entertaining={entertaining}
           delivery={delivery}
-          overallScore={overallScore}
+        // overallScore={overallScore}
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
