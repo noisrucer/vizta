@@ -294,8 +294,7 @@ const Visualization = () => {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    // get request from courseInfo, courseDescription, available year and professor, favorites
+  useEffect(() => {    // get request from courseInfo, courseDescription, available year and professor, favorites
     const fetchCourseData = async () => {
       axios
         .request({
@@ -534,6 +533,150 @@ const Visualization = () => {
         console.log("error from /visualization/course_id/by_years: ", error);
       });
   }
+
+  useEffect(() => {
+    // render component again when select year
+    const formatProfessor = selectedProfessor.replace(/ /g, "%20");
+    let path = "";
+    if (selectedYear !== "All" && selectedProfessor !== "All") {
+      path = `${baseURL}/visualization/${courseId}/?year=${selectedYear}&professor=${formatProfessor}`;
+    } else if (selectedYear !== "All" && selectedProfessor === "All") {
+      path = `${baseURL}/visualization/${courseId}/?year=${selectedYear}`;
+    } else if (selectedYear === "All" && selectedProfessor !== "All") {
+      path = `${baseURL}/visualization/${courseId}/?professor=${formatProfessor}`;
+    } else {
+      path = `${baseURL}/visualization/${courseId}`;
+    }
+    const refreshCourseData = async () => { // request sent everytime user clicks the select textfield option with different values, change GPA, LectrueQuality, LectureDifficulty, FinalDifficulty, Workload, and pentagon values
+      axios
+        .request({
+          method: "get",
+          url: path,
+          headers: userToken["headers"],
+        })
+        .then((response) => {
+          setNumReviews(response.data.TotalNumReviews); // also, number of reviews update upon year and professor change
+          setGPA({
+            ...GPA,
+            datasets: [
+              {
+                label: "# Students",
+                data: response.data.GPA.values,
+                backgroundColor: dataColor,
+              },
+            ],
+          });
+          setLectureDifficulty({
+            ...lectureDifficulty,
+            datasets: [
+              {
+                label: "# Students",
+                data: response.data.LectureDifficulty.values,
+                backgroundColor: dataColor,
+              },
+            ],
+          });
+          setFinalDifficulty({
+            ...finalDifficulty,
+            datasets: [
+              {
+                label: "# Students",
+                data: response.data.FinalDifficulty.values,
+                backgroundColor: dataColor,
+              },
+            ],
+          });
+          setWorkload({
+            ...workload,
+            datasets: [
+              {
+                label: "# Students",
+                data: response.data.Workload.values,
+                backgroundColor: dataColor,
+              },
+            ],
+          });
+          const teachingQuality = response.data.LectureQuality;
+          setDelivery(
+            calculateAverage(
+              teachingQuality.Delivery.keys,
+              teachingQuality.Delivery.values
+            )
+          );
+          setEntertaining(
+            calculateAverage(
+              teachingQuality.Entertainment.keys,
+              teachingQuality.Entertainment.values
+            )
+          );
+          setInteractivity(
+            calculateAverage(
+              teachingQuality.Interactivity.keys,
+              teachingQuality.Interactivity.values
+            )
+          );
+          setOverallTeachingQuality(
+            calculateOverallAverage(
+              calculateAverage(
+                teachingQuality.Delivery.keys,
+                teachingQuality.Delivery.values
+              ),
+              calculateAverage(
+                teachingQuality.Entertainment.keys,
+                teachingQuality.Entertainment.values
+              ),
+              calculateAverage(
+                teachingQuality.Interactivity.keys,
+                teachingQuality.Interactivity.values
+              )
+            )
+          );
+          setPentagon({
+            ...pentagon,
+            datasets: [
+              {
+                label: "Overall Score",
+                data: [
+                  response.data.Pentagon.FinalDifficulty,
+                  (response.data.Pentagon.GPA * 5.0) / 4.3,
+                  response.data.Pentagon.LectureDifficulty,
+                  response.data.Pentagon.LectureQuality,
+                  response.data.Pentagon.Workload,
+                ],
+              },
+            ],
+          });
+          const sum = [
+            response.data.Pentagon.FinalDifficulty,
+            (response.data.Pentagon.GPA * 5.0) / 4.3,
+            response.data.Pentagon.LectureDifficulty,
+            response.data.Pentagon.LectureQuality,
+            response.data.Pentagon.Workload,
+          ].reduce((acc, curr) => acc + Math.round(curr * 100) / 100, 0);
+          setOverallScore(Math.round((sum / 5) * 10));
+          setConditionalPentagon({
+            ...conditionalPentagon,
+            datasets: [
+              {
+                label: "Overall Score",
+                data: [
+                  response.data.Pentagon.FinalDifficulty,
+                  (response.data.Pentagon.GPA * 5.0) / 4.3,
+                  response.data.Pentagon.LectureDifficulty,
+                  response.data.Pentagon.LectureQuality,
+                  response.data.Pentagon.Workload,
+                ],
+              },
+            ],
+          });
+        })
+        .catch((error) => {
+          console.log("error from courseInfo with select year, prof: ", error);
+        });
+    };
+    refreshCourseData();
+  }, [selectedYear, selectedProfessor]);
+
 
   return (
     <Box

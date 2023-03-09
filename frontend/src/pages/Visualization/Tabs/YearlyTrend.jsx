@@ -78,7 +78,7 @@ const YearlyTrend = () => {
         flexDirection="row"
         borderRadius="2%"
       >
-        <Box width="80%" height="500px">
+        <Box width="80%" >
           <NivoLineChart data={lineData} />
         </Box>
         <Box width="20%" sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
