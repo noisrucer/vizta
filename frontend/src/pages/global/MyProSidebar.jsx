@@ -145,7 +145,7 @@ const MyProSidebar = () => {
             />
             <Item
               title="Favorites"
-              to="/faq"
+              to="/favorites"
               icon={<FavoriteIcon />}
               selected={selected}
               setSelected={setSelected}

@@ -100,23 +100,6 @@ const Main = () => {
   const faculty = params.faculty;
   console.log("faculty: ", faculty);
 
-  const [windowSize, setWindowSize] = useState([
-    window.innerWidth,
-    window.innerHeight,
-  ]);
-
-  useEffect(() => {
-    const handleWindowResize = () => {
-      setWindowSize([window.innerWidth, window.innerHeight]);
-    };
-
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  });
-
   // document.body.style.backgroundColor = "#110F44"
   const { UserToken, UserData } = useContext(UserContext);
   const [userToken, setUserToken] = UserToken;

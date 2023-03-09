@@ -15,6 +15,7 @@ import Profile from "./pages/Auth/Profile";
 import Search from "./pages/Search/Search";
 import Visualization from "./pages/Visualization/Visualization";
 import Review from "./pages/Review/Review";
+import Favorites from "./pages/Favorites/Favorites";
 const Layout = () => (
   <MyProSidebarProvider>
     <div className="app">
@@ -48,6 +49,7 @@ function App() {
               <Route path="/main" element={<Search />}>
                 <Route path=":faculty" element={<Search />}></Route>
               </Route>
+              <Route path="/favorites" element={<Favorites />}></Route>
               <Route path="/visualization">
                 <Route path=":courseId" element={<Visualization />}></Route>
               </Route>
