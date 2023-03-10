@@ -24,12 +24,14 @@ const Overview = (chartData) => {
   console.log("colors: ", colors)
   console.log("chartData: ", chartData)
 
+  const overviewData = chartData.data;
+
   function JudgeBadgesColor(average) {
     if (average === null) {
       return ["#8F8F88", "secondary", "NONE"];
-    } else if (average <= 1.66) {
+    } else if (average === "HARD") {
       return ["#ff403d", "secondary", "HARD"];
-    } else if (average <= 3.33) {
+    } else if (average === "MEDIUM") {
       return ["#DFB040", "secondary", "MEDIUM"];
     } else {
       return ["#0cc1a9", "secondary", "EASY"];
@@ -38,36 +40,33 @@ const Overview = (chartData) => {
 
   function JudgeGPABadgeColor(average) {
     if (average === null) {
-      return ["#8F8F88", "#1D2630", "NONE"];
-    } else if (average === 0) {
-      return ["#ff403d", "#3b353eff", "Avg: F"];
-    } else if (average <= 1.1627906976744187) {
-      return ["#ff403d", "#3b353eff", "Avg: D"];
-    } else if (average <= 1.5116279069767442) {
-      return ["#ff403d", "#3b353eff", "Avg: D+"];
-    } else if (average <= 1.9767441860465118) {
-      return ["#ff403d", "#3b353eff", "Avg: C-"];
-    } else if (average <= 2.3255813953488373) {
-      return ["#ff403d", "#3b353eff", "Avg: C"];
-    } else if (average <= 2.674418604651163) {
-      return ["#ff403d", "#3b353eff", "Avg: C+"];
-    } else if (average <= 3.1395348837209305) {
-      return ["#DFB040", "#3B3A3E", "Avg: B-"];
-    } else if (average <= 3.488372093023256) {
-      return ["#DFB040", "#3B3A3E", "Avg: B"];
-    } else if (average <= 3.8372093023255816) {
-      return ["#DFB040", "#3B3A3E", "Avg: B+"];
-    } else if (average <= 4.302325581395349) {
-      return ["#0cc1a9", "#2d3c47ff", "Avg: A-"];
-    } else if (average <= 4.651162790697675) {
-      return ["#0cc1a9", "#2d3c47ff", "Avg: A"];
+      return ["#8F8F88", "secondary", "NONE"];
+    } else if (average === "Avg: F") {
+      return ["#ff403d", "secondary", "Avg: F"];
+    } else if (average === "Avg: D") {
+      return ["#ff403d", "secondary", "Avg: D"];
+    } else if (average === "Avg: D+") {
+      return ["#ff403d", "secondary", "Avg: D+"];
+    } else if (average === "Avg: C-") {
+      return ["#ff403d", "secondary", "Avg: C-"];
+    } else if (average === "Avg: C") {
+      return ["#ff403d", "secondary", "Avg: C"];
+    } else if (average === "Avg: C+") {
+      return ["#ff403d", "secondary", "Avg: C+"];
+    } else if (average === "Avg: B-") {
+      return ["#DFB040", "secondary", "Avg: B-"];
+    } else if (average === "Avg: B") {
+      return ["#DFB040", "secondary", "Avg: B"];
+    } else if (average === "Avg: B+") {
+      return ["#DFB040", "secondary", "Avg: B+"];
+    } else if (average === "Avg: A-") {
+      return ["#0cc1a9", "secondary", "Avg: A-"];
+    } else if (average === "Avg: A") {
+      return ["#0cc1a9", "secondary", "Avg: A"];
     } else {
-      return ["#0cc1a9", "#2d3c47ff", "Avg: A+"];
+      return ["#0cc1a9", "secondary", "Avg: A+"];
     }
   }
-
-  const criteriaAverage = chartData.pentagon.datasets[0].data;
-  console.log("criteriaAverage: ", criteriaAverage);
 
   const GPAHeadings = () => {
 
@@ -83,13 +82,13 @@ const Overview = (chartData) => {
         <h3 style={{ fontSize: "19px" }}>GPA </h3>
         <Badges
           borderColor={
-            criteriaAverage[1]
-              ? JudgeGPABadgeColor(criteriaAverage[1])[0]
+            overviewData.Badges.GPA
+              ? JudgeGPABadgeColor(overviewData.Badges.GPA)[0]
               : "#8F8F88"
           }
           backgroundColor={
-            criteriaAverage[1]
-              ? JudgeGPABadgeColor(criteriaAverage[1])[1]
+            overviewData.Badges.GPA
+              ? JudgeGPABadgeColor(overviewData.Badges.GPA)[1]
               : "#1D2630"
           }
           sx={{
@@ -100,13 +99,13 @@ const Overview = (chartData) => {
         >
           <span
             style={{
-              color: criteriaAverage[1]
-                ? JudgeGPABadgeColor(criteriaAverage[1])[0]
+              color: overviewData.Badges.GPA
+                ? JudgeGPABadgeColor(overviewData.Badges.GPA)[0]
                 : "#8F8F88",
             }}
           >
-            {criteriaAverage[1]
-              ? JudgeGPABadgeColor(criteriaAverage[1])[2]
+            {overviewData.Badges.GPA
+              ? JudgeGPABadgeColor(overviewData.Badges.GPA)[2]
               : "NONE"}
           </span>
         </Badges>
@@ -114,7 +113,7 @@ const Overview = (chartData) => {
     )
   }
 
-  const Headings = ({ name, index }) => {
+  const Headings = ({ name, badgeName }) => {
     return (
       <Box sx={{
         display: "flex",
@@ -126,16 +125,16 @@ const Overview = (chartData) => {
         <Box sx={{ width: "100px", height: "30px" }}></Box>
         <h3 style={{ fontSize: "19px" }}> {name} </h3>
         <Badges
-          borderColor={JudgeBadgesColor(criteriaAverage[{ index }])[0]}
-          backgroundColor={JudgeBadgesColor(criteriaAverage[{ index }])[1]}
+          borderColor={JudgeBadgesColor(badgeName)[0]}
+          backgroundColor={JudgeBadgesColor(badgeName)[1]}
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <span style={{ color: JudgeBadgesColor(criteriaAverage[{ index }])[0] }}>
-            {JudgeBadgesColor(criteriaAverage[{ index }])[2]}
+          <span style={{ color: JudgeBadgesColor(badgeName)[0] }}>
+            {JudgeBadgesColor(badgeName)[2]}
           </span>
         </Badges>
       </Box>
@@ -193,7 +192,7 @@ const Overview = (chartData) => {
         borderRadius="2%"
       >
         {/*Put WORKLOAD in Here */}
-        <Headings name="Workload" index={4} />
+        <Headings name="Workload" badgeName={overviewData.Badges.Workload} />
         <NivoBarChart data={barData} />
       </Box>
       {/* Row 2 */}
@@ -208,7 +207,7 @@ const Overview = (chartData) => {
         borderRadius="2%"
       >
         {/*Put LECTURE DIFFICULTY in Here */}
-        <Headings name="Lecture Difficulty" index={2} />
+        <Headings name="Lecture Difficulty" badgeName={overviewData.Badges.LectureDifficulty} />
         <NivoBarChart data={barData} />
       </Box>
       <Box
@@ -222,7 +221,7 @@ const Overview = (chartData) => {
         borderRadius="2%"
       >
         {/*Put EXAM DIFFICULTY in Here */}
-        <Headings name="Final Exam Difficulty" index={0} />
+        <Headings name="Final Exam Difficulty" badgeName={overviewData.Badges.FinalDifficulty} />
         <NivoBarChart data={barData} />
       </Box>
       <Box
@@ -239,20 +238,20 @@ const Overview = (chartData) => {
         <h2>Lecture Quality</h2>
         <Box sx={{ display: "flex" }}>
           <LectureQualityScore
-            score={Math.round(chartData.teachingQuality[0] * 10)}
+            score={(overviewData.LectureQuality.Entertainment + overviewData.LectureQuality.Interactivity + overviewData.LectureQuality.Delivery) / 3}
           />
           <Box sx={{ width: "280px", marginLeft: 4 }}>
             <h5 style={{ marginBottom: -1 }}>Entertainment </h5>
             <LinearPercentage
-              percentage={chartData.entertaining[0]}
+              percentage={overviewData.LectureQuality.Entertainment}
             ></LinearPercentage>
             <h5 style={{ marginBottom: -1 }}>Interactivity</h5>
             <LinearPercentage
-              percentage={chartData.interactivity[0]}
+              percentage={overviewData.LectureQuality.Interactivity}
             ></LinearPercentage>
             <h5 style={{ marginBottom: -1 }}>Delivery</h5>
             <LinearPercentage
-              percentage={chartData.delivery[0]}
+              percentage={overviewData.LectureQuality.Delivery}
             ></LinearPercentage>
           </Box>
         </Box>

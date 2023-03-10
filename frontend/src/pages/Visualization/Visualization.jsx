@@ -30,6 +30,10 @@ import CourseInfo from "./Tabs/CourseInfo";
 import YearlyTrend from "./Tabs/YearlyTrend";
 import ProfessorStats from "./Tabs/ProfessorStats";
 
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const baseURL = process.env.REACT_APP_BASEURL;
 
 const dataColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"];
@@ -67,21 +71,6 @@ const criteria = [
     label: "Workload",
   },
 ];
-
-function calculateAverage(score, studentEvaluation) {
-  var sum = 0;
-  var numAns = 0;
-  score.map((item, index) => {
-    sum += item * studentEvaluation[index];
-    numAns += studentEvaluation[index];
-  });
-  return [sum / numAns, 5 - sum / numAns];
-}
-
-function calculateOverallAverage(delivery, entertaining, interactivity) {
-  const overall = (delivery[0] + entertaining[0] + interactivity[0]) / 3;
-  return [overall * 2, 5 - overall];
-}
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -133,8 +122,6 @@ const Visualization = () => {
   const [selectYear, setSelectYear] = useState([]);
   const [selectProfessor, setSelectProfessor] = useState([]);
 
-  const [overallScore, setOverallScore] = useState(0);
-
   const [isOverview, setIsOverview] = useState(true);
   const [isYearlyTrend, setIsYearlyTrend] = useState(false);
   const [numReviews, setNumReviews] = useState(0);
@@ -144,50 +131,6 @@ const Visualization = () => {
   const [selectedProfessor, setSelectedProfessor] = useState("All");
 
   const [overviewData, setOverviewData] = useState({})
-
-  const [GPA, setGPA] = useState({ // GPA and all other criteria components for chart.js has to be formatted in this format: {labels: , datasets:[{...}]}
-    labels: GPALabel,
-    datasets: [
-      {
-        label: "# Students",
-        data: [],
-        backgroundColor: dataColor,
-      },
-    ],
-  });
-
-  const [lectureDifficulty, setLectureDifficulty] = useState({
-    labels: lectureFinalLabel,
-    datasets: [
-      {
-        label: "# Students",
-        data: [],
-        backgroundColor: dataColor,
-      },
-    ],
-  });
-
-  const [finalDifficulty, setFinalDifficulty] = useState({
-    labels: lectureFinalLabel,
-    datasets: [
-      {
-        label: "# Students",
-        data: [],
-        backgroundColor: dataColor,
-      },
-    ],
-  });
-
-  const [workload, setWorkload] = useState({
-    labels: workloadLabel,
-    datasets: [
-      {
-        label: "# Students",
-        data: [],
-        backgroundColor: dataColor,
-      },
-    ],
-  });
 
   const [delivery, setDelivery] = useState([]);
   const [entertaining, setEntertaining] = useState([]);
@@ -210,8 +153,6 @@ const Visualization = () => {
     ],
   });
 
-  const [conditionalPentagon, setConditionalPentagon] = useState(pentagon);
-
   const [courseDescription, setCourseDescription] = useState({
     CourseID: "",
     Description: "",
@@ -225,6 +166,12 @@ const Visualization = () => {
 
   const [open, setOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
 
   const [value, setValue] = useState(0);
 
@@ -300,121 +247,8 @@ const Visualization = () => {
         })
         .then((response) => {
           console.log("response: ", response)
-          setOverviewData(response.data)
+          setOverviewData(response.data);
           setNumReviews(response.data.TotalNumReviews);
-          setGPA({
-            ...GPA,
-            datasets: [
-              {
-                label: "# Students",
-                data: response.data.GPA.values,
-                backgroundColor: dataColor,
-              },
-            ],
-          });
-          setLectureDifficulty({
-            ...lectureDifficulty,
-            datasets: [
-              {
-                label: "# Students",
-                data: response.data.LectureDifficulty.values,
-                backgroundColor: dataColor,
-              },
-            ],
-          });
-          setFinalDifficulty({
-            ...finalDifficulty,
-            datasets: [
-              {
-                label: "# Students",
-                data: response.data.FinalDifficulty.values,
-                backgroundColor: dataColor,
-              },
-            ],
-          });
-          setWorkload({
-            ...workload,
-            datasets: [
-              {
-                label: "# Students",
-                data: response.data.Workload.values,
-                backgroundColor: dataColor,
-              },
-            ],
-          });
-          const teachingQuality = response.data.LectureQuality;
-          setDelivery(
-            calculateAverage(
-              teachingQuality.Delivery.keys,
-              teachingQuality.Delivery.values
-            )
-          );
-          setEntertaining(
-            calculateAverage(
-              teachingQuality.Entertainment.keys,
-              teachingQuality.Entertainment.values
-            )
-          );
-          setInteractivity(
-            calculateAverage(
-              teachingQuality.Interactivity.keys,
-              teachingQuality.Interactivity.values
-            )
-          );
-          setOverallTeachingQuality(
-            calculateOverallAverage(
-              calculateAverage(
-                teachingQuality.Delivery.keys,
-                teachingQuality.Delivery.values
-              ),
-              calculateAverage(
-                teachingQuality.Entertainment.keys,
-                teachingQuality.Entertainment.values
-              ),
-              calculateAverage(
-                teachingQuality.Interactivity.keys,
-                teachingQuality.Interactivity.values
-              )
-            )
-          );
-          setPentagon({
-            ...pentagon,
-            datasets: [
-              {
-                label: "Overall Score",
-                data: [
-                  response.data.Pentagon.FinalDifficulty,
-                  response.data.Pentagon.GPA * (5.0 / 4.3),
-                  response.data.Pentagon.LectureDifficulty,
-                  response.data.Pentagon.LectureQuality,
-                  response.data.Pentagon.Workload,
-                ],
-              },
-            ],
-          });
-          const sum = [
-            response.data.Pentagon.FinalDifficulty,
-            (response.data.Pentagon.GPA * 5.0) / 4.3,
-            response.data.Pentagon.LectureDifficulty,
-            response.data.Pentagon.LectureQuality,
-            response.data.Pentagon.Workload,
-          ].reduce((acc, curr) => acc + Math.round(curr * 100) / 100, 0);
-          setOverallScore(Math.round((sum / 5) * 10));
-          setConditionalPentagon({
-            ...conditionalPentagon,
-            datasets: [
-              {
-                label: "Overall Score",
-                data: [
-                  response.data.Pentagon.FinalDifficulty,
-                  (response.data.Pentagon.GPA * 5.0) / 4.3,
-                  response.data.Pentagon.LectureDifficulty,
-                  response.data.Pentagon.LectureQuality,
-                  response.data.Pentagon.Workload,
-                ],
-              },
-            ],
-          });
         })
         .catch((error) => {
           console.log("error from /visualization/course_id: ", error);
@@ -550,119 +384,6 @@ const Visualization = () => {
         .then((response) => {
           setOverviewData(response.data)
           setNumReviews(response.data.TotalNumReviews); // also, number of reviews update upon year and professor change
-          setGPA({
-            ...GPA,
-            datasets: [
-              {
-                label: "# Students",
-                data: response.data.GPA.values,
-                backgroundColor: dataColor,
-              },
-            ],
-          });
-          setLectureDifficulty({
-            ...lectureDifficulty,
-            datasets: [
-              {
-                label: "# Students",
-                data: response.data.LectureDifficulty.values,
-                backgroundColor: dataColor,
-              },
-            ],
-          });
-          setFinalDifficulty({
-            ...finalDifficulty,
-            datasets: [
-              {
-                label: "# Students",
-                data: response.data.FinalDifficulty.values,
-                backgroundColor: dataColor,
-              },
-            ],
-          });
-          setWorkload({
-            ...workload,
-            datasets: [
-              {
-                label: "# Students",
-                data: response.data.Workload.values,
-                backgroundColor: dataColor,
-              },
-            ],
-          });
-          const teachingQuality = response.data.LectureQuality;
-          setDelivery(
-            calculateAverage(
-              teachingQuality.Delivery.keys,
-              teachingQuality.Delivery.values
-            )
-          );
-          setEntertaining(
-            calculateAverage(
-              teachingQuality.Entertainment.keys,
-              teachingQuality.Entertainment.values
-            )
-          );
-          setInteractivity(
-            calculateAverage(
-              teachingQuality.Interactivity.keys,
-              teachingQuality.Interactivity.values
-            )
-          );
-          setOverallTeachingQuality(
-            calculateOverallAverage(
-              calculateAverage(
-                teachingQuality.Delivery.keys,
-                teachingQuality.Delivery.values
-              ),
-              calculateAverage(
-                teachingQuality.Entertainment.keys,
-                teachingQuality.Entertainment.values
-              ),
-              calculateAverage(
-                teachingQuality.Interactivity.keys,
-                teachingQuality.Interactivity.values
-              )
-            )
-          );
-          setPentagon({
-            ...pentagon,
-            datasets: [
-              {
-                label: "Overall Score",
-                data: [
-                  response.data.Pentagon.FinalDifficulty,
-                  (response.data.Pentagon.GPA * 5.0) / 4.3,
-                  response.data.Pentagon.LectureDifficulty,
-                  response.data.Pentagon.LectureQuality,
-                  response.data.Pentagon.Workload,
-                ],
-              },
-            ],
-          });
-          const sum = [
-            response.data.Pentagon.FinalDifficulty,
-            (response.data.Pentagon.GPA * 5.0) / 4.3,
-            response.data.Pentagon.LectureDifficulty,
-            response.data.Pentagon.LectureQuality,
-            response.data.Pentagon.Workload,
-          ].reduce((acc, curr) => acc + Math.round(curr * 100) / 100, 0);
-          setOverallScore(Math.round((sum / 5) * 10));
-          setConditionalPentagon({
-            ...conditionalPentagon,
-            datasets: [
-              {
-                label: "Overall Score",
-                data: [
-                  response.data.Pentagon.FinalDifficulty,
-                  (response.data.Pentagon.GPA * 5.0) / 4.3,
-                  response.data.Pentagon.LectureDifficulty,
-                  response.data.Pentagon.LectureQuality,
-                  response.data.Pentagon.Workload,
-                ],
-              },
-            ],
-          });
         })
         .catch((error) => {
           console.log("error from courseInfo with select year, prof: ", error);
@@ -921,16 +642,6 @@ const Visualization = () => {
       <TabPanel value={value} index={0}>
         <Overview
           data={overviewData}
-          // GPA={GPA}
-          // lectureDifficulty={lectureDifficulty}
-          // finalDifficulty={finalDifficulty}
-          // workload={workload}
-          pentagon={pentagon}
-          teachingQuality={overallTeachingQuality}
-          interactivity={interactivity}
-          entertaining={entertaining}
-          delivery={delivery}
-        // overallScore={overallScore}
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -942,6 +653,11 @@ const Visualization = () => {
       <TabPanel value={value} index={3}>
         <ProfessorStats />
       </TabPanel>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -30,7 +30,7 @@ export default function LinearWithValueLabel(percentage) {
     }
     return (
         <Box sx={{ width: "100%" }}>
-            <LinearProgressWithLabel value={score * 20} />
+            <LinearProgressWithLabel value={score} />
         </Box>
     );
 }
