@@ -1,14 +1,36 @@
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
+import Textfield from "@mui/material/TextField";
 import { useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
 import NivoPieChart from "../Charts/NivoPieChart";
 import pieData from "./NivoData/PieData";
 import TimeTable from "../Charts/TimeTable";
+import MenuItem from "@mui/material/MenuItem";
+
+const gradingRatioList = {
+  "Lo Yu Sum": [25, 25, 25, 25],
+  "Lee Kwak Lam": [0, 50, 0, 50]
+}
 
 const CourseInfo = (courseData) => {
   console.log("coursedata: ", courseData)
+  const courseInfoData = courseData.description
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const [gradingRatio, setGradingRatio] = useState({
+    labels: courseData.description.GradingRatio.Constitution,
+    datasets: [
+      {
+        label: "students answer",
+        data: gradingRatioList[Object.keys(gradingRatioList)[0]],
+        backgroundColor: ["#36A2EB", "#FF6384", "#FF9F3F", "#FFCD56"],
+        borderColor: "#333A46",
+      },
+    ],
+  });
+
   return (
     <Box
       display="grid"
@@ -109,9 +131,45 @@ const CourseInfo = (courseData) => {
         borderRadius="2%"
       >
         {/*Put GRADING RATIO in Here */}
-        <Box sx={{ height: "200px", width: "200px" }}>
+        <Box sx={{ width: "70%", height: "200px" }}>
           <NivoPieChart data={pieData} />
         </Box>
+        <Box sx={{ width: "30%", height: "100%" }}>
+          <Box sx={{ width: "100%" }}>
+            <Textfield
+              id="get-grading-ratio"
+              select
+              // label="select professor"
+              variant="standard"
+              defaultValue={Object.values(gradingRatioList)[0]}
+              sx={{ marginLeft: "auto" }}
+            >
+              {Object.keys(gradingRatioList).map((key) => {
+                // const filteredGradingRatioList = gradingRatioList[key].filter(function(val) { return val != 0})
+                return (
+                  <MenuItem
+                    key={key}
+                    value={gradingRatioList[key]}
+                    onClick={() => {
+                      setGradingRatio({
+                        ...gradingRatio,
+                        datasets: [
+                          {
+                            label: "students answer",
+                            data: gradingRatioList[key],
+                          },
+                        ],
+                      });
+                    }}
+                  >
+                    {key}
+                  </MenuItem>
+                );
+              })}
+            </Textfield>
+          </Box>
+        </Box>
+
       </Box>
       <Box
         gridColumn={{ xs: "span 12", lg: "span 7" }}

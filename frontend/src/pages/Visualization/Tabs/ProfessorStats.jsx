@@ -12,6 +12,8 @@ import { ColorModeContext, tokens } from "../../../theme";
 import NivoRadarChart from "../Charts/NivoRadarChart";
 import radarData from "./NivoData/RadarData";
 
+const profStats = ["chardonay", "carmenere", "syrah"]
+
 const ProfessorStats = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -95,7 +97,7 @@ const ProfessorStats = () => {
         borderRadius="2%"
       >
         <Box width="80%" height="500px">
-          <NivoRadarChart data={radarData} />
+          <NivoRadarChart data={radarData} keys={profStats} />
         </Box>
         <Box width="20%" sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
           <FormControl component="fieldset" variant="standard">
