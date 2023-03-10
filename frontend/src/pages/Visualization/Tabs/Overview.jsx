@@ -9,6 +9,11 @@ import radarData from "./NivoData/RadarData";
 import LinearPercentage from "../Charts/ProgessiveBar/LinearPercentage";
 import LectureQualityScore from "../Charts/ProgessiveBar/LectureQuailtyScore";
 
+const workloadLabel = ["VeryLight", "Light", "Medium", "Heavy", "VeryHeavy"];
+const lectureFinalLabel = ["VeryEasy", "Easy", "Medium", "Difficult", "VeryDifficult"];
+const GPALabel = ["A+", "A", "A-", "B+", "B-", "C+", "C", "C-", "D+", "D", "F"];
+const overallLabel = ["FinalDifficulty", "GPA", "LectureDifficulty", "LectureQuality", "Workload"]
+
 const Badges = styled(Box)(({ borderColor, backgronudColor }) => ({
   height: "30px",
   width: "100px",
@@ -165,7 +170,7 @@ const Overview = (chartData) => {
       >
         {/*Put RADAR CHART in Here */}
         <h2>Overall</h2>
-        <NivoRadarChart data={radarData} />
+        <NivoRadarChart data={overviewData.Pentagon} keys={overallLabel} />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 5" }}
@@ -179,7 +184,7 @@ const Overview = (chartData) => {
       >
         {/*Put GPA in Here */}
         <GPAHeadings />
-        <NivoBarChart data={barData} />
+        <NivoBarChart data={overviewData.GPA} keys={GPALabel} />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 5" }}
@@ -193,7 +198,7 @@ const Overview = (chartData) => {
       >
         {/*Put WORKLOAD in Here */}
         <Headings name="Workload" badgeName={overviewData.Badges.Workload} />
-        <NivoBarChart data={barData} />
+        <NivoBarChart data={overviewData.Workload} keys={workloadLabel} />
       </Box>
       {/* Row 2 */}
       <Box
@@ -208,7 +213,7 @@ const Overview = (chartData) => {
       >
         {/*Put LECTURE DIFFICULTY in Here */}
         <Headings name="Lecture Difficulty" badgeName={overviewData.Badges.LectureDifficulty} />
-        <NivoBarChart data={barData} />
+        <NivoBarChart data={overviewData.LectureDifficulty} keys={lectureFinalLabel} />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 5" }}
@@ -222,7 +227,7 @@ const Overview = (chartData) => {
       >
         {/*Put EXAM DIFFICULTY in Here */}
         <Headings name="Final Exam Difficulty" badgeName={overviewData.Badges.FinalDifficulty} />
-        <NivoBarChart data={barData} />
+        <NivoBarChart data={overviewData.FinalDifficulty} keys={lectureFinalLabel} />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 4" }}
@@ -238,7 +243,7 @@ const Overview = (chartData) => {
         <h2>Lecture Quality</h2>
         <Box sx={{ display: "flex" }}>
           <LectureQualityScore
-            score={(overviewData.LectureQuality.Entertainment + overviewData.LectureQuality.Interactivity + overviewData.LectureQuality.Delivery) / 3}
+            score={Math.round((overviewData.LectureQuality.Entertainment + overviewData.LectureQuality.Interactivity + overviewData.LectureQuality.Delivery) / 3)}
           />
           <Box sx={{ width: "280px", marginLeft: 4 }}>
             <h5 style={{ marginBottom: -1 }}>Entertainment </h5>

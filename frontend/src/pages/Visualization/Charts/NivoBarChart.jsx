@@ -3,28 +3,16 @@ import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../../../theme";
 
-const NivoBarChart = ({ data }) => {
+const NivoBarChart = ({ data, keys }) => {
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const colorMap = {
-        'hot dog': '#ff0000',
-        'burger': '#00ff00',
-        'sandwich': '#0000ff',
-        'kebab': '#ff00ff',
-        'fries': '#00ffff',
-    };
+
     return (
         <ResponsiveBar
             layout="horizontal"
             data={data}
-            keys={[
-                'hot dog',
-                'burger',
-                'sandwich',
-                'kebab',
-                'fries'
-            ]}
+            keys={keys}
             indexBy="group"
             margin={{ top: 10, right: 20, bottom: 50, left: 70 }}
             padding={0.3}

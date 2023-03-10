@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material";
 import { ResponsiveRadar } from "@nivo/radar";
 import { tokens } from "../../../theme";
 
-const NivoRadarChart = ({ data /* see data tab */ }) => {
+const NivoRadarChart = ({ data, keys }) => {
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -11,7 +11,7 @@ const NivoRadarChart = ({ data /* see data tab */ }) => {
 
         <ResponsiveRadar
             data={data}
-            keys={['chardonay', 'carmenere', 'syrah']}
+            keys={keys}
             indexBy="taste"
             valueFormat=">-.2f"
             margin={{ top: 70, right: 80, bottom: 40, left: 80 }}

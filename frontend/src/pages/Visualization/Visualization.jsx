@@ -37,9 +37,6 @@ const Alert = forwardRef(function Alert(props, ref) {
 const baseURL = process.env.REACT_APP_BASEURL;
 
 const dataColor = ["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"];
-const workloadLabel = ["Very Light", "Light", "Medium", "Heavy", "Very Heavy"];
-const lectureFinalLabel = ["Very Easy", "Easy", "Medium", "Difficult", "Very Difficult"];
-const GPALabel = ["A range", "B range", "C range", "D range", "F"];
 
 const criteria = [
   {
@@ -130,28 +127,153 @@ const Visualization = () => {
   const [selectedYear, setSelectedYear] = useState("All");
   const [selectedProfessor, setSelectedProfessor] = useState("All");
 
-  const [overviewData, setOverviewData] = useState({})
-
-  const [delivery, setDelivery] = useState([]);
-  const [entertaining, setEntertaining] = useState([]);
-  const [interactivity, setInteractivity] = useState([]);
-  const [overallTeachingQuality, setOverallTeachingQuality] = useState([]);
-
-  const [pentagon, setPentagon] = useState({
-    labels: [
-      "Final Difficulty",
-      "GPA",
-      "Lecture Difficulty",
-      "Teaching Quality",
-      "Workload",
-    ],
-    datasets: [
+  const [overviewData, setOverviewData] = useState({
+    "TotalNumReviews": 0,
+    "GPA": [
       {
-        label: "Overall Score",
-        data: [5, 5, 5, 5, 5],
+        "group": "A group",
+        "A+": 0,
+        "A+Color": "hsl(132, 70%, 50%)",
+        "A": 0,
+        "AColor": "hsl(85, 70%, 50%)",
+        "A-": 0,
+        "A-Color": "hsl(237, 70%, 50%)"
       },
+      {
+        "group": "B group",
+        "B+": 0,
+        "B+Color": "hsl(132, 70%, 50%)",
+        "B": 0,
+        "BColor": "hsl(85, 70%, 50%)",
+        "B-": 0,
+        "B-Color": "hsl(237, 70%, 50%)"
+      },
+      {
+        "group": "C group",
+        "C+": 0,
+        "C+Color": "hsl(132, 70%, 50%)",
+        "C": 0,
+        "CColor": "hsl(85, 70%, 50%)",
+        "C-": 0,
+        "C-Color": "hsl(237, 70%, 50%)"
+      },
+      {
+        "group": "D group",
+        "D+": 0,
+        "D+Color": "hsl(132, 70%, 50%)",
+        "D": 0,
+        "DColor": "hsl(85, 70%, 50%)"
+      },
+      {
+        "group": "Fail",
+        "F": 0,
+        "FColor": "hsl(132, 70%, 50%)"
+      }
     ],
-  });
+    "LectureDifficulty": [
+      {
+        "group": "Very Easy",
+        "VeryEasy": 0,
+        "VeryEasyColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Easy",
+        "Easy": 0,
+        "EasyColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Medium",
+        "Medium": 0,
+        "MediumColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Difficult",
+        "Difficult": 0,
+        "DifficultColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Very Difficult",
+        "VeryDifficult": 0,
+        "VeryDifficultColor": "hsl(132, 70%, 50%)"
+      }
+    ],
+    "FinalDifficulty": [
+      {
+        "group": "Very Easy",
+        "VeryEasy": 0,
+        "VeryEasyColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Easy",
+        "Easy": 0,
+        "EasyColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Medium",
+        "Medium": 0,
+        "MediumColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Difficult",
+        "Difficult": 0,
+        "DifficultColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Very Difficult",
+        "VeryDifficult": 0,
+        "VeryDifficultColor": "hsl(132, 70%, 50%)"
+      }
+    ],
+    "Workload": [
+      {
+        "group": "Very Light",
+        "VeryLight": 0,
+        "VeryLightColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Light",
+        "Light": 0,
+        "LightColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Medium",
+        "Medium": 0,
+        "MediumColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Heavy",
+        "Heavy": 0,
+        "HeavyColor": "hsl(132, 70%, 50%)"
+      },
+      {
+        "group": "Very Heavy",
+        "VeryHeavy": 0,
+        "VeryHeavyColor": "hsl(132, 70%, 50%)"
+      }
+    ],
+    "LectureQuality": {
+      "Entertainment": 0,
+      "Delivery": 0,
+      "Interactivity": 0
+    },
+    "Badges": {
+      "LectureDifficulty": "HELL",
+      "FinalDifficulty": "CUTE",
+      "Workload": "CUTE",
+      "GPA": "Avg: C"
+    },
+    "Pentagon": [
+      {
+        "Pentagon": "OverallScore",
+        "GPA": 0,
+        "LectureDifficulty": 0,
+        "FinalDifficulty": 0,
+        "Workload": 0,
+        "LectureQuality": 0
+      }
+    ],
+    "Timetable": null
+  })
 
   const [courseDescription, setCourseDescription] = useState({
     CourseID: "",
