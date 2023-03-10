@@ -342,6 +342,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
             "LectureDifficulty": get_badges(avg_reviews[avg_column.index(mcr.lecture_difficulty)]),
             "FinalDifficulty": get_badges(avg_reviews[avg_column.index(mcr.final_exam_difficulty)]),
             "Workload": get_badges(avg_reviews[avg_column.index(mcr.workload)]),
+            "GPA": visualization_utils.get_gpa_badge(avg_gpa)
         },
         "Pentagon": [{
             "Pentagon": "OverallScore",
