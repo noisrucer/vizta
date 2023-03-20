@@ -323,9 +323,9 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
         entertainment_avg += entertainment['keys'][i] * entertainment['values'][i]
         delivery_avg += delivery['keys'][i] * delivery['values'][i]
         interactivity_avg += interactivity['keys'][i] * interactivity['values'][i]
-    entertainment_avg = entertainment_avg / sum(entertainment['values']) * 20
-    delivery_avg = delivery_avg / sum(delivery['values']) * 20
-    interactivity_avg = interactivity_avg / sum(interactivity['values']) * 20
+    entertainment_avg = entertainment_avg / sum(entertainment['values']) * 20 if sum(entertainment['values']) else 0
+    delivery_avg = delivery_avg / sum(delivery['values']) * 20 if sum(delivery['values']) else 0
+    interactivity_avg = interactivity_avg / sum(interactivity['values']) * 20 if sum(interactivity['values']) else 0
 
     result = {
         "TotalNumReviews": total_num_reviews,
