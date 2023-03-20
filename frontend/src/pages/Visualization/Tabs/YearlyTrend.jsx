@@ -49,6 +49,7 @@ const YearlyTrend = () => {
         <FormControlLabel
           control={
             <Switch
+              color="secondary"
               {...label}
               checked={state[prof.label]}
               onClick={handleChange}
@@ -75,13 +76,22 @@ const YearlyTrend = () => {
         gridRow={{ xs: "span 6", lg: "span 1" }}
         backgroundColor={colors.primary[400]}
         display="flex"
-        flexDirection="row"
+        flexDirection={{ xs: "column", lg: "row" }}
         borderRadius="2%"
+        padding={3}
       >
-        <Box width="80%" height="500px" >
+        <Box width="100%" height="500px">
           <NivoLineChart data={lineData} />
         </Box>
-        <Box width="20%" sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Box
+          sx={{
+            marginTop: 2,
+            width: { xs: "100%", lg: "20%" },
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <FormControl component="fieldset" variant="standard">
             {chartData.datasets.map((item) => {
               return renderSwitch(item);

@@ -16,6 +16,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Snackbar from "../../components/Snackbar";
+import { useTheme } from "@mui/material";
+import { ColorModeContext, tokens } from "../../theme";
 
 import Copyright from "./Copyright";
 const baseURL = "https://vizta.onrender.com";
@@ -50,6 +52,9 @@ const ResetPassword = () => {
       });
   };
 
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -76,13 +81,30 @@ const ResetPassword = () => {
             name="username"
             onChange={(e) => setUsername(e.target.value)}
             error={usernameError}
+            sx={{
+              "& label.Mui-focused": {
+                color: `${colors.greenAccent[500]}`,
+              },
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused fieldset": {
+                  borderColor: `${colors.greenAccent[500]}`,
+                },
+              },
+            }}
           />
 
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3,
+              mb: 2,
+              bgcolor: `${colors.greenAccent[500]}`,
+              ":hover": {
+                bgcolor: `${colors.greenAccent[600]}`,
+              },
+            }}
           >
             Send Code
           </Button>

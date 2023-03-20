@@ -12,7 +12,7 @@ import { ColorModeContext, tokens } from "../../../theme";
 import NivoRadarChart from "../Charts/NivoRadarChart";
 import radarData from "./NivoData/RadarData";
 
-const profStats = ["chardonay", "carmenere", "syrah"]
+const profStats = ["chardonay", "carmenere", "syrah"];
 
 const ProfessorStats = () => {
   const theme = useTheme();
@@ -66,6 +66,7 @@ const ProfessorStats = () => {
         <FormControlLabel
           control={
             <Switch
+              color="secondary"
               {...label}
               checked={state[prof.label]}
               onClick={handleChange}
@@ -90,16 +91,23 @@ const ProfessorStats = () => {
     >
       <Box
         gridColumn="span 12"
-        gridRow={{ xs: "span 6", lg: "span 1" }}
+        gridRow={{ xs: "span 5", lg: "span 1" }}
         backgroundColor={colors.primary[400]}
         display="flex"
         flexDirection="row"
         borderRadius="2%"
       >
-        <Box width="80%" height="500px">
+        <Box width="80%" height="400px">
           <NivoRadarChart data={radarData} keys={profStats} />
         </Box>
-        <Box width="20%" sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Box
+          width="20%"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <FormControl component="fieldset" variant="standard">
             {chartData.datasets.map((item) => {
               return renderSwitch(item);

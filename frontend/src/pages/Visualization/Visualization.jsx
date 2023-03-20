@@ -128,152 +128,152 @@ const Visualization = () => {
   const [selectedProfessor, setSelectedProfessor] = useState("All");
 
   const [overviewData, setOverviewData] = useState({
-    "TotalNumReviews": 0,
-    "GPA": [
+    TotalNumReviews: 0,
+    GPA: [
       {
-        "group": "A group",
+        group: "A group",
         "A+": 0,
         "A+Color": "hsl(132, 70%, 50%)",
-        "A": 0,
-        "AColor": "hsl(85, 70%, 50%)",
+        A: 0,
+        AColor: "hsl(85, 70%, 50%)",
         "A-": 0,
-        "A-Color": "hsl(237, 70%, 50%)"
+        "A-Color": "hsl(237, 70%, 50%)",
       },
       {
-        "group": "B group",
+        group: "B group",
         "B+": 0,
         "B+Color": "hsl(132, 70%, 50%)",
-        "B": 0,
-        "BColor": "hsl(85, 70%, 50%)",
+        B: 0,
+        BColor: "hsl(85, 70%, 50%)",
         "B-": 0,
-        "B-Color": "hsl(237, 70%, 50%)"
+        "B-Color": "hsl(237, 70%, 50%)",
       },
       {
-        "group": "C group",
+        group: "C group",
         "C+": 0,
         "C+Color": "hsl(132, 70%, 50%)",
-        "C": 0,
-        "CColor": "hsl(85, 70%, 50%)",
+        C: 0,
+        CColor: "hsl(85, 70%, 50%)",
         "C-": 0,
-        "C-Color": "hsl(237, 70%, 50%)"
+        "C-Color": "hsl(237, 70%, 50%)",
       },
       {
-        "group": "D group",
+        group: "D group",
         "D+": 0,
         "D+Color": "hsl(132, 70%, 50%)",
-        "D": 0,
-        "DColor": "hsl(85, 70%, 50%)"
+        D: 0,
+        DColor: "hsl(85, 70%, 50%)",
       },
       {
-        "group": "Fail",
-        "F": 0,
-        "FColor": "hsl(132, 70%, 50%)"
-      }
+        group: "Fail",
+        F: 0,
+        FColor: "hsl(132, 70%, 50%)",
+      },
     ],
-    "LectureDifficulty": [
+    LectureDifficulty: [
       {
-        "group": "Very Easy",
-        "VeryEasy": 0,
-        "VeryEasyColor": "hsl(132, 70%, 50%)"
+        group: "Very Easy",
+        VeryEasy: 0,
+        VeryEasyColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Easy",
-        "Easy": 0,
-        "EasyColor": "hsl(132, 70%, 50%)"
+        group: "Easy",
+        Easy: 0,
+        EasyColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Medium",
-        "Medium": 0,
-        "MediumColor": "hsl(132, 70%, 50%)"
+        group: "Medium",
+        Medium: 0,
+        MediumColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Difficult",
-        "Difficult": 0,
-        "DifficultColor": "hsl(132, 70%, 50%)"
+        group: "Difficult",
+        Difficult: 0,
+        DifficultColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Very Difficult",
-        "VeryDifficult": 0,
-        "VeryDifficultColor": "hsl(132, 70%, 50%)"
-      }
+        group: "Very Difficult",
+        VeryDifficult: 0,
+        VeryDifficultColor: "hsl(132, 70%, 50%)",
+      },
     ],
-    "FinalDifficulty": [
+    FinalDifficulty: [
       {
-        "group": "Very Easy",
-        "VeryEasy": 0,
-        "VeryEasyColor": "hsl(132, 70%, 50%)"
+        group: "Very Easy",
+        VeryEasy: 0,
+        VeryEasyColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Easy",
-        "Easy": 0,
-        "EasyColor": "hsl(132, 70%, 50%)"
+        group: "Easy",
+        Easy: 0,
+        EasyColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Medium",
-        "Medium": 0,
-        "MediumColor": "hsl(132, 70%, 50%)"
+        group: "Medium",
+        Medium: 0,
+        MediumColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Difficult",
-        "Difficult": 0,
-        "DifficultColor": "hsl(132, 70%, 50%)"
+        group: "Difficult",
+        Difficult: 0,
+        DifficultColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Very Difficult",
-        "VeryDifficult": 0,
-        "VeryDifficultColor": "hsl(132, 70%, 50%)"
-      }
+        group: "Very Difficult",
+        VeryDifficult: 0,
+        VeryDifficultColor: "hsl(132, 70%, 50%)",
+      },
     ],
-    "Workload": [
+    Workload: [
       {
-        "group": "Very Light",
-        "VeryLight": 0,
-        "VeryLightColor": "hsl(132, 70%, 50%)"
+        group: "Very Light",
+        VeryLight: 0,
+        VeryLightColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Light",
-        "Light": 0,
-        "LightColor": "hsl(132, 70%, 50%)"
+        group: "Light",
+        Light: 0,
+        LightColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Medium",
-        "Medium": 0,
-        "MediumColor": "hsl(132, 70%, 50%)"
+        group: "Medium",
+        Medium: 0,
+        MediumColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Heavy",
-        "Heavy": 0,
-        "HeavyColor": "hsl(132, 70%, 50%)"
+        group: "Heavy",
+        Heavy: 0,
+        HeavyColor: "hsl(132, 70%, 50%)",
       },
       {
-        "group": "Very Heavy",
-        "VeryHeavy": 0,
-        "VeryHeavyColor": "hsl(132, 70%, 50%)"
-      }
+        group: "Very Heavy",
+        VeryHeavy: 0,
+        VeryHeavyColor: "hsl(132, 70%, 50%)",
+      },
     ],
-    "LectureQuality": {
-      "Entertainment": 0,
-      "Delivery": 0,
-      "Interactivity": 0
+    LectureQuality: {
+      Entertainment: 0,
+      Delivery: 0,
+      Interactivity: 0,
     },
-    "Badges": {
-      "LectureDifficulty": "HELL",
-      "FinalDifficulty": "CUTE",
-      "Workload": "CUTE",
-      "GPA": "Avg: C"
+    Badges: {
+      LectureDifficulty: "HELL",
+      FinalDifficulty: "CUTE",
+      Workload: "CUTE",
+      GPA: "Avg: C",
     },
-    "Pentagon": [
+    Pentagon: [
       {
-        "Pentagon": "OverallScore",
-        "GPA": 0,
-        "LectureDifficulty": 0,
-        "FinalDifficulty": 0,
-        "Workload": 0,
-        "LectureQuality": 0
-      }
+        Pentagon: "OverallScore",
+        GPA: 0,
+        LectureDifficulty: 0,
+        FinalDifficulty: 0,
+        Workload: 0,
+        LectureQuality: 0,
+      },
     ],
-    "Timetable": null
-  })
+    Timetable: null,
+  });
 
   const [courseDescription, setCourseDescription] = useState({
     CourseID: "",
@@ -297,11 +297,13 @@ const Visualization = () => {
 
   const [value, setValue] = useState(0);
 
-  axios.request({ // checks reviewed status
-    method: "get",
-    url: `${baseURL}/users/check-reviewed/${userData}/${courseId}`,
-    headers: userToken["headers"],
-  })
+  axios
+    .request({
+      // checks reviewed status
+      method: "get",
+      url: `${baseURL}/users/check-reviewed/${userData}/${courseId}`,
+      headers: userToken["headers"],
+    })
     .then((response) => {
       console.log("has reviewed: ", response.data);
       setHasReviewed(response.data);
@@ -359,7 +361,8 @@ const Visualization = () => {
     setValue(newValue);
   };
 
-  useEffect(() => {    // get request from courseInfo, courseDescription, available year and professor, favorites
+  useEffect(() => {
+    // get request from courseInfo, courseDescription, available year and professor, favorites
     const fetchCourseData = async () => {
       axios
         .request({
@@ -368,7 +371,7 @@ const Visualization = () => {
           headers: userToken["headers"],
         })
         .then((response) => {
-          console.log("response: ", response)
+          console.log("response: ", response);
           setOverviewData(response.data);
           setNumReviews(response.data.TotalNumReviews);
         })
@@ -496,7 +499,8 @@ const Visualization = () => {
     } else {
       path = `${baseURL}/visualization/${courseId}`;
     }
-    const refreshCourseData = async () => { // request sent everytime user clicks the select textfield option with different values, change GPA, LectrueQuality, LectureDifficulty, FinalDifficulty, Workload, and pentagon values
+    const refreshCourseData = async () => {
+      // request sent everytime user clicks the select textfield option with different values, change GPA, LectrueQuality, LectureDifficulty, FinalDifficulty, Workload, and pentagon values
       axios
         .request({
           method: "get",
@@ -504,7 +508,7 @@ const Visualization = () => {
           headers: userToken["headers"],
         })
         .then((response) => {
-          setOverviewData(response.data)
+          setOverviewData(response.data);
           setNumReviews(response.data.TotalNumReviews); // also, number of reviews update upon year and professor change
         })
         .catch((error) => {
@@ -514,7 +518,6 @@ const Visualization = () => {
     refreshCourseData();
   }, [selectedYear, selectedProfessor]);
 
-
   return (
     <Box
       sx={{
@@ -522,7 +525,6 @@ const Visualization = () => {
         flexDirection: "column",
         paddingLeft: { xs: "20px", md: "30px" },
         paddingRight: { xs: "20px", md: "30px" },
-        height: { xs: "100%", lg: "85vh" },
       }}
     >
       <Box
@@ -761,25 +763,29 @@ const Visualization = () => {
           </Stack>
         </Box>
       </Box>
-      <TabPanel value={value} index={0}>
-        <Overview
-          data={overviewData}
-        />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <CourseInfo description={courseDescription} />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <YearlyTrend />
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <ProfessorStats />
-      </TabPanel>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          {alertMessage}
-        </Alert>
-      </Snackbar>
+      <Box height="100%" marginBottom={2}>
+        <TabPanel value={value} index={0}>
+          <Overview data={overviewData} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <CourseInfo description={courseDescription} />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <YearlyTrend />
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <ProfessorStats />
+        </TabPanel>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
     </Box>
   );
 };

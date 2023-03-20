@@ -53,7 +53,7 @@ const Topbar = () => {
             <DarkModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton>
+        {/* <IconButton>
           <NotificationsOutlinedIcon />
         </IconButton>
         <IconButton>
@@ -61,7 +61,7 @@ const Topbar = () => {
         </IconButton>
         <IconButton>
           <PersonOutlinedIcon />
-        </IconButton>
+        </IconButton> */}
         {broken && rtl && (
           <IconButton
             sx={{ margin: "0 6 0 2" }}

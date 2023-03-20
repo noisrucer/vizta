@@ -180,12 +180,20 @@ const SignIn = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="/auth/reset-password" variant="body2">
+              <Link
+                href="/auth/reset-password"
+                variant="body2"
+                color={colors.greenAccent[400]}
+              >
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/auth/sign-up" variant="body2">
+              <Link
+                href="/auth/sign-up"
+                variant="body2"
+                color={colors.greenAccent[400]}
+              >
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

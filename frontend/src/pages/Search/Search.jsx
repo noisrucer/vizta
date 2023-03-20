@@ -134,7 +134,6 @@ const Main = () => {
         });
     };
     fetchCourseData();
-
   }, [favoritesChanged]);
 
   const filteredCourses = getFilteredCourses(query, courses);
@@ -223,9 +222,10 @@ const Main = () => {
         padding: "20px",
       }}
     >
-      <Box sx={{ boxShadow: 6, width: { xs: "400px", md: "600px", lg: "700px" } }}>
+      <Box sx={{ width: { xs: "400px", md: "600px", lg: "700px" } }}>
         <Item
           sx={{
+            boxShadow: 6,
             backgroundColor: colors.primary[400],
           }}
         >

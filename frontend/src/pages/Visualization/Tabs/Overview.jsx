@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { useTheme } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
 import { styled } from "@mui/material/styles";
 import NivoBarChart from "../Charts/NivoBarChart";
@@ -8,11 +8,24 @@ import barData from "./NivoData/BarData";
 import radarData from "./NivoData/RadarData";
 import LinearPercentage from "../Charts/ProgessiveBar/LinearPercentage";
 import LectureQualityScore from "../Charts/ProgessiveBar/LectureQuailtyScore";
+import { Heading24 } from "../../../components/GlobalStyledComponents";
 
 const workloadLabel = ["VeryLight", "Light", "Medium", "Heavy", "VeryHeavy"];
-const lectureFinalLabel = ["VeryEasy", "Easy", "Medium", "Difficult", "VeryDifficult"];
+const lectureFinalLabel = [
+  "VeryEasy",
+  "Easy",
+  "Medium",
+  "Difficult",
+  "VeryDifficult",
+];
 const GPALabel = ["A+", "A", "A-", "B+", "B-", "C+", "C", "C-", "D+", "D", "F"];
-const overallLabel = ["FinalDifficulty", "GPA", "LectureDifficulty", "LectureQuality", "Workload"]
+const overallLabel = [
+  "FinalDifficulty",
+  "GPA",
+  "LectureDifficulty",
+  "LectureQuality",
+  "Workload",
+];
 
 const Badges = styled(Box)(({ borderColor, backgronudColor }) => ({
   height: "30px",
@@ -26,8 +39,8 @@ const Badges = styled(Box)(({ borderColor, backgronudColor }) => ({
 const Overview = (chartData) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  console.log("colors: ", colors)
-  console.log("chartData: ", chartData)
+  console.log("colors: ", colors);
+  console.log("chartData: ", chartData);
 
   const overviewData = chartData.data;
 
@@ -74,17 +87,18 @@ const Overview = (chartData) => {
   }
 
   const GPAHeadings = () => {
-
     return (
-      <Box sx={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%"
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
         <Box sx={{ width: "100px", height: "30px" }}></Box>
-        <h3 style={{ fontSize: "19px" }}>GPA </h3>
+        <Heading24>GPA </Heading24>
         <Badges
           borderColor={
             overviewData.Badges.GPA
@@ -102,7 +116,7 @@ const Overview = (chartData) => {
             justifyContent: "center",
           }}
         >
-          <span
+          <Heading24
             style={{
               color: overviewData.Badges.GPA
                 ? JudgeGPABadgeColor(overviewData.Badges.GPA)[0]
@@ -112,23 +126,25 @@ const Overview = (chartData) => {
             {overviewData.Badges.GPA
               ? JudgeGPABadgeColor(overviewData.Badges.GPA)[2]
               : "NONE"}
-          </span>
+          </Heading24>
         </Badges>
       </Box>
-    )
-  }
+    );
+  };
 
   const Headings = ({ name, badgeName }) => {
     return (
-      <Box sx={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%"
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
         <Box sx={{ width: "100px", height: "30px" }}></Box>
-        <h3 style={{ fontSize: "19px" }}> {name} </h3>
+        <Heading24> {name} </Heading24>
         <Badges
           borderColor={JudgeBadgesColor(badgeName)[0]}
           backgroundColor={JudgeBadgesColor(badgeName)[1]}
@@ -138,23 +154,22 @@ const Overview = (chartData) => {
             justifyContent: "center",
           }}
         >
-          <span style={{ color: JudgeBadgesColor(badgeName)[0] }}>
+          <Heading24 style={{ color: JudgeBadgesColor(badgeName)[0] }}>
             {JudgeBadgesColor(badgeName)[2]}
-          </span>
+          </Heading24>
         </Badges>
       </Box>
-    )
-  }
+    );
+  };
 
   return (
     //Grid & Charts
     <Box
       display="grid"
       gridTemplateColumns="repeat(14,1fr)"
-      gridAutoRows={{ xs: "100px", lg: "1fr" }}
+      gridAutoRows={{ xs: "100px", lg: "100px" }}
       gap="20px"
       marginTop={4}
-      marginBottom={3}
       sx={{ height: "100%" }}
     >
       {/* Row 1 */}
@@ -167,9 +182,11 @@ const Overview = (chartData) => {
         alignItems="center"
         justifyContent="center"
         borderRadius="2%"
+        padding={3}
+        height="100%"
       >
         {/*Put RADAR CHART in Here */}
-        <h2>Overall</h2>
+        <Heading24>Overall</Heading24>
         <NivoRadarChart data={overviewData.Pentagon} keys={overallLabel} />
       </Box>
       <Box
@@ -181,6 +198,8 @@ const Overview = (chartData) => {
         alignItems="center"
         justifyContent="center"
         borderRadius="2%"
+        padding={3}
+        height="100%"
       >
         {/*Put GPA in Here */}
         <GPAHeadings />
@@ -195,6 +214,8 @@ const Overview = (chartData) => {
         alignItems="center"
         justifyContent="center"
         borderRadius="2%"
+        padding={3}
+        height="100%"
       >
         {/*Put WORKLOAD in Here */}
         <Headings name="Workload" badgeName={overviewData.Badges.Workload} />
@@ -210,10 +231,18 @@ const Overview = (chartData) => {
         alignItems="center"
         justifyContent="center"
         borderRadius="2%"
+        padding={3}
+        height="100%"
       >
         {/*Put LECTURE DIFFICULTY in Here */}
-        <Headings name="Lecture Difficulty" badgeName={overviewData.Badges.LectureDifficulty} />
-        <NivoBarChart data={overviewData.LectureDifficulty} keys={lectureFinalLabel} />
+        <Headings
+          name="Lecture Difficulty"
+          badgeName={overviewData.Badges.LectureDifficulty}
+        />
+        <NivoBarChart
+          data={overviewData.LectureDifficulty}
+          keys={lectureFinalLabel}
+        />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 5" }}
@@ -224,10 +253,18 @@ const Overview = (chartData) => {
         alignItems="center"
         justifyContent="center"
         borderRadius="2%"
+        padding={3}
+        height="100%"
       >
         {/*Put EXAM DIFFICULTY in Here */}
-        <Headings name="Final Exam Difficulty" badgeName={overviewData.Badges.FinalDifficulty} />
-        <NivoBarChart data={overviewData.FinalDifficulty} keys={lectureFinalLabel} />
+        <Headings
+          name="Final Exam Difficulty"
+          badgeName={overviewData.Badges.FinalDifficulty}
+        />
+        <NivoBarChart
+          data={overviewData.FinalDifficulty}
+          keys={lectureFinalLabel}
+        />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 4" }}
@@ -236,16 +273,46 @@ const Overview = (chartData) => {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
         borderRadius="2%"
+        height="100%"
       >
         {/*Put LECTURE QUALITY in Here */}
-        <h2>Lecture Quality</h2>
-        <Box sx={{ display: "flex" }}>
-          <LectureQualityScore
-            score={Math.round((overviewData.LectureQuality.Entertainment + overviewData.LectureQuality.Interactivity + overviewData.LectureQuality.Delivery) / 3)}
-          />
-          <Box sx={{ width: "280px", marginLeft: 4 }}>
+        <Heading24 style={{ marginTop: "9px" }}>Lecture Quality</Heading24>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            height: { xs: "200px", md: "100px", lg: "100px", xl: "150px" },
+            marginBottom: "50px",
+            marginTop: "25px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+          }}
+        >
+          <Box
+            sx={{
+              width: { xs: "30%", md: "40%" },
+              marginBottom: "20px",
+            }}
+          >
+            <LectureQualityScore
+              score={Math.round(
+                (overviewData.LectureQuality.Entertainment +
+                  overviewData.LectureQuality.Interactivity +
+                  overviewData.LectureQuality.Delivery) /
+                  3
+              )}
+            />
+          </Box>
+
+          <Box
+            sx={{
+              width: { xs: "30%", md: "50%" },
+              marginLeft: 4,
+              marginBottom: "20px",
+            }}
+          >
             <h5 style={{ marginBottom: -1 }}>Entertainment </h5>
             <LinearPercentage
               percentage={overviewData.LectureQuality.Entertainment}
@@ -261,7 +328,7 @@ const Overview = (chartData) => {
           </Box>
         </Box>
       </Box>
-    </Box >
+    </Box>
   );
 };
 
