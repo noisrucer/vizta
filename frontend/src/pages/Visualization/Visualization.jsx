@@ -284,7 +284,9 @@ const Visualization = () => {
     Timetable: {},
   });
 
-  const [yearlyTrends, setYearlyTrends] = useState({})
+  const [yearlyTrends, setYearlyTrends] = useState({});
+
+  const [profStats, setProfStats] = useState({});
 
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -464,6 +466,25 @@ const Visualization = () => {
       })
     };
     getYearlyTrends();
+
+    const getProfStats = async () => {
+      axios
+        .request({
+          method: "get",
+          url: `${baseURL}/visualization/${courseId}/by_professors`,
+          headers: userToken["headers"],
+        })
+        .then((response) => {
+          setProfStats(response.data)
+        })
+        .catch((error) => {
+          console.log(
+            "error from /visualization/course_id/by_professors: ",
+            error
+          );
+        });
+    };
+    getProfStats();
   }, []);
 
   useEffect(() => {
@@ -753,10 +774,10 @@ const Visualization = () => {
           <CourseInfo description={courseDescription} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <YearlyTrend data={yearlyTrends[selectedCriteria]} />
+          <YearlyTrend data={yearlyTrends[selectedCriteria]} profList={profStats.key} />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <ProfessorStats />
+          <ProfessorStats data={profStats.data} profList={profStats.key} />
         </TabPanel>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
           <Alert

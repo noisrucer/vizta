@@ -14,52 +14,16 @@ import radarData from "./NivoData/RadarData";
 
 const profStats = ["profA", "profB", "profC", "profD", "profE"];
 
-const ProfessorStats = () => {
+const ProfessorStats = (chartData) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const params = useParams();
   const courseId = params.courseId;
 
-  const { UserToken } = useContext(UserContext);
-  const [userToken, setUserToken] = UserToken;
-
-  const [chartData, setChartData] = useState({
-    labels: [
-      "Lecture Difficulty",
-      "Final Difficulty",
-      "Workload",
-      "Lecture Quality",
-      "GPA",
-    ],
-    datasets: ["Prof A", "Prof B"],
-  });
-
-  const initialState = chartData.datasets.reduce((acc, dataset) => {
-    acc[dataset.label] = false;
-    return acc;
-  }, {});
-
-  initialState[Object.keys(initialState)[0]] = true;
-  initialState[Object.keys(initialState)[1]] = true;
-
-  const [state, setState] = useState(initialState);
-  const [switchClicked, setSwitchClicked] = useState(false);
-
-  useEffect(() => {
-    setState(initialState);
-  }, [chartData]);
+  console.log("chartdata in profstats: ", chartData)
 
   function renderSwitch(prof) {
-    const handleChange = (event) => {
-      setSwitchClicked(true);
-      setState({
-        ...state,
-        [event.target.name]: !state[event.target.name],
-      });
-    };
-
-    const label = { inputProps: { "aria-label": "Switch demo" } };
 
     return (
       <FormGroup>
@@ -67,13 +31,9 @@ const ProfessorStats = () => {
           control={
             <Switch
               color="secondary"
-              {...label}
-              checked={state[prof.label]}
-              onClick={handleChange}
-              name={prof.label}
-            />
+              defaultChecked />
           }
-          label={prof.label}
+          label={prof}
         />
       </FormGroup>
     );
@@ -98,7 +58,7 @@ const ProfessorStats = () => {
         borderRadius="2%"
       >
         <Box width="80%" height="70vh">
-          <NivoRadarChart data={radarData} keys={profStats} />
+          <NivoRadarChart data={chartData.data} keys={chartData.profList} />
         </Box>
         <Box
           width="20%"
@@ -109,7 +69,7 @@ const ProfessorStats = () => {
           }}
         >
           <FormControl component="fieldset" variant="standard">
-            {chartData.datasets.map((item) => {
+            {chartData.profList.map((item) => {
               return renderSwitch(item);
             })}
           </FormControl>

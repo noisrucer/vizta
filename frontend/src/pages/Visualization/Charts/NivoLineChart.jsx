@@ -15,13 +15,13 @@ const NivoLineChart = ({ data }) => {
                 textColor: colors.primary[100],
                 tooltip: {
                     container: {
-                        background: "black", // set the background color of the tooltip to black
+                        background: colors.grey[900], // set the background color of the tooltip to black
                     },
                     basic: {
                         whiteSpace: 'pre',
                         display: 'flex',
                         alignItems: 'center',
-                        color: "white", // set the text color of the tooltip to white
+                        color: colors.textColor, // set the text color of the tooltip to white
                     },
                 },
             }}

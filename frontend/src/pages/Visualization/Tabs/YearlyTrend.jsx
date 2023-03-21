@@ -15,7 +15,7 @@ const YearlyTrend = (yearlyChartData) => {
 
   console.log("yearly trend chart data: ", yearlyChartData);
   const yearlyTrendData = yearlyChartData.data;
-  const professorList = ['Kong Lingpeng', 'Lo Yu Sum', 'Yu Y Z', 'Zhao Hengshuang']
+  const professorList = yearlyChartData.profList;
 
   function renderSwitch(prof) {
 
