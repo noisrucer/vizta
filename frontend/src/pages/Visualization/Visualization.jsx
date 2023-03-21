@@ -284,6 +284,8 @@ const Visualization = () => {
     Timetable: {},
   });
 
+  const [yearlyTrends, setYearlyTrends] = useState({})
+
   const [isFavorite, setIsFavorite] = useState(false);
 
   const [open, setOpen] = useState(false);
@@ -371,7 +373,6 @@ const Visualization = () => {
           headers: userToken["headers"],
         })
         .then((response) => {
-          console.log("response: ", response);
           setOverviewData(response.data);
           setNumReviews(response.data.TotalNumReviews);
         })
@@ -450,41 +451,20 @@ const Visualization = () => {
         });
     };
     getFavorites();
-  }, []);
 
-  function changeCriteria(criteria, name) {
-    axios
-      .request({
+    const getYearlyTrends = async () => {
+      axios.request({
         method: "get",
         url: `${baseURL}/visualization/${courseId}/by_years`,
         headers: userToken["headers"],
+      }).then((response) => {
+        setYearlyTrends(response.data)
+      }).catch((error) => {
+        navigate("/sign-in")
       })
-      .then((response) => {
-        const yearData = response.data;
-        const tempData = [];
-        let count = 0;
-        yearData.professors.map((item, index) => {
-          const newDataSet = {
-            label: item,
-            data: yearData[criteria][index],
-            // borderColor: chartBorderColor[count],
-            // backgroundColor: chartBackgroundColor[count],
-          };
-          tempData.push(newDataSet);
-          count += 1;
-        });
-        if (tempData.length > Object.keys(yearData.professors).length - 1) {
-          // setChartData({
-          //   ...chartData,
-          //   labels: yearData.years,
-          //   datasets: tempData,
-          // });
-        }
-      })
-      .catch((error) => {
-        console.log("error from /visualization/course_id/by_years: ", error);
-      });
-  }
+    };
+    getYearlyTrends();
+  }, []);
 
   useEffect(() => {
     // render component again when select year
@@ -517,6 +497,8 @@ const Visualization = () => {
     };
     refreshCourseData();
   }, [selectedYear, selectedProfessor]);
+
+  const [selectedCriteria, setSelectedCriteria] = useState("FinalExamDifficulty")
 
   return (
     <Box
@@ -750,7 +732,7 @@ const Visualization = () => {
                     <MenuItem
                       key={option.label}
                       value={option.label}
-                      onClick={() => changeCriteria(option.value, option.label)}
+                      onClick={() => setSelectedCriteria(option.value)}
                     >
                       {option.label}
                     </MenuItem>
@@ -771,7 +753,7 @@ const Visualization = () => {
           <CourseInfo description={courseDescription} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <YearlyTrend />
+          <YearlyTrend data={yearlyTrends[selectedCriteria]} />
         </TabPanel>
         <TabPanel value={value} index={3}>
           <ProfessorStats />

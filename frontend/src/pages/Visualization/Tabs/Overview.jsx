@@ -19,13 +19,7 @@ const lectureFinalLabel = [
   "VeryDifficult",
 ];
 const GPALabel = ["A+", "A", "A-", "B+", "B-", "C+", "C", "C-", "D+", "D", "F"];
-const overallLabel = [
-  "FinalDifficulty",
-  "GPA",
-  "LectureDifficulty",
-  "LectureQuality",
-  "Workload",
-];
+const overallLabel = ["overall"];
 
 const Badges = styled(Box)(({ borderColor, backgronudColor }) => ({
   height: "30px",
@@ -40,7 +34,7 @@ const Overview = (chartData) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   console.log("colors: ", colors);
-  console.log("chartData: ", chartData);
+  console.log("chartData in overview: ", chartData);
 
   const overviewData = chartData.data;
 
@@ -301,7 +295,7 @@ const Overview = (chartData) => {
                 (overviewData.LectureQuality.Entertainment +
                   overviewData.LectureQuality.Interactivity +
                   overviewData.LectureQuality.Delivery) /
-                  3
+                3
               )}
             />
           </Box>

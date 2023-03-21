@@ -12,10 +12,11 @@ const NivoRadarChart = ({ data, keys }) => {
         <ResponsiveRadar
             data={data}
             keys={keys}
-            indexBy="taste"
+            indexBy="criteria"
             valueFormat=">-.2f"
             margin={{ top: 70, right: 80, bottom: 40, left: 80 }}
             borderColor={{ from: 'color' }}
+            gridShape="linear"
             gridLabelOffset={36}
             dotSize={10}
             dotColor={{ theme: 'background' }}
@@ -25,39 +26,18 @@ const NivoRadarChart = ({ data, keys }) => {
                 textColor: colors.primary[100],
                 tooltip: {
                     container: {
-                        background: "black", // set the background color of the tooltip to black
+                        background: colors.grey[900], // set the background color of the tooltip to black
                     },
                     basic: {
                         whiteSpace: 'pre',
                         display: 'flex',
                         alignItems: 'center',
-                        color: "white", // set the text color of the tooltip to white
+                        color: colors.textColor, // set the text color of the tooltip to white
                     },
                 },
             }}
             blendMode="multiply"
             motionConfig="wobbly"
-            legends={[
-                {
-                    anchor: 'top-left',
-                    direction: 'column',
-                    translateX: -50,
-                    translateY: -40,
-                    itemWidth: 80,
-                    itemHeight: 20,
-                    itemTextColor: '#999',
-                    symbolSize: 12,
-                    symbolShape: 'circle',
-                    effects: [
-                        {
-                            on: 'hover',
-                            style: {
-                                itemTextColor: '#000'
-                            }
-                        }
-                    ]
-                }
-            ]}
         />
     )
 }

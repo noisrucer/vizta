@@ -28,9 +28,9 @@ const NivoLineChart = ({ data }) => {
             xScale={{ type: 'point' }}
             yScale={{
                 type: 'linear',
-                min: 'auto',
-                max: 'auto',
-                stacked: true,
+                min: '1',
+                max: '5',
+                stacked: false,
                 reverse: false
             }}
             yFormat=" >-.2f"

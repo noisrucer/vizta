@@ -9,40 +9,15 @@ import { ColorModeContext, tokens } from "../../../theme";
 import NivoLineChart from "../Charts/NivoLineChart";
 import lineData from "./NivoData/LineData";
 
-const YearlyTrend = () => {
+const YearlyTrend = (yearlyChartData) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [chartData, setChartData] = useState({
-    labels: ["prof A", "prof B"],
-    datasets: ["prof A", "prof B"],
-  });
-
-  const initialState = chartData.datasets.reduce((acc, dataset) => {
-    acc[dataset.label] = false;
-    return acc;
-  }, {});
-
-  initialState[Object.keys(initialState)[0]] = true;
-  initialState[Object.keys(initialState)[1]] = true;
-
-  const [state, setState] = useState(initialState);
-  const [switchClicked, setSwitchClicked] = useState(false);
-
-  useEffect(() => {
-    setState(initialState);
-  }, [chartData]);
+  console.log("yearly trend chart data: ", yearlyChartData);
+  const yearlyTrendData = yearlyChartData.data;
+  const professorList = ['Kong Lingpeng', 'Lo Yu Sum', 'Yu Y Z', 'Zhao Hengshuang']
 
   function renderSwitch(prof) {
-    const handleChange = (event) => {
-      setSwitchClicked(true);
-      setState({
-        ...state,
-        [event.target.name]: !state[event.target.name],
-      });
-    };
-
-    const label = { inputProps: { "aria-label": "Switch demo" } };
 
     return (
       <FormGroup>
@@ -50,17 +25,14 @@ const YearlyTrend = () => {
           control={
             <Switch
               color="secondary"
-              {...label}
-              checked={state[prof.label]}
-              onClick={handleChange}
-              name={prof.label}
-            />
+              defaultChecked />
           }
-          label={prof.label}
+          label={prof}
         />
       </FormGroup>
     );
   }
+
   return (
     <Box
       display="grid"
@@ -80,8 +52,8 @@ const YearlyTrend = () => {
         borderRadius="2%"
         padding={3}
       >
-        <Box width="100%" height="500px">
-          <NivoLineChart data={lineData} />
+        <Box width="80%" height="64vh">
+          <NivoLineChart data={yearlyTrendData} />
         </Box>
         <Box
           sx={{
@@ -93,7 +65,7 @@ const YearlyTrend = () => {
           }}
         >
           <FormControl component="fieldset" variant="standard">
-            {chartData.datasets.map((item) => {
+            {professorList.map((item) => {
               return renderSwitch(item);
             })}
           </FormControl>

@@ -23,22 +23,15 @@ const gradingRatioList = {
 };
 
 const CourseInfo = (courseData) => {
-  console.log("coursedata: ", courseData);
+  console.log("coursedata in courseinfo: ", courseData);
   const courseInfoData = courseData.description;
+  const profList = Object.keys(courseInfoData.GradingRatio)
+  console.log("grading ratio prof list: ", Object.keys(courseInfoData.GradingRatio));
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const defaultGR = courseInfoData.GradingRatio[Object.keys(courseInfoData.GradingRatio)[0]]
 
-  const [gradingRatio, setGradingRatio] = useState({
-    labels: courseData.description.GradingRatio.Constitution,
-    datasets: [
-      {
-        label: "students answer",
-        data: gradingRatioList[Object.keys(gradingRatioList)[0]],
-        backgroundColor: ["#36A2EB", "#FF6384", "#FF9F3F", "#FFCD56"],
-        borderColor: "#333A46",
-      },
-    ],
-  });
+  const [gradingRatio, setGradingRatio] = useState(defaultGR);
 
   return (
     <Box
@@ -159,7 +152,7 @@ const CourseInfo = (courseData) => {
         >
           <Heading32>GradingRatio</Heading32>
           <Box width="300px" height="300px">
-            <NivoPieChart data={pieData} />
+            <NivoPieChart data={gradingRatio} />
           </Box>
         </Box>
         <Box sx={{ width: "20%", height: "100%", marginTop: "40px" }}>
@@ -168,7 +161,7 @@ const CourseInfo = (courseData) => {
             select
             // label="select professor"
             variant="standard"
-            defaultValue={Object.values(gradingRatioList)[0]}
+            defaultValue={profList[0]}
             sx={{
               marginLeft: "auto",
               "& label.Mui-focused": {
@@ -181,22 +174,14 @@ const CourseInfo = (courseData) => {
               },
             }}
           >
-            {Object.keys(gradingRatioList).map((key) => {
+            {profList.map((key) => {
               // const filteredGradingRatioList = gradingRatioList[key].filter(function(val) { return val != 0})
               return (
                 <MenuItem
                   key={key}
-                  value={gradingRatioList[key]}
+                  value={key}
                   onClick={() => {
-                    setGradingRatio({
-                      ...gradingRatio,
-                      datasets: [
-                        {
-                          label: "students answer",
-                          data: gradingRatioList[key],
-                        },
-                      ],
-                    });
+                    setGradingRatio(courseInfoData.GradingRatio[key]);
                   }}
                 >
                   {key}
