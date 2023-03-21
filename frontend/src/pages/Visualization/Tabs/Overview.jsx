@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Box from "@mui/material/Box";
 import { Typography, useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
@@ -9,6 +10,21 @@ import radarData from "./NivoData/RadarData";
 import LinearPercentage from "../Charts/ProgessiveBar/LinearPercentage";
 import LectureQualityScore from "../Charts/ProgessiveBar/LectureQuailtyScore";
 import { Heading24 } from "../../../components/GlobalStyledComponents";
+import { useSpring, animated } from "react-spring";
+
+function Number({ n }) {
+  const { number } = useSpring({
+    from: { number: 0 },
+    number: n,
+    delay: 200,
+    config: { mass: 1, tension: 20, friction: 10 },
+  });
+  return (
+    <animated.div style={{ fontSize: "42px" }}>
+      {number.to((n) => n.toFixed(1))}
+    </animated.div>
+  );
+}
 
 const workloadLabel = ["VeryLight", "Light", "Medium", "Heavy", "VeryHeavy"];
 const lectureFinalLabel = [
@@ -37,6 +53,9 @@ const Overview = (chartData) => {
   console.log("chartData in overview: ", chartData);
 
   const overviewData = chartData.data;
+  const [overallScore, setoverallScore] = useState(0)
+
+  // setoverallScore((overviewData.Pentagon[0].overall + overviewData.Pentagon[1].overall + overviewData.Pentagon[2].overall + overviewData.Pentagon[3].overall + overviewData.Pentagon[4].overall) / 5)
 
   function JudgeBadgesColor(average) {
     if (average === null) {
@@ -180,7 +199,13 @@ const Overview = (chartData) => {
         height="100%"
       >
         {/*Put RADAR CHART in Here */}
-        <Heading24>Overall</Heading24>
+        <Heading24>
+          Overall Score:
+        </Heading24>
+        <Box sx={{ display: "flex" }}>
+          <Number n={overallScore} />
+          <h6>/ 5.0</h6>
+        </Box>
         <NivoRadarChart data={overviewData.Pentagon} keys={overallLabel} />
       </Box>
       <Box

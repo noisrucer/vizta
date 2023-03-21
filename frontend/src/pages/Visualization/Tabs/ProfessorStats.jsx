@@ -31,7 +31,8 @@ const ProfessorStats = (chartData) => {
           control={
             <Switch
               color="secondary"
-              defaultChecked />
+              defaultChecked
+            />
           }
           label={prof}
         />
