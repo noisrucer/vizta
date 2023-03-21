@@ -4,7 +4,6 @@ import Textfield from "@mui/material/TextField";
 import { useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
 import NivoPieChart from "../Charts/NivoPieChart";
-import pieData from "./NivoData/PieData";
 import TimeTable from "../Charts/TimeTable";
 import MenuItem from "@mui/material/MenuItem";
 import {

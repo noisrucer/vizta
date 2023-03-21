@@ -7,17 +7,29 @@ import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
 import NivoLineChart from "../Charts/NivoLineChart";
-import lineData from "./NivoData/LineData";
 
 const YearlyTrend = (yearlyChartData) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  console.log("yearly trend chart data: ", yearlyChartData);
   const yearlyTrendData = yearlyChartData.data;
   const professorList = yearlyChartData.profList;
 
+  console.log("Yearly trend data: ", yearlyTrendData)
+
+  const [switchStats, setSwitchStats] = useState(
+    Object.fromEntries(professorList.map(prof => [prof, true]))
+  );
+
+  const filteredTrendData = yearlyTrendData.filter(item => switchStats[item.id]);
+
   function renderSwitch(prof) {
+    const handleChange = () => {
+      setSwitchStats(stats => ({
+        ...stats,
+        [prof]: !stats[prof]
+      }));
+    }
 
     return (
       <FormGroup>
@@ -25,7 +37,9 @@ const YearlyTrend = (yearlyChartData) => {
           control={
             <Switch
               color="secondary"
-              defaultChecked />
+              defaultChecked
+              onClick={handleChange}
+            />
           }
           label={prof}
         />
@@ -53,7 +67,7 @@ const YearlyTrend = (yearlyChartData) => {
         padding={3}
       >
         <Box width="80%" height="64vh">
-          <NivoLineChart data={yearlyTrendData} />
+          <NivoLineChart data={filteredTrendData} />
         </Box>
         <Box
           sx={{

@@ -5,8 +5,6 @@ import { ColorModeContext, tokens } from "../../../theme";
 import { styled } from "@mui/material/styles";
 import NivoBarChart from "../Charts/NivoBarChart";
 import NivoRadarChart from "../Charts/NivoRadarChart";
-import barData from "./NivoData/BarData";
-import radarData from "./NivoData/RadarData";
 import LinearPercentage from "../Charts/ProgessiveBar/LinearPercentage";
 import LectureQualityScore from "../Charts/ProgessiveBar/LectureQuailtyScore";
 import { Heading24 } from "../../../components/GlobalStyledComponents";
@@ -53,7 +51,7 @@ const Overview = (chartData) => {
   console.log("chartData in overview: ", chartData);
 
   const overviewData = chartData.data;
-  const [overallScore, setoverallScore] = useState(0)
+  const [overallScore, setoverallScore] = useState(5.0)
 
   // setoverallScore((overviewData.Pentagon[0].overall + overviewData.Pentagon[1].overall + overviewData.Pentagon[2].overall + overviewData.Pentagon[3].overall + overviewData.Pentagon[4].overall) / 5)
 
@@ -204,7 +202,7 @@ const Overview = (chartData) => {
         </Heading24>
         <Box sx={{ display: "flex" }}>
           <Number n={overallScore} />
-          <h6>/ 5.0</h6>
+          <h6> / 5.0</h6>
         </Box>
         <NivoRadarChart data={overviewData.Pentagon} keys={overallLabel} />
       </Box>
