@@ -1,4 +1,3 @@
-from typing import List
 from pydantic import BaseModel, EmailStr
 from typing import Union, Mapping
 
@@ -13,17 +12,17 @@ class TimeslotBase(BaseModel):
 
 
 class Timetable(BaseModel):
-    Timeslots: List[TimeslotBase]
+    Timeslots: list[TimeslotBase]
     Instructor: str
 
 
 class GeneralVisualizationOut(BaseModel):
     TotalNumReviews: int
-    GPA: List[dict]
-    LectureDifficulty: List[dict]
-    FinalDifficulty: List[dict]
-    Workload: List[dict]
+    GPA: list[dict]
+    LectureDifficulty: list[dict]
+    FinalDifficulty: list[dict]
+    Workload: list[dict]
     LectureQuality: Mapping[str, int]
     Badges: Mapping[str,  str]
-    Pentagon: List[dict]
+    Pentagon: list[dict]
     Timetable: Union[Mapping[str, Timetable], None]

@@ -1,4 +1,3 @@
-from typing import List
 from fastapi import APIRouter, status, Depends, Path
 from sqlalchemy.orm import Session
 from pydantic import EmailStr
@@ -75,7 +74,7 @@ async def delete_user_favorite(
 
 @router.get(
     '/favorites/{email}',
-    response_model=List[schemas.MainPageCourseOut],
+    response_model=list[schemas.MainPageCourseOut],
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
 async def get_user_favorites(email: EmailStr, db: Session=Depends(get_db)):
@@ -142,7 +141,7 @@ async def create_review(review: schemas.CourseReviewBase, db: Session=Depends(ge
 # GET /courses/{faculty}/{user_email}
 @router.get(
     '/{faculty}/{email}',
-    response_model=List[schemas.MainPageCourseOut],
+    response_model=list[schemas.MainPageCourseOut],
     dependencies=[Depends(glob_dependencies.get_current_user)]
 )
 async def get_courses(faculty: enums.Faculty, email: EmailStr, db: Session=Depends(get_db)):

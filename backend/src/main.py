@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from email_validator import EmailNotValidError
+from email_validator import  EmailNotValidError
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 

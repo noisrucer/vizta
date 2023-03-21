@@ -1,4 +1,3 @@
-from typing import Dict
 import random
 import string
 from passlib.context import CryptContext
@@ -47,7 +46,7 @@ def decode_jwt(token):
     
     
 def read_html_content_and_replace(
-    replacements: Dict[str, str],
+    replacements: dict[str, str],
     html_path: str = "backend/src/email/verification.html"
 ):
     f = open(html_path)

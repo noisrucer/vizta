@@ -2,7 +2,7 @@
 host="localhost"
 username="root"
 dbname="vizta"
-password="Dg980200**"
+password=""
 declare -a filenames=(
     "courses.sql" "users.sql" "prerequisites.sql" "mutual_exclusives.sql" "blocking_course.sql" "course_allowed_year.sql" "reviews.sql"
 )

@@ -37,13 +37,8 @@ def count_enum(values, enumTy, asec=False):
     :param enumTy: enum type
     :return: { enum key: count }
     """
-    res = {k.value: 0 for k in enumTy}
-    if res:
-        return res
-    else:
-        return Counter(values)
         
-    # return {k.value: 0 for k in enumTy} | Counter(values)
+    return {k.value: 0 for k in enumTy} | Counter(values)
 
 
 def dict_as_list(dct: dict, asc=False):
