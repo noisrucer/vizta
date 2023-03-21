@@ -199,9 +199,8 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
     # convert any Decimal object to float
     avg_reviews_by_prof = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in avg_reviews_by_prof]
     avg_reviews_by_prof = sorted(avg_reviews_by_prof, key = lambda x: x[0])
-    
 
-    return [
+    prof_stats = [
         {
             "professor": prof_review[0],
             # i + 1 as first column is professor name in prof_review
@@ -218,6 +217,27 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
         }
         for prof_review in avg_reviews_by_prof
     ]
+
+    final_exam = {"criteria": "FinalExamDifficulty"}
+    gpa = {"criteria": "GPA"}
+    lecture_difficulty = {"criteria": "LectureDifficulty"}
+    lecture_quality = {"criteria": "LectureQuality"}
+    workload = {"criteria": "Workload"}
+    prof_names = [review[0] for review in avg_reviews_by_prof]
+    
+    
+    for prof_data in prof_stats:
+        name = prof_data['professor']
+        final_exam[name] = prof_data['FinalExamDifficulty']
+        gpa[name] = prof_data['GPA']
+        lecture_difficulty[name] = prof_data['LectureDifficulty']
+        lecture_quality[name] = prof_data['LectureQuality']
+        workload[name] = prof_data['Workload']
+
+    return {
+        "key": prof_names,
+        "data": [final_exam, gpa, lecture_difficulty, lecture_quality, workload]
+    }
 
 
 @router.get('/{course_id}',
@@ -327,6 +347,28 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     delivery_avg = delivery_avg / sum(delivery['values']) * 20
     interactivity_avg = interactivity_avg / sum(interactivity['values']) * 20
 
+    pentagon = {
+            "GPA": avg_gpa,
+            "LectureDifficulty": avg_reviews[avg_column.index(mcr.lecture_difficulty)],
+            "FinalDifficulty": avg_reviews[avg_column.index(mcr.final_exam_difficulty)],
+            "Workload": avg_reviews[avg_column.index(mcr.workload)],
+            "LectureQuality":
+                (
+                        avg_reviews[avg_column.index(mcr.course_entertainment)] +
+                        avg_reviews[avg_column.index(mcr.course_delivery)] +
+                        avg_reviews[avg_column.index(mcr.course_interactivity)]
+                ) / 3
+                if all(avg_reviews)
+                else None
+        }
+    overall_score_data = []
+    for pentagon_key in pentagon:
+        overall_score_data.append({
+            "criteria": pentagon_key,
+            "overall": pentagon[pentagon_key]
+        })
+    
+
     result = {
         "TotalNumReviews": total_num_reviews,
         "GPA": gpa_response,
@@ -344,21 +386,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
             "Workload": get_badges(avg_reviews[avg_column.index(mcr.workload)]),
             "GPA": visualization_utils.get_gpa_badge(avg_gpa)
         },
-        "Pentagon": [{
-            "Pentagon": "OverallScore",
-            "GPA": avg_gpa,
-            "LectureDifficulty": avg_reviews[avg_column.index(mcr.lecture_difficulty)],
-            "FinalDifficulty": avg_reviews[avg_column.index(mcr.final_exam_difficulty)],
-            "Workload": avg_reviews[avg_column.index(mcr.workload)],
-            "LectureQuality":
-                (
-                        avg_reviews[avg_column.index(mcr.course_entertainment)] +
-                        avg_reviews[avg_column.index(mcr.course_delivery)] +
-                        avg_reviews[avg_column.index(mcr.course_interactivity)]
-                ) / 3
-                if all(avg_reviews)
-                else None
-        }]
+        "Pentagon": overall_score_data
     }
 
     return result
