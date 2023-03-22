@@ -12,7 +12,7 @@ const NivoPieChart = ({ data /* see data tab */ }) => {
         <ResponsivePie
             data={data}
             margin={{ top: 20, right: 30, bottom: 60, left: 70 }}
-            valueFormat=" >-~%"
+            valueFormat={(value) => `${Number(value).toLocaleString("en-EN", { minimumFractionDigits: 0 })} %`}
             innerRadius={0.5}
             padAngle={0.7}
             cornerRadius={3}
