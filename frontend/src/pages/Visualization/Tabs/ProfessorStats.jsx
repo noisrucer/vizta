@@ -26,18 +26,29 @@ const ProfessorStats = (profChartData) => {
 
   console.log("switchStats: ", switchStats)
 
-  const filteredTrendData = profStatsData;
-  profStatsData.map(item => {
+  const filteredTrendData = profStatsData.map(item => {
+    const filteredItem = {};
     for (const [key, value] of Object.entries(item)) {
-      if (switchStats[key] === false) {
-        // delete this element from item
-        delete item[key]
+
+      filteredItem["criteria"] = item.criteria
+      if (switchStats[key] === true) {
+        filteredItem[key] = value
       }
     }
-    console.log("item: ", item)
+    console.log("filteredItem: ", filteredItem)
+    return filteredItem
   });
 
+  const filteredKey = [];
 
+  professorList.map((item) => {
+    if (switchStats[item] === true) {
+      filteredKey.push(item)
+    }
+  })
+
+  console.log("filteredKey: ", filteredKey)
+  console.log("profStatsData: ", profStatsData)
   console.log("filteredTrendData: ", filteredTrendData)
 
   function renderSwitch(prof) {
@@ -83,7 +94,7 @@ const ProfessorStats = (profChartData) => {
         borderRadius="2%"
       >
         <Box width="80%" height="70vh">
-          <NivoRadarChart data={filteredTrendData} keys={profChartData.profList} />
+          <NivoRadarChart data={filteredTrendData} keys={filteredKey} />
         </Box>
         <Box
           width="20%"

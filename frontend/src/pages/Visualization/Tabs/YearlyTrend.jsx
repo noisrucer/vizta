@@ -66,7 +66,7 @@ const YearlyTrend = (yearlyChartData) => {
         borderRadius="2%"
         padding={3}
       >
-        <Box width="80%" height="64vh">
+        <Box sx={{ width: { xs: "115%", lg: "80%" }, height: { lg: "64vh", xs: "64vh" } }}>
           <NivoLineChart data={filteredTrendData} />
         </Box>
         <Box
