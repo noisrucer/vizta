@@ -455,15 +455,18 @@ const Visualization = () => {
     getFavorites();
 
     const getYearlyTrends = async () => {
-      axios.request({
-        method: "get",
-        url: `${baseURL}/visualization/${courseId}/by_years`,
-        headers: userToken["headers"],
-      }).then((response) => {
-        setYearlyTrends(response.data)
-      }).catch((error) => {
-        navigate("/sign-in")
-      })
+      axios
+        .request({
+          method: "get",
+          url: `${baseURL}/visualization/${courseId}/by_years`,
+          headers: userToken["headers"],
+        })
+        .then((response) => {
+          setYearlyTrends(response.data);
+        })
+        .catch((error) => {
+          navigate("/sign-in");
+        });
     };
     getYearlyTrends();
 
@@ -475,7 +478,7 @@ const Visualization = () => {
           headers: userToken["headers"],
         })
         .then((response) => {
-          setProfStats(response.data)
+          setProfStats(response.data);
         })
         .catch((error) => {
           console.log(
@@ -519,7 +522,9 @@ const Visualization = () => {
     refreshCourseData();
   }, [selectedYear, selectedProfessor]);
 
-  const [selectedCriteria, setSelectedCriteria] = useState("FinalExamDifficulty")
+  const [selectedCriteria, setSelectedCriteria] = useState(
+    "FinalExamDifficulty"
+  );
 
   return (
     <Box
@@ -774,7 +779,10 @@ const Visualization = () => {
           <CourseInfo description={courseDescription} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <YearlyTrend data={yearlyTrends[selectedCriteria]} profList={profStats.key} />
+          <YearlyTrend
+            data={yearlyTrends[selectedCriteria]}
+            profList={profStats.key}
+          />
         </TabPanel>
         <TabPanel value={value} index={3}>
           <ProfessorStats data={profStats.data} profList={profStats.key} />

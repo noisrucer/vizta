@@ -15,59 +15,54 @@ const ProfessorStats = (profChartData) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  console.log("chartdata in profstats: ", profChartData)
+  console.log("chartdata in profstats: ", profChartData);
 
   const profStatsData = profChartData.data;
   const professorList = profChartData.profList;
 
   const [switchStats, setSwitchStats] = useState(
-    Object.fromEntries(professorList.map(prof => [prof, true]))
+    Object.fromEntries(professorList.map((prof) => [prof, true]))
   );
 
-  console.log("switchStats: ", switchStats)
+  console.log("switchStats: ", switchStats);
 
-  const filteredTrendData = profStatsData.map(item => {
+  const filteredTrendData = profStatsData.map((item) => {
     const filteredItem = {};
     for (const [key, value] of Object.entries(item)) {
-
-      filteredItem["criteria"] = item.criteria
+      filteredItem["criteria"] = item.criteria;
       if (switchStats[key] === true) {
-        filteredItem[key] = value
+        filteredItem[key] = value;
       }
     }
-    console.log("filteredItem: ", filteredItem)
-    return filteredItem
+    console.log("filteredItem: ", filteredItem);
+    return filteredItem;
   });
 
   const filteredKey = [];
 
   professorList.map((item) => {
     if (switchStats[item] === true) {
-      filteredKey.push(item)
+      filteredKey.push(item);
     }
-  })
+  });
 
-  console.log("filteredKey: ", filteredKey)
-  console.log("profStatsData: ", profStatsData)
-  console.log("filteredTrendData: ", filteredTrendData)
+  console.log("filteredKey: ", filteredKey);
+  console.log("profStatsData: ", profStatsData);
+  console.log("filteredTrendData: ", filteredTrendData);
 
   function renderSwitch(prof) {
     const handleChange = () => {
-      setSwitchStats(stats => ({
+      setSwitchStats((stats) => ({
         ...stats,
-        [prof]: !stats[prof]
+        [prof]: !stats[prof],
       }));
-    }
+    };
 
     return (
       <FormGroup>
         <FormControlLabel
           control={
-            <Switch
-              color="secondary"
-              defaultChecked
-              onClick={handleChange}
-            />
+            <Switch color="secondary" defaultChecked onClick={handleChange} />
           }
           label={prof}
         />
@@ -90,14 +85,24 @@ const ProfessorStats = (profChartData) => {
         gridRow={{ xs: "span 5", lg: "span 1" }}
         backgroundColor={colors.primary[400]}
         display="flex"
-        flexDirection="row"
+        flexDirection={{ xs: "column", sm: "row" }}
         borderRadius="2%"
       >
-        <Box width="80%" height="70vh">
-          <NivoRadarChart data={filteredTrendData} keys={filteredKey} />
+        <Box
+          width={{ xs: "100%", sm: "80%" }}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box
+            width={{ xs: "400px", sm: "500px" }}
+            height={{ xs: "400px", sm: "500px" }}
+          >
+            <NivoRadarChart data={filteredTrendData} keys={filteredKey} />
+          </Box>
         </Box>
         <Box
-          width="20%"
+          width={{ xs: "100%", sm: "20%" }}
           sx={{
             display: "flex",
             alignItems: "center",

@@ -7,7 +7,7 @@ import NivoPieChart from "../Charts/NivoPieChart";
 import TimeTable from "../Charts/TimeTable";
 import MenuItem from "@mui/material/MenuItem";
 import {
-  Heading48,
+  Heading24,
   Heading32,
   Paragraph32,
   Paragraph20,
@@ -24,11 +24,15 @@ const gradingRatioList = {
 const CourseInfo = (courseData) => {
   console.log("coursedata in courseinfo: ", courseData);
   const courseInfoData = courseData.description;
-  const profList = Object.keys(courseInfoData.GradingRatio)
-  console.log("grading ratio prof list: ", Object.keys(courseInfoData.GradingRatio));
+  const profList = Object.keys(courseInfoData.GradingRatio);
+  console.log(
+    "grading ratio prof list: ",
+    Object.keys(courseInfoData.GradingRatio)
+  );
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const defaultGR = courseInfoData.GradingRatio[Object.keys(courseInfoData.GradingRatio)[0]]
+  const defaultGR =
+    courseInfoData.GradingRatio[Object.keys(courseInfoData.GradingRatio)[0]];
 
   const [gradingRatio, setGradingRatio] = useState(defaultGR);
 
@@ -70,10 +74,19 @@ const CourseInfo = (courseData) => {
               // border: "3px solid #1D2630",
               marginTop: 2,
               borderRadius: 0,
-              marginLeft: "10px",
+              padding: 2,
             }}
           >
-            <Box sx={{}}>
+            <Box
+              sx={{
+                border: "0.05px solid #70D9BD",
+                borderRadius: "5px",
+                boxShadow: 2,
+                paddingLeft: 1,
+                paddingRight: 1,
+                marginBottom: 2,
+              }}
+            >
               <Heading20 style={{ marginBottom: "-10px" }}>
                 <label style={{ color: colors.greenAccent[400] }}>
                   Department:{" "}
@@ -83,17 +96,35 @@ const CourseInfo = (courseData) => {
                 {courseData.description.Faculty || "None"}
               </Paragraph16>
             </Box>
-            <Box sx={{}}>
+            <Box
+              sx={{
+                border: "0.05px solid #70D9BD",
+                borderRadius: "5px",
+                boxShadow: 2,
+                paddingLeft: 1,
+                paddingRight: 1,
+                marginBottom: 2,
+              }}
+            >
               <Heading20 style={{ marginBottom: "-10px" }}>
                 <label style={{ color: colors.greenAccent[400] }}>
                   Prerequisites:{" "}
                 </label>
-                <Paragraph16>
-                  {courseData.description.Prerequisite || "None"}
-                </Paragraph16>
               </Heading20>
+              <Paragraph16>
+                {courseData.description.Prerequisite || "None"}
+              </Paragraph16>
             </Box>
-            <Box sx={{}}>
+            <Box
+              sx={{
+                border: "0.05px solid #70D9BD",
+                borderRadius: "5px",
+                boxShadow: 2,
+                paddingLeft: 1,
+                paddingRight: 1,
+                marginBottom: 2,
+              }}
+            >
               <Heading20 style={{ marginBottom: "-10px" }}>
                 <label style={{ color: colors.greenAccent[400] }}>
                   Blocking Courses:{" "}
@@ -103,7 +134,16 @@ const CourseInfo = (courseData) => {
                 {courseData.description.BlockingCourses.join(", ") || "None"}
               </Paragraph16>
             </Box>
-            <Box sx={{}}>
+            <Box
+              sx={{
+                border: "0.05px solid #70D9BD",
+                borderRadius: "5px",
+                boxShadow: 2,
+                paddingLeft: 1,
+                paddingRight: 1,
+                marginBottom: 2,
+              }}
+            >
               {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Mutual Exclusives: </h4> */}
               <Heading20 style={{ marginBottom: "-10px" }}>
                 <label style={{ color: colors.greenAccent[400] }}>
@@ -114,7 +154,16 @@ const CourseInfo = (courseData) => {
                 {courseData.description.MutualExclusives.join(", ") || "None"}
               </Paragraph16>
             </Box>
-            <Box sx={{}}>
+            <Box
+              sx={{
+                border: "0.05px solid #70D9BD",
+                borderRadius: "5px",
+                boxShadow: 2,
+                paddingLeft: 1,
+                paddingRight: 1,
+                marginBottom: 2,
+              }}
+            >
               {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Description: </h4> */}
               <Heading20
                 style={{
@@ -146,48 +195,66 @@ const CourseInfo = (courseData) => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            width: "80%",
+            width: "100%",
           }}
         >
-          <Heading32>GradingRatio</Heading32>
-          <Box width="300px" height="300px">
-            <NivoPieChart data={gradingRatio} />
-          </Box>
-        </Box>
-        <Box sx={{ width: "20%", height: "100%", marginTop: "40px" }}>
-          <Textfield
-            id="get-grading-ratio"
-            select
-            // label="select professor"
-            variant="standard"
-            defaultValue={profList[0]}
+          <Box
             sx={{
-              marginLeft: "auto",
-              "& label.Mui-focused": {
-                color: `${colors.greenAccent[500]}`,
-              },
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused fieldset": {
-                  borderColor: `${colors.greenAccent[500]}`,
-                },
-              },
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
             }}
           >
-            {profList.map((key) => {
-              // const filteredGradingRatioList = gradingRatioList[key].filter(function(val) { return val != 0})
-              return (
-                <MenuItem
-                  key={key}
-                  value={key}
-                  onClick={() => {
-                    setGradingRatio(courseInfoData.GradingRatio[key]);
-                  }}
-                >
-                  {key}
-                </MenuItem>
-              );
-            })}
-          </Textfield>
+            <Box width="35%"></Box>
+            <Heading32>GradingRatio</Heading32>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "35%",
+              }}
+            >
+              <Textfield
+                id="get-grading-ratio"
+                select
+                // label="select professor"
+                variant="standard"
+                defaultValue={profList[0]}
+                sx={{
+                  "& label.Mui-focused": {
+                    color: `${colors.greenAccent[500]}`,
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: `${colors.greenAccent[500]}`,
+                    },
+                  },
+                }}
+              >
+                {profList.map((key) => {
+                  // const filteredGradingRatioList = gradingRatioList[key].filter(function(val) { return val != 0})
+                  return (
+                    <MenuItem
+                      key={key}
+                      value={key}
+                      onClick={() => {
+                        setGradingRatio(courseInfoData.GradingRatio[key]);
+                      }}
+                    >
+                      {key}
+                    </MenuItem>
+                  );
+                })}
+              </Textfield>
+            </Box>
+          </Box>
+          <Box width={{ xs: "380px", sm: "500px" }} height="300px">
+            <NivoPieChart data={gradingRatio} />
+          </Box>
         </Box>
       </Box>
       <Box
@@ -197,10 +264,9 @@ const CourseInfo = (courseData) => {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
         borderRadius="2%"
       >
-        <Heading32 style={{ marginTop: "-70px" }}>Add Course</Heading32>
+        <Heading32>Add Course</Heading32>
 
         {/*Put TIMETABLE in Here */}
         <TimeTable chartData={courseData.description.Timetable} />
