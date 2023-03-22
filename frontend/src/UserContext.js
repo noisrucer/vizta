@@ -14,37 +14,15 @@ const UserProvider = (props) => {
     return loadUserToken ? loadUserToken : { headers: "" };
   });
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //     () => {
-  //     const loadIsLoggedIn = localStorage.getItem("isLoggedIn");
-  //     console.log("Initial useContext after refresh (isLoggedIn): ", loadIsLoggedIn)
-  //     return loadIsLoggedIn
-  // })
+  const [isAuth, setIsAuth] = useState(false)
 
-  const [isLanding, setIsLanding] = useState(true);
-
-  const UserData = useMemo(() => ({ userData, setUserData }), [userData]);
-
-  const UserToken = useMemo(() => ({ userToken, setUserToken }), [userToken]);
-
-  const IsLoggedIn = useMemo(
-    () => ({ isLoggedIn, setIsLoggedIn }),
-    [isLoggedIn]
-  );
-
-  const IsLanding = useMemo(() => ({ isLanding, setIsLanding }), [isLanding]);
-
-  // console.log("UserData in UserContext: ", UserData)
-  // console.log("UserToken in UserContext: ", UserToken)
-  // console.log("IsLoggedIn in UserContext: ", IsLoggedIn)
 
   return (
     <UserContext.Provider
       value={{
         UserData: [userData, setUserData],
         UserToken: [userToken, setUserToken],
-        IsLoggedIn: [isLoggedIn, setIsLoggedIn],
-        IsLanding: [isLanding, setIsLanding],
+        IsAuth: [isAuth, setIsAuth]
       }}
     >
       {props.children}

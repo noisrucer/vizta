@@ -98,13 +98,12 @@ const Main = () => {
   const navigate = useNavigate();
   const params = useParams();
   const faculty = params.faculty;
-  console.log("faculty: ", faculty);
 
-  // document.body.style.backgroundColor = "#110F44"
-  const { UserToken, UserData } = useContext(UserContext);
+  const { UserToken, UserData, IsAuth } = useContext(UserContext);
   const [userToken, setUserToken] = UserToken;
   const [userData, setUserData] = UserData;
-  console.log(userToken);
+  const [isAuth, setIsAuth] = IsAuth;
+
   const [courses, setCourses] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [favoritesChanged, setFavoritesChanged] = useState(false);
@@ -131,6 +130,9 @@ const Main = () => {
           const data = response.data;
           console.log(`response from /courses/${faculty}/${userData}: `, data);
           setCourses(data);
+        })
+        .catch((error) => {
+          navigate("/")
         });
     };
     fetchCourseData();

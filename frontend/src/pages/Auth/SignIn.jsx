@@ -44,9 +44,10 @@ const SignIn = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [openErrorMessage, setOpenErrorMessage] = useState(false);
 
-  const { UserData, UserToken } = useContext(UserContext);
+  const { UserData, UserToken, IsAuth } = useContext(UserContext);
   const [userToken, setUserToken] = UserToken;
   const [userData, setUserData] = UserData;
+  const [isAuth, setIsAuth] = IsAuth;
 
   const handleSetUserData = (e) => {
     setUserData(e);
@@ -86,6 +87,7 @@ const SignIn = () => {
             })
             .then((response) => {
               console.log("response in Sign In: ", response);
+              setIsAuth(true);
             });
           navigate("/profile");
         }
