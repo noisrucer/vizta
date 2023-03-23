@@ -219,9 +219,11 @@ const Main = () => {
       sx={{
         display: "flex",
         flexDirection: "row",
+        justifyContent: "center",
         alignItems: "center",
         justifyContent: "space-around",
         padding: "20px",
+        height: "100%",
       }}
     >
       <Box sx={{ width: { xs: "400px", md: "600px", lg: "700px" } }}>

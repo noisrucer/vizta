@@ -28,6 +28,7 @@ export default function TimeTable(chartData) {
           backgroundColor: colors.primary[400],
           border: "0.05px solid #70D9BD",
           borderRadius: 2,
+          boxShadow: 2,
           marginTop: 1,
           marginBottom: 1,
           margin: 1,
@@ -104,7 +105,7 @@ export default function TimeTable(chartData) {
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", lg: "row" },
+          flexDirection: { xs: "column", sm: "row" },
           alignItems: "center",
           // overflowX: "hidden",
           // overflowY: "hidden"

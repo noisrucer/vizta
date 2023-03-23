@@ -54,7 +54,7 @@ export const Paragraph20 = styled(ParagraphBase)`
 `;
 
 export const Paragraph16 = styled(ParagraphBase)`
-  font-size: 14px;
+  font-size: 12px;
 
   @media (min-width: 768px) {
     font-size: 16px;
@@ -120,39 +120,39 @@ export const H1Heading32 = styled("h1")`
 `;
 
 export const Heading32 = styled("h2")`
-  font-size: 24px;
+  font-size: 15px;
   font-weight: 600;
   // padding-bottom: 1.5rem;
-  // @media (min-width: 768px) {
-  //   padding-bottom: 3rem;
-  //   font-size: 32px;
-  // }
+  @media (min-width: 768px) {
+    //padding-bottom: 3rem;
+    font-size: 24px;
+  }
 `;
 
 export const Heading20 = styled("h2")`
-  font-size: 20px;
+  font-size: 13px;
   font-weight: 600;
-  // padding-bottom: 1.5rem;
-  // @media (min-width: 768px) {
-  //   padding-bottom: 3rem;
-  //   font-size: 32px;
-  // }
+  //padding-bottom: 1.5rem;
+  @media (min-width: 768px) {
+    //padding-bottom: 3rem;
+    font-size: 20px;
+  }
 `;
 
 export const Heading24 = styled("h2")`
   font-size: 10px;
   font-weight: 600;
   @media (min-width: 500px) {
-    font-size: 15px;
+    font-size: 17px;
     //padding-bottom: 3rem;
   }
   // padding-bottom: 1.5rem;
-  @media (min-width: 1168px) {
-    font-size: 10px;
-    //padding-bottom: 3rem;
-  }
-  @media (min-width: 1468px) {
-    font-size: 15px;
-    //padding-bottom: 3rem;
-  }
+  // @media (min-width: 1168px) {
+  //   font-size: 10px;
+  //   //padding-bottom: 3rem;
+  // }
+  // @media (min-width: 1468px) {
+  //   font-size: 15px;
+  //   //padding-bottom: 3rem;
+  // }
 `;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import { Typography, useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
@@ -18,7 +18,7 @@ function Number({ n }) {
     config: { mass: 1, tension: 20, friction: 10 },
   });
   return (
-    <animated.div style={{ fontSize: "42px" }}>
+    <animated.div style={{ fontSize: "42px", marginRight: "10px" }}>
       {number.to((n) => n.toFixed(1))}
     </animated.div>
   );
@@ -37,7 +37,7 @@ const overallLabel = ["overall"];
 
 const Badges = styled(Box)(({ borderColor, backgronudColor }) => ({
   height: "30px",
-  width: "100px",
+  width: "70px",
   backgroundColor: backgronudColor,
   color: "ff403d",
   borderRadius: 5,
@@ -51,7 +51,7 @@ const Overview = (chartData) => {
   console.log("chartData in overview: ", chartData);
 
   const overviewData = chartData.data;
-  const [overallScore, setoverallScore] = useState(5.0)
+  const [overallScore, setoverallScore] = useState(5.0);
 
   // setoverallScore((overviewData.Pentagon[0].overall + overviewData.Pentagon[1].overall + overviewData.Pentagon[2].overall + overviewData.Pentagon[3].overall + overviewData.Pentagon[4].overall) / 5)
 
@@ -108,7 +108,7 @@ const Overview = (chartData) => {
           width: "100%",
         }}
       >
-        <Box sx={{ width: "100px", height: "30px" }}></Box>
+        <Box sx={{ width: "70px", height: "30px" }}></Box>
         <Heading24>GPA </Heading24>
         <Badges
           borderColor={
@@ -154,7 +154,7 @@ const Overview = (chartData) => {
           width: "100%",
         }}
       >
-        <Box sx={{ width: "100px", height: "30px" }}></Box>
+        <Box sx={{ width: "70px", height: "30px" }}></Box>
         <Heading24> {name} </Heading24>
         <Badges
           borderColor={JudgeBadgesColor(badgeName)[0]}
@@ -191,20 +191,24 @@ const Overview = (chartData) => {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        justifyContent="center"
         borderRadius="2%"
-        padding={3}
-        height="100%"
       >
         {/*Put RADAR CHART in Here */}
-        <Heading24>
-          Overall Score:
-        </Heading24>
-        <Box sx={{ display: "flex" }}>
+
+        <Heading24 style={{ marginTop: "13px" }}>Overall Score</Heading24>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <Number n={overallScore} />
-          <h6> / 5.0</h6>
+          <h3> / 5.0</h3>
         </Box>
-        <NivoRadarChart data={overviewData.Pentagon} keys={overallLabel} />
+        <Box
+          sx={{
+            width: { xs: "350px", sm: "340px" },
+            height: "300px",
+            zIndex: "100",
+          }}
+        >
+          <NivoRadarChart data={overviewData.Pentagon} keys={overallLabel} />
+        </Box>
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 5" }}
@@ -285,7 +289,7 @@ const Overview = (chartData) => {
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 4" }}
-        gridRow={{ xs: "span 3", lg: "span 2" }}
+        gridRow={{ xs: "span 2", lg: "span 2" }}
         backgroundColor={colors.primary[400]}
         display="flex"
         flexDirection="column"
@@ -299,18 +303,14 @@ const Overview = (chartData) => {
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
-            height: { xs: "200px", md: "100px", lg: "100px", xl: "150px" },
-            marginBottom: "50px",
-            marginTop: "25px",
+            justifyContent: "center",
             paddingLeft: "10px",
             paddingRight: "10px",
           }}
         >
           <Box
             sx={{
-              width: { xs: "30%", md: "40%" },
-              marginBottom: "20px",
+              width: { xs: "30%", sm: "35%", lg: "40%" },
             }}
           >
             <LectureQualityScore
@@ -318,7 +318,7 @@ const Overview = (chartData) => {
                 (overviewData.LectureQuality.Entertainment +
                   overviewData.LectureQuality.Interactivity +
                   overviewData.LectureQuality.Delivery) /
-                3
+                  3
               )}
             />
           </Box>

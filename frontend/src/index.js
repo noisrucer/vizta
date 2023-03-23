@@ -11,7 +11,11 @@ root.render(
   <React.StrictMode>
     <UserProvider>
       <BrowserRouter>
-        <SnackbarProvider maxSnack={3} autoHideDuration={5000}>
+        <SnackbarProvider
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          maxSnack={3}
+          autoHideDuration={5000}
+        >
           <App />
         </SnackbarProvider>
       </BrowserRouter>

@@ -15,31 +15,29 @@ const YearlyTrend = (yearlyChartData) => {
   const yearlyTrendData = yearlyChartData.data;
   const professorList = yearlyChartData.profList;
 
-  console.log("Yearly trend data: ", yearlyTrendData)
+  console.log("Yearly trend data: ", yearlyTrendData);
 
   const [switchStats, setSwitchStats] = useState(
-    Object.fromEntries(professorList.map(prof => [prof, true]))
+    Object.fromEntries(professorList.map((prof) => [prof, true]))
   );
 
-  const filteredTrendData = yearlyTrendData.filter(item => switchStats[item.id]);
+  const filteredTrendData = yearlyTrendData.filter(
+    (item) => switchStats[item.id]
+  );
 
   function renderSwitch(prof) {
     const handleChange = () => {
-      setSwitchStats(stats => ({
+      setSwitchStats((stats) => ({
         ...stats,
-        [prof]: !stats[prof]
+        [prof]: !stats[prof],
       }));
-    }
+    };
 
     return (
       <FormGroup>
         <FormControlLabel
           control={
-            <Switch
-              color="secondary"
-              defaultChecked
-              onClick={handleChange}
-            />
+            <Switch color="secondary" defaultChecked onClick={handleChange} />
           }
           label={prof}
         />
@@ -59,14 +57,19 @@ const YearlyTrend = (yearlyChartData) => {
     >
       <Box
         gridColumn="span 12"
-        gridRow={{ xs: "span 6", lg: "span 1" }}
+        gridRow={{ xs: "span 7", lg: "span 1" }}
         backgroundColor={colors.primary[400]}
         display="flex"
         flexDirection={{ xs: "column", lg: "row" }}
         borderRadius="2%"
         padding={3}
       >
-        <Box sx={{ width: { xs: "100%", lg: "80%" }, height: { lg: "64vh", xs: "64vh" } }}>
+        <Box
+          sx={{
+            width: { xs: "100%", lg: "80%" },
+            height: { lg: "64vh", xs: "64vh" },
+          }}
+        >
           <NivoLineChart data={filteredTrendData} />
         </Box>
         <Box
