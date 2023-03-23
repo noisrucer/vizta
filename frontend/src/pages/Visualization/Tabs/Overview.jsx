@@ -13,7 +13,7 @@ import { useSpring, animated } from "react-spring";
 function Number({ n }) {
   const { number } = useSpring({
     from: { number: 0 },
-    number: n,
+    number: n / 5,
     delay: 200,
     config: { mass: 1, tension: 20, friction: 10 },
   });
@@ -49,9 +49,7 @@ const Overview = (chartData) => {
   const colors = tokens(theme.palette.mode);
 
   const overviewData = chartData.data;
-  const [overallScore, setoverallScore] = useState(5.0);
-
-  // setoverallScore((overviewData.Pentagon[0].overall + overviewData.Pentagon[1].overall + overviewData.Pentagon[2].overall + overviewData.Pentagon[3].overall + overviewData.Pentagon[4].overall) / 5)
+  const overallScore = chartData.score;
 
   function JudgeBadgesColor(average) {
     if (average === null) {

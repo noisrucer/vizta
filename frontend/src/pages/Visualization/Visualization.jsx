@@ -275,6 +275,8 @@ const Visualization = () => {
     Timetable: null,
   });
 
+  const [overallScore, setOverallScore] = useState(5.0)
+
   const [courseDescription, setCourseDescription] = useState({
     CourseID: "",
     Description: "",
@@ -371,6 +373,7 @@ const Visualization = () => {
         .then((response) => {
           setOverviewData(response.data);
           setNumReviews(response.data.TotalNumReviews);
+          setOverallScore(response.data.Pentagon[0].overall + response.data.Pentagon[1].overall + response.data.Pentagon[2].overall + response.data.Pentagon[3].overall + response.data.Pentagon[4].overall)
         })
         .catch((error) => {
           navigate("/sign-in");
@@ -499,6 +502,7 @@ const Visualization = () => {
         .then((response) => {
           setOverviewData(response.data);
           setNumReviews(response.data.TotalNumReviews); // also, number of reviews update upon year and professor change
+          setOverallScore(response.data.Pentagon[0].overall + response.data.Pentagon[1].overall + response.data.Pentagon[2].overall + response.data.Pentagon[3].overall + response.data.Pentagon[4].overall)
         })
         .catch((error) => {
           navigate("/sign-in");
@@ -758,7 +762,7 @@ const Visualization = () => {
       </Box>
       <Box height="100%" marginBottom={2}>
         <TabPanel value={value} index={0}>
-          <Overview data={overviewData} />
+          <Overview data={overviewData} score={overallScore} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <CourseInfo description={courseDescription} />
