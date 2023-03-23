@@ -15,16 +15,12 @@ const ProfessorStats = (profChartData) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  console.log("chartdata in profstats: ", profChartData);
-
   const profStatsData = profChartData.data;
   const professorList = profChartData.profList;
 
   const [switchStats, setSwitchStats] = useState(
     Object.fromEntries(professorList.map((prof) => [prof, true]))
   );
-
-  console.log("switchStats: ", switchStats);
 
   const filteredTrendData = profStatsData.map((item) => {
     const filteredItem = {};
@@ -34,7 +30,6 @@ const ProfessorStats = (profChartData) => {
         filteredItem[key] = value;
       }
     }
-    console.log("filteredItem: ", filteredItem);
     return filteredItem;
   });
 
@@ -45,10 +40,6 @@ const ProfessorStats = (profChartData) => {
       filteredKey.push(item);
     }
   });
-
-  console.log("filteredKey: ", filteredKey);
-  console.log("profStatsData: ", profStatsData);
-  console.log("filteredTrendData: ", filteredTrendData);
 
   function renderSwitch(prof) {
     const handleChange = () => {

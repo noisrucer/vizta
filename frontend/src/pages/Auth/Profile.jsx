@@ -20,8 +20,6 @@ function Profile() {
   const [userData, setUserData] = UserData;
   const [userToken, setUserToken] = UserToken;
 
-  console.log("userData in profile: ", userData);
-
   const [email, setEmail] = useState(" ");
   const [enteredYear, setEnteredYear] = useState(" ");
   const [major, setMajor] = useState(" ");
@@ -77,14 +75,9 @@ function Profile() {
     fetchProfileData();
   }, []);
 
-  console.log(major);
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    console.log("password in profile: ", data.get("password"));
-    console.log("reset password in profile: ", data.get("newPassword"));
 
     axios
       .request({

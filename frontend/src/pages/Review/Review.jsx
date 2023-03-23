@@ -302,7 +302,6 @@ class ReviewSection extends React.Component {
 }
 
 function SubmitReview(data, userToken, enqueueSnackbar, onSuccess) {
-  console.log(data);
 
   axios
     .request({
@@ -312,7 +311,6 @@ function SubmitReview(data, userToken, enqueueSnackbar, onSuccess) {
       headers: userToken["headers"],
     })
     .then((response) => {
-      console.log(response);
       enqueueSnackbar("Your review has been submitted!", {
         autoHideDuration: 5000,
         variant: "success",
@@ -339,7 +337,6 @@ function SubmitReview(data, userToken, enqueueSnackbar, onSuccess) {
           },
         }
       );
-      console.log(err);
     });
 }
 

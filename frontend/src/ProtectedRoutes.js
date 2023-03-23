@@ -15,8 +15,6 @@ const ProtectedRoutes = () => {
   localStorage.setItem("userData", JSON.stringify(userData));
   localStorage.setItem("userToken", JSON.stringify(userToken));
 
-  console.log("userToken in protected routes: ", userToken);
-
   axios
     .request({
       method: "get",
@@ -24,10 +22,8 @@ const ProtectedRoutes = () => {
       headers: userToken["headers"],
     })
     .then((response) => {
-      console.log("response in Protected Routes: ", response);
     })
     .catch((err) => {
-      // console.log("err in Protected Routes: ", err);
       setIsAuth(false);
     });
   return isAuth ? <Outlet /> : <SignIn />;

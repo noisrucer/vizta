@@ -25,21 +25,16 @@ const Verification = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data.get("verification"))
     axios.post(`${baseURL}/auth/register/verification`, {
       email: 'u3572962@connect.hku.hk',
       verification_code: data.get("verification")
     })
-    .then(response => {
-      console.log(response)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-    
-    // console.log({
-    //   authentication: data.get("authentication")
-    // });
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   };
 
   return (

@@ -25,7 +25,6 @@ const baseURL = process.env.REACT_APP_BASEURL;
 
 const SignIn = () => {
   const navigate = useNavigate();
-  console.log(".env: ", process.env.REACT_APP_BASEURL);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

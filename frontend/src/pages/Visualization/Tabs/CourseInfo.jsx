@@ -22,13 +22,8 @@ const gradingRatioList = {
 };
 
 const CourseInfo = (courseData) => {
-  console.log("coursedata in courseinfo: ", courseData);
   const courseInfoData = courseData.description;
   const profList = Object.keys(courseInfoData.GradingRatio);
-  console.log(
-    "grading ratio prof list: ",
-    Object.keys(courseInfoData.GradingRatio)
-  );
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const defaultGR =

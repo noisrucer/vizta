@@ -15,8 +15,6 @@ const YearlyTrend = (yearlyChartData) => {
   const yearlyTrendData = yearlyChartData.data;
   const professorList = yearlyChartData.profList;
 
-  console.log("Yearly trend data: ", yearlyTrendData);
-
   const [switchStats, setSwitchStats] = useState(
     Object.fromEntries(professorList.map((prof) => [prof, true]))
   );

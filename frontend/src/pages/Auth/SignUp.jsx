@@ -105,7 +105,6 @@ const SignUp = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    // console.log("password", password);
   };
 
   const handleConfirmPasswordChange = (e) => {
@@ -172,7 +171,6 @@ const SignUp = () => {
         setEmailError(false);
       })
       .catch((err) => {
-        console.log(err.response.data.detail);
         setErrorMessage(err.response.data.detail);
         setOpenErrorMessage(true);
       });
@@ -184,32 +182,21 @@ const SignUp = () => {
     if (verificationCode === verificationToken) {
       setVerificationError(false);
       setVerificationConfirmStatus(true);
-      console.log("verify success");
-      console.log("check on submit", checkOnSubmit);
-      console.log("verification confirm status", verificationConfirmStatus);
       setOpenErrorMessage(true);
     } else {
       setVerificationError(true);
       setErrorMessage("Incorrect Authentication Token!");
       setOpenErrorMessage(true);
       setVerificationConfirmStatus(false);
-      console.log("verify fail");
     }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    console.log("data in sign up");
-    console.log(...data);
 
     setCheckOnSubmit(true);
     setClickedSignUpButton(true);
-
-    console.log("emailError: ", emailError);
-    console.log("passwordError: ", passwordError);
-    console.log("confirm password error: ", confirmPasswordError);
-    console.log("verification confirm status: ", verificationConfirmStatus);
 
     if (!passwordError && !confirmPasswordError && verificationConfirmStatus) {
       axios
@@ -220,14 +207,11 @@ const SignUp = () => {
           password: data.get("password"),
         })
         .then((response) => {
-          console.log(response);
           setOpenErrorMessage(false);
           navigate("/auth/sign-in");
         })
         .catch((error) => {
-          console.log("error in signup: ", error.response.data.detail);
           setErrorMessage(error.response.data.detail);
-          // console.log({errorMessage})
           setOpenErrorMessage(true);
         });
     } else {
@@ -370,7 +354,6 @@ const SignUp = () => {
                   minDate={new Date("2012-03-01")}
                   maxDate={new Date().toISOString().slice(0, 10)}
                   onChange={(evt) => {
-                    console.log("evt[$y]: ", evt["$y"]);
                     const reformatted_year = `${evt["$y"]}-01-01`;
                     setEnteredYear(reformatted_year);
                   }}

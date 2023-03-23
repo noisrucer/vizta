@@ -128,7 +128,6 @@ const Main = () => {
         })
         .then((response) => {
           const data = response.data;
-          console.log(`response from /courses/${faculty}/${userData}: `, data);
           setCourses(data);
         })
         .catch((error) => {
@@ -190,7 +189,6 @@ const Main = () => {
   };
 
   const handleListItemClick = (e) => {
-    console.log("key: ", e);
     navigate(`/visualization/${e}`);
   };
 
@@ -203,7 +201,6 @@ const Main = () => {
   });
 
   const handlePageChange = (event, page) => {
-    console.log(page);
     const from = (page - 1) * pageSize;
     const to = (page - 1) * pageSize + pageSize;
     setPagination({ ...pagination, from: from, to: to });

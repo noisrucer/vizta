@@ -7,8 +7,6 @@ const NivoRadarChart = ({ data, keys }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  console.log("I received this data: ", data);
-  console.log("I received this keys: ", keys);
   return (
     <ResponsiveRadar
       data={data}

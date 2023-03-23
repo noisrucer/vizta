@@ -47,8 +47,6 @@ const Badges = styled(Box)(({ borderColor, backgronudColor }) => ({
 const Overview = (chartData) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  console.log("colors: ", colors);
-  console.log("chartData in overview: ", chartData);
 
   const overviewData = chartData.data;
   const [overallScore, setoverallScore] = useState(5.0);
@@ -318,7 +316,7 @@ const Overview = (chartData) => {
                 (overviewData.LectureQuality.Entertainment +
                   overviewData.LectureQuality.Interactivity +
                   overviewData.LectureQuality.Delivery) /
-                  3
+                3
               )}
             />
           </Box>

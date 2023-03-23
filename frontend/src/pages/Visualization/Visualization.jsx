@@ -309,7 +309,6 @@ const Visualization = () => {
       headers: userToken["headers"],
     })
     .then((response) => {
-      console.log("has reviewed: ", response.data);
       setHasReviewed(response.data);
     });
 
@@ -329,10 +328,9 @@ const Visualization = () => {
             headers: userToken["headers"],
           })
           .then((response) => {
-            console.log("response from /courses/favorite: ", response);
           })
           .catch((error) => {
-            console.log("error in addFavorite: ", error);
+            navigate("/sign-in");
           });
       };
       addFavorite();
@@ -346,13 +344,9 @@ const Visualization = () => {
             headers: userToken["headers"],
           })
           .then((response) => {
-            console.log(
-              "response from /courses/favorite/email/courses delete: ",
-              response
-            );
           })
           .catch((error) => {
-            console.log("error in delete favorite: ", error);
+            navigate("/sign-in");
           });
       };
       deleteFavorite();
@@ -379,8 +373,8 @@ const Visualization = () => {
           setNumReviews(response.data.TotalNumReviews);
         })
         .catch((error) => {
-          console.log("error from /visualization/course_id: ", error);
-        });
+          navigate("/sign-in");
+        })
     };
     fetchCourseData();
 
@@ -395,10 +389,7 @@ const Visualization = () => {
           setCourseDescription(response.data);
         })
         .catch((error) => {
-          console.log(
-            "error from /visualization/course_id/general_info: ",
-            error
-          );
+          navigate("/sign-in");
         });
     };
     fecthCourseGeneralInfo();
@@ -414,7 +405,7 @@ const Visualization = () => {
           setSelectYear(response.data);
         })
         .catch((error) => {
-          console.log("error from /visualization/course_id/years: ", error);
+          navigate("/sign-in");
         });
     };
     getAvailableYears();
@@ -430,10 +421,7 @@ const Visualization = () => {
           setSelectProfessor(response.data);
         })
         .catch((error) => {
-          console.log(
-            "error from /visualization/course_id/professors: ",
-            error
-          );
+          navigate("/sign-in");
         });
     };
     getAvailableProfessors();
@@ -449,7 +437,7 @@ const Visualization = () => {
           setIsFavorite(response.data.isFavorite);
         })
         .catch((error) => {
-          console.log("error from /users/check-favorites: ", error);
+          navigate("/sign-in");
         });
     };
     getFavorites();
@@ -481,10 +469,7 @@ const Visualization = () => {
           setProfStats(response.data);
         })
         .catch((error) => {
-          console.log(
-            "error from /visualization/course_id/by_professors: ",
-            error
-          );
+          navigate("/sign-in");
         });
     };
     getProfStats();
@@ -516,7 +501,7 @@ const Visualization = () => {
           setNumReviews(response.data.TotalNumReviews); // also, number of reviews update upon year and professor change
         })
         .catch((error) => {
-          console.log("error from courseInfo with select year, prof: ", error);
+          navigate("/sign-in");
         });
     };
     refreshCourseData();
