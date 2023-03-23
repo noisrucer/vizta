@@ -209,6 +209,7 @@ const Favorites = () => {
         alignItems: "center",
         justifyContent: "space-around",
         padding: "20px",
+        height: "90vh",
       }}
     >
       <Box sx={{ width: { xs: "400px", md: "600px", lg: "700px" } }}>

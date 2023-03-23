@@ -132,7 +132,7 @@ const Main = () => {
           setCourses(data);
         })
         .catch((error) => {
-          navigate("/")
+          navigate("/");
         });
     };
     fetchCourseData();
@@ -223,7 +223,7 @@ const Main = () => {
         alignItems: "center",
         justifyContent: "space-around",
         padding: "20px",
-        height: "100%",
+        height: "90vh",
       }}
     >
       <Box sx={{ width: { xs: "400px", md: "600px", lg: "700px" } }}>
