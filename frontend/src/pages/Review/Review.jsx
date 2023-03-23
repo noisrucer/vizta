@@ -316,6 +316,10 @@ function SubmitReview(data, userToken, enqueueSnackbar, onSuccess) {
       enqueueSnackbar("Your review has been submitted!", {
         autoHideDuration: 5000,
         variant: "success",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "center",
+        },
       });
       onSuccess();
     })
@@ -324,11 +328,16 @@ function SubmitReview(data, userToken, enqueueSnackbar, onSuccess) {
 
       enqueueSnackbar(
         <div>
-          {" "}
-          Failed to submit review ! <br />
-          {reason}
+          Failed to submit review <br />
+          {/* {reason} */}
         </div>,
-        { autoHideDuration: 5000, variant: "error" }
+        {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "center",
+          },
+        }
       );
       console.log(err);
     });
