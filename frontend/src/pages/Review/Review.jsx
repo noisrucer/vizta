@@ -44,7 +44,7 @@ import { useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../theme";
 import { H1Heading32 } from "../../components/GlobalStyledComponents";
 
-const baseURL = "https://vizta.onrender.com";
+const baseURL = process.env.REACT_APP_BASEURL;
 
 const indents = 12;
 
@@ -606,16 +606,16 @@ export default function Review() {
                 color: "secondary.dark", // circle color (COMPLETED)
               },
               "& .MuiStepLabel-label.Mui-completed.MuiStepLabel-alternativeLabel":
-                {
-                  color: "grey.500", // Just text label (COMPLETED)
-                },
+              {
+                color: "grey.500", // Just text label (COMPLETED)
+              },
               "& .MuiStepLabel-root .Mui-active": {
                 color: "secondary.main", // circle color (ACTIVE)
               },
               "& .MuiStepLabel-label.Mui-active.MuiStepLabel-alternativeLabel":
-                {
-                  color: colors.primary[100].light, // Just text label (ACTIVE)
-                },
+              {
+                color: colors.primary[100].light, // Just text label (ACTIVE)
+              },
               "& .MuiStepLabel-root .Mui-active .MuiStepIcon-text": {
                 fill: "black", // circle's number (ACTIVE)
               },
@@ -728,7 +728,10 @@ export default function Review() {
         }}
       >
         <Fab
-          sx={{ marginRight: 3 }}
+          sx={{
+            marginRight: 3,
+
+          }}
           variant="extended"
           disabled={ReviewStep === 0}
           onClick={() => setReviewStep(ReviewStep - 1)}
@@ -743,8 +746,8 @@ export default function Review() {
             ReviewStep !== StepList.length - 1
               ? setReviewStep(ReviewStep + 1)
               : SubmitReview(ReviewData, userToken, enqueueSnackbar, () => {
-                  navigate(`/visualization/${params.courseId}`);
-                })
+                navigate(`/visualization/${params.courseId}`);
+              })
           }
         >
           {ReviewStep !== StepList.length - 1 ? "Next" : "Submit"}

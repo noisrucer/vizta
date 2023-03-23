@@ -6,26 +6,16 @@ import axios from "axios";
 
 const baseURL = process.env.REACT_APP_BASEURL;
 
-console.log("RC", UserContext);
-
 const ProtectedRoutes = () => {
-  const [isAuth, setIsAuth] = useState(false);
-  const { UserData, UserToken, IsLoggedIn, IsLanding } =
-    useContext(UserContext);
+  const { UserData, UserToken, IsAuth } = useContext(UserContext);
   const [userData, setUserData] = UserData;
   const [userToken, setUserToken] = UserToken;
-  const [isLoggedIn, setIsLoggedIn] = IsLoggedIn;
-  const [isLanding, setIsLanding] = IsLanding;
+  const [isAuth, setIsAuth] = IsAuth;
 
   localStorage.setItem("userData", JSON.stringify(userData));
   localStorage.setItem("userToken", JSON.stringify(userToken));
-  // localStorage.setItem("isLoggedIn", isLoggedIn);
 
-  useEffect(() => {
-    setUserData(userData);
-    setUserToken(userToken);
-    setIsLoggedIn(isLoggedIn);
-  }, []);
+  console.log("userToken in protected routes: ", userToken);
 
   axios
     .request({
@@ -35,13 +25,9 @@ const ProtectedRoutes = () => {
     })
     .then((response) => {
       console.log("response in Protected Routes: ", response);
-      setIsLoggedIn(true);
-      setIsAuth(true);
-      setIsLanding(false);
     })
     .catch((err) => {
       // console.log("err in Protected Routes: ", err);
-      setIsLoggedIn(false);
       setIsAuth(false);
     });
   return isAuth ? <Outlet /> : <SignIn />;

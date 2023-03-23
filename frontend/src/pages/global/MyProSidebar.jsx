@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { UserContext } from "../../UserContext";
 import { Menu, Sidebar, MenuItem } from "react-pro-sidebar";
 import { useProSidebar } from "react-pro-sidebar";
 import { useSidebarContext } from "./sidebarContext";
@@ -22,6 +23,7 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import SwitchRightOutlinedIcon from "@mui/icons-material/SwitchRightOutlined";
 import SwitchLeftOutlinedIcon from "@mui/icons-material/SwitchLeftOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -43,9 +45,19 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 const MyProSidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [selected, setSelected] = useState("Dashboard");
+  const [selected, setSelected] = useState("");
   const { sidebarRTL, setSidebarRTL, sidebarImage } = useSidebarContext();
   const { collapseSidebar, toggleSidebar, collapsed, broken } = useProSidebar();
+
+  const { IsAuth } = useContext(UserContext);
+  const [isAuth, setIsAuth] = IsAuth;
+
+  useEffect(() => {
+    if (selected === "logout") {
+      setIsAuth(false)
+    }
+  }, [])
+
   return (
     <Box
       sx={{
@@ -122,9 +134,9 @@ const MyProSidebar = () => {
 
           <Box paddingLeft={collapsed ? undefined : "10%"}>
             <Item
-              title="Home"
-              to="/dashboard"
-              icon={<HomeOutlinedIcon />}
+              title="Logout"
+              to="/"
+              icon={<LogoutIcon />}
               selected={selected}
               setSelected={setSelected}
             />
