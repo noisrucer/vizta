@@ -48,8 +48,17 @@ export const Paragraph24 = styled(ParagraphBase)`
 `;
 export const Paragraph20 = styled(ParagraphBase)`
   font-size: 16px;
+
   @media (min-width: 768px) {
     font-size: 20px;
+  }
+`;
+export const Description = styled(ParagraphBase)`
+  font-size: 16px;
+  width: 300px;
+  @media (min-width: 768px) {
+    font-size: 20px;
+    width: 700px;
   }
 `;
 

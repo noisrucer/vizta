@@ -23,7 +23,7 @@ const NivoRadarChart = ({ data, keys }) => {
       dotColor={{ theme: "background" }}
       dotBorderWidth={2}
       colors={{ scheme: "nivo" }}
-      //   fillOpacity={1}
+      fillOpacity={1}
       theme={{
         textColor: colors.primary[100],
         tooltip: {

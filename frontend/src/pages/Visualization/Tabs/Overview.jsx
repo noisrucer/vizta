@@ -310,7 +310,7 @@ const Overview = (chartData) => {
         >
           <Box
             sx={{
-              width: { xs: "30%", sm: "35%", lg: "40%" },
+              width: { xs: "30%", sm: "35%", lg: "38%" },
             }}
           >
             <LectureQualityScore

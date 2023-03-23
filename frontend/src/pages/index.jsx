@@ -16,7 +16,7 @@ import { styled } from "@mui/system";
 import {
   SectionWrap,
   H1Heading128,
-  Paragraph16,
+  Description,
 } from "../components/GlobalStyledComponents";
 
 const Home = () => {
@@ -44,7 +44,7 @@ const Home = () => {
   `;
 
   return (
-    <Box>
+    <Box backgroundColor="#1F2A40">
       <Navbar />
       <Box
         sx={{
@@ -97,9 +97,13 @@ const Home = () => {
               VIZTA
             </H1Heading128>
           </div>
-          <Paragraph16 className="self-end mb-16 right-0 relative text-white mt-auto sm:max-w-[70%]">
-            HKU Course Evaluation System
-          </Paragraph16>
+          <Description style={{ color: "white" }}>
+            Have you struggled to find appropriate courses during the add & drop
+            period? VIZTA offers a powerful visualization tool for course
+            evaluation including GPA, workload, lecture difficulty, final exam
+            difficulty, and lecture quality. You can also select a specific year
+            and professor to see detailed results.
+          </Description>
           {/* <Link href="/auth/sign-in">
             <Button
               type="submit"
