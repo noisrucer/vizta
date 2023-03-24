@@ -15,8 +15,11 @@ import backend.src.visualization.schemas as schemas
 
 import backend.src.dependencies as glob_dependencies
 import backend.src.utils as glob_utils
+import backend.src.visualization.utils as visualization_utils
+import backend.src.visualization.constants as constants
 
 from backend.src.database import get_db
+import pprint
 
 router = APIRouter(
     prefix="/visualization",
@@ -75,7 +78,27 @@ async def get_course_general_information(course_id: str, db: Session = Depends(g
     mutual_exclusives = course_service.get_mutual_exclusives_by_course_id(db, course.course_id)
     blocking_courses = course_service.get_blocking_courses_by_course_id(db, course.course_id)
     allowed_years = course_service.get_course_allowed_years_by_course_id(db, course.course_id)
-
+    
+    grading_ratio_data = {
+            "Constitution": [glob_utils.capitalize_variable(gc.key[:gc.key.rfind('_')]) for gc in grade_constitution],
+            "Values": gradings
+    }
+    
+    
+    grading_ratio_response = {}
+    for prof, ratio_list in grading_ratio_data['Values'].items():
+        prof_data = []
+        for i in range(len(grading_ratio_data['Constitution'])):
+            criteria = grading_ratio_data['Constitution'][i]
+            ratio = ratio_list[i]
+            prof_data.append({
+                "id": criteria,
+                "label": criteria,
+                "value": ratio,
+                "color": "hsl(360, 70%, 50%)"
+            })
+        grading_ratio_response[prof] = prof_data
+        
     return {
         "CourseID": course.course_id,
         "Name": course.name,
@@ -87,11 +110,7 @@ async def get_course_general_information(course_id: str, db: Session = Depends(g
         "AllowedYears": allowed_years,
 
         # grading ratio
-        "GradingRatio": {
-            "Constitution": [glob_utils.capitalize_variable(gc.key[:gc.key.rfind('_')]) for gc in grade_constitution],
-            "Values": gradings
-        },
-
+        "GradingRatio": grading_ratio_response,
         "Timetable": time_table
     }
 
@@ -122,7 +141,7 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
     all_year = visualization_service.get_all_years_of_course_review(db, course_id)
     all_prof = visualization_service.get_all_prof_of_course(db, course_id)
 
-    return {
+    line_data = {
         "years": all_year,
         "professors": sorted(all_prof),
         **{
@@ -140,6 +159,24 @@ async def get_yearly_trand(course_id: str, db: Session = Depends(get_db)):
             for ii in range(len(all_prof))
         ]
     }
+    
+    line_response = {}
+    criteria = ["GPA", "Workload", "LectureDifficulty", "FinalExamDifficulty", "CourseEntertainment", "CourseDelivery", "CourseInteractivity"]
+    for c in criteria:
+        criteria_data = []
+        for prof_idx in range(len(line_data['professors'])):
+            prof_data = {"id": line_data['professors'][prof_idx], "color": "hsl(123, 70%, 50%)", "data": []}
+            for i in range(len(line_data['years'])):
+                prof_data['data'].append({
+                    "x": str(line_data['years'][i]),
+                    "y": line_data[c][prof_idx][i]
+                })
+            criteria_data.append(prof_data)
+        line_response[c] = criteria_data
+        
+    return line_response
+                
+            
 
 
 @router.get('/{course_id}/professors',
@@ -163,11 +200,12 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
     avg_reviews_by_prof = [[float(c) if isinstance(c, Decimal) else c for c in rbs] for rbs in avg_reviews_by_prof]
     avg_reviews_by_prof = sorted(avg_reviews_by_prof, key = lambda x: x[0])
 
-    return {
-        prof_review[0]: {
+    prof_stats = [
+        {
+            "professor": prof_review[0],
             # i + 1 as first column is professor name in prof_review
             "LectureDifficulty": prof_review[avg_column.index(mcr.lecture_difficulty) + 1],
-            "FinalDifficulty": prof_review[avg_column.index(mcr.final_exam_difficulty) + 1],
+            "FinalExamDifficulty": prof_review[avg_column.index(mcr.final_exam_difficulty) + 1],
             "Workload": prof_review[avg_column.index(mcr.workload) + 1],
             "LectureQuality":
                 (
@@ -178,6 +216,27 @@ async def get_prof_stats(course_id: str, db: Session = Depends(get_db)):
             "GPA": next((g for p, g in avg_gpa if p == prof_review[0]), 'None')
         }
         for prof_review in avg_reviews_by_prof
+    ]
+
+    final_exam = {"criteria": "FinalExamDifficulty"}
+    gpa = {"criteria": "GPA"}
+    lecture_difficulty = {"criteria": "LectureDifficulty"}
+    lecture_quality = {"criteria": "LectureQuality"}
+    workload = {"criteria": "Workload"}
+    prof_names = [review[0] for review in avg_reviews_by_prof]
+    
+    
+    for prof_data in prof_stats:
+        name = prof_data['professor']
+        final_exam[name] = prof_data['FinalExamDifficulty']
+        gpa[name] = prof_data['GPA']
+        lecture_difficulty[name] = prof_data['LectureDifficulty']
+        lecture_quality[name] = prof_data['LectureQuality']
+        workload[name] = prof_data['Workload']
+
+    return {
+        "key": prof_names,
+        "data": [final_exam, gpa, lecture_difficulty, lecture_quality, workload]
     }
 
 
@@ -214,41 +273,81 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     def get_badges(val):
         return 'NONE' if val is None else badges_text[next(i for i, v in enumerate(badges_break_point) if v >= val)]
 
-    # print(to_key_value_list([_.lecture_difficulty for _ in reviews], course_enums.NumericEval))
-    # print([[gpa_count[_ + '+'] for _ in gpa_letter],
-    #             [gpa_count[_] for _ in gpa_letter] + [gpa_count['F']],
-    #             [gpa_count[_ + '-'] for _ in gpa_letter if f"{_}-" in gpa_count]])
-    # print(to_key_value_list([_.lecture_difficulty for _ in reviews], course_enums.NumericEval))
+    letter_groups = ['A', 'B', 'C', 'D', 'F']
+    letter_group_sub = {
+        'A': ['+', '', '-'],
+        'B': ['+', '', '-'],
+        'C': ['+', '', '-'],
+        'D': ['+', ''],
+        'F': [''],
+    }
     
+    gpa_response = []
+    for letter in letter_groups:
+        info = {}
+        for sub in letter_group_sub[letter]:
+            info[f"{letter}{sub}"] = {
+                "count": gpa_count[f"{letter}{sub}"],
+                "color": constants.GPA_SUB_COLOR[letter][sub]
+            }
+        gpa_response.append(visualization_utils.build_gpa_resp(letter, info))
     
-    gpa_response = {'keys': ['A','B','C','D','F'], 'values': [
-        glob_utils.count_letter_group_num(gpa_count, 'A'),
-        glob_utils.count_letter_group_num(gpa_count, 'B'),
-        glob_utils.count_letter_group_num(gpa_count, 'C'),
-        glob_utils.count_letter_group_num(gpa_count, 'D'),
-        glob_utils.count_letter_group_num(gpa_count, 'F')
-        ]}
+    # Lecture Difficulty Response
+    lecture_difficulty_data = to_key_value_list([_.lecture_difficulty for _ in reviews], course_enums.NumericEval)
+    lecture_difficulty_response = []
+    for idx, difficulty in enumerate(lecture_difficulty_data['keys']):
+        label_name = constants.DIFFICULTY_LABEL[difficulty]
+        label_name_no_space = ''.join(label_name.split())
+        lecture_difficulty_response.append(
+            {
+                "group": constants.DIFFICULTY_LABEL[difficulty],
+                label_name_no_space: lecture_difficulty_data['values'][idx],
+                f"{label_name_no_space}Color": constants.DIFFICULTY_COLOR[label_name_no_space]
+            }
+        )
+    
+    # Final Difficulty Response
+    final_difficulty_data = to_key_value_list([_.final_exam_difficulty for _ in reviews], course_enums.NumericEval)
+    final_difficulty_response = []
+    for idx, difficulty in enumerate(final_difficulty_data['keys']):
+        label_name = constants.DIFFICULTY_LABEL[difficulty]
+        label_name_no_space = ''.join(label_name.split())
+        final_difficulty_response.append(
+            {
+                "group": constants.DIFFICULTY_LABEL[difficulty],
+                label_name_no_space: final_difficulty_data['values'][idx],
+                f"{label_name_no_space}Color": constants.DIFFICULTY_COLOR[label_name_no_space]
+            }
+        )
+    
+    # Workload
+    workload_data = to_key_value_list([_.workload for _ in reviews], course_enums.NumericEval)
+    workload_response = []
+    for idx, difficulty in enumerate(workload_data['keys']):
+        label_name = constants.WORKLOAD_LABEL[difficulty]
+        label_name_no_space = ''.join(label_name.split())
+        workload_response.append(
+            {
+                "group": constants.WORKLOAD_LABEL[difficulty],
+                label_name_no_space: workload_data['values'][idx],
+                f"{label_name_no_space}Color": constants.WORKLOAD_COLOR[label_name_no_space]
+            }
+        )
+        
+    entertainment = to_key_value_list([_.course_entertainment for _ in reviews], course_enums.NumericEval)
+    delivery = to_key_value_list([_.course_delivery for _ in reviews], course_enums.NumericEval)
+    interactivity = to_key_value_list([_.course_interactivity for _ in reviews], course_enums.NumericEval)
+    
+    entertainment_avg, delivery_avg, interactivity_avg = 0, 0, 0
+    for i in range(len(entertainment['keys'])):
+        entertainment_avg += entertainment['keys'][i] * entertainment['values'][i]
+        delivery_avg += delivery['keys'][i] * delivery['values'][i]
+        interactivity_avg += interactivity['keys'][i] * interactivity['values'][i]
+    entertainment_avg = entertainment_avg / sum(entertainment['values']) * 20
+    delivery_avg = delivery_avg / sum(delivery['values']) * 20
+    interactivity_avg = interactivity_avg / sum(interactivity['values']) * 20
 
-    result = {
-        "TotalNumReviews": total_num_reviews,
-        # "GPA": [[gpa_count[_ + '+'] for _ in gpa_letter],
-        #         [gpa_count[_] for _ in gpa_letter] + [gpa_count['F']],
-        #         [gpa_count[_ + '-'] for _ in gpa_letter if f"{_}-" in gpa_count]],
-        "GPA": gpa_response,
-        "LectureDifficulty": to_key_value_list([_.lecture_difficulty for _ in reviews], course_enums.NumericEval),
-        "FinalDifficulty": to_key_value_list([_.final_exam_difficulty for _ in reviews], course_enums.NumericEval),
-        "Workload": to_key_value_list([_.workload for _ in reviews], course_enums.NumericEval),
-        "LectureQuality": {
-            "Entertainment": to_key_value_list([_.course_entertainment for _ in reviews], course_enums.NumericEval),
-            "Delivery": to_key_value_list([_.course_delivery for _ in reviews], course_enums.NumericEval),
-            "Interactivity": to_key_value_list([_.course_interactivity for _ in reviews], course_enums.NumericEval)
-        },
-        "Badges": {
-            "LectureDifficulty": get_badges(avg_reviews[avg_column.index(mcr.lecture_difficulty)]),
-            "FinalDifficulty": get_badges(avg_reviews[avg_column.index(mcr.final_exam_difficulty)]),
-            "Workload": get_badges(avg_reviews[avg_column.index(mcr.workload)]),
-        },
-        "Pentagon": {
+    pentagon = {
             "GPA": avg_gpa,
             "LectureDifficulty": avg_reviews[avg_column.index(mcr.lecture_difficulty)],
             "FinalDifficulty": avg_reviews[avg_column.index(mcr.final_exam_difficulty)],
@@ -262,6 +361,32 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
                 if all(avg_reviews)
                 else None
         }
+    overall_score_data = []
+    for pentagon_key in pentagon:
+        overall_score_data.append({
+            "criteria": pentagon_key,
+            "overall": pentagon[pentagon_key]
+        })
+    
+
+    result = {
+        "TotalNumReviews": total_num_reviews,
+        "GPA": gpa_response,
+        "LectureDifficulty": lecture_difficulty_response,
+        "FinalDifficulty": final_difficulty_response,
+        "Workload": workload_response,
+        "LectureQuality": {
+            "Entertainment": int(entertainment_avg),
+            "Delivery": int(delivery_avg),
+            "Interactivity": int(interactivity_avg),
+        },
+        "Badges": {
+            "LectureDifficulty": get_badges(avg_reviews[avg_column.index(mcr.lecture_difficulty)]),
+            "FinalDifficulty": get_badges(avg_reviews[avg_column.index(mcr.final_exam_difficulty)]),
+            "Workload": get_badges(avg_reviews[avg_column.index(mcr.workload)]),
+            "GPA": visualization_utils.get_gpa_badge(avg_gpa)
+        },
+        "Pentagon": overall_score_data
     }
 
     return result
