@@ -102,7 +102,6 @@ const Main = () => {
   const { UserToken, UserData, IsAuth } = useContext(UserContext);
   const [userToken, setUserToken] = UserToken;
   const [userData, setUserData] = UserData;
-  const [isAuth, setIsAuth] = IsAuth;
 
   const [courses, setCourses] = useState([]);
   const [favorites, setFavorites] = useState([]);

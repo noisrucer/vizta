@@ -15,18 +15,7 @@ const ProtectedRoutes = () => {
   localStorage.setItem("userData", JSON.stringify(userData));
   localStorage.setItem("userToken", JSON.stringify(userToken));
 
-  axios
-    .request({
-      method: "get",
-      url: `${baseURL}/auth/me`,
-      headers: userToken["headers"],
-    })
-    .then((response) => {
-    })
-    .catch((err) => {
-      setIsAuth(false);
-    });
-  return isAuth ? <Outlet /> : <SignIn />;
+  return <Outlet />
 };
 
 export default ProtectedRoutes;

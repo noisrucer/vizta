@@ -60,8 +60,7 @@ const SignUp = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [verificationError, setVerificationError] = useState(false);
   const [verificationRequested, setVerificationRequested] = useState(false);
-  const [verificationConfirmStatus, setVerificationConfirmStatus] =
-    useState(false);
+  const [verificationConfirmStatus, setVerificationConfirmStatus] = useState(false);
   const [openErrorMessage, setOpenErrorMessage] = useState(false);
   const [checkOnSubmit, setCheckOnSubmit] = useState(false);
   const [clickedSignUpButton, setClickedSignUpButton] = useState(false);

@@ -3,7 +3,7 @@ import { UserContext } from "../../UserContext";
 import { Menu, Sidebar, MenuItem } from "react-pro-sidebar";
 import { useProSidebar } from "react-pro-sidebar";
 import { useSidebarContext } from "./sidebarContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { tokens } from "../../theme";
 import { useTheme, Box, Typography, IconButton } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -48,15 +48,21 @@ const MyProSidebar = () => {
   const [selected, setSelected] = useState("");
   const { sidebarRTL, setSidebarRTL, sidebarImage } = useSidebarContext();
   const { collapseSidebar, toggleSidebar, collapsed, broken } = useProSidebar();
+  const navigate = useNavigate();
 
-  const { IsAuth } = useContext(UserContext);
-  const [isAuth, setIsAuth] = IsAuth;
+  const { UserToken } = useContext(UserContext);
+  const [userToken, setUserToken] = UserToken;
 
   useEffect(() => {
-    if (selected === "logout") {
-      setIsAuth(false)
+    if (selected === "Logout") {
+      setUserToken(
+        {
+          "headers": "loggedout"
+        }
+      )
+      navigate("/");
     }
-  }, [])
+  }, [selected])
 
   return (
     <Box
@@ -135,7 +141,7 @@ const MyProSidebar = () => {
           <Box paddingLeft={collapsed ? undefined : "10%"}>
             <Item
               title="Logout"
-              to="/"
+              to="/main/All"
               icon={<LogoutIcon />}
               selected={selected}
               setSelected={setSelected}
