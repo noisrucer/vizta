@@ -37,7 +37,7 @@ const overallLabel = ["overall"];
 
 const Badges = styled(Box)(({ borderColor, backgronudColor }) => ({
   height: "30px",
-  width: "70px",
+  width: "80px",
   backgroundColor: backgronudColor,
   color: "ff403d",
   borderRadius: 5,
@@ -104,7 +104,7 @@ const Overview = (chartData) => {
           width: "100%",
         }}
       >
-        <Box sx={{ width: "70px", height: "30px" }}></Box>
+        <Box sx={{ width: "80px", height: "30px" }}></Box>
         <Heading24>GPA </Heading24>
         <Badges
           borderColor={
@@ -123,7 +123,7 @@ const Overview = (chartData) => {
             justifyContent: "center",
           }}
         >
-          <Heading24
+          <h6
             style={{
               color: overviewData.Badges.GPA
                 ? JudgeGPABadgeColor(overviewData.Badges.GPA)[0]
@@ -133,7 +133,7 @@ const Overview = (chartData) => {
             {overviewData.Badges.GPA
               ? JudgeGPABadgeColor(overviewData.Badges.GPA)[2]
               : "NONE"}
-          </Heading24>
+          </h6>
         </Badges>
       </Box>
     );
@@ -150,7 +150,7 @@ const Overview = (chartData) => {
           width: "100%",
         }}
       >
-        <Box sx={{ width: "70px", height: "30px" }}></Box>
+        <Box sx={{ width: "80px", height: "30px" }}></Box>
         <Heading24> {name} </Heading24>
         <Badges
           borderColor={JudgeBadgesColor(badgeName)[0]}
@@ -161,9 +161,9 @@ const Overview = (chartData) => {
             justifyContent: "center",
           }}
         >
-          <Heading24 style={{ color: JudgeBadgesColor(badgeName)[0] }}>
+          <h6 style={{ color: JudgeBadgesColor(badgeName)[0] }}>
             {JudgeBadgesColor(badgeName)[2]}
-          </Heading24>
+          </h6>
         </Badges>
       </Box>
     );
@@ -174,10 +174,10 @@ const Overview = (chartData) => {
     <Box
       display="grid"
       gridTemplateColumns="repeat(14,1fr)"
-      gridAutoRows={{ xs: "100px", lg: "100px" }}
+      gridAutoRows={{ xs: "100px", lg: "100px", xl: "130px" }}
       gap="20px"
       marginTop={4}
-      sx={{ height: "100%" }}
+      height="73vh"
     >
       {/* Row 1 */}
       <Box
@@ -188,6 +188,7 @@ const Overview = (chartData) => {
         flexDirection="column"
         alignItems="center"
         borderRadius="2%"
+        height={{ xs: "100%", md: "100%", lg: "70%", xl: "77%" }}
       >
         {/*Put RADAR CHART in Here */}
 
@@ -198,9 +199,10 @@ const Overview = (chartData) => {
         </Box>
         <Box
           sx={{
-            width: { xs: "350px", sm: "340px" },
-            height: "300px",
+            width: { xs: "350px", sm: "340px", lg: "340px", xl: "400px" },
+            height: { xs: "300px", sm: "300px", md: "300px", lg: "300px", xl: "400px" },
             zIndex: "100",
+            marginTop: -4
           }}
         >
           <NivoRadarChart data={overviewData.Pentagon} keys={overallLabel} />
@@ -216,7 +218,7 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        height="100%"
+        height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
       >
         {/*Put GPA in Here */}
         <GPAHeadings />
@@ -232,7 +234,7 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        height="100%"
+        height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
       >
         {/*Put WORKLOAD in Here */}
         <Headings name="Workload" badgeName={overviewData.Badges.Workload} />
@@ -249,7 +251,10 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        height="100%"
+        height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
+        sx={{
+          marginTop: { lg: -8 }
+        }}
       >
         {/*Put LECTURE DIFFICULTY in Here */}
         <Headings
@@ -271,7 +276,10 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        height="100%"
+        height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
+        sx={{
+          marginTop: { lg: -8 }
+        }}
       >
         {/*Put EXAM DIFFICULTY in Here */}
         <Headings
@@ -292,6 +300,9 @@ const Overview = (chartData) => {
         alignItems="center"
         borderRadius="2%"
         height="100%"
+        sx={{
+          marginTop: { lg: -16.5, xl: -16 }
+        }}
       >
         {/*Put LECTURE QUALITY in Here */}
         <Heading24 style={{ marginTop: "9px" }}>Lecture Quality</Heading24>
@@ -341,7 +352,7 @@ const Overview = (chartData) => {
           </Box>
         </Box>
       </Box>
-    </Box>
+    </Box >
   );
 };
 
