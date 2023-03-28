@@ -12,6 +12,7 @@ const NivoRadarChart = ({ data, keys }) => {
       data={data}
       keys={keys}
       indexBy="criteria"
+      maxValue={5}
       valueFormat=">-.2f"
       borderColor={{ from: "color" }}
       margin={{ top: 20, right: 95, bottom: 50, left: 95 }}
