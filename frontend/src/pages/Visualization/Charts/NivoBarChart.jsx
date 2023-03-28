@@ -14,7 +14,7 @@ const NivoBarChart = ({ data, keys }) => {
       data={data}
       keys={keys}
       indexBy="group"
-      margin={{ top: 20, right: 5, bottom: 30, left: 75 }}
+      margin={{ top: 0, right: 5, bottom: 40, left: 65 }}
       padding={0.3}
       // colors={{ scheme: "greens" }}
       valueScale={{ type: "linear" }}
