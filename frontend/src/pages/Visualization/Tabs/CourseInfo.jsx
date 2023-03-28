@@ -16,11 +16,6 @@ import {
   Heading20,
 } from "../../../components/GlobalStyledComponents";
 
-const gradingRatioList = {
-  "Lo Yu Sum": [25, 25, 25, 25],
-  "Lee Kwak Lam": [0, 50, 0, 50],
-};
-
 const CourseInfo = (courseData) => {
   const courseInfoData = courseData.description;
   const profList = Object.keys(courseInfoData.GradingRatio);
@@ -39,13 +34,14 @@ const CourseInfo = (courseData) => {
       gap="20px"
       marginTop={4}
       marginBottom={3}
-      sx={{ height: "100%" }}
+      height="73vh"
     >
       <Box
         gridColumn={{ xs: "span 12", lg: "span 6" }}
         gridRow={{ xs: "span 7", lg: "span 2" }}
         backgroundColor={colors.primary[400]}
         borderRadius="2%"
+        overflowY="scroll"
       >
         {/*Put GENERAL INFO in Here */}
         <Box
@@ -139,7 +135,6 @@ const CourseInfo = (courseData) => {
                 marginBottom: 2,
               }}
             >
-              {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Mutual Exclusives: </h4> */}
               <Heading20 style={{ marginBottom: "-10px" }}>
                 <label style={{ color: colors.greenAccent[400] }}>
                   Mutual Exclusives:{" "}

@@ -123,7 +123,7 @@ const Overview = (chartData) => {
             justifyContent: "center",
           }}
         >
-          <h6
+          <h5
             style={{
               color: overviewData.Badges.GPA
                 ? JudgeGPABadgeColor(overviewData.Badges.GPA)[0]
@@ -133,7 +133,7 @@ const Overview = (chartData) => {
             {overviewData.Badges.GPA
               ? JudgeGPABadgeColor(overviewData.Badges.GPA)[2]
               : "NONE"}
-          </h6>
+          </h5>
         </Badges>
       </Box>
     );
@@ -161,9 +161,9 @@ const Overview = (chartData) => {
             justifyContent: "center",
           }}
         >
-          <h6 style={{ color: JudgeBadgesColor(badgeName)[0] }}>
+          <h5 style={{ color: JudgeBadgesColor(badgeName)[0] }}>
             {JudgeBadgesColor(badgeName)[2]}
-          </h6>
+          </h5>
         </Badges>
       </Box>
     );
