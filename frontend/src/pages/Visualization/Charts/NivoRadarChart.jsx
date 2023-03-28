@@ -19,7 +19,7 @@ const NivoRadarChart = ({ data, keys }) => {
       gridLabelOffset={15}
       dotSize={10}
       dotColor={{ theme: "background" }}
-      dotBorderWidth={2}
+      dotBorderWidth={0}
       colors={{ scheme: "nivo" }}
       fillOpacity={1}
       theme={{
