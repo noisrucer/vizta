@@ -88,7 +88,7 @@ const SignIn = () => {
               console.log("response in Sign In: ", response);
               setIsAuth(true);
             });
-          navigate("/profile");
+          navigate("/main/All");
         }
       })
       .catch((err) => {
