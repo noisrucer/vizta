@@ -332,7 +332,7 @@ const Visualization = () => {
           .then((response) => {
           })
           .catch((error) => {
-            navigate("/sign-in");
+            navigate("/auth/sign-in");
           });
       };
       addFavorite();
@@ -348,7 +348,7 @@ const Visualization = () => {
           .then((response) => {
           })
           .catch((error) => {
-            navigate("/sign-in");
+            navigate("/auth/sign-in");
           });
       };
       deleteFavorite();
@@ -376,7 +376,7 @@ const Visualization = () => {
           setOverallScore(response.data.Pentagon[0].overall + response.data.Pentagon[1].overall + response.data.Pentagon[2].overall + response.data.Pentagon[3].overall + response.data.Pentagon[4].overall)
         })
         .catch((error) => {
-          navigate("/sign-in");
+          navigate("/auth/sign-in");
         })
     };
     fetchCourseData();
@@ -392,7 +392,7 @@ const Visualization = () => {
           setCourseDescription(response.data);
         })
         .catch((error) => {
-          navigate("/sign-in");
+          navigate("/auth/sign-in");
         });
     };
     fecthCourseGeneralInfo();
@@ -408,7 +408,7 @@ const Visualization = () => {
           setSelectYear(response.data);
         })
         .catch((error) => {
-          navigate("/sign-in");
+          navigate("/auth/sign-in");
         });
     };
     getAvailableYears();
@@ -424,7 +424,7 @@ const Visualization = () => {
           setSelectProfessor(response.data);
         })
         .catch((error) => {
-          navigate("/sign-in");
+          navigate("/auth/sign-in");
         });
     };
     getAvailableProfessors();
@@ -440,7 +440,7 @@ const Visualization = () => {
           setIsFavorite(response.data.isFavorite);
         })
         .catch((error) => {
-          navigate("/sign-in");
+          navigate("/auth/sign-in");
         });
     };
     getFavorites();
@@ -456,7 +456,7 @@ const Visualization = () => {
           setYearlyTrends(response.data);
         })
         .catch((error) => {
-          navigate("/sign-in");
+          navigate("/auth/sign-in");
         });
     };
     getYearlyTrends();
@@ -472,7 +472,7 @@ const Visualization = () => {
           setProfStats(response.data);
         })
         .catch((error) => {
-          navigate("/sign-in");
+          navigate("/auth/sign-in");
         });
     };
     getProfStats();
@@ -505,7 +505,7 @@ const Visualization = () => {
           setOverallScore(response.data.Pentagon[0].overall + response.data.Pentagon[1].overall + response.data.Pentagon[2].overall + response.data.Pentagon[3].overall + response.data.Pentagon[4].overall)
         })
         .catch((error) => {
-          navigate("/sign-in");
+          navigate("/auth/sign-in");
         });
     };
     refreshCourseData();
