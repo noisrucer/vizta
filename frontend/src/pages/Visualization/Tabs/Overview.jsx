@@ -55,11 +55,11 @@ const Overview = (chartData) => {
     if (average === null) {
       return ["#8F8F88", "secondary", "NONE"];
     } else if (average === "HARD") {
-      return ["#ff403d", "#3b353eff", "HARD"];
+      return ["#ff403d", colors.badgeBackground[100], "HARD"];
     } else if (average === "MEDIUM") {
-      return ["#DFB040", "#3B3A3E", "MEDIUM"];
+      return ["#DFB040", colors.badgeBackground[200], "MEDIUM"];
     } else {
-      return ["#0cc1a9", "#2d3c47ff", "EASY"];
+      return ["#0cc1a9", colors.badgeBackground[300], "EASY"];
     }
   }
 
@@ -67,29 +67,29 @@ const Overview = (chartData) => {
     if (average === null) {
       return ["#8F8F88", "secondary", "NONE"];
     } else if (average === "Avg: F") {
-      return ["#ff403d", "#3b353eff", "Avg: F"];
+      return ["#ff403d", colors.badgeBackground[100], "Avg: F"];
     } else if (average === "Avg: D") {
-      return ["#ff403d", "#3b353eff", "Avg: D"];
+      return ["#ff403d", colors.badgeBackground[100], "Avg: D"];
     } else if (average === "Avg: D+") {
-      return ["#ff403d", "#3b353eff", "Avg: D+"];
+      return ["#ff403d", colors.badgeBackground[100], "Avg: D+"];
     } else if (average === "Avg: C-") {
-      return ["#ff403d", "#3b353eff", "Avg: C-"];
+      return ["#ff403d", colors.badgeBackground[100], "Avg: C-"];
     } else if (average === "Avg: C") {
-      return ["#ff403d", "#3b353eff", "Avg: C"];
+      return ["#ff403d", colors.badgeBackground[100], "Avg: C"];
     } else if (average === "Avg: C+") {
-      return ["#ff403d", "#3b353eff", "Avg: C+"];
+      return ["#ff403d", colors.badgeBackground[100], "Avg: C+"];
     } else if (average === "Avg: B-") {
-      return ["#DFB040", "#3B3A3E", "Avg: B-"];
+      return ["#DFB040", colors.badgeBackground[200], "Avg: B-"];
     } else if (average === "Avg: B") {
-      return ["#DFB040", "#3B3A3E", "Avg: B"];
+      return ["#DFB040", colors.badgeBackground[200], "Avg: B"];
     } else if (average === "Avg: B+") {
-      return ["#DFB040", "#3B3A3E", "Avg: B+"];
+      return ["#DFB040", colors.badgeBackground[200], "Avg: B+"];
     } else if (average === "Avg: A-") {
-      return ["#0cc1a9", "#2d3c47ff", "Avg: A-"];
+      return ["#0cc1a9", colors.badgeBackground[300], "Avg: A-"];
     } else if (average === "Avg: A") {
-      return ["#0cc1a9", "#2d3c47ff", "Avg: A"];
+      return ["#0cc1a9", colors.badgeBackground[300], "Avg: A"];
     } else {
-      return ["#0cc1a9", "#2d3c47ff", "Avg: A+"];
+      return ["#0cc1a9", colors.badgeBackground[300], "Avg: A+"];
     }
   }
 
