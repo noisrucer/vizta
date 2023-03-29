@@ -54,11 +54,9 @@ export const Paragraph20 = styled(ParagraphBase)`
   }
 `;
 export const Description = styled(ParagraphBase)`
-  font-size: 16px;
-  width: 300px;
+  font-size: 14px;
   @media (min-width: 768px) {
-    font-size: 20px;
-    width: 700px;
+    font-size: 16px;
   }
 `;
 
