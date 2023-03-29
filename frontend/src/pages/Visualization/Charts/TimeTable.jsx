@@ -23,7 +23,7 @@ export default function TimeTable(chartData) {
     return (
       <Box
         sx={{
-          height: "200px",
+          height: "180px",
           width: "200px",
           backgroundColor: colors.primary[400],
           border: "0.05px solid #70D9BD",
@@ -55,14 +55,14 @@ export default function TimeTable(chartData) {
           <h4 style={{ marginLeft: 15, fontWeight: "400", marginTop: -20 }}>
             {instructor}
           </h4>
-          <h3 style={{ color: "#70D9BD", marginLeft: 15, marginTop: -15 }}>
+          <h3 style={{ color: "#70D9BD", marginLeft: 15, marginTop: -20 }}>
             Time slots:
           </h3>
         </Box>
         {timeslots.map((item) => (
           <Box
             sx={{
-              width: "200px",
+              width: "190px",
               display: "flex",
               flexDirection: "column",
               alignItems: "flex-start",
@@ -109,6 +109,7 @@ export default function TimeTable(chartData) {
           alignItems: "center",
           // overflowX: "hidden",
           // overflowY: "hidden"
+          marginBottom: 1
         }}
       >
         {createTimeTable(timeTableInfo)}

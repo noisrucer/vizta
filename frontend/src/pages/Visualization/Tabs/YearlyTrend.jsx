@@ -50,8 +50,7 @@ const YearlyTrend = (yearlyChartData) => {
       gridAutoRows={{ xs: "100px", lg: "1fr" }}
       gap="20px"
       marginTop={4}
-      marginBottom={3}
-      sx={{ height: "100%" }}
+      height="71.5vh"
     >
       <Box
         gridColumn="span 12"

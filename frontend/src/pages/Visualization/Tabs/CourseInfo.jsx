@@ -33,15 +33,13 @@ const CourseInfo = (courseData) => {
       gridAutoRows={{ xs: "100px", lg: "1fr" }}
       gap="20px"
       marginTop={4}
-      marginBottom={3}
-      height="73vh"
+      height="71.5vh"
     >
       <Box
         gridColumn={{ xs: "span 12", lg: "span 6" }}
         gridRow={{ xs: "span 7", lg: "span 2" }}
         backgroundColor={colors.primary[400]}
         borderRadius="2%"
-        overflowY="scroll"
       >
         {/*Put GENERAL INFO in Here */}
         <Box
@@ -63,9 +61,10 @@ const CourseInfo = (courseData) => {
               display: "flex",
               flexDirection: "column",
               // border: "3px solid #1D2630",
-              marginTop: 2,
               borderRadius: 0,
               padding: 2,
+              height: "58vh",
+              overflowY: "scroll"
             }}
           >
             <Box
@@ -242,7 +241,10 @@ const CourseInfo = (courseData) => {
               </Textfield>
             </Box>
           </Box>
-          <Box width={{ xs: "380px", sm: "500px" }} height="300px">
+          <Box
+            width={{ xs: "380px", sm: "500px" }}
+            height={{ xs: "250px", sm: "250px", lg: "200px", xl: "250px" }}
+          >
             <NivoPieChart data={gradingRatio} />
           </Box>
         </Box>
