@@ -20,6 +20,7 @@ import {
   Heading32,
   Paragraph16,
 } from "../GlobalStyledComponents";
+import Overview from "../../images/vizta-overview3.png";
 
 const WhatIsVizta = () => {
   const theme = useTheme();
@@ -29,7 +30,7 @@ const WhatIsVizta = () => {
     <SectionWrap
       sx={{ width: "full", height: "500px", backgroundColor: "white" }}
     >
-      <Grid container spacing={2}>
+      <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
           <Box>
             <Heading32 style={{ color: "#70d8bd", paddingBottom: "2rem" }}>
@@ -44,7 +45,15 @@ const WhatIsVizta = () => {
             </Paragraph16>
           </Box>
         </Grid>
-        <Grid item xs={12} md={6}></Grid>
+        <Grid item xs={12} md={6}>
+          <Box>
+            <img
+              src={Overview}
+              style={{ width: "100%", maxHeight: "300px" }}
+              alt="Overview"
+            ></img>
+          </Box>
+        </Grid>
       </Grid>
     </SectionWrap>
   );
