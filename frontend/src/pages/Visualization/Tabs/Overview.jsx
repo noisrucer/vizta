@@ -55,11 +55,11 @@ const Overview = (chartData) => {
     if (average === null) {
       return ["#8F8F88", "secondary", "NONE"];
     } else if (average === "HARD") {
-      return ["#ff403d", "secondary", "HARD"];
+      return ["#ff403d", "#3b353eff", "HARD"];
     } else if (average === "MEDIUM") {
-      return ["#DFB040", "secondary", "MEDIUM"];
+      return ["#DFB040", "#3B3A3E", "MEDIUM"];
     } else {
-      return ["#0cc1a9", "secondary", "EASY"];
+      return ["#0cc1a9", "#2d3c47ff", "EASY"];
     }
   }
 
@@ -67,29 +67,29 @@ const Overview = (chartData) => {
     if (average === null) {
       return ["#8F8F88", "secondary", "NONE"];
     } else if (average === "Avg: F") {
-      return ["#ff403d", "secondary", "Avg: F"];
+      return ["#ff403d", "#3b353eff", "Avg: F"];
     } else if (average === "Avg: D") {
-      return ["#ff403d", "secondary", "Avg: D"];
+      return ["#ff403d", "#3b353eff", "Avg: D"];
     } else if (average === "Avg: D+") {
-      return ["#ff403d", "secondary", "Avg: D+"];
+      return ["#ff403d", "#3b353eff", "Avg: D+"];
     } else if (average === "Avg: C-") {
-      return ["#ff403d", "secondary", "Avg: C-"];
+      return ["#ff403d", "#3b353eff", "Avg: C-"];
     } else if (average === "Avg: C") {
-      return ["#ff403d", "secondary", "Avg: C"];
+      return ["#ff403d", "#3b353eff", "Avg: C"];
     } else if (average === "Avg: C+") {
-      return ["#ff403d", "secondary", "Avg: C+"];
+      return ["#ff403d", "#3b353eff", "Avg: C+"];
     } else if (average === "Avg: B-") {
-      return ["#DFB040", "secondary", "Avg: B-"];
+      return ["#DFB040", "#3B3A3E", "Avg: B-"];
     } else if (average === "Avg: B") {
-      return ["#DFB040", "secondary", "Avg: B"];
+      return ["#DFB040", "#3B3A3E", "Avg: B"];
     } else if (average === "Avg: B+") {
-      return ["#DFB040", "secondary", "Avg: B+"];
+      return ["#DFB040", "#3B3A3E", "Avg: B+"];
     } else if (average === "Avg: A-") {
-      return ["#0cc1a9", "secondary", "Avg: A-"];
+      return ["#0cc1a9", "#2d3c47ff", "Avg: A-"];
     } else if (average === "Avg: A") {
-      return ["#0cc1a9", "secondary", "Avg: A"];
+      return ["#0cc1a9", "#2d3c47ff", "Avg: A"];
     } else {
-      return ["#0cc1a9", "secondary", "Avg: A+"];
+      return ["#0cc1a9", "#2d3c47ff", "Avg: A+"];
     }
   }
 
