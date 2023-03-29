@@ -7,6 +7,31 @@ const NivoBarChart = ({ data, keys }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const maxValueList = []
+
+  data.forEach((d) => {
+    for (const [key, value] of Object.entries(d)) {
+      if (Number.isInteger(value) === true) {
+        maxValueList.push(value)
+      }
+    }
+  });
+
+  const maxValue = Math.max(...maxValueList)
+  // const ticks = [0, Math.ceil(maxValue / 5), Math.ceil(2 * maxValue / 5), Math.ceil(3 * maxValue / 5), Math.ceil(4 * maxValue / 5), maxValue]
+  const ticks = [0]
+
+  if (maxValue <= 5) {
+    ticks.push(1)
+    ticks.push(2)
+    ticks.push(3)
+    ticks.push(4)
+    ticks.push(5)
+  } else {
+    ticks.push(Math.ceil(maxValue / 2))
+    ticks.push(maxValue)
+  }
+
   return (
     <ResponsiveBar
       layout="horizontal"
@@ -14,7 +39,7 @@ const NivoBarChart = ({ data, keys }) => {
       data={data}
       keys={keys}
       indexBy="group"
-      margin={{ top: 0, right: 5, bottom: 40, left: 65 }}
+      margin={{ top: 0, right: 5, bottom: 40, left: 70 }}
       padding={0.3}
       // colors={{ scheme: "greens" }}
       valueScale={{ type: "linear" }}
@@ -80,11 +105,7 @@ const NivoBarChart = ({ data, keys }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        tickValues: [
-          0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 25, 30, 35, 40,
-          45, 50, 60, 70, 80, 90, 100, 120, 140, 160, 180, 200, 250, 300, 350,
-          400, 450, 500, 600, 700, 800, 900, 1000,
-        ],
+        tickValues: ticks
       }}
       axisLeft={{
         tickSize: 5,
