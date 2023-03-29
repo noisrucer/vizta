@@ -63,7 +63,7 @@ const CourseInfo = (courseData) => {
               // border: "3px solid #1D2630",
               borderRadius: 0,
               padding: 2,
-              height: "58vh",
+              height: "60vh",
               overflowY: "scroll"
             }}
           >

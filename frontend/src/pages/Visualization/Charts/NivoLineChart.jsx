@@ -9,9 +9,15 @@ const NivoLineChart = ({ data }) => {
   return (
     <ResponsiveLine
       data={data}
-      colors={{ scheme: "greens" }}
+      colors={["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"]}
+      colorBy="index"
       margin={{ top: 50, right: 130, bottom: 25, left: 60 }}
       theme={{
+        grid: {
+          line: {
+            stroke: colors.grey[600]
+          }
+        },
         textColor: colors.primary[100],
         tooltip: {
           container: {

@@ -21,9 +21,15 @@ const NivoRadarChart = ({ data, keys }) => {
       dotSize={10}
       dotColor={{ theme: "background" }}
       dotBorderWidth={0}
-      colors={{ scheme: "nivo" }}
-      fillOpacity={1}
+      colors={["#36A0E9", "#E95E7C", "#50B19E", "#5772B3", "#F4BA41", "#EC8B33"]}
+      colorBy="index"
+      fillOpacity={0.5}
       theme={{
+        grid: {
+          line: {
+            stroke: colors.grey[600]
+          }
+        },
         textColor: colors.primary[100],
         tooltip: {
           container: {
@@ -38,7 +44,7 @@ const NivoRadarChart = ({ data, keys }) => {
         },
       }}
       animate={false}
-      blendMode="multiply"
+      blendMode="normal"
       motionConfig="wobbly"
     />
   );
