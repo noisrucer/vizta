@@ -12,6 +12,7 @@ const NivoBarChart = ({ data, keys }) => {
   data.forEach((d) => {
     for (const [key, value] of Object.entries(d)) {
       if (Number.isInteger(value) === true) {
+        console.log("key: ", key)
         maxValueList.push(value)
       }
     }
@@ -59,13 +60,14 @@ const NivoBarChart = ({ data, keys }) => {
           },
         },
       }}
+      borderWidth={1}
       borderColor={{
         from: "color",
         modifiers: [["darker", 1.6]],
       }}
       enableGridX={true}
       enableGridY={false}
-      gridXValues={3}
+      gridXValues={5}
       axisTop={null}
       axisRight={null}
       axisBottom={{
