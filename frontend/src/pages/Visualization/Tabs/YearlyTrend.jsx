@@ -49,7 +49,7 @@ const YearlyTrend = (yearlyChartData) => {
       gridTemplateColumns="repeat(12,1fr)"
       gridAutoRows={{ xs: "100px", lg: "1fr" }}
       gap="20px"
-      marginTop={4}
+      marginTop={2}
       height="71.5vh"
     >
       <Box
