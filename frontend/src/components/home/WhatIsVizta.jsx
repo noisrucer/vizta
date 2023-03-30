@@ -17,7 +17,8 @@ import {
   SectionWrap,
   H1Heading128,
   Description,
-  Heading32,
+  H1Heading32,
+  Heading48,
   Paragraph16,
 } from "../GlobalStyledComponents";
 import Overview from "../../images/vizta-overview3.png";
@@ -28,14 +29,22 @@ const WhatIsVizta = () => {
 
   return (
     <SectionWrap
-      sx={{ width: "full", height: "500px", backgroundColor: "white" }}
+      sx={{
+        width: "full",
+        backgroundColor: "white",
+      }}
     >
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
           <Box>
-            <Heading32 style={{ color: "#70d8bd", paddingBottom: "2rem" }}>
+            <H1Heading32
+              style={{
+                color: "#70d8bd",
+                paddingBottom: "2rem",
+              }}
+            >
               What is VIZTA
-            </Heading32>
+            </H1Heading32>
             <Paragraph16 style={{ color: "#1F2A40" }}>
               Have you struggled to find appropriate courses during the add &
               drop period? VIZTA offers a powerful visualization tool for course

@@ -163,3 +163,23 @@ export const Heading24 = styled("h2")`
   //   //padding-bottom: 3rem;
   // }
 `;
+
+export const CircleElement = styled("div")`
+  filter: blur(250px);
+  ${({ blur }) => `filter: blur(${blur}px);`}
+  position: absolute;
+  height: 500px;
+  width: 500px;
+  border-radius: 100vmax;
+  ${({ size }) => `height:${size}px; width:${size}px;`}
+  ${({ color }) => `background:${color};`}
+`;
+
+export const BlurSection = styled(SectionWrap)`
+  padding-bottom: 3rem;
+  @media (min-width: 768px) {
+    padding-bottom: 8rem;
+  }
+  // backdrop-filter: blur(160px);
+  // ${({ blur }) => `backdrop-filter: blur(${blur}px);`}
+`;

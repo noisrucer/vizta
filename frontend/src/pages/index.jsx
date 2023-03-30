@@ -19,6 +19,7 @@ import {
   Description,
 } from "../components/GlobalStyledComponents";
 import WhatIsVizta from "../components/home/WhatIsVizta";
+import Detail from "../components/home/Detail";
 
 const Home = () => {
   const theme = useTheme();
@@ -45,7 +46,7 @@ const Home = () => {
   `;
 
   return (
-    <Box>
+    <Box sx={{ backgroundColor: "white" }}>
       <Navbar />
       <Box
         sx={{
@@ -56,6 +57,30 @@ const Home = () => {
           backgroundColor: "#1F2A40",
         }}
       >
+        {/* <CircleElement
+          sx={{
+            top: { xs: "-30%", md: "-85%" },
+            left: { xs: "-30%", md: "-15%" },
+          }}
+        ></CircleElement>
+        <CircleElement
+          sx={{
+            top: { xs: "-30%", md: "-55%" },
+            left: { xs: "-30%", md: "-25%" },
+          }}
+        ></CircleElement>
+        <CircleElement
+          sx={{
+            bottom: { xs: "-30%", md: "-60%" },
+            left: { xs: "-30%", md: "-20%" },
+          }}
+        ></CircleElement>
+        <CircleElement
+          sx={{
+            bottom: { xs: "-30%", md: "-90%" },
+            left: { xs: "-30%", md: "-10%" },
+          }}
+        ></CircleElement> */}
         <CircleElement
           sx={{
             top: { xs: "-30%", md: "-20%" },
@@ -133,6 +158,7 @@ const Home = () => {
         </CircleHeroWrap>
       </Box>
       <WhatIsVizta />
+      <Detail />
     </Box>
   );
 };
