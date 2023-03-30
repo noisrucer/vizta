@@ -21,7 +21,12 @@ import {
   Heading48,
   Paragraph16,
 } from "../GlobalStyledComponents";
-import Overview from "../../images/vizta-overview3.png";
+import EmblaCarousel from "../Carousel/EmblaCarousel";
+import "../../css/embla.css";
+
+const OPTIONS = {};
+const SLIDE_COUNT = 4;
+const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
 const WhatIsVizta = () => {
   const theme = useTheme();
@@ -35,7 +40,7 @@ const WhatIsVizta = () => {
       }}
     >
       <Grid container spacing={4}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} xl={6}>
           <Box>
             <H1Heading32
               style={{
@@ -54,13 +59,15 @@ const WhatIsVizta = () => {
             </Paragraph16>
           </Box>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Box>
-            <img
-              src={Overview}
-              style={{ width: "80%", maxHeight: "300px" }}
-              alt="Overview"
-            ></img>
+        <Grid item xs={12} xl={6}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <EmblaCarousel slides={SLIDES} options={OPTIONS} />
           </Box>
         </Grid>
       </Grid>
