@@ -58,7 +58,7 @@ const WhatIsVizta = () => {
           <Box>
             <img
               src={Overview}
-              style={{ width: "100%", maxHeight: "300px" }}
+              style={{ width: "80%", maxHeight: "300px" }}
               alt="Overview"
             ></img>
           </Box>
