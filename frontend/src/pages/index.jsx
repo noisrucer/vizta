@@ -18,6 +18,8 @@ import {
   H1Heading128,
   Description,
 } from "../components/GlobalStyledComponents";
+import WhatIsVizta from "../components/home/WhatIsVizta";
+import Detail from "../components/home/Detail";
 
 const Home = () => {
   const theme = useTheme();
@@ -44,17 +46,41 @@ const Home = () => {
   `;
 
   return (
-    <Box backgroundColor="#1F2A40">
+    <Box sx={{ backgroundColor: "white" }}>
       <Navbar />
       <Box
         sx={{
-          width: "100vw",
-          height: "100vh",
+          width: "full",
           position: "relative",
           overflow: "hidden",
           zIndex: 0,
+          backgroundColor: "#1F2A40",
         }}
       >
+        {/* <CircleElement
+          sx={{
+            top: { xs: "-30%", md: "-85%" },
+            left: { xs: "-30%", md: "-15%" },
+          }}
+        ></CircleElement>
+        <CircleElement
+          sx={{
+            top: { xs: "-30%", md: "-55%" },
+            left: { xs: "-30%", md: "-25%" },
+          }}
+        ></CircleElement>
+        <CircleElement
+          sx={{
+            bottom: { xs: "-30%", md: "-60%" },
+            left: { xs: "-30%", md: "-20%" },
+          }}
+        ></CircleElement>
+        <CircleElement
+          sx={{
+            bottom: { xs: "-30%", md: "-90%" },
+            left: { xs: "-30%", md: "-10%" },
+          }}
+        ></CircleElement> */}
         <CircleElement
           sx={{
             top: { xs: "-30%", md: "-20%" },
@@ -74,9 +100,6 @@ const Home = () => {
           }}
         ></CircleElement>
         <CircleHeroWrap
-          className={
-            "flex flex-col flex-wrap lg:flex-nowrap items-start justify-center relative"
-          }
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -97,12 +120,23 @@ const Home = () => {
               VIZTA
             </H1Heading128>
           </div>
-          <Description style={{ color: "white" }}>
-            Have you struggled to find appropriate courses during the add & drop
+          <Description
+            style={{
+              position: "relative",
+              display: "flex",
+              justifyContent: "flex-end",
+              right: "0",
+              color: "white",
+              width: "100%",
+              marginTop: "-30px",
+            }}
+          >
+            HKU Course Evaluation System
+            {/* Have you struggled to find appropriate courses during the add & drop
             period? VIZTA offers a powerful visualization tool for course
             evaluation including GPA, workload, lecture difficulty, final exam
             difficulty, and lecture quality. You can also select a specific year
-            and professor to see detailed results.
+            and professor to see detailed results. */}
           </Description>
           {/* <Link href="/auth/sign-in">
             <Button
@@ -123,6 +157,8 @@ const Home = () => {
           </Link> */}
         </CircleHeroWrap>
       </Box>
+      <WhatIsVizta />
+      <Detail />
     </Box>
   );
 };

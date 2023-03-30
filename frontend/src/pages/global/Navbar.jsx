@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
+import ScrollToColor from "./ScrollToColor";
 
 export default function ButtonAppBar() {
   const theme = useTheme();
@@ -17,27 +18,37 @@ export default function ButtonAppBar() {
   const colorMode = useContext(ColorModeContext);
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar elevation={0} position="fixed" sx={{ background: "transparent" }}>
-        <Toolbar>
-          <Button variant="primary" href="/" sx={{ marginRight: "20px" }}>
-            Vizta
-          </Button>
-          <Button
-            variant="primary"
-            href="/auth/sign-in"
-            sx={{ marginLeft: "auto" }}
-          >
-            Log In
-          </Button>
-          <Button
-            variant="primary"
-            href="/auth/sign-up"
-            sx={{ marginLeft: "10px" }}
-          >
-            Sign Up
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <ScrollToColor>
+        <AppBar
+          elevation={0}
+          position="fixed"
+          sx={{ background: "transparent" }}
+        >
+          <Toolbar>
+            <Button
+              variant="primary"
+              href="/"
+              sx={{ marginRight: "20px", fontSize: "20px" }}
+            >
+              Vizta
+            </Button>
+            <Button
+              variant="primary"
+              href="/auth/sign-in"
+              sx={{ marginLeft: "auto", fontSize: "15px" }}
+            >
+              Log In
+            </Button>
+            <Button
+              variant="primary"
+              href="/auth/sign-up"
+              sx={{ marginLeft: "10px", fontSize: "15px" }}
+            >
+              Sign Up
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </ScrollToColor>
     </Box>
   );
 }

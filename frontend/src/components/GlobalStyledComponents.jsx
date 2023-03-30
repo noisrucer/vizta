@@ -54,11 +54,9 @@ export const Paragraph20 = styled(ParagraphBase)`
   }
 `;
 export const Description = styled(ParagraphBase)`
-  font-size: 16px;
-  width: 300px;
+  font-size: 14px;
   @media (min-width: 768px) {
-    font-size: 20px;
-    width: 700px;
+    font-size: 16px;
   }
 `;
 
@@ -164,4 +162,24 @@ export const Heading24 = styled("h2")`
   //   font-size: 15px;
   //   //padding-bottom: 3rem;
   // }
+`;
+
+export const CircleElement = styled("div")`
+  filter: blur(250px);
+  ${({ blur }) => `filter: blur(${blur}px);`}
+  position: absolute;
+  height: 500px;
+  width: 500px;
+  border-radius: 100vmax;
+  ${({ size }) => `height:${size}px; width:${size}px;`}
+  ${({ color }) => `background:${color};`}
+`;
+
+export const BlurSection = styled(SectionWrap)`
+  padding-bottom: 3rem;
+  @media (min-width: 768px) {
+    padding-bottom: 8rem;
+  }
+  // backdrop-filter: blur(160px);
+  // ${({ blur }) => `backdrop-filter: blur(${blur}px);`}
 `;
