@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material";
 import { ResponsiveRadar } from "@nivo/radar";
 import { tokens } from "../../../theme";
 
-const NivoRadarChart = ({ data, keys }) => {
+const ProfessorRadarChart = ({ data, keys }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -15,7 +15,7 @@ const NivoRadarChart = ({ data, keys }) => {
       maxValue={5}
       valueFormat=">-.2f"
       borderColor={{ from: "color" }}
-      margin={{ top: 20, right: 95, bottom: 100, left: 95 }}
+      margin={{ top: 20, right: 95, bottom: 50, left: 95 }}
       gridShape="linear"
       gridLabelOffset={15}
       dotSize={10}
@@ -57,4 +57,4 @@ const NivoRadarChart = ({ data, keys }) => {
   );
 };
 
-export default NivoRadarChart;
+export default ProfessorRadarChart;

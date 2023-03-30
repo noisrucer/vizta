@@ -13,7 +13,6 @@ import {
   Paragraph20,
   Paragraph16,
   Paragraph24,
-  Heading20,
 } from "../../../components/GlobalStyledComponents";
 
 const CourseInfo = (courseData) => {
@@ -32,12 +31,12 @@ const CourseInfo = (courseData) => {
       gridTemplateColumns="repeat(12,1fr)"
       gridAutoRows={{ xs: "100px", lg: "1fr" }}
       gap="20px"
-      marginTop={4}
+      marginTop={2}
       height="71.5vh"
     >
       <Box
         gridColumn={{ xs: "span 12", lg: "span 6" }}
-        gridRow={{ xs: "span 7", lg: "span 2" }}
+        gridRow={{ xs: "span 7", lg: "span 6" }}
         backgroundColor={colors.primary[400]}
         borderRadius="2%"
       >
@@ -46,6 +45,7 @@ const CourseInfo = (courseData) => {
           sx={{
             display: "flex",
             flexDirection: "column",
+            height: "100%",
           }}
         >
           <Box
@@ -54,7 +54,7 @@ const CourseInfo = (courseData) => {
               justifyContent: "center",
             }}
           >
-            <Heading32>General Information </Heading32>
+            <Heading24>General Information </Heading24>
           </Box>
           <Box
             sx={{
@@ -63,8 +63,8 @@ const CourseInfo = (courseData) => {
               // border: "3px solid #1D2630",
               borderRadius: 0,
               padding: 2,
-              height: "60vh",
-              overflowY: "scroll"
+              height: "full",
+              overflowY: "scroll",
             }}
           >
             <Box
@@ -77,11 +77,11 @@ const CourseInfo = (courseData) => {
                 marginBottom: 2,
               }}
             >
-              <Heading20 style={{ marginBottom: "-10px" }}>
+              <Heading24 style={{ marginBottom: "-10px" }}>
                 <label style={{ color: colors.greenAccent[400] }}>
                   Department:{" "}
                 </label>
-              </Heading20>
+              </Heading24>
               <Paragraph16>
                 {courseData.description.Faculty || "None"}
               </Paragraph16>
@@ -96,11 +96,11 @@ const CourseInfo = (courseData) => {
                 marginBottom: 2,
               }}
             >
-              <Heading20 style={{ marginBottom: "-10px" }}>
+              <Heading24 style={{ marginBottom: "-10px" }}>
                 <label style={{ color: colors.greenAccent[400] }}>
                   Prerequisites:{" "}
                 </label>
-              </Heading20>
+              </Heading24>
               <Paragraph16>
                 {courseData.description.Prerequisite || "None"}
               </Paragraph16>
@@ -115,11 +115,11 @@ const CourseInfo = (courseData) => {
                 marginBottom: 2,
               }}
             >
-              <Heading20 style={{ marginBottom: "-10px" }}>
+              <Heading24 style={{ marginBottom: "-10px" }}>
                 <label style={{ color: colors.greenAccent[400] }}>
                   Blocking Courses:{" "}
                 </label>
-              </Heading20>
+              </Heading24>
               <Paragraph16>
                 {courseData.description.BlockingCourses.join(", ") || "None"}
               </Paragraph16>
@@ -134,11 +134,11 @@ const CourseInfo = (courseData) => {
                 marginBottom: 2,
               }}
             >
-              <Heading20 style={{ marginBottom: "-10px" }}>
+              <Heading24 style={{ marginBottom: "-10px" }}>
                 <label style={{ color: colors.greenAccent[400] }}>
                   Mutual Exclusives:{" "}
                 </label>
-              </Heading20>
+              </Heading24>
               <Paragraph16>
                 {courseData.description.MutualExclusives.join(", ") || "None"}
               </Paragraph16>
@@ -154,7 +154,7 @@ const CourseInfo = (courseData) => {
               }}
             >
               {/* <h4 style={{color: "#FFC106", marginRight: 10}}>Description: </h4> */}
-              <Heading20
+              <Heading24
                 style={{
                   marginBottom: "-10px",
                 }}
@@ -162,7 +162,7 @@ const CourseInfo = (courseData) => {
                 <label style={{ color: colors.greenAccent[400] }}>
                   Description:{" "}
                 </label>
-              </Heading20>
+              </Heading24>
               <Paragraph16>{courseData.description.Description}</Paragraph16>
             </Box>
           </Box>
@@ -170,7 +170,7 @@ const CourseInfo = (courseData) => {
       </Box>
       <Box
         gridColumn={{ xs: "span 12", lg: "span 6" }}
-        gridRow={{ xs: "span 3", lg: "span 1" }}
+        gridRow={{ xs: "span 3", lg: "span 3" }}
         backgroundColor={colors.primary[400]}
         display="flex"
         alignItems="center"
@@ -183,8 +183,9 @@ const CourseInfo = (courseData) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
+            // justifyContent: "center",
             width: "100%",
+            height: "100%",
           }}
         >
           <Box
@@ -197,7 +198,7 @@ const CourseInfo = (courseData) => {
             }}
           >
             <Box width="35%"></Box>
-            <Heading32>GradingRatio</Heading32>
+            <Heading24>GradingRatio</Heading24>
             <Box
               sx={{
                 display: "flex",
@@ -242,8 +243,8 @@ const CourseInfo = (courseData) => {
             </Box>
           </Box>
           <Box
-            width={{ xs: "380px", sm: "500px" }}
-            height={{ xs: "250px", sm: "250px", lg: "200px", xl: "250px" }}
+            width={{ xs: "350px", sm: "350px" }}
+            height={{ xs: "250px", sm: "250px", lg: "200px", xl: "200px" }}
           >
             <NivoPieChart data={gradingRatio} />
           </Box>
@@ -251,14 +252,14 @@ const CourseInfo = (courseData) => {
       </Box>
       <Box
         gridColumn={{ xs: "span 12", lg: "span 6" }}
-        gridRow={{ xs: "span 5", lg: "span 1" }}
+        gridRow={{ xs: "span 5", lg: "span 3" }}
         backgroundColor={colors.primary[400]}
         display="flex"
         flexDirection="column"
         alignItems="center"
         borderRadius="2%"
       >
-        <Heading32>Add Course</Heading32>
+        <Heading24>Add Course</Heading24>
 
         {/*Put TIMETABLE in Here */}
         <TimeTable chartData={courseData.description.Timetable} />

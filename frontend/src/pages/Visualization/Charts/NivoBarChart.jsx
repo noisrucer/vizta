@@ -18,6 +18,14 @@ const NivoBarChart = ({ data, keys }) => {
     }
   });
 
+  if (maxValueList.length === 12) {
+    maxValueList[0] = maxValueList[0] + maxValueList[1] + maxValueList[2]
+    maxValueList[1] = maxValueList[3] + maxValueList[4] + maxValueList[5]
+    maxValueList[2] = maxValueList[6] + maxValueList[7] + maxValueList[8]
+    maxValueList[3] = maxValueList[9] + maxValueList[10]
+    maxValueList[4] = maxValueList[11]
+  }
+
   const maxValue = Math.max(...maxValueList)
   // const ticks = [0, Math.ceil(maxValue / 5), Math.ceil(2 * maxValue / 5), Math.ceil(3 * maxValue / 5), Math.ceil(4 * maxValue / 5), maxValue]
   const ticks = [0]
@@ -29,8 +37,9 @@ const NivoBarChart = ({ data, keys }) => {
     ticks.push(4)
     ticks.push(5)
   } else {
-    ticks.push(Math.ceil(maxValue / 2))
-    ticks.push(maxValue)
+    for (let i = 1; i < maxValue; i++) {
+      ticks.push(i * 5)
+    }
   }
 
   return (
