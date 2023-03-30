@@ -174,10 +174,10 @@ const Overview = (chartData) => {
     <Box
       display="grid"
       gridTemplateColumns="repeat(14,1fr)"
-      gridAutoRows={{ xs: "100px", lg: "100px", xl: "130px" }}
+      gridAutoRows={{ xs: "100px", lg: "1fr" }}
       gap="20px"
-      marginTop={4}
-      height="73vh"
+      marginTop={2}
+      height="71.5vh"
     >
       {/* Row 1 */}
       <Box
@@ -188,7 +188,7 @@ const Overview = (chartData) => {
         flexDirection="column"
         alignItems="center"
         borderRadius="2%"
-        height={{ xs: "100%", md: "100%", lg: "70%", xl: "77%" }}
+        // height={{ xs: "100%", md: "100%", lg: "70%", xl: "77%" }}
       >
         {/*Put RADAR CHART in Here */}
 
@@ -199,10 +199,16 @@ const Overview = (chartData) => {
         </Box>
         <Box
           sx={{
-            width: { xs: "350px", sm: "340px", lg: "340px", xl: "400px" },
-            height: { xs: "300px", sm: "300px", md: "300px", lg: "300px", xl: "400px" },
+            width: { xs: "350px", sm: "340px", lg: "340px", xl: "300px" },
+            height: {
+              xs: "300px",
+              sm: "300px",
+              md: "300px",
+              lg: "300px",
+              xl: "300px",
+            },
             zIndex: "100",
-            marginTop: -4
+            //marginTop: -4,
           }}
         >
           <NivoRadarChart data={overviewData.Pentagon} keys={overallLabel} />
@@ -218,7 +224,7 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
+        // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
       >
         {/*Put GPA in Here */}
         <GPAHeadings />
@@ -234,7 +240,7 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
+        // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
       >
         {/*Put WORKLOAD in Here */}
         <Headings name="Workload" badgeName={overviewData.Badges.Workload} />
@@ -251,10 +257,10 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
-        sx={{
-          marginTop: { lg: -8 }
-        }}
+        // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
+        // sx={{
+        //   marginTop: { lg: -8 },
+        // }}
       >
         {/*Put LECTURE DIFFICULTY in Here */}
         <Headings
@@ -276,10 +282,10 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
-        sx={{
-          marginTop: { lg: -8 }
-        }}
+        // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
+        // sx={{
+        //   marginTop: { lg: -8 },
+        // }}
       >
         {/*Put EXAM DIFFICULTY in Here */}
         <Headings
@@ -300,12 +306,11 @@ const Overview = (chartData) => {
         alignItems="center"
         borderRadius="2%"
         height="100%"
-        sx={{
-          marginTop: { lg: -16.5, xl: -16 }
-        }}
       >
         {/*Put LECTURE QUALITY in Here */}
-        <Heading24 style={{ marginTop: "9px" }}>Lecture Quality</Heading24>
+        <Heading24 style={{ marginTop: "9px", marginBottom: "-10px" }}>
+          Lecture Quality
+        </Heading24>
         <Box
           sx={{
             display: "flex",
@@ -313,11 +318,12 @@ const Overview = (chartData) => {
             justifyContent: "center",
             paddingLeft: "10px",
             paddingRight: "10px",
+            marginBottom: "50px",
           }}
         >
           <Box
             sx={{
-              width: { xs: "30%", sm: "35%", lg: "38%" },
+              width: { xs: "30%", sm: "35%", lg: "30%" },
             }}
           >
             <LectureQualityScore
@@ -325,7 +331,7 @@ const Overview = (chartData) => {
                 (overviewData.LectureQuality.Entertainment +
                   overviewData.LectureQuality.Interactivity +
                   overviewData.LectureQuality.Delivery) /
-                3
+                  3
               )}
             />
           </Box>
@@ -333,8 +339,9 @@ const Overview = (chartData) => {
           <Box
             sx={{
               width: { xs: "30%", md: "50%" },
+              // height: { xs: "30%", md: "20%" },
               marginLeft: 4,
-              marginBottom: "20px",
+              marginBottom: "50px",
             }}
           >
             <h5 style={{ marginBottom: -1 }}>Entertainment </h5>
@@ -352,7 +359,7 @@ const Overview = (chartData) => {
           </Box>
         </Box>
       </Box>
-    </Box >
+    </Box>
   );
 };
 

@@ -9,7 +9,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { ColorModeContext, tokens } from "../../../theme";
-import NivoRadarChart from "../Charts/NivoRadarChart";
+import ProfessorRadarChart from "../Charts/ProfessorRadarChart";
 
 const ProfessorStats = (profChartData) => {
   const theme = useTheme();
@@ -67,7 +67,7 @@ const ProfessorStats = (profChartData) => {
       gridTemplateColumns="repeat(12,1fr)"
       gridAutoRows={{ xs: "100px", lg: "1fr" }}
       gap="20px"
-      marginTop={4}
+      marginTop={2}
       height="71.5vh"
     >
       <Box
@@ -85,10 +85,22 @@ const ProfessorStats = (profChartData) => {
           justifyContent="center"
         >
           <Box
-            width={{ xs: "400px", sm: "500px", md: "500px", lg: "550px", xl: "600px" }}
-            height={{ xs: "400px", sm: "500px", md: "500px", lg: "550px", xl: "600px" }}
+            width={{
+              xs: "400px",
+              sm: "500px",
+              md: "500px",
+              lg: "500px",
+              xl: "500px",
+            }}
+            height={{
+              xs: "400px",
+              sm: "500px",
+              md: "500px",
+              lg: "500px",
+              xl: "500px",
+            }}
           >
-            <NivoRadarChart data={filteredTrendData} keys={filteredKey} />
+            <ProfessorRadarChart data={filteredTrendData} keys={filteredKey} />
           </Box>
         </Box>
         <Box

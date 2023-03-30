@@ -23,7 +23,7 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import SwitchRightOutlinedIcon from "@mui/icons-material/SwitchRightOutlined";
 import SwitchLeftOutlinedIcon from "@mui/icons-material/SwitchLeftOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -55,14 +55,12 @@ const MyProSidebar = () => {
 
   useEffect(() => {
     if (selected === "Logout") {
-      setUserToken(
-        {
-          "headers": "loggedout"
-        }
-      )
+      setUserToken({
+        headers: "loggedout",
+      });
       navigate("/");
     }
-  }, [selected])
+  }, [selected]);
 
   return (
     <Box
