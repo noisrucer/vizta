@@ -267,7 +267,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
     gpa_letter = ['A', 'B', 'C', 'D']
     gpa_count = glob_utils.count_enum([_.gpa for _ in reviews], course_enums.GPA)
 
-    badges_text = ['CUTE', 'MEDIUM', 'HELL']
+    badges_text = ['HARD', 'MEDIUM', 'EASY']
     badges_break_point = [5 / 3, 10 / 3, 15 / 3]
 
     def get_badges(val):
@@ -343,9 +343,10 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
         entertainment_avg += entertainment['keys'][i] * entertainment['values'][i]
         delivery_avg += delivery['keys'][i] * delivery['values'][i]
         interactivity_avg += interactivity['keys'][i] * interactivity['values'][i]
-    entertainment_avg = entertainment_avg / sum(entertainment['values']) * 20
-    delivery_avg = delivery_avg / sum(delivery['values']) * 20
-    interactivity_avg = interactivity_avg / sum(interactivity['values']) * 20
+    
+    entertainment_avg = entertainment_avg / sum(entertainment['values']) * 20 if sum(entertainment['values']) else 0
+    delivery_avg = delivery_avg / sum(delivery['values']) * 20 if sum(delivery['values']) else 0
+    interactivity_avg = interactivity_avg / sum(interactivity['values']) * 20 if sum(interactivity['values']) else 0
 
     pentagon = {
             "GPA": avg_gpa,
@@ -368,7 +369,6 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
             "overall": pentagon[pentagon_key]
         })
     
-
     result = {
         "TotalNumReviews": total_num_reviews,
         "GPA": gpa_response,
@@ -384,7 +384,7 @@ async def get_general_visualization(course_id: str, year: Union[int, None] = Non
             "LectureDifficulty": get_badges(avg_reviews[avg_column.index(mcr.lecture_difficulty)]),
             "FinalDifficulty": get_badges(avg_reviews[avg_column.index(mcr.final_exam_difficulty)]),
             "Workload": get_badges(avg_reviews[avg_column.index(mcr.workload)]),
-            "GPA": visualization_utils.get_gpa_badge(avg_gpa)
+            "GPA": visualization_utils.get_gpa_badge(avg_gpa) if avg_gpa else "NONE"
         },
         "Pentagon": overall_score_data
     }
