@@ -53,6 +53,27 @@ const ProfessorRadarChart = ({ data, keys }) => {
       animate={false}
       blendMode="normal"
       motionConfig="wobbly"
+      legends={[
+        {
+          anchor: 'top-left',
+          direction: 'column',
+          translateX: -70,
+          translateY: 10,
+          itemWidth: 80,
+          itemHeight: 20,
+          itemTextColor: '#999',
+          symbolSize: 12,
+          symbolShape: 'circle',
+          effects: [
+            {
+              on: 'hover',
+              style: {
+                itemTextColor: '#000'
+              }
+            }
+          ]
+        }
+      ]}
     />
   );
 };
