@@ -47,8 +47,6 @@ const Overview = (chartData) => {
   const formattedPentData = [];
   const GPAData = overviewData.GPA
   const formattedGPAData = GPAData.slice().reverse()
-  console.log("GPA: ", GPAData);
-  console.log("formatted: ", formattedGPAData);
 
   pentagonData.map((value) => {
     if (value.criteria === "LectureDifficulty") {

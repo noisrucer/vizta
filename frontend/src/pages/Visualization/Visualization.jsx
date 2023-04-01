@@ -329,7 +329,7 @@ const Visualization = () => {
             data,
             headers: userToken["headers"],
           })
-          .then((response) => {})
+          .then((response) => { })
           .catch((error) => {
             navigate("/auth/sign-in");
           });
@@ -344,7 +344,7 @@ const Visualization = () => {
             url: `${baseURL}/courses/favorite/${userData}/${courseId}`,
             headers: userToken["headers"],
           })
-          .then((response) => {})
+          .then((response) => { })
           .catch((error) => {
             navigate("/auth/sign-in");
           });
@@ -373,10 +373,10 @@ const Visualization = () => {
           setNumReviews(response.data.TotalNumReviews);
           setOverallScore(
             response.data.Pentagon[0].overall +
-              response.data.Pentagon[1].overall +
-              response.data.Pentagon[2].overall +
-              response.data.Pentagon[3].overall +
-              response.data.Pentagon[4].overall
+            response.data.Pentagon[1].overall +
+            response.data.Pentagon[2].overall +
+            response.data.Pentagon[3].overall +
+            response.data.Pentagon[4].overall
           );
         })
         .catch((error) => {
@@ -508,10 +508,10 @@ const Visualization = () => {
           setNumReviews(response.data.TotalNumReviews); // also, number of reviews update upon year and professor change
           setOverallScore(
             response.data.Pentagon[0].overall +
-              response.data.Pentagon[1].overall +
-              response.data.Pentagon[2].overall +
-              response.data.Pentagon[3].overall +
-              response.data.Pentagon[4].overall
+            response.data.Pentagon[1].overall +
+            response.data.Pentagon[2].overall +
+            response.data.Pentagon[3].overall +
+            response.data.Pentagon[4].overall
           );
         })
         .catch((error) => {
