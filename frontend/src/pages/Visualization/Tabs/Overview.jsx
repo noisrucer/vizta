@@ -82,7 +82,7 @@ const Overview = (chartData) => {
 
   const overallScore = chartData.score;
 
-  function JudgeBadgesColor(average) {
+  function judgeBadgesColor(average) {
     if (average === null) {
       return ["#8F8F88", "secondary", "NONE"];
     } else if (average === "HARD") {
@@ -96,7 +96,7 @@ const Overview = (chartData) => {
     }
   }
 
-  function JudgeGPABadgeColor(average) {
+  function judgeGPABadgeColor(average) {
     if (average === "NONE") {
       return ["#8F8F88", "secondary", "NONE"];
     } else if (average === "Avg: F") {
@@ -142,12 +142,12 @@ const Overview = (chartData) => {
         <Badges
           borderColor={
             overviewData.Badges.GPA
-              ? JudgeGPABadgeColor(overviewData.Badges.GPA)[0]
+              ? judgeGPABadgeColor(overviewData.Badges.GPA)[0]
               : "#8F8F88"
           }
           backgroundColor={
             overviewData.Badges.GPA
-              ? JudgeGPABadgeColor(overviewData.Badges.GPA)[1]
+              ? judgeGPABadgeColor(overviewData.Badges.GPA)[1]
               : "#1D2630"
           }
           sx={{
@@ -159,12 +159,12 @@ const Overview = (chartData) => {
           <h5
             style={{
               color: overviewData.Badges.GPA
-                ? JudgeGPABadgeColor(overviewData.Badges.GPA)[0]
+                ? judgeGPABadgeColor(overviewData.Badges.GPA)[0]
                 : "#8F8F88",
             }}
           >
             {overviewData.Badges.GPA
-              ? JudgeGPABadgeColor(overviewData.Badges.GPA)[2]
+              ? judgeGPABadgeColor(overviewData.Badges.GPA)[2]
               : "NONE"}
           </h5>
         </Badges>
@@ -186,16 +186,16 @@ const Overview = (chartData) => {
         <Box sx={{ width: "80px", height: "30px" }}></Box>
         <Heading24> {name} </Heading24>
         <Badges
-          borderColor={JudgeBadgesColor(badgeName)[0]}
-          backgroundColor={JudgeBadgesColor(badgeName)[1]}
+          borderColor={judgeBadgesColor(badgeName)[0]}
+          backgroundColor={judgeBadgesColor(badgeName)[1]}
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <h5 style={{ color: JudgeBadgesColor(badgeName)[0] }}>
-            {JudgeBadgesColor(badgeName)[2]}
+          <h5 style={{ color: judgeBadgesColor(badgeName)[0] }}>
+            {judgeBadgesColor(badgeName)[2]}
           </h5>
         </Badges>
       </Box>

@@ -26,8 +26,6 @@ const NivoBarChart = ({ data, keys }) => {
   }
 
   const maxValue = Math.max(...maxValueList)
-  console.log("keys: ", keys)
-  console.log("data: ", data)
   const ticks = [0]
 
   if (maxValue <= 5) {
