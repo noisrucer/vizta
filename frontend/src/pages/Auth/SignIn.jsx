@@ -78,16 +78,7 @@ const SignIn = () => {
         handleSetUserToken(options);
 
         if (response.status === 200) {
-          axios
-            .request({
-              method: "get",
-              url: `${baseURL}/auth/me`,
-              headers: options["headers"],
-            })
-            .then((response) => {
-              console.log("response in Sign In: ", response);
-              setIsAuth(true);
-            });
+          setIsAuth(true);
           navigate("/main/All");
         }
       })
