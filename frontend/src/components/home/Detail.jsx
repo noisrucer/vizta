@@ -25,6 +25,11 @@ import {
   Heading64,
 } from "../GlobalStyledComponents";
 
+import BarChartIcon from '@mui/icons-material/BarChart';
+import DonutLargeIcon from '@mui/icons-material/DonutLarge';
+import InsightsIcon from '@mui/icons-material/Insights';
+import PentagonOutlinedIcon from '@mui/icons-material/PentagonOutlined';
+
 const Overlay = styled("div")`
   background: ${({ background }) =>
     background === "white" ? "rgba(255, 255, 255, 0.6)" : "rgba(0, 0, 0, 0.5)"};
@@ -40,24 +45,28 @@ const Detail = () => {
     {
       title: "Metric Visualization",
       description:
-        "Find out overall score, GPA, workload, lecture/final exam difficulty, and lecture quality",
+        "Get a comprehensive overview of each class, including overall score, GPA, workload, lecture/final exam difficulty, and lecture quality. Visualize data with interactive charts and graphs.",
+      icon: <BarChartIcon style={{ fontSize: 70 }} />,
     },
     {
       title: "General Information",
       description:
-        "Find out grading distribution, timetable, and general information for each subclass/professor",
+        "Find grading distribution, timetable, and general information for each subclass/professor. Get important updates, announcements, and news related to your classes and professors.",
+      icon: <DonutLargeIcon style={{ fontSize: 70 }} />,
     },
     {
       title: "Yearly Trends",
-      description: "Find out yearly trends for professors based on each metric",
+      description:
+        "Track yearly trends for professors based on each metric, and identify areas of improvement for yourself and your professors. Get personalized recommendations based on your performance and feedback.",
+      icon: <InsightsIcon style={{ fontSize: 70 }} />,
     },
     {
       title: "Professor Statistics",
       description:
-        "Compare two or more professors over a range of different metrics",
+        "Compare two or more professors over a range of different metrics, and make informed decisions about which professors to take for your classes. Get detailed information about each professor's teaching style, grading criteria, and feedback from other students.",
+      icon: <PentagonOutlinedIcon style={{ fontSize: 70 }} />,
     },
   ];
-  console.log(DETAILS);
   return (
     <Box
       sx={{
@@ -130,6 +139,11 @@ const Detail = () => {
                   sx={{
                     paddingRight: "8rem",
                     flexBasis: { xs: "full", sm: "0" },
+                    display: "flex",
+                    [theme.breakpoints.up('md')]: {
+                      alignItems: "center",
+                      justifyContent: "center",
+                    },
                   }}
                 >
                   <Paragraph24>0{index + 1}</Paragraph24>
@@ -139,8 +153,13 @@ const Detail = () => {
                   sx={{
                     flex: "1.5 1.5 0%",
                     paddingRight: "8rem",
-                    paddingTop: { xs: "2rem", md: "0" },
+                    // paddingTop: { xs: "2rem", md: "0" },
                     flexBasis: { xs: "full", md: "1" },
+                    display: "flex",
+                    [theme.breakpoints.up('md')]: {
+                      alignItems: "center",
+                      justifyContent: "center",
+                    },
                   }}
                 >
                   <H1Heading32
@@ -155,8 +174,28 @@ const Detail = () => {
                 <Box
                   sx={{
                     flex: "1 1 0%",
-                    paddingTop: { xs: "2rem", md: "0" },
+                    // paddingTop: { xs: "2rem", md: "0" },
                     flexBasis: { xs: "full", md: "1" },
+                    display: "flex",
+                    flexDirection: "row",
+                    [theme.breakpoints.up('md')]: {
+                      alignItems: "center",
+                      justifyContent: "center",
+                    },
+                  }}
+                >
+                  {i.icon}
+                </Box>
+                <Box
+                  sx={{
+                    flex: "1 1 0%",
+                    // paddingTop: { xs: "2rem", md: "0" },
+                    flexBasis: { xs: "full", md: "1" },
+                    display: "flex",
+                    [theme.breakpoints.up('md')]: {
+                      alignItems: "center",
+                      justifyContent: "center",
+                    },
                   }}
                 >
                   <Paragraph16 className="text-[#e3e3e3]">
