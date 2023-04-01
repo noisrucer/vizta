@@ -1,31 +1,27 @@
-# 커밋 메시지 템플릿 적용하기
+# Apply Commit Template Message
 
-
-먼저 `git clone` 으로 .gitmessage.txt를 로컬로 불러오세요.
+Do `git clone` and you will see .gitmessage.txt
 
 그 후,<br>
-`git config --local commit.template .github/.gitmessage.txt`<br>
-명령어를 통하여 git commit template을 설정하세요.
+Do `git config --local commit.template .github/.gitmessage.txt`<br>
+to set the commit template.
 
-이후에 commit을 할 때,<br>
-`git commit`<br>
-를 입력하면 커밋 템플릿이 뜰겁니다!
+Now,<br>
+Do `git commit` when you commit instead of `git commit -m "message"`<br>
 
-이제 명시한 위치에 커밋 메시지를 작성하세요.
+After completing your commit, just close the commit file or<br>
 
-커밋 메시지를 작성했다면,<br>
+**✋ For Linux bash or VSCode,**
 
-**✋ 리눅스 bash나 VSCode 쓰시는 경우**
+Type `Ctrl + x`<br>
+then you'll see save message, and type `y` to save it.
 
-`Ctrl + x`<br>
-을 누르시면 저장메시지가 뜨는데, `y`를 누르면 자동으로 저장이 됩니다.
+If you type Enter, then commit is complete!
 
-이후 Enter를 누르시면 commit 메시지 적용 완료입니다!
+**✋ For git bash**
 
-**✋ git bash 쓰시는 경우**
-
-`:wq` 로 저장하시면 됩니다. 
+Just do `:wq`
 
 <br>
 
-마지막으로 `git push` 사용하시면 됩니다.
+Then `git push`

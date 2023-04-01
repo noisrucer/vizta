@@ -1,11 +1,9 @@
 ---
-name: Extra
-about: Extra
+name: Refactor
+about: Refactor
 title: ""
 labels: ""
 assignees: ""
 ---
 
 ## Description
-
-## Comments
