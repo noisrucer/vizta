@@ -1,67 +1,39 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Roboto";
-}
-
-:root {
-  --color-primary: #ec4755;
-  --color-secondary: #a12c34;
-  --color-tertiaty: #99a0a3;
-}
-
-a {
-  @apply text-red-700;
-  text-decoration: none;
-}
-
-a:hover {
-  @apply border-b-2 border-red-700;
-}
-
-.content p {
-  @apply my-6;
-}
-
-.content ul {
-  @apply my-6;
-}
-
-/* * {
-  background-color: #353535;
-} */
-
-.container {
-  background-color: #1d2630;
-}
-
-.bg-background {
+html,
+body,
+#root,
+.app,
+.content {
   height: 100%;
   width: 100%;
-  background-color: #1d2630;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
-.text-primary {
-  color: #ec4755;
+* {
+  box-sizing: border-box;
 }
 
-/* .text-secondary {
-  color: #ec4755;
-} */
+.app {
+  display: flex;
+  position: relative;
+}
 
-/* .text-background {
-  color: #ffc106;
-} */
+::-webkit-scrollbar {
+  width: 10px;
+}
 
-/* .bg-primary {
-  color: #ec4755;
-} */
+/*Track*/
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
 
-/* * {
-  background-color: #353535;
-} */
+/* Handle*/
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on Hover */
+::-webkit-scrollbar-track:hover {
+  background: #555;
+}
