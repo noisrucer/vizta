@@ -24,15 +24,9 @@ function Number({ n }) {
   );
 }
 
-const workloadLabel = ["VeryLight", "Light", "Medium", "Heavy", "VeryHeavy"];
-const lectureFinalLabel = [
-  "VeryEasy",
-  "Easy",
-  "Medium",
-  "Difficult",
-  "VeryDifficult",
-];
-const GPALabel = ["A+", "A", "A-", "B+", "B-", "C+", "C", "C-", "D+", "D", "F"];
+const workloadLabel = ["VeryLight", "Light", "Medium", "Heavy", "VeryHeavy"]
+const lectureFinalLabel = ["VeryEasy", "Easy", "Medium", "Difficult", "VeryDifficult"]
+const GPALabel = ["A+", "A", "A-", "B+", "B-", "C+", "C", "C-", "D+", "D", "F"]
 const overallLabel = ["overall"];
 
 const Badges = styled(Box)(({ borderColor, backgronudColor }) => ({
@@ -49,6 +43,43 @@ const Overview = (chartData) => {
   const colors = tokens(theme.palette.mode);
 
   const overviewData = chartData.data;
+  const pentagonData = overviewData.Pentagon;
+  const formattedPentData = [];
+  const GPAData = overviewData.GPA
+  const formattedGPAData = GPAData.slice().reverse()
+  console.log("GPA: ", GPAData);
+  console.log("formatted: ", formattedGPAData);
+
+  pentagonData.map((value) => {
+    if (value.criteria === "LectureDifficulty") {
+      formattedPentData.push({ criteria: "Lecture Difficulty", overall: value.overall })
+    }
+  })
+
+  pentagonData.map((value) => {
+    if (value.criteria === "GPA") {
+      formattedPentData.push({ criteria: "GPA", overall: value.overall })
+    }
+  })
+
+  pentagonData.map((value) => {
+    if (value.criteria === "FinalDifficulty") {
+      formattedPentData.push({ criteria: "Final Difficulty", overall: value.overall })
+    }
+  })
+
+  pentagonData.map((value) => {
+    if (value.criteria === "LectureQuality") {
+      formattedPentData.push({ criteria: "Lecture Quality", overall: value.overall })
+    }
+  })
+
+  pentagonData.map((value) => {
+    if (value.criteria === "Workload") {
+      formattedPentData.push({ criteria: "Workload", overall: value.overall })
+    }
+  })
+
   const overallScore = chartData.score;
 
   function JudgeBadgesColor(average) {
@@ -58,13 +89,15 @@ const Overview = (chartData) => {
       return ["#ff403d", colors.badgeBackground[100], "HARD"];
     } else if (average === "MEDIUM") {
       return ["#DFB040", colors.badgeBackground[200], "MEDIUM"];
-    } else {
+    } else if (average === "EASY") {
       return ["#0cc1a9", colors.badgeBackground[300], "EASY"];
+    } else {
+      return ["#8F8F88", "secondary", "NONE"];
     }
   }
 
   function JudgeGPABadgeColor(average) {
-    if (average === null) {
+    if (average === "NONE") {
       return ["#8F8F88", "secondary", "NONE"];
     } else if (average === "Avg: F") {
       return ["#ff403d", colors.badgeBackground[100], "Avg: F"];
@@ -88,7 +121,7 @@ const Overview = (chartData) => {
       return ["#0cc1a9", colors.badgeBackground[300], "Avg: A-"];
     } else if (average === "Avg: A") {
       return ["#0cc1a9", colors.badgeBackground[300], "Avg: A"];
-    } else {
+    } else if (average === "Avg: A+") {
       return ["#0cc1a9", colors.badgeBackground[300], "Avg: A+"];
     }
   }
@@ -188,7 +221,7 @@ const Overview = (chartData) => {
         flexDirection="column"
         alignItems="center"
         borderRadius="2%"
-        // height={{ xs: "100%", md: "100%", lg: "70%", xl: "77%" }}
+      // height={{ xs: "100%", md: "100%", lg: "70%", xl: "77%" }}
       >
         {/*Put RADAR CHART in Here */}
 
@@ -211,7 +244,7 @@ const Overview = (chartData) => {
             //marginTop: -4,
           }}
         >
-          <NivoRadarChart data={overviewData.Pentagon} keys={overallLabel} />
+          <NivoRadarChart data={formattedPentData} keys={overallLabel} />
         </Box>
       </Box>
       <Box
@@ -224,11 +257,11 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
+      // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
       >
         {/*Put GPA in Here */}
         <GPAHeadings />
-        <NivoBarChart data={overviewData.GPA} keys={GPALabel} />
+        <NivoBarChart data={overviewData.GPA.slice().reverse()} keys={GPALabel} />
       </Box>
       <Box
         gridColumn={{ xs: "span 14", lg: "span 5" }}
@@ -240,11 +273,11 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
+      // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
       >
         {/*Put WORKLOAD in Here */}
         <Headings name="Workload" badgeName={overviewData.Badges.Workload} />
-        <NivoBarChart data={overviewData.Workload} keys={workloadLabel} />
+        <NivoBarChart data={overviewData.Workload.slice().reverse()} keys={workloadLabel} />
       </Box>
       {/* Row 2 */}
       <Box
@@ -257,10 +290,10 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
-        // sx={{
-        //   marginTop: { lg: -8 },
-        // }}
+      // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
+      // sx={{
+      //   marginTop: { lg: -8 },
+      // }}
       >
         {/*Put LECTURE DIFFICULTY in Here */}
         <Headings
@@ -268,7 +301,7 @@ const Overview = (chartData) => {
           badgeName={overviewData.Badges.LectureDifficulty}
         />
         <NivoBarChart
-          data={overviewData.LectureDifficulty}
+          data={overviewData.LectureDifficulty.slice().reverse()}
           keys={lectureFinalLabel}
         />
       </Box>
@@ -282,10 +315,10 @@ const Overview = (chartData) => {
         justifyContent="center"
         borderRadius="2%"
         padding={3}
-        // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
-        // sx={{
-        //   marginTop: { lg: -8 },
-        // }}
+      // height={{ xs: "100%", md: "100%", lg: "80%", xl: "85%" }}
+      // sx={{
+      //   marginTop: { lg: -8 },
+      // }}
       >
         {/*Put EXAM DIFFICULTY in Here */}
         <Headings
@@ -293,7 +326,7 @@ const Overview = (chartData) => {
           badgeName={overviewData.Badges.FinalDifficulty}
         />
         <NivoBarChart
-          data={overviewData.FinalDifficulty}
+          data={overviewData.FinalDifficulty.slice().reverse()}
           keys={lectureFinalLabel}
         />
       </Box>
@@ -331,7 +364,7 @@ const Overview = (chartData) => {
                 (overviewData.LectureQuality.Entertainment +
                   overviewData.LectureQuality.Interactivity +
                   overviewData.LectureQuality.Delivery) /
-                  3
+                3
               )}
             />
           </Box>

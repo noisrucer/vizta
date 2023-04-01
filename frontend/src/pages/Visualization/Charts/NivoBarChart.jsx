@@ -12,7 +12,6 @@ const NivoBarChart = ({ data, keys }) => {
   data.forEach((d) => {
     for (const [key, value] of Object.entries(d)) {
       if (Number.isInteger(value) === true) {
-        console.log("key: ", key)
         maxValueList.push(value)
       }
     }
@@ -27,7 +26,8 @@ const NivoBarChart = ({ data, keys }) => {
   }
 
   const maxValue = Math.max(...maxValueList)
-  // const ticks = [0, Math.ceil(maxValue / 5), Math.ceil(2 * maxValue / 5), Math.ceil(3 * maxValue / 5), Math.ceil(4 * maxValue / 5), maxValue]
+  console.log("keys: ", keys)
+  console.log("data: ", data)
   const ticks = [0]
 
   if (maxValue <= 5) {
@@ -51,7 +51,7 @@ const NivoBarChart = ({ data, keys }) => {
       indexBy="group"
       margin={{ top: 0, right: 5, bottom: 40, left: 70 }}
       padding={0.3}
-      colors={["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"]}
+      colors={["#50B19E", "#5772B3", "#F4BA41", "#EC8B33", "#DF6E53"].reverse()}
       colorBy="index"
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
