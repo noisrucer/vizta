@@ -24,6 +24,10 @@
 ## About <a name="about"></a>
 
   
+<<<<<<< HEAD
+=======
+
+>>>>>>> 738ed491b1a824715773444badbb03b999e411d9
 <img src="/img/Landing.png"/>
 
   
