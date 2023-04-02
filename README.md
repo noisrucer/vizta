@@ -10,10 +10,10 @@
 - [📚 3. Main Page](#main)
 - [❤️ 4. Favorites Page](#favorites)
 - [📊 5. Visualization Page](#visualization)
-	- [5.1. `Overview`](#overview)
-	- [5.2. `Course Information`](#courseinfo)
-	- [5.3. `Yearly Trends`](#yearlytrends)
-	- [5.4. `Professor Statistics`](#professorstats)
+	- [5.1. Overview](#overview)
+	- [5.2. Course Information](#courseinfo)
+	- [5.3. Yearly Trends](#yearlytrends)
+	- [5.4. Professor Statistics](#professorstats)
 - [🌐 6. Profile (reset passwrod) Page](#profile)
 - [📕 5. Review Page](#review)
 - [🚒 Report Bugs](#-report-bugs)
@@ -27,7 +27,7 @@
 <img src="/img/Landing.png"/>
 
 
-The objective of this project is to develop a university course reviewing system that provides students with an intuitive and informative way to assess potential courses of interest. The system focuses on visualizing static data, such as grading criteria and distribution of reviews by year and professor, to enable students to make more informed decisions about their academic choices.
+- The objective of this project is to develop a university course reviewing system that provides students with an intuitive and informative way to assess potential courses of interest. The system focuses on visualizing static data, such as grading criteria and distribution of reviews by year and professor, to enable students to make more informed decisions about their academic choices.
 
   
 
