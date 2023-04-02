@@ -1,5 +1,35 @@
 # ✏️ VIZTA - Visuzlization-powered course evaluation service
 
+# 📖 Table of Contents
+
+- [🚀 Installation](#-Installation)
+- [🔥 Get Started !](#-get-started)
+  - [🪟 0. Fancier UI](#fancierui)
+    - [Contribute your background image!](#contributeimage)
+  - [🙏 1. help command](#helpcommand)
+  - [🔒 2. Register](#register)
+  - [🔓 3. Login / Logout](#loginandlogout)
+  - [📚 4. Category commands](#categorycommands)
+    - [4.1. `showcat`](#showcatcommand)
+    - [4.2. `addcat`](#addcatcommand)
+    - [4.3. `mvcat`](#mvcatcommand)
+    - [4.4. `rmcat`](#rmcatcommand)
+    - [4.5. `rncat`](#rncatcommand)
+  - [📕 5. Task Commands](#taskcommands)
+    - [5.1. `addtask`](#addtaskcommand)
+    - [5.2. `showtask`](#showtaskcommand)
+    - [5.3. `done`](#donecommand)
+    - [5.4. `chdate`](#chdatecommand)
+    - [5.5. `chpri`](#chpricommand)
+    - [5.6. `chtag`](#chtagcommand)
+    - [5.8. `chname`](#chnamecommand)
+    - [5.9. `showtag`](#showtagcommand)
+  - [📅 6. Calendar Commands](#calendarcommands)
+- [🚒 Report Bugs](#-report-bugs)
+- [😭 Uninstall](#-uninstall)
+- [💌 Contributions](#-contributions)
+
+
 ## About
 
 ![intro](images/intro.png)
