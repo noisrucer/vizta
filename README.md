@@ -57,7 +57,7 @@ User can select their color theme up to their preference by clicking the icon on
 A demo video is available for the sign-up logic, which showcases the verification code being sent via email instead of being displayed in the console. The sign-up page includes valid email and password verification, confirmation password, and corresponding alerts when the user makes mistakes.
 
 
-## `Log In`  <a name="loginandlogout"></a>
+## Log In  <a name="loginandlogout"></a>
 
   
 
@@ -67,7 +67,7 @@ A demo video is available for the sign-up logic, which showcases the verificatio
 
 The project features a login page that securely stores user information on the server. After successful login with valid credentials, the user is issued a JWT token that expires in 30 minutes. The token is stored as a header component and is required for accessing any API. If the token is invalid or has expired, users can only access the landing page and sign-in/sign-up pages.
 
-## `Main Page`  <a name="main"></a>
+## Main Page  <a name="main"></a>
 
   
 
@@ -79,7 +79,7 @@ The main page of the project displays a list of courses available for the semest
 
   
 
-## `Vizualization Page`  <a name="visualization"></a>
+## Vizualization Page  <a name="visualization"></a>
 
   
 
@@ -143,7 +143,7 @@ The professor statistics page displays the overall score from the overview page,
 
   
 
-## `Profile (reset password)`  <a name="profile"></a>
+## Profile (reset password)  <a name="profile"></a>
 
   
 
@@ -155,7 +155,7 @@ Now the profile page only has reset password feature and showing basic user info
 
   
 
-## `Add Review`   <a name="review"></a>
+## Add Review   <a name="review"></a>
 
   
 
