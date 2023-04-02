@@ -48,7 +48,7 @@
 
 - User can select their color theme up to their preference by clicking the icon on the top right of the page.
 
-## 🔑 `Register` <a name="register"></a>
+## 🔑 Register <a name="register"></a>
 
 
 <img src="/img/signup.png"/>
