@@ -1,4 +1,4 @@
-# Course review website for university students
+# ✏️ Course review website for university students
 
 ## About
 
