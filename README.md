@@ -2,7 +2,7 @@
 
 ## About
 
-![intro]({{site.url}}/images/intro.png)
+![intro](images/intro.png)
 
 The objective of this project is to develop a university course reviewing system that provides students with an intuitive and informative way to assess potential courses of interest. The system focuses on visualizing static data, such as grading criteria and distribution of reviews by year and professor, to enable students to make more informed decisions about their academic choices.
 
