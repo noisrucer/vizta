@@ -157,7 +157,7 @@ Now the profile page only has reset password feature and showing basic user info
 
   
 
-<img src="/img/signup.png"/>
+<img src="/img/review.gif"/>
 
   
 
