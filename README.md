@@ -2,7 +2,7 @@
 
 # 📖 Table of Contents
 
-- [🚀 About](#-About)
+- [🚀 About](##-About)
 - [🔥 Get Started !](#-get-started)
   - [🪟 0. Fancier UI](#fancierui)
     - [Contribute your background image!](#contributeimage)
