@@ -25,7 +25,7 @@
 
   
 
-<img src="./img/landing.png"/>
+<img src="/img/landing.png"/>
 
   
 
