@@ -25,7 +25,7 @@
 
   
 
-![intro](images/intro.png)
+![[Landing.png]]
 
   
 
