@@ -1,20 +1,20 @@
 # ✏️ VIZTA - Visuzlization-powered course evaluation service
 
-  
+
 # 📖 Table of Contents
 
 - [🚀About](#About)
 - [🪟 0. Light & Dark Mode](#lightdarkmode)
-- [🔒 1. Register](#register)
+- [🔑 1. Register](#register)
 - [🔓 2. Login / Logout](#loginandlogout)
 - [📚 3. Main Page](#main)
-- [📚 4. Favorites Page](#favorites)
-- [📕 5. Visualization Page](#visualization)
+- [❤️ 4. Favorites Page](#favorites)
+- [📊 5. Visualization Page](#visualization)
 	- [5.1. `Overview`](#overview)
 	- [5.2. `Course Information`](#courseinfo)
 	- [5.3. `Yearly Trends`](#yearlytrends)
 	- [5.4. `Professor Statistics`](#professorstats)
-- [📅 6. Profile (reset passwrod) Page](#profile)
+- [🌐 6. Profile (reset passwrod) Page](#profile)
 - [📕 5. Review Page](#review)
 - [🚒 Report Bugs](#-report-bugs)
 - [💌 Contributions](#-contributions)
@@ -24,8 +24,7 @@
 ## About <a name="about"></a>
 
   
-
-<img src="./img/landing.png"/>
+<img src="/img/Landing.png"/>
 
   
 
@@ -48,9 +47,9 @@ VIZTA also provides a mechanism for students to leave reviews of their own, allo
 
 ## `Register` <a name="register"></a>
 
-  
 
-{% include video id="jXPZqS0QBII" provider="youtube" %}
+
+<img src="/img/signup.png"/>
 
   
 
@@ -62,7 +61,7 @@ A demo video is available for the sign-up logic, which showcases the verificatio
 
   
 
-{% include video id="vzgt9rC5IPY" provider="youtube" %}
+<img src="/img/signup.png"/>
 
   
 
@@ -72,7 +71,7 @@ The project features a login page that securely stores user information on the s
 
   
 
-{% include video id="UtcC6JSNx6M" provider="youtube" %}
+<img src="/img/signup.png"/>
 
   
 
@@ -84,7 +83,7 @@ The main page of the project displays a list of courses available for the semest
 
   
 
-{% include video id="k1W1rKweiPc" provider="youtube" %}
+<img src="/img/visualization.png"/>
 
   
 
@@ -96,7 +95,7 @@ When a user selects a course from the main page, they are redirected to the visu
 
   
 
-{% include video id="ojwIJdKEZf0" provider="youtube" %}
+<img src="/img/overview.png"/>
 
   
 
@@ -112,7 +111,7 @@ In addition to the visualization, there is a select text field where users can t
 
   
 
-{% include video id="jCPhh80Z31A" provider="youtube" %}
+<img src="/img/signup.png"/>
 
   
 
@@ -124,7 +123,7 @@ The course info page displays general information about the course, including fa
 
   
 
-{% include video id="tx02sJBJhT8" provider="youtube" %}
+<img src="/img/yearlytrend.gif"/>
 
   
 
@@ -136,7 +135,7 @@ The yearly trends page displays the performance of a professor throughout the ye
 
   
 
-{% include video id="tx02sJBJhT8" provider="youtube" %}
+<img src="/img/profstats.gif"/>
 
   
 
@@ -148,7 +147,7 @@ The professor statistics page displays the overall score from the overview page,
 
   
 
-{% include video id="M9sAwvGvvwo" provider="youtube" %}
+<img src="/img/profile.gif"/>
 
   
 
@@ -160,7 +159,7 @@ Now the profile page only has reset password feature and showing basic user info
 
   
 
-{% include video id="tqjTgdcGdoU" provider="youtube" %}
+<img src="/img/signup.png"/>
 
   
 
