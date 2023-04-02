@@ -24,13 +24,8 @@
 ## About <a name="about"></a>
 
   
-<<<<<<< HEAD
-=======
-
->>>>>>> 738ed491b1a824715773444badbb03b999e411d9
 <img src="/img/Landing.png"/>
 
-  
 
 The objective of this project is to develop a university course reviewing system that provides students with an intuitive and informative way to assess potential courses of interest. The system focuses on visualizing static data, such as grading criteria and distribution of reviews by year and professor, to enable students to make more informed decisions about their academic choices.
 
@@ -47,25 +42,24 @@ VIZTA utilizes data visualization techniques to present review data in a meaning
 VIZTA also provides a mechanism for students to leave reviews of their own, allowing them to share their experiences with other students and contribute to the broader community of learners. Overall, the system aims to provide a comprehensive and informative way for students to review courses and make informed academic decisions.
 
   
+## Light & Dark Mode <a name="lightdarkmode"></a>
   
+<img src="/img/lightdarkmode.gif"/>
 
 ## `Register` <a name="register"></a>
 
 
-
 <img src="/img/signup.png"/>
-
   
 
 A demo video is available for the sign-up logic, which showcases the verification code being sent via email instead of being displayed in the console. The sign-up page includes valid email and password verification, confirmation password, and corresponding alerts when the user makes mistakes.
 
-  
 
 ## `Log In`  <a name="loginandlogout"></a>
 
   
 
-<img src="/img/signup.png"/>
+<img src="/img/signin.png"/>
 
   
 
@@ -75,7 +69,7 @@ The project features a login page that securely stores user information on the s
 
   
 
-<img src="/img/signup.png"/>
+<img src="/img/main.gif"/>
 
   
 
@@ -87,7 +81,7 @@ The main page of the project displays a list of courses available for the semest
 
   
 
-<img src="/img/visualization.png"/>
+<img src="/img/visualization.gif"/>
 
   
 
@@ -99,7 +93,7 @@ When a user selects a course from the main page, they are redirected to the visu
 
   
 
-<img src="/img/overview.png"/>
+<img src="/img/overview.gif"/>
 
   
 
@@ -115,7 +109,7 @@ In addition to the visualization, there is a select text field where users can t
 
   
 
-<img src="/img/signup.png"/>
+<img src="/img/courseinfo.gif"/>
 
   
 
