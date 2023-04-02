@@ -16,12 +16,12 @@
 	- [5.4. Professor Statistics](#professorstats)
 - [🌐 6. Profile (reset passwrod) Page](#profile)
 - [📕 5. Review Page](#review)
-- [🚒 Report Bugs](#-report-bugs)
-- [💌 Contributions](#-contributions)
+- [🚒 Report Bugs](#report-bugs)
+- [💌 Contributions](#contributions)
 
   
 
-## About <a name="about"></a>
+## 🚀 About <a name="about"></a>
 
   
 <img src="/img/Landing.png"/>
@@ -42,13 +42,13 @@
 - VIZTA also provides a mechanism for students to leave reviews of their own, allowing them to share their experiences with other students and contribute to the broader community of learners. Overall, the system aims to provide a comprehensive and informative way for students to review courses and make informed academic decisions.
 
   
-## Light & Dark Mode <a name="lightdarkmode"></a>
+## 🪟 Light & Dark Mode <a name="lightdarkmode"></a>
   
 <img src="/img/lightdarkmode.gif"/>
 
 - User can select their color theme up to their preference by clicking the icon on the top right of the page.
 
-## `Register` <a name="register"></a>
+## 🔑 `Register` <a name="register"></a>
 
 
 <img src="/img/signup.png"/>
@@ -57,7 +57,7 @@
 - A demo video is available for the sign-up logic, which showcases the verification code being sent via email instead of being displayed in the console. The sign-up page includes valid email and password verification, confirmation password, and corresponding alerts when the user makes mistakes.
 
 
-## Log In  <a name="loginandlogout"></a>
+## 🔓 Log In  <a name="loginandlogout"></a>
 
   
 
@@ -67,7 +67,7 @@
 
 - The project features a login page that securely stores user information on the server. After successful login with valid credentials, the user is issued a JWT token that expires in 30 minutes. The token is stored as a header component and is required for accessing any API. If the token is invalid or has expired, users can only access the landing page and sign-in/sign-up pages.
 
-## Main Page  <a name="main"></a>
+## 📚 Main Page  <a name="main"></a>
 
   
 
@@ -79,7 +79,7 @@
 
   
 
-## Vizualization Page  <a name="visualization"></a>
+## 📊 Vizualization Page  <a name="visualization"></a>
 
   
 
@@ -142,7 +142,7 @@
 
   
 
-## Profile (reset password)  <a name="profile"></a>
+## 🌐 Profile (reset password)  <a name="profile"></a>
 
   
 
@@ -154,7 +154,7 @@
 
   
 
-## Add Review   <a name="review"></a>
+## 📕 Add Review   <a name="review"></a>
 
   
 
@@ -163,3 +163,15 @@
   
 
 - If the user has submitted review before, the user will be blocked from making another review. The users are required to fill in every componenets that shows up in the visualization page.
+
+# 🚒 Report Bugs <a name="report-bugs"></a>
+
+The first version of **VIZTA** was released just a couple days ago so you might encounter some bugs and errors.
+
+We would greatly appreciate if you report them as raising `issues` then we will respond and update as soon as possible.
+
+# 💌 Contribute to the project <a name="contribution"></a>
+
+- If you have any new features wish were in VIZTA, please don't hesitate to raise issues.
+
+- If you wish to contribute to the project as a programmer, please first **open an issue** with the `feature` tag (title prefixed with `[Feat] description`) describing your suggested features. After getting approval from the maintainer, you can drop pull requests and we will review each of them carefully.
