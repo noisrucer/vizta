@@ -25,7 +25,7 @@
 
   
 
-![[Landing.png]]
+<img src="./img/landing.png"/>
 
   
 
