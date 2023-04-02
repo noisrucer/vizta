@@ -13,30 +13,30 @@ VIZTA utilizes data visualization techniques to present review data in a meaning
 VIZTA also provides a mechanism for students to leave reviews of their own, allowing them to share their experiences with other students and contribute to the broader community of learners. Overall, the system aims to provide a comprehensive and informative way for students to review courses and make informed academic decisions.
 
 
-## Sign Up
+## `Sign Up`
 
 {% include video id="jXPZqS0QBII" provider="youtube" %}
 
 A demo video is available for the sign-up logic, which showcases the verification code being sent via email instead of being displayed in the console. The sign-up page includes valid email and password verification, confirmation password, and corresponding alerts when the user makes mistakes.
 
-## Log In
+## `Log In`
 
 {% include video id="vzgt9rC5IPY" provider="youtube" %}
 
 The project features a login page that securely stores user information on the server. After successful login with valid credentials, the user is issued a JWT token that expires in 30 minutes. The token is stored as a header component and is required for accessing any API. If the token is invalid or has expired, users can only access the landing page and sign-in/sign-up pages.
-## Main Page
+## `Main Page`
 
 {% include video id="UtcC6JSNx6M" provider="youtube" %}
 
 The main page of the project displays a list of courses available for the semester. On the left side, users can view their favorite courses. Each course is listed with its name, description, and the number of reviews it has received.
 
-## Vizualization Page
+## `Vizualization Page`
 
 {% include video id="k1W1rKweiPc" provider="youtube" %}
 
 When a user selects a course from the main page, they are redirected to the visualization page, which contains four tabs: overview, course information, yearly trends, and professor stats.
 
-### Overview
+### `Overview`
 
 {% include video id="ojwIJdKEZf0" provider="youtube" %}
 
@@ -44,31 +44,31 @@ The overview page on the visualization page displays an overall score for the co
 
 In addition to the visualization, there is a select text field where users can toggle and select specific years and professors for the course. The data changes correspondingly with nice animations.
 
-### Course Info
+### `Course Info`
 
 {% include video id="jCPhh80Z31A" provider="youtube" %}
 
 The course info page displays general information about the course, including faculty, prerequisites, and descriptions. It also displays the class timetable for the semester and the grading ratio.
 
-### Yearly Trends
+### `Yearly Trends`
 
 {% include video id="tx02sJBJhT8" provider="youtube" %}
 
 The yearly trends page displays the performance of a professor throughout the year, based on the criteria selected by the user. Users can select multiple professors and view their performance simultaneously.
 
-### Professor Stats
+### `Professor Stats`
 
 {% include video id="tx02sJBJhT8" provider="youtube" %}
 
 The professor statistics page displays the overall score from the overview page, but with a multi-select switch component that allows users to compare data between professors.
 
-## Profile (reset password)
+## `Profile (reset password)`
 
 {% include video id="M9sAwvGvvwo" provider="youtube" %}
 
 Now the profile page only has reset password feature and showing basic user information. We will further include more features such as analysis of the user's school work performance, customizable time table, and AI-based recommandation system.
 
-## Add Review
+## `Add Review`
 
 {% include video id="tqjTgdcGdoU" provider="youtube" %}
 
