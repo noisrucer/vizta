@@ -46,6 +46,8 @@ VIZTA also provides a mechanism for students to leave reviews of their own, allo
   
 <img src="/img/lightdarkmode.gif"/>
 
+User can select their color theme up to their preference by clicking the icon on the top right of the page.
+
 ## `Register` <a name="register"></a>
 
 
@@ -161,4 +163,4 @@ Now the profile page only has reset password feature and showing basic user info
 
   
 
-If the user has submitted review before, the user will be blocked from making another review. The review part is not yet finished as the VIZTA2.0 is just a demo. VIZTA 3.0 will contain updated UI in general and properly functioning add review page.
+If the user has submitted review before, the user will be blocked from making another review. The users are required to fill in every componenets that shows up in the visualization page.
