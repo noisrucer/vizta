@@ -2,6 +2,10 @@
 
 <img src="/img/Landing.png"/>
 
+# Try it out!
+* Test account: `test123@connect.hku.hk`
+* Test password: `q12wq12W`
+
 # 📖 Table of Contents
 
 - [🚀About](#About)
