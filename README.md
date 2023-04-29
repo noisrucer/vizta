@@ -3,6 +3,8 @@
 <img src="/img/Landing.png"/>
 
 # Try it out!
+
+(The server is temporarily down. It will be recovered soon)
 * Test account: `test123@connect.hku.hk`
 * Test password: `q12wq12W`
 
